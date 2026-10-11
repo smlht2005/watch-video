@@ -28,7 +28,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 1. **選參數**（沒有把握就用預設）：
    - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會讓任何語言都被硬轉成該語言（英文影片加 `--lang zh` 會得到不通順的中文，且無法事後偵測）。只有使用者明確指定、或已確認整支影片是同一種語言且自動偵測不準時才加；腳本會對強制語言印警告。
-   - 腳本轉錄後會從輸出文字判斷語言，寫入 `meta.json.detected_language`（`zh`／`en`／`other`）與 `needs_zh_translation`，並在結尾印出 `language: …`。平台有字幕時直接採用字幕，語言以字幕為準。
+   - 腳本轉錄後會從輸出文字判斷語言，寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`other`／`unknown`；每次重跑重新判斷）、`forced_lang` 與 `needs_zh_translation`（非 `zh`／`unknown` 時為 true），並在結尾印出 `language: …`。中文夾雜英文術語仍會判為 `zh`；`other`（混雜）與 `unknown`（逐字稿太短）要自己讀逐字稿確認。平台有字幕時直接採用字幕，語言以字幕為準。
    - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`electronics`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
@@ -53,7 +53,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - **投影片／主題分段**：看 `frames/` 後在 `meta.json` 寫 `slides`。簡報類影片一張投影片一段；沒有投影片的影片（訪談、實拍、操作畫面）則依講述主題或場景切段，每段的 `start` 取該主題開始的時間、`title` 寫主題名：`[{"start":"00:06","frame":"frame_0019.jpg","title":"…","note":"本張投影片重點","keywords":[…]}]`，報告就會「每段一張圖 + 說明文字 + 該段逐字稿」，不再逐畫面切碎。`frame` 選字幕與游標最乾淨的一張；沒有 `slides` 時才退回逐畫面。
    - **校正去哪裡**：穩定、不會誤傷的專有名詞錯誤 → 對應領域詞典 `glossary/domains/<領域>.json` 的 `replace`（key 用繁體、至少 3 字或帶上下文）或 `terms`；任何主題都成立的 → `glossary/common.json`；只這支影片成立或不確定的 → `known_asr_errors`。
    - 詞典新增後，對目前逐字稿直接替換並寫入 `meta.json.glossary_applied`，不必為此重跑 Whisper。
-   - **外語影片加中譯**：執行輸出出現 `language: en`（或 `meta.json.needs_zh_translation` 為 true）時，一律寫 `transcript.zh.md`；翻成**繁體中文（台灣用字）**，專有名詞與指令保留英文原文。逐字稿不是中文（如英文影片或英文平台字幕）時，寫 `transcript.zh.md`：與 `transcript.md` 同格式 `[mm:ss] 譯文`，時間戳沿用原文；碎片句合併成完整句，掛在句首時間戳（其餘行省略）。不要讓一句譯文跨越 `slides` 的 `start` 邊界。報告每段會在原文下方加「**中譯：**」；重跑不會覆蓋此檔。
+   - **外語影片加中譯**：執行輸出出現 `language: en`／`ja`／`ko`，或 `meta.json.needs_zh_translation` 為 true（含英文平台字幕）時，一律寫 `transcript.zh.md`：翻成**繁體中文（台灣用字）**，專有名詞與指令保留英文原文；與 `transcript.md` 同格式 `[mm:ss] 譯文`，時間戳沿用原文；碎片句合併成完整句，掛在句首時間戳（其餘行省略）。不要讓一句譯文跨越 `slides` 的 `start` 邊界。報告每段會在原文下方加「**中譯：**」；重跑不會覆蓋此檔。
 
    - **4c 補充資料（`supplement.md`，選用）**：影片沒呈現、或畫面一閃而過而遺漏的資訊（被截斷的畫面文字、貼文說明欄／留言回傳的完整內容、連結、講者後續補充、更正），由使用者提供或我查到後，另存成同資料夾的 `supplement.md`（獨立檔，重跑不會覆蓋）。`build_report.py` 會自動把它放在報告「摘要」之後，並在報告最後加「補充資料連結」。寫法：
      - **一筆補充一節**，編號 S1、S2…，標類型（畫面遺漏／貼文／留言／連結／更正；來源位置不確定時寫「留言（推測）」這類帶註記的類型）；檔案以 `# 補充資料` 開頭（報告會丟掉這行，不用重複寫）。

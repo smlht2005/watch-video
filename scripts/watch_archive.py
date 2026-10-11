@@ -86,20 +86,31 @@ def to_traditional(text: str) -> str:
 
 
 def detect_language(text: str) -> str:
-    """Rough language of a transcript from its characters: 'zh' (CJK-dominant), 'en' (Latin-dominant) or 'other'.
+    """Rough language of a transcript from its characters.
 
-    Whisper's own language guess is not surfaced in the watch report, so judge from the output text.
-    Only meaningful when Whisper ran without a forced --lang (a forced hint makes every transcript look like that language).
+    Returns 'zh', 'ja', 'ko', 'en', 'other' (mixed / unclear) or 'unknown' (too little text to judge).
+    Counts CJK ideographs, kana, hangul and Latin *words* (not letters), so Chinese transcripts full of English
+    technical terms still count as Chinese. Whisper's own language guess is not surfaced in the watch report,
+    so this judges the output text; it says nothing reliable when Whisper ran with a forced --lang.
     """
     body = re.sub(r"\[\d{1,2}:\d{2}(?::\d{2})?\]|```|^#.*$|^_Source:.*$", "", text, flags=re.M)
-    cjk = len(re.findall(r"[\u4e00-\u9fff]", body))
-    latin = len(re.findall(r"[A-Za-z]", body))
+    han = len(re.findall(r"[\u4e00-\u9fff]", body))
+    kana = len(re.findall(r"[\u3040-\u30ff]", body))
+    hangul = len(re.findall(r"[\uac00-\ud7af]", body))
+    latin = len(re.findall(r"[A-Za-z]+", body))
+    cjk = han + kana + hangul
     total = cjk + latin
-    if total < 20:
-        return "other"
-    if cjk / total >= 0.3:
+    if total < 10:
+        return "unknown"
+    if hangul >= 5 and hangul / cjk >= 0.3:
+        return "ko"
+    if kana >= 5 and kana / cjk >= 0.15:
+        return "ja"
+    if han >= 10 and han / total >= 0.2:
         return "zh"
-    return "en" if latin / total >= 0.9 else "other"
+    if latin >= 10 and cjk / total < 0.05:
+        return "en"
+    return "other"
 
 
 def load_glossary(domains):
@@ -263,8 +274,9 @@ def main():
         "title_raw": title_raw,
         "title_override": title_override,
         "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
-        "detected_language": detected_language if not args.lang else f"forced:{args.lang}",
-        "needs_zh_translation": detected_language != "zh" and not args.lang,
+        "detected_language": detected_language,
+        "forced_lang": args.lang,
+        "needs_zh_translation": detected_language not in ("zh", "unknown"),
         "glossaries": domains,
         "glossary_applied": glossary_applied,
         "source_hashtags": hashtags(title_raw),
@@ -320,10 +332,14 @@ def main():
     update_index(dest, meta)
     print(f"archived -> {dest.relative_to(ROOT)}")
     if args.lang:
-        print(f"WARNING: --lang {args.lang} was forced, so the language was NOT auto-detected; "
+        print(f"WARNING: --lang {args.lang} was forced to Whisper, so a wrong language would NOT be caught; "
               "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
-    elif detected_language == "zh":
-        print("language: zh (Whisper output is Chinese; converted to Traditional zh-TW)")
+    if detected_language == "zh":
+        print("language: zh (converted to Traditional zh-TW)")
+    elif detected_language == "unknown":
+        print("language: unknown（逐字稿太短或缺失，請自行判斷是否需要中譯）")
+    elif detected_language == "other":
+        print("language: other（混雜或無法判斷）：請讀逐字稿確認；若非中文，請依 SKILL 步驟 4b 寫 transcript.zh.md")
     else:
         print(f"language: {detected_language} -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
 

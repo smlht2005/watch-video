@@ -1,5 +1,5 @@
 {
-  "_說明": "Claude / Claude Code 領域。用 --glossary claude-code 載入。Whisper 常把 Claude 聽成 Cloud。",
+  "_說明": "Claude / Claude Code 領域。用 --glossary claude-code 載入。Whisper 常把 Claude 聽成 Cloud。注意：`Cloud Code`、`cloud code`、`Cloud 可以` 等替換假設講者在談 Claude；若影片真的在講雲端（Google Cloud 等）請勿載入本詞典。",
   "terms": [
     "Claude",
     "Claude Code",
@@ -20,7 +20,6 @@
     "告訴Cloud": "告訴 Claude",
     "Cloud 可以": "Claude 可以",
     "OPUS 5.5": "Opus 5.5",
-    "比OPUS 5": "比 Opus 5 ",
     "ClaudeMd": "CLAUDE.md",
     "CLAUDE可以": "Claude 可以",
     "CLAUDE Code": "Claude Code",
@@ -30,6 +29,7 @@
     "CloudMd": "CLAUDE.md",
     "Cloud API Prompt Audit": "/claude-api prompt-audit",
     "cash expired": "cache expired",
-    "cash had": "cache had"
+    "cash had": "cache had",
+    "OPUS 5": "Opus 5"
   }
 }

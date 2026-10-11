@@ -8,8 +8,6 @@
     "Docker",
     "control plane",
     "worker node",
-    "cluster",
-    "context",
     "YAML"
   ],
   "replace": {

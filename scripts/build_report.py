@@ -144,19 +144,25 @@ def supplement_lines(dest: Path):
     """Body of supplement.md for the report, under '## 補充資料'.
 
     The file's leading '# …' title is dropped; '#'/'##' headings -> '###' heading; '###' and deeper -> bold line
-    (the docx converter handles at most three heading levels); fenced blocks (``` or ~~~) -> '> ' quotes.
+    (the docx converter handles at most three heading levels). Fenced blocks (``` or ~~~) are kept verbatim as
+    ``` blocks (an unclosed fence is closed at the end); md_to_docx renders them as indented monospace.
     Returns [] when the file is missing or has no content besides its title.
     """
     path = dest / "supplement.md"
     if not path.exists():
         return []
-    out, fenced, has_body, started = [], False, False, False
+    out, fence, has_body, started = [], None, False, False
     for line in path.read_text(encoding="utf-8").splitlines():
-        if re.match(r"^\s*(```|~~~)", line):
-            fenced, has_body, started = not fenced, True, True
-            out.append("")
-        elif fenced:
-            out.append(f"> {line}" if line.strip() else ">")
+        m_fence = re.match(r"^\s*(```|~~~)", line)
+        if fence:
+            if m_fence and m_fence.group(1) == fence:
+                fence = None
+                out.append("```")
+            else:
+                out.append(line)
+        elif m_fence:
+            fence, has_body, started = m_fence.group(1), True, True
+            out.append("```")
         elif (m := re.match(r"^(#{1,6})\s+(.*)$", line)):
             level, text = len(m.group(1)), m.group(2).strip()
             if level == 1 and not started:  # the file's own title; the section heading replaces it
@@ -168,6 +174,8 @@ def supplement_lines(dest: Path):
             if line.strip():
                 started = has_body = True
             out.append(line)
+    if fence:
+        out.append("```")
     if not has_body:
         return []
     return ["## 補充資料（影片未呈現的資訊）", ""] + out + [""]
@@ -184,7 +192,8 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
-    L += supplement_lines(dest)
+    sup = supplement_lines(dest)
+    L += sup
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
     if meta.get("slides"):
         L += slide_blocks(meta, segs)
@@ -195,7 +204,7 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         for e in meta["known_asr_errors"]:
             L.append(f"| {e['time']} | {e['heard']} | {e['expected']} |")
         L.append("")
-    if (dest / "supplement.md").exists():
+    if sup:
         L += ["## 補充資料連結", "",
               "- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）", ""]
     return "\n".join(L)
@@ -217,7 +226,7 @@ def set_font(run, size=None, bold=None, mono=False):
 URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+")
 
 
-def add_hyperlink(par, url, size):
+def add_hyperlink(par, url, size, label=None):
     """Append a real clickable hyperlink run to a python-docx paragraph."""
     rid = par.part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", is_external=True)
     link = OxmlElement("w:hyperlink")
@@ -232,20 +241,20 @@ def add_hyperlink(par, url, size):
         rpr.append(el)
     run.append(rpr)
     text = OxmlElement("w:t")
-    text.text = url
+    text.text = label or url
     run.append(text)
     link.append(run)
     par._p.append(link)
 
 
 def add_inline(par, text, size=10.5):
-    for tok in re.split(r"(\[[^\]]+\]\([^)\s]+\)|\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
+    for tok in re.split(r"(\[[^\]]+\]\((?:[^()\s]|\([^()\s]*\))+\)|\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
         if not tok:
             continue
-        if (lm := re.fullmatch(r"\[([^\]]+)\]\(([^)\s]+)\)", tok)):
+        if (lm := re.fullmatch(r"\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)", tok)):
             label, target = lm.groups()
             if URL_RE.fullmatch(target):
-                add_hyperlink(par, target, size)
+                add_hyperlink(par, target, size, label)
             else:
                 set_font(par.add_run(label), size, mono=True)
         elif URL_RE.fullmatch(tok):
@@ -272,6 +281,17 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
     i = 0
     while i < len(lines):
         line = lines[i]
+        if line.strip().startswith("```"):  # fenced block: verbatim, indented, monospace
+            i += 1
+            while i < len(lines) and not lines[i].strip().startswith("```"):
+                par = doc.add_paragraph()
+                par.paragraph_format.left_indent = Cm(0.8)
+                par.paragraph_format.space_after = Pt(0)
+                set_font(par.add_run(lines[i]), 10, mono=True)
+                i += 1
+            i += 1
+            doc.add_paragraph()
+            continue
         if line.startswith("|"):
             rows = []
             while i < len(lines) and lines[i].startswith("|"):
@@ -308,11 +328,6 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
                 buf.seek(0)
                 doc.add_picture(buf, width=Cm(min(12, 7 * w / h)))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
-        elif line.startswith(">"):  # quoted block (fenced text from supplement.md): indented, monospace
-            par = doc.add_paragraph()
-            par.paragraph_format.left_indent = Cm(0.8)
-            par.paragraph_format.space_after = Pt(0)
-            set_font(par.add_run(line[2:] if line.startswith("> ") else line[1:]), 10, mono=True)
         elif line.startswith("- "):
             add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
         elif line.strip():

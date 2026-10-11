@@ -57,7 +57,7 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
 
 ### 提高轉錄準確度
 
-- **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。轉錄後腳本從輸出文字判斷語言，寫入 `meta.json.detected_language`（`zh`／`en`／`other`）與 `needs_zh_translation`；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
+- **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。轉錄後腳本從輸出文字判斷語言，寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`other`／`unknown`）、`forced_lang` 與 `needs_zh_translation`；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
   - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`electronics`、`kubernetes`、`claude-code`。新增領域只要新增一個檔案。
@@ -95,7 +95,7 @@ watch-output/
 | `slides` | 投影片分段（`start`、`frame`、`title`、`note`、`keywords`）；有設定時每張投影片只放一張圖，說明文字與逐字稿接在下方 |
 | `known_asr_errors` | 轉錄誤聽校正（時間、聽成、應為） |
 | `first_archived` | 首次歸檔日期 |
-| `detected_language`／`needs_zh_translation` | 由腳本每次重跑時重新判斷（不保留舊值） |
+| `detected_language`／`forced_lang`／`needs_zh_translation` | 由腳本每次重跑時重新判斷（不保留舊值） |
 | `title_override` | `--title` 指定的標題（重跑沿用） |
 | `glossaries` | `--glossary` 選用的詞典領域（重跑沿用） |
 
@@ -104,6 +104,12 @@ watch-output/
 影片沒呈現、或畫面一閃而過而遺漏的資訊（被截斷的畫面文字、貼文說明欄／留言回傳的完整內容、連結、更正），另存成同資料夾的 `supplement.md`（獨立檔，重跑不覆蓋）。`build_report.py` 會把它放在報告「摘要」之後，並在報告最後加「補充資料連結」。
 
 寫法重點（完整範本見 `.claude/skills/watch-archive/SKILL.md` 步驟 4c）：一筆補充一節（S1、S2…）並標類型；來源要完整（誰提供、位置、取得日期、方式）；**原文（逐字）** 與 **Claude 的對照分析** 分開；用語分級——補充直接寫明／與影片一致／據此推定；未查證的主張、數字、版本號進備註。
+
+### 測試
+
+```bash
+python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md 解析、docx 轉換
+```
 
 ### 注意事項
 
