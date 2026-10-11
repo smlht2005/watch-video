@@ -70,12 +70,15 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
           f"- 更新日期：{meta.get('last_updated', '')}", ""]
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
     L += ["## 圖文對照（畫面 + 逐字稿）", ""]
-    for frame, items in sections(segs, frames):
+    secs = sections(segs, frames)
+    end = meta.get("duration", "").split(" ")[0]
+    for n, (frame, items) in enumerate(secs):
         if frame:
-            L += [f"### [{frame['t']}] 畫面", "", f"![{frame['t']}](frames/{frame['file']})", ""]
-        for ts, text in items:
-            L.append(f"- **[{ts}]** {text}")
-        L.append("")
+            nxt = secs[n + 1][0]["t"] if n + 1 < len(secs) else end
+            L += [f"### 畫面 {frame['t']}–{nxt}", "", f"![{frame['t']}](frames/{frame['file']})", ""]
+        text = "，".join(t for _, t in items if t)
+        if text:
+            L += [text + "。", ""]
     if meta.get("known_asr_errors"):
         L += ["## 已知轉錄錯誤", "", "| 時間 | 聽成 | 應為 |", "|---|---|---|"]
         for e in meta["known_asr_errors"]:
