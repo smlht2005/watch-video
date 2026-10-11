@@ -6,7 +6,12 @@
     "CLAUDE.md",
     "Opus 5.5",
     "Sub Agent",
-    "額度"
+    "額度",
+    "prompt cache",
+    "sub-agent",
+    "compact",
+    "managed settings",
+    "Fable 5.1"
   ],
   "replace": {
     "Cloud MD": "CLAUDE.md",
@@ -18,6 +23,13 @@
     "比OPUS 5": "比 Opus 5 ",
     "ClaudeMd": "CLAUDE.md",
     "CLAUDE可以": "Claude 可以",
-    "CLAUDE Code": "Claude Code"
+    "CLAUDE Code": "Claude Code",
+    "cloud code": "Claude Code",
+    "CloudMD": "CLAUDE.md",
+    "cloud MD": "CLAUDE.md",
+    "CloudMd": "CLAUDE.md",
+    "Cloud API Prompt Audit": "/claude-api prompt-audit",
+    "cash expired": "cache expired",
+    "cash had": "cache had"
   }
 }

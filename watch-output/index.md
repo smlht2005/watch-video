@@ -9,3 +9,4 @@
 | 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
 | 2026-10-11 | TikTok | 中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了 | 05:29 (329.3s) | whisper (groq) | [開啟](./2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237/) |
 | 2026-10-11 | X | AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司... | 02:40 (160.2s) | captions (en, manual, unknown) | [開啟](./2026-10-11_X_AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa__2109141804620619953/) |
+| 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
