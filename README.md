@@ -20,6 +20,8 @@ Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間�
 
 把影片轉成「畫面 + 逐字稿」的圖文報告（Word / Markdown），並依影片 ID 歸檔，方便日後查找。
 
+![watch-archive 流程鳥瞰圖](docs/watch-archive-flow.png)
+
 ### 事前準備
 
 - 環境變數 `GROQ_API_KEY`（無字幕時用 Groq Whisper 轉錄；不要把 key 寫進任何檔案）
