@@ -141,23 +141,36 @@ def frame_blocks(meta, segs, frames):
 
 
 def supplement_lines(dest: Path):
-    """Body of supplement.md for the report: its own headings sit under '## 補充資料'; fenced blocks become '> ' quotes."""
+    """Body of supplement.md for the report, under '## 補充資料'.
+
+    The file's leading '# …' title is dropped; '#'/'##' headings -> '###' heading; '###' and deeper -> bold line
+    (the docx converter handles at most three heading levels); fenced blocks (``` or ~~~) -> '> ' quotes.
+    Returns [] when the file is missing or has no content besides its title.
+    """
     path = dest / "supplement.md"
     if not path.exists():
         return []
-    out, fenced = ["## 補充資料（影片未呈現的資訊）", ""], False
+    out, fenced, has_body, started = [], False, False, False
     for line in path.read_text(encoding="utf-8").splitlines():
-        if line.strip().startswith("```"):
-            fenced = not fenced
+        if re.match(r"^\s*(```|~~~)", line):
+            fenced, has_body, started = not fenced, True, True
             out.append("")
         elif fenced:
             out.append(f"> {line}" if line.strip() else ">")
-        elif re.match(r"^#{1,2}\s", line):
-            if not re.match(r"^#\s+補充資料", line):  # drop the file's own title; the section heading replaces it
-                out.append(re.sub(r"^#+", "###", line))
+        elif (m := re.match(r"^(#{1,6})\s+(.*)$", line)):
+            level, text = len(m.group(1)), m.group(2).strip()
+            if level == 1 and not started:  # the file's own title; the section heading replaces it
+                started = True
+                continue
+            started = has_body = True
+            out.append(f"**{text}**" if level >= 3 else f"### {text}")
         else:
+            if line.strip():
+                started = has_body = True
             out.append(line)
-    return out + [""]
+    if not has_body:
+        return []
+    return ["## 補充資料（影片未呈現的資訊）", ""] + out + [""]
 
 
 def build_md(dest: Path, meta, summary, segs, frames) -> str:
@@ -299,7 +312,7 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
             par = doc.add_paragraph()
             par.paragraph_format.left_indent = Cm(0.8)
             par.paragraph_format.space_after = Pt(0)
-            set_font(par.add_run(line[1:].strip()), 10, mono=True)
+            set_font(par.add_run(line[2:] if line.startswith("> ") else line[1:]), 10, mono=True)
         elif line.startswith("- "):
             add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
         elif line.strip():

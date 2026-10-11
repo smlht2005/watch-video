@@ -18,6 +18,6 @@
 
 ## 轉錄校正備註
 - 語言：自動偵測為中文（`detected_language: zh`），Whisper（Groq）轉錄，已簡轉繁並以 `glossary/domains/claude-code.json` 修正 Claude／CLAUDE.md 等寫法。
-- 「最強的模型」講者未點名；經〈補充資料〉（貼文提供的完整 CLAUDE.md）確認指 Fable 5.1。
+- 「最強的模型」講者未點名；據〈補充資料〉S1（貼文提供的完整 CLAUDE.md）推定指 Fable 5.1（非補充直接寫明）。
 - 數字（便宜近一半、快 30%）皆為講者主張，**未經查證**；且口述「快一半」與畫面圖示 -40% 略有出入。
 - 影片為口播＋圖示，內容短（42 秒）；完整 CLAUDE.md 影片中未揭露，已由使用者提供並收錄於〈補充資料〉（`supplement.md`）。

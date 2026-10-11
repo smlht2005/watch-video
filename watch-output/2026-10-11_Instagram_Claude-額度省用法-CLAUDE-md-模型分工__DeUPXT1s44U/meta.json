@@ -36,7 +36,7 @@
     {
       "time": "00:14",
       "heard": "複雜的任務才交給最強的模型",
-      "expected": "講者未點名；已由 supplement.md 確認指 Fable（Fable 5.1）"
+      "expected": "講者未點名；據 supplement.md S1 推定指 Fable（Fable 5.1），非補充直接寫明"
     }
   ],
   "keywords": [
@@ -73,7 +73,7 @@
       "start": "00:12",
       "frame": "frame_0007.jpg",
       "title": "在 CLAUDE.md 寫下分工規則",
-      "note": "複雜任務才交給最強模型（Fable）、簡單工作用 Opus 5.5；適合拆開的任務交給不同 Sub Agent。畫面只露出 CLAUDE.md 前兩行，完整內容見〈補充資料〉。",
+      "note": "複雜任務才交給最強模型（據補充資料推定為 Fable）、簡單工作用 Opus 5.5；適合拆開的任務交給不同 Sub Agent。畫面只露出 CLAUDE.md 前兩行，完整內容見〈補充資料〉。",
       "keywords": [
         "Sub Agent",
         "模型分工"
