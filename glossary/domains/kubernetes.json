@@ -1,0 +1,15 @@
+{
+  "_說明": "Kubernetes / 容器化領域。用 --glossary kubernetes 載入。",
+  "terms": ["Kubernetes", "kubectl", "kubeconfig", "Kind", "Docker", "control plane", "worker node", "cluster", "context", "YAML"],
+  "replace": {
+    "QBectal": "kubectl",
+    "Cubectl": "kubectl",
+    "cubectl": "kubectl",
+    "Cubectal": "kubectl",
+    "cubectal": "kubectl",
+    "Cubiconfig": "kubeconfig",
+    "cubiconfig": "kubeconfig",
+    "控制棚": "控制平面",
+    "工作核心": "工作節點"
+  }
+}

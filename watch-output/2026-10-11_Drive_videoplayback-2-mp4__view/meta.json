@@ -1,0 +1,177 @@
+{
+  "url": "https://drive.google.com/file/d/1bVcAjmgzoAhVKgMyXApHrQSOl-7_ZoGa/view?usp=drivesdk",
+  "platform": "Drive",
+  "video_id": "view",
+  "title": "videoplayback (2).mp4",
+  "title_raw": "videoplayback (2).mp4",
+  "title_override": "",
+  "whisper_hints": {
+    "language": "zh",
+    "prompt": ""
+  },
+  "glossaries": [
+    "kubernetes"
+  ],
+  "glossary_applied": {
+    "QBectal": 2,
+    "Cubectl": 2,
+    "cubectl": 1,
+    "cubectal": 3,
+    "cubiconfig": 4,
+    "控制棚": 1,
+    "工作核心": 1
+  },
+  "source_hashtags": [],
+  "uploader": "",
+  "duration": "07:55 (475.2s)",
+  "detail": "balanced",
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "00:02",
+      "heard": "KIND是Docker的Kubernetes",
+      "expected": "Kind 即 Kubernetes in Docker"
+    },
+    {
+      "time": "00:30",
+      "heard": "專用的專用團體／核檔",
+      "expected": "（原文：容器節點／叢集，Whisper 誤聽嚴重，以中譯與投影片為準）"
+    },
+    {
+      "time": "02:40",
+      "heard": "團隊／單元團隊",
+      "expected": "cluster（叢集）；推測"
+    },
+    {
+      "time": "04:16",
+      "heard": "框架／主項",
+      "expected": "port mapping／host（連接埠對應／主機）；推測"
+    },
+    {
+      "time": "07:38",
+      "heard": "明鏡與點點欄目",
+      "expected": "片尾宣傳語，非教學內容"
+    }
+  ],
+  "keywords": [
+    "Kind",
+    "Kubernetes in Docker",
+    "kubectl",
+    "kubeconfig",
+    "多節點叢集",
+    "control plane",
+    "worker node",
+    "extraPortMappings",
+    "kubectl context",
+    "CI/CD"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "Kind：Kubernetes in Docker",
+      "note": "在本機用 Docker 建立輕量 Kubernetes 叢集，適合測試、學習與開發。",
+      "keywords": [
+        "Kind",
+        "Docker"
+      ]
+    },
+    {
+      "start": "00:30",
+      "frame": "frame_0006.jpg",
+      "title": "什麼是 Kind",
+      "note": "以 Docker 容器節點執行本機叢集；優點：建立快、資源少、支援多節點、適合測試。",
+      "keywords": [
+        "Kind",
+        "多節點"
+      ]
+    },
+    {
+      "start": "01:13",
+      "frame": "frame_0014.jpg",
+      "title": "安裝前置需求",
+      "note": "Docker Engine 20.10+、kubectl、至少 2GB RAM 與 20GB 磁碟。",
+      "keywords": [
+        "Docker",
+        "kubectl"
+      ]
+    },
+    {
+      "start": "01:52",
+      "frame": "frame_0021.jpg",
+      "title": "安裝 Kind",
+      "note": "Linux 用 curl+chmod+mv；macOS 用 brew install kind；Windows 用 choco install kind；kind version 驗證。",
+      "keywords": [
+        "brew",
+        "choco"
+      ]
+    },
+    {
+      "start": "02:35",
+      "frame": "frame_0028.jpg",
+      "title": "建立第一個叢集",
+      "note": "kind create cluster；--name 自訂名稱；kubectl cluster-info --context 驗證。",
+      "keywords": [
+        "kind create cluster"
+      ]
+    },
+    {
+      "start": "03:20",
+      "frame": "frame_0035.jpg",
+      "title": "多節點叢集設定",
+      "note": "YAML 定義 1 個 control-plane 與 3 個 worker；kind create cluster --config。",
+      "keywords": [
+        "YAML",
+        "control plane",
+        "worker"
+      ]
+    },
+    {
+      "start": "04:16",
+      "frame": "frame_0045.jpg",
+      "title": "連接埠對應設定",
+      "note": "extraPortMappings：容器 80→主機 8080、443→8443，協定 TCP。",
+      "keywords": [
+        "extraPortMappings"
+      ]
+    },
+    {
+      "start": "05:08",
+      "frame": "frame_0053.jpg",
+      "title": "叢集管理指令",
+      "note": "get clusters、get nodes、delete cluster、export/get kubeconfig、load docker-image。",
+      "keywords": [
+        "kind load docker-image"
+      ]
+    },
+    {
+      "start": "05:49",
+      "frame": "frame_0061.jpg",
+      "title": "kubectl context 管理",
+      "note": "context 以 kind- 為前綴；get-contexts、use-context、current-context。",
+      "keywords": [
+        "context"
+      ]
+    },
+    {
+      "start": "06:42",
+      "frame": "frame_0070.jpg",
+      "title": "常見使用情境",
+      "note": "本機開發、測試與 CI/CD、學習 Kubernetes、展示與概念驗證。",
+      "keywords": [
+        "CI/CD"
+      ]
+    },
+    {
+      "start": "07:38",
+      "frame": "frame_0079.jpg",
+      "title": "片尾",
+      "note": "請觀眾按讚、訂閱、轉發（非教學內容）。",
+      "keywords": []
+    }
+  ]
+}
