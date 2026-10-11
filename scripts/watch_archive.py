@@ -15,6 +15,7 @@ import argparse
 import build_report
 import datetime as dt
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -30,8 +31,27 @@ TITLE_MAX = 40
 NAME_MAX = 120
 
 
+def resolve_redirect(url: str) -> str:
+    """Follow short-link redirects (e.g. vt.tiktok.com/XXXX) to the canonical URL; fall back to the input."""
+    import urllib.request
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return r.geturl()
+    except Exception:
+        return url
+
+
 def platform_and_id(url: str):
     u = urlparse(url)
+    if "tiktok.com" in u.netloc.lower():
+        if "/video/" not in u.path:
+            u = urlparse(resolve_redirect(url))
+        m = re.search(r"/video/(\d+)", u.path)
+        if m:
+            return "TikTok", m.group(1)
+        parts = [p for p in urlparse(url).path.split("/") if p]
+        return "TikTok", (parts[-1] if parts else "unknown")
     host = u.netloc.lower()
     parts = [p for p in u.path.split("/") if p]
     if "youtu.be" in host and parts:
@@ -65,12 +85,65 @@ def to_traditional(text: str) -> str:
     return _S2T.convert(text) if _S2T else text
 
 
+def load_glossary(domains):
+    """Merge glossary/common.json + glossary/domains/<name>.json (dir overridable via WATCH_GLOSSARY_DIR).
+
+    Returns (terms, replace). Domain terms come first so the 200-char Whisper prompt favours them.
+    """
+    gdir = Path(os.environ.get("WATCH_GLOSSARY_DIR") or ROOT / "glossary")
+    files = [gdir / "common.json"] + [gdir / "domains" / f"{d}.json" for d in domains]
+    for d, f in zip(["common"] + list(domains), files):
+        if not f.exists():
+            avail = sorted(p.stem for p in (gdir / "domains").glob("*.json"))
+            if d == "common":
+                continue
+            sys.exit(f"glossary domain '{d}' not found in {gdir}/domains (available: {', '.join(avail) or 'none'})")
+    terms, replace = [], {}
+    for f in files[1:] + files[:1]:  # domains first, common last
+        if f.exists():
+            g = json.loads(f.read_text(encoding="utf-8"))
+            terms += g.get("terms", [])
+            replace.update(g.get("replace", {}))
+    return list(dict.fromkeys(terms)), replace
+
+
+def apply_glossary(text: str, replace: dict):
+    """Fixed replacements for known ASR mistakes. Returns (text, {wrong: count})."""
+    applied = {}
+    for wrong in sorted(replace, key=len, reverse=True):  # longest first
+        n = text.count(wrong)
+        if n:
+            text = text.replace(wrong, replace[wrong])
+            applied[wrong] = n
+    return text, applied
+
+
+def fullwidth_punct(text: str) -> str:
+    """Whisper emits ASCII , . ? ! : ; next to Chinese; make them full-width (，。？！：；)."""
+    table = {",": "，", ".": "。", "?": "？", "!": "！", ":": "：", ";": "；"}
+    cjk = "\u4e00-\u9fff"
+    return re.sub(rf"(?<=[{cjk}])([,.?!:;])(?!\d)", lambda m: table[m.group(1)], text)
+
+
+def whisper_prompt(terms, lang: str, limit: int = 200) -> str:
+    """Hint text for Whisper: whole terms only, in priority order, within `limit` characters."""
+    out = "以下是繁體中文的逐字稿，含標點符號。" if lang.startswith("zh") else ""
+    first = True
+    for t in terms:
+        piece = t if first else "、" + t
+        if len(out) + len(piece) > limit:
+            break
+        out += piece
+        first = False
+    return out
+
+
 def tidy_title(raw: str, uploader: str = "") -> str:
     """Drop Facebook noise: '86K views · 1.3K reactions |' prefix, '| <uploader>' suffix, #hashtags."""
     parts = [p.strip() for p in raw.split("|")]
     parts = [p for p in parts if p and not re.search(r"\b(views?|reactions?|likes?)\b", p, re.I) and p != uploader]
     t = re.sub(r"#\S+", "", parts[0] if parts else raw).strip()
-    return t or raw.strip()
+    return t or " ".join(hashtags(raw)) or raw.strip()  # hashtag-only titles (e.g. TikTok): keep the tags, minus '#'
 
 
 def hashtags(raw: str):
@@ -97,6 +170,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
+    ap.add_argument("--title", help="override the display title/folder name (remembered in meta.json as title_override)")
+    ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
+    ap.add_argument("--lang", default="", help="Whisper language hint, e.g. zh (default: auto-detect)")
+    ap.add_argument("--terms", default="", help="extra comma-separated terms to hint Whisper (names, jargon)")
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
     ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (local only, gitignored)")
@@ -105,11 +182,22 @@ def main():
     platform, raw_id = platform_and_id(args.url)
     vid = safe_id(raw_id)
 
+    early = sorted(OUT_ROOT.glob(f"*__{vid}"))
+    early_meta = json.loads((early[0] / "meta.json").read_text(encoding="utf-8")) if early and (early[0] / "meta.json").exists() else {}
+    domains = [d.strip() for d in args.glossary.split(",") if d.strip()] if args.glossary is not None else early_meta.get("glossaries", [])
+    gl_terms, gl_replace = load_glossary(domains)
+    terms = [t.strip() for t in args.terms.split(",") if t.strip()] + gl_terms
+    env = dict(os.environ)
+    if args.lang:
+        env["WATCH_WHISPER_LANGUAGE"] = args.lang
+    if terms:
+        env["WATCH_WHISPER_PROMPT"] = whisper_prompt(terms, args.lang)
+
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
         [sys.executable, str(WATCH), args.url, "--question", args.question,
          "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)],
-        capture_output=True, text=True,
+        capture_output=True, text=True, env=env,
     )
     if proc.returncode != 0:
         print(f"watch.py failed (exit {proc.returncode}):\n{proc.stderr[-2000:]}", file=sys.stderr)
@@ -117,10 +205,13 @@ def main():
     report = proc.stdout
 
     title_raw = field(report, "Title") or "untitled"
-    title = tidy_title(title_raw, field(report, "Uploader"))
+    prev_dirs = sorted(OUT_ROOT.glob(f"*__{vid}"))
+    prev0 = json.loads((prev_dirs[0] / "meta.json").read_text(encoding="utf-8")) if prev_dirs and (prev_dirs[0] / "meta.json").exists() else {}
+    title_override = args.title or prev0.get("title_override", "")
+    title = title_override or tidy_title(title_raw, field(report, "Uploader"))
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
-    transcript = to_traditional(transcript_raw)
+    transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
     title = to_traditional(title)
     if _S2T is None:
         print("WARNING: opencc not installed; transcript left as-is (pip install opencc-python-reimplemented)", file=sys.stderr)
@@ -152,6 +243,10 @@ def main():
         "video_id": vid,
         "title": title,
         "title_raw": title_raw,
+        "title_override": title_override,
+        "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
+        "glossaries": domains,
+        "glossary_applied": glossary_applied,
         "source_hashtags": hashtags(title_raw),
         "uploader": to_traditional(field(report, "Uploader")),
         "duration": field(report, "Duration"),

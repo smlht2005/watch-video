@@ -1,0 +1,35 @@
+{
+  "_說明": "AI 大模型、晶片與算力領域。用 --glossary ai-chips 載入。terms 為 Whisper 提示詞；replace 為轉錄後固定替換。",
+  "terms": [
+    "DeepSeek V4",
+    "CUDA",
+    "華為昇騰",
+    "寒武紀",
+    "輝達",
+    "Anthropic",
+    "Claude",
+    "Muon",
+    "Kimi"
+  ],
+  "replace": {
+    "DeepSick微四": "DeepSeek V4",
+    "DeepSick": "DeepSeek",
+    "Deep Sik": "DeepSeek",
+    "DeepSeek、V4": "DeepSeek V4",
+    "Enthopec": "Anthropic",
+    "酷大": "CUDA",
+    "MilkLip": "Muon",
+    "MuClip": "Muon",
+    "韓武技": "寒武紀",
+    "韓武記": "寒武紀",
+    "華為升騰": "華為昇騰",
+    "Cloud 4.7": "Claude 4.7",
+    "黃人勳": "黃仁勳",
+    "黃仁勛": "黃仁勳",
+    "幣源": "閉源",
+    "壓縮力": "壓縮率",
+    "歸國很多人": "矽谷很多人",
+    "晶元": "晶片",
+    "中國星": "中國芯"
+  }
+}

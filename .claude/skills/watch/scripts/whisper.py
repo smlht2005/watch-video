@@ -10,6 +10,7 @@ Pure stdlib — no `pip install groq` or `pip install openai` needed.
 """
 from __future__ import annotations
 
+import os
 import io
 import json
 import math
@@ -182,6 +183,11 @@ def _post_whisper(endpoint: str, api_key: str, model: str, audio_path: Path) -> 
         "response_format": "verbose_json",
         "temperature": "0",
     }
+    # Local patch: optional hints to improve accuracy (set by scripts/watch_archive.py).
+    if os.environ.get("WATCH_WHISPER_LANGUAGE"):
+        fields["language"] = os.environ["WATCH_WHISPER_LANGUAGE"]
+    if os.environ.get("WATCH_WHISPER_PROMPT"):
+        fields["prompt"] = os.environ["WATCH_WHISPER_PROMPT"][:800]
     body, boundary = _build_multipart(fields, audio_path)
     if len(body) > MAX_MULTIPART_BYTES:
         raise SystemExit("Multipart request exceeds the 25,000,000-byte limit.")

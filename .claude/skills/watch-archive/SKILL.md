@@ -1,36 +1,59 @@
 ---
 name: watch-archive
-description: 看影片並歸檔成圖文報告。使用者給影片網址（Facebook/YouTube 等），要求「看影片、摘要、逐字稿、轉 Word、歸檔」時使用。產出 watch-output/<資料夾>/ 內的 report.docx、report.md、截圖與 meta.json。
+description: 看影片並歸檔成圖文報告。使用者給影片網址（Facebook/YouTube/TikTok 等），要求「看影片、摘要、逐字稿、轉 Word、歸檔」時使用。產出 watch-output/<資料夾>/ 內的 report.docx、report.md、截圖與 meta.json；逐字稿預設繁體中文，並用詞典校正。
 ---
 
 # watch-archive：影片 → 圖文報告（Word / Markdown）
 
 回覆一律使用繁體中文（zh-TW）。**絕不印出或複述任何 API key**（只可說「有/沒有」與長度）。
 
-## 流程
+## 流程總覽
 
-1. **環境**：確認 `GROQ_API_KEY` 存在（只報有/沒有）。若 `.claude/skills/watch` 尚未設定，先跑
-   `python3 .claude/skills/watch/scripts/setup.py --backend groq --detail balanced`（exit 0）。
-2. **歸檔**：`python3 scripts/watch_archive.py "<URL>" [--question "..."] [--keep-media]`
-   - 資料夾：`watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新）。
-   - 自動產生：`meta.json`、`transcript.md`、`frames/`、`frames.json`、`summary.md`（待補範本）、
-     `<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
-   - `--keep-media` 才保留 `media/<stem>_video.mp4`；影片只存本機（已 gitignore），報告內附來源網址超連結。
-3. **人工/Claude 補充內容**（腳本不會自動做）：
-   - 讀 `transcript.md` 與 `frames/`（用 Read 看圖），改寫 `summary.md`：含時間戳重點表、名詞與縮寫說明。
-   - 編輯 `meta.json`（重跑時這些欄位會保留，不會被覆蓋）：
-     - `keywords`：整份關鍵字（約 8–10 個）。
-     - `section_keywords`：以畫面起始時間為 key，如 `{"00:12": ["上下文限制"]}`。
-     - `known_asr_errors`：`[{"time","heard","expected"}]`，書名/人名可用畫面文字核對。
-4. **重建報告**：`python3 scripts/build_report.py watch-output/<資料夾>`
-5. **目視檢查**：docx 轉 PDF 後看頁面（中文、截圖是否正常）。
-6. **交付**：用 SendUserFile 傳 `*_report.docx`；摘要重點與「是否為 Groq 轉錄（非字幕）」寫在回覆裡。
-7. **提交**：在 `claude/...` 分支 commit（不要直接動 main）；除非使用者要求，不建立 PR、不強制 push。
+```text
+網址 ─▶ 0 環境 ─▶ 1 選參數 ─▶ 2 歸檔(下載→Groq 轉錄→轉繁體→詞典校正→截圖→報告)
+     ─▶ 3 校稿 ─▶ 4 補內容(摘要/關鍵字/校正) ─▶ 5 重建並目視檢查 ─▶ 6 交付 ─▶ 7 提交
+```
+
+## 步驟
+
+0. **環境**：確認 `GROQ_API_KEY` 存在（只報有/沒有與長度）；確認 `pip install python-docx opencc-python-reimplemented`。
+   若 `.claude/skills/watch` 尚未設定，先跑 `python3 .claude/skills/watch/scripts/setup.py --backend groq --detail balanced`（exit 0）。
+   從最新的 `main` 開新分支 `claude/...`（不要重用已合併的分支）。
+
+1. **選參數**（沒有把握就用預設）：
+   - 中文影片 → `--lang zh`（英文影片不要加）。
+   - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`electronics`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
+   - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
+   - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
+
+2. **歸檔**：
+   `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media]`
+   - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → Groq Whisper 轉錄（帶語言與詞典提示詞）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
+   - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
+   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
+   - `--keep-media` 才保留 `media/<stem>_video.<ext>`；影片只存本機（gitignore）。
+
+3. **校稿**（腳本不會自動做）：
+   - 通讀 `transcript.md`，挑出可疑處：專有名詞、英文縮寫、同音字、斷句異常。
+   - 用 `frames/`（Read 看圖）上的畫面字幕交叉核對；以畫面文字為準。
+   - **不要手改 `transcript.md` 以外的原始轉錄**；`transcript.raw.md` 是轉換前原文，保持不動。
+
+4. **補內容**：
+   - 改寫 `summary.md`：一句話重點、含時間戳的重點表、名詞與縮寫說明、轉錄校正備註。評論／立場性影片寫「講者主張…」，數字註明未經查證。
+   - 編輯 `meta.json`（重跑時以下欄位會保留）：`keywords`（約 8–10 個）、`section_keywords`（key 為畫面起始時間，如 `"00:12"`）、`known_asr_errors`（`{"time","heard","expected"}`，推測的要標「推測」）。
+   - **校正去哪裡**：穩定、不會誤傷的專有名詞錯誤 → 對應領域詞典 `glossary/domains/<領域>.json` 的 `replace`（key 用繁體、至少 3 字或帶上下文）或 `terms`；任何主題都成立的 → `glossary/common.json`；只這支影片成立或不確定的 → `known_asr_errors`。
+   - 詞典新增後，對目前逐字稿直接替換並寫入 `meta.json.glossary_applied`，不必為此重跑 Whisper。
+
+5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
+
+6. **交付**：用 SendUserFile 傳 `*_report.docx`；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄還是平台字幕（`meta.json.transcript_source`）。
+
+7. **提交**：在 `claude/...` 分支 commit 並 push。合併方式依使用者指示（PR + Squash and merge，或直接合併）；使用者沒說就先問，不強制 push、不重用已合併分支。
 
 ## 注意
 
-- 逐字稿來源在 `meta.json.transcript_source`（`whisper (groq)` = 語音轉錄；否則為平台字幕）。
-- **逐字稿預設繁體中文（zh-TW）**：腳本用 OpenCC（s2twp）把簡體轉繁體；轉換前的原文存成 `transcript.raw.md`。需先 `pip install opencc-python-reimplemented`，缺少時腳本會警告並保留原文。
-- Groq 轉錄可能有誤聽（同音字、英文縮寫）；校正寫進 `known_asr_errors`，**不要手改 `transcript.md`**（原始轉錄在 `transcript.raw.md`）。
-- 失敗時回報錯誤類別與原因（網路/下載/轉錄/權限），不要印出 key。
+- TikTok 短網址（vt.tiktok.com）自動解析成真正的影片 ID；Facebook 標題的「views · reactions |」前綴與作者後綴會自動去除，原始標題在 `meta.json.title_raw`。
+- 簡轉繁採台灣用字，技術詞會被換成台灣詞（算子→運算元、優化→最佳化）；OpenCC 對「里／裡」等一對多字有漏轉，由 `glossary/common.json` 兜底。
+- Groq 轉錄有誤聽很正常；提示詞只提高機率，詞典才是確定的修正。
+- 失敗時回報錯誤類別與原因（網路／下載／轉錄／權限），不要印出 key。
 - 版權：來源是他人影片；repo 設為 private 時僅供個人參考，改 public 或分享前不要附影片。
