@@ -104,12 +104,14 @@ def detect_language(text: str) -> str:
         return "unknown"
     if hangul >= 5 and hangul / cjk >= 0.3:
         return "ko"
-    if kana >= 5 and kana / cjk >= 0.15:
+    if kana >= 5 and kana / cjk >= 0.05:  # Chinese has essentially no kana; kanji-heavy Japanese still has some
         return "ja"
     if han >= 10 and han / total >= 0.2:
         return "zh"
+    if cjk == 0 and len({w.lower() for w in re.findall(r"[A-Za-z]+", body)}) < 4:
+        return "unknown"  # e.g. fifteen lines of "ok": plenty of words, no information
     if latin >= 10 and cjk / total < 0.05:
-        return "en"
+        return "en"  # Latin-script non-Chinese (may be Spanish etc.); the translation flag is what matters
     return "other"
 
 
@@ -240,7 +242,10 @@ def main():
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
     detected_language = detect_language(transcript_raw)
-    transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
+    if detected_language in ("ja", "ko"):  # OpenCC / full-width punctuation would corrupt Japanese and Korean text
+        transcript, glossary_applied = apply_glossary(transcript_raw, gl_replace)
+    else:
+        transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
     title = to_traditional(title)
     if _S2T is None:
         print("WARNING: opencc not installed; transcript left as-is (pip install opencc-python-reimplemented)", file=sys.stderr)

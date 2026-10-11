@@ -34,9 +34,17 @@ class DetectLanguage(unittest.TestCase):
         text = "# 標題標題標題標題標題標題標題標題\n_Source: whisper (groq)._\n```\n[00:01] ok\n```\n"
         self.assertEqual(wa.detect_language(text), "unknown")
 
-    def test_mixed_balanced_is_other(self):
+    def test_kanji_heavy_japanese_is_ja(self):
+        # kana is only ~14% of the CJK characters here, below the old 0.15 threshold
+        text = "[00:01] 日本国内経済成長率予測発表政府統計調査結果概要説明資料公開である\n" * 3
+        self.assertEqual(wa.detect_language(text), "ja")
+
+    def test_repeated_single_word_is_unknown(self):
+        self.assertEqual(wa.detect_language("[00:01] ok\n" * 15), "unknown")
+
+    def test_balanced_mixed_text_does_not_claim_japanese_or_korean(self):
         text = "[00:01] hello world this is some english words and 中文字幾個\n" * 3
-        self.assertIn(wa.detect_language(text), ("other", "en", "zh"))  # must not crash; no strong claim
+        self.assertNotIn(wa.detect_language(text), ("ja", "ko", "unknown"))
 
 
 class SupplementLines(unittest.TestCase):
@@ -70,6 +78,29 @@ class SupplementLines(unittest.TestCase):
         self.assertIn("### S1", out)
 
 
+class FenceHelpers(unittest.TestCase):
+    def test_language_tag_inside_fence_does_not_close_it(self):
+        out = Path(tempfile.mkdtemp())
+        (out / "supplement.md").write_text("## S1\n```text\n```python\nx = 1\n```\nafter\n", encoding="utf-8")
+        lines = br.supplement_lines(out)
+        i = lines.index("```")
+        self.assertEqual(lines[i + 1:i + 3], ["```python", "x = 1"])
+        self.assertEqual(lines[i + 3], "```")  # closed by the bare fence
+        self.assertIn("after", lines)
+
+    def test_unclosed_fence_in_summary_is_closed(self):
+        md = "intro\n```\ncode with no end\n"
+        fixed = br.close_open_fence(md)
+        self.assertEqual(fixed.count("```"), 2)
+        self.assertEqual(br.close_open_fence("fine\n```\nx\n```"), "fine\n```\nx\n```")
+
+    def test_longer_fence_needs_equal_or_longer_close(self):
+        self.assertFalse(br.fence_close("````", "```"))
+        self.assertTrue(br.fence_close("````", "````"))
+        self.assertTrue(br.fence_close("~~~", "~~~"))
+        self.assertFalse(br.fence_close("```", "~~~"))
+
+
 class DocxFenceAndLinks(unittest.TestCase):
     def build(self, md):
         from docx import Document  # noqa: F401
@@ -85,6 +116,10 @@ class DocxFenceAndLinks(unittest.TestCase):
         self.assertIn("# 模型路由", texts)
         self.assertIn("- **Fable 5.1**：架構", texts)
         self.assertEqual([p.style.name for p in doc.paragraphs if p.text == "# 模型路由"], ["Normal"])  # not a heading
+
+    def test_tilde_fence_in_docx(self):
+        doc = self.build("## x\n\n~~~\n# not a heading\n~~~\n")
+        self.assertEqual([p.style.name for p in doc.paragraphs if p.text == "# not a heading"], ["Normal"])
 
     def test_link_label_and_url(self):
         doc = self.build("- [說明](https://example.com/a_(b)) 與 [supplement.md](supplement.md)\n")

@@ -140,6 +140,27 @@ def frame_blocks(meta, segs, frames):
     return L
 
 
+FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})")
+
+
+def fence_close(marker: str, line: str) -> bool:
+    """A closing fence is a bare run of the same character, at least as long as the opening one (so ```python never closes)."""
+    m = re.fullmatch(r"\s*(`{3,}|~{3,})\s*", line)
+    return bool(m) and m.group(1)[0] == marker[0] and len(m.group(1)) >= len(marker)
+
+
+def close_open_fence(md: str) -> str:
+    """Append a closing fence if the markdown ends inside one, so a stray ``` cannot swallow the rest of the report."""
+    fence = None
+    for line in md.splitlines():
+        if fence:
+            if fence_close(fence, line):
+                fence = None
+        elif (m := FENCE_OPEN.match(line)):
+            fence = m.group(1)
+    return md + "\n" + fence if fence else md
+
+
 def supplement_lines(dest: Path):
     """Body of supplement.md for the report, under '## 補充資料'.
 
@@ -153,9 +174,9 @@ def supplement_lines(dest: Path):
         return []
     out, fence, has_body, started = [], None, False, False
     for line in path.read_text(encoding="utf-8").splitlines():
-        m_fence = re.match(r"^\s*(```|~~~)", line)
+        m_fence = FENCE_OPEN.match(line)
         if fence:
-            if m_fence and m_fence.group(1) == fence:
+            if fence_close(fence, line):
                 fence = None
                 out.append("```")
             else:
@@ -191,7 +212,7 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
     if meta.get("keywords"):
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
-    L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
+    L += ["## 摘要與名詞說明", "", close_open_fence(strip_h1(summary).strip()), ""]
     sup = supplement_lines(dest)
     L += sup
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
@@ -281,9 +302,10 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
     i = 0
     while i < len(lines):
         line = lines[i]
-        if line.strip().startswith("```"):  # fenced block: verbatim, indented, monospace
+        if (fm := FENCE_OPEN.match(line)):  # fenced block (``` or ~~~): verbatim, indented, monospace
+            marker = fm.group(1)
             i += 1
-            while i < len(lines) and not lines[i].strip().startswith("```"):
+            while i < len(lines) and not fence_close(marker, lines[i]):
                 par = doc.add_paragraph()
                 par.paragraph_format.left_indent = Cm(0.8)
                 par.paragraph_format.space_after = Pt(0)

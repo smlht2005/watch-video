@@ -29,7 +29,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 1. **選參數**（沒有把握就用預設）：
    - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會讓任何語言都被硬轉成該語言（英文影片加 `--lang zh` 會得到不通順的中文，且無法事後偵測）。只有使用者明確指定、或已確認整支影片是同一種語言且自動偵測不準時才加；腳本會對強制語言印警告。
    - 腳本轉錄後會從輸出文字判斷語言，寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`other`／`unknown`；每次重跑重新判斷）、`forced_lang` 與 `needs_zh_translation`（非 `zh`／`unknown` 時為 true），並在結尾印出 `language: …`。中文夾雜英文術語仍會判為 `zh`；`other`（混雜）與 `unknown`（逐字稿太短）要自己讀逐字稿確認。平台有字幕時直接採用字幕，語言以字幕為準。
-   - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`electronics`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
+   - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`electronics`、`kubernetes`、`claude-code`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
 
@@ -38,7 +38,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → Groq Whisper 轉錄（帶語言與詞典提示詞）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
    - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
    - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`supplement.md`（選用：影片未呈現的補充資料）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
-   - 語言判斷順序：平台字幕語言 → Whisper 自動偵測結果（腳本以字元比例判斷 `detected_language`）→ 中文轉繁體（OpenCC）／非中文留給步驟 4b 中譯。
+   - 語言判斷順序：平台字幕語言 → Whisper 自動偵測結果（腳本以字數／字元比例判斷 `detected_language`；`en` 代表拉丁字母的非中文，西班牙文等也會標成 `en`）→ 中文轉繁體（OpenCC）／非中文留給步驟 4b 中譯。
    - `--keep-media` 才保留 `media/<stem>_video.<ext>`；影片只存本機（gitignore）。
 
 3. **校稿**（腳本不會自動做）：
