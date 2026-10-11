@@ -85,6 +85,23 @@ def to_traditional(text: str) -> str:
     return _S2T.convert(text) if _S2T else text
 
 
+def detect_language(text: str) -> str:
+    """Rough language of a transcript from its characters: 'zh' (CJK-dominant), 'en' (Latin-dominant) or 'other'.
+
+    Whisper's own language guess is not surfaced in the watch report, so judge from the output text.
+    Only meaningful when Whisper ran without a forced --lang (a forced hint makes every transcript look like that language).
+    """
+    body = re.sub(r"\[\d{1,2}:\d{2}(?::\d{2})?\]|```|^#.*$|^_Source:.*$", "", text, flags=re.M)
+    cjk = len(re.findall(r"[\u4e00-\u9fff]", body))
+    latin = len(re.findall(r"[A-Za-z]", body))
+    total = cjk + latin
+    if total < 20:
+        return "other"
+    if cjk / total >= 0.3:
+        return "zh"
+    return "en" if latin / total >= 0.9 else "other"
+
+
 def load_glossary(domains):
     """Merge glossary/common.json + glossary/domains/<name>.json (dir overridable via WATCH_GLOSSARY_DIR).
 
@@ -172,7 +189,7 @@ def main():
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
     ap.add_argument("--title", help="override the display title/folder name (remembered in meta.json as title_override)")
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
-    ap.add_argument("--lang", default="", help="Whisper language hint, e.g. zh (default: auto-detect)")
+    ap.add_argument("--lang", default="", help="force Whisper language, e.g. zh. Leave empty (default) so the language is auto-detected and reported; forcing a wrong language yields garbage")
     ap.add_argument("--terms", default="", help="extra comma-separated terms to hint Whisper (names, jargon)")
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
@@ -211,6 +228,7 @@ def main():
     title = title_override or tidy_title(title_raw, field(report, "Uploader"))
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
+    detected_language = detect_language(transcript_raw)
     transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
     title = to_traditional(title)
     if _S2T is None:
@@ -245,6 +263,8 @@ def main():
         "title_raw": title_raw,
         "title_override": title_override,
         "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
+        "detected_language": detected_language if not args.lang else f"forced:{args.lang}",
+        "needs_zh_translation": detected_language != "zh" and not args.lang,
         "glossaries": domains,
         "glossary_applied": glossary_applied,
         "source_hashtags": hashtags(title_raw),
@@ -299,6 +319,13 @@ def main():
 
     update_index(dest, meta)
     print(f"archived -> {dest.relative_to(ROOT)}")
+    if args.lang:
+        print(f"WARNING: --lang {args.lang} was forced, so the language was NOT auto-detected; "
+              "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
+    elif detected_language == "zh":
+        print("language: zh (Whisper output is Chinese; converted to Traditional zh-TW)")
+    else:
+        print(f"language: {detected_language} -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
 
 
 def update_index(dest: Path, meta: dict):

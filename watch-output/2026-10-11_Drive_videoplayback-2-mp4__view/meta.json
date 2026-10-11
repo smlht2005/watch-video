@@ -167,5 +167,7 @@
       "note": "片尾為按讚動畫，無旁白（先前中文逐字稿的宣傳語是 Whisper 在 --lang zh 下的幻聽，已移除）。",
       "keywords": []
     }
-  ]
+  ],
+  "detected_language": "en",
+  "needs_zh_translation": true
 }
