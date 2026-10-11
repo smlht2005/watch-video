@@ -30,7 +30,7 @@
 <text x="700" y="555" font-size="20" font-weight="bold" fill="#f8fafc">watch-output/&lt;日期&gt;_&lt;平台&gt;_&lt;標題&gt;__&lt;影片ID&gt;/</text>
 <g font-size="17" fill="#cbd5e1">
 <text x="700" y="590">meta.json（slides／asr_errors 重跑保留；detected_language 重新判斷）</text>
-<text x="700" y="618">transcript.md（繁體校正）＋ .raw.md ＋ .zh.md（en/ja/ko 必做，重跑保留）</text>
+<text x="700" y="618">transcript.md（繁體校正）＋ .raw.md ＋ .zh.md（非中文必做，重跑保留）</text>
 <text x="700" y="646">frames/ ＋ frames.json　summary.md　supplement.md（選用，重跑保留）</text>
 <text x="700" y="674">*_report.docx ／ .md：摘要 → 補充資料 → 圖文對照 → 錯誤表 → 補充連結</text>
 </g>
@@ -39,7 +39,7 @@
 <text x="55" y="758" font-size="20" font-weight="bold" fill="#f8fafc">守則</text>
 <g font-size="17" fill="#cbd5e1">
 <text x="55" y="789">• 不印出 API key　• 預設不強制 --lang，先自動偵測語言；強制語言會把外語硬轉成該語言（腳本會警告）</text>
-<text x="55" y="815">• en/ja/ko → 一律寫繁中 transcript.zh.md　• 穩定的校正進領域詞典，不確定的進 known_asr_errors</text>
+<text x="55" y="815">• 已知非中文語言 → 一律寫繁中 transcript.zh.md　• 穩定的校正進領域詞典，不確定的進 known_asr_errors</text>
 <text x="55" y="841">• 先合併成投影片／主題段落，避免逐畫面切碎　• 影片沒呈現的資訊放 supplement.md，並更新原本的推測</text>
 <text x="55" y="867">• 同一影片 ID 只一個資料夾，重跑 = 更新　• 失敗回報類別（網路／下載／轉錄／權限）　• 他人影片不入庫</text>
 </g>

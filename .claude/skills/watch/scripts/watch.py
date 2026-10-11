@@ -271,7 +271,8 @@ def main() -> int:
             try:
                 all_segments, used_backend = transcribe_video(video_path, work / "audio.mp3", backend=backend, api_key=api_key)
                 gaps = getattr(all_segments, "gaps", [])
-                whisper_language = getattr(all_segments, "language", "") or ""
+                # WhisperX's JSON language is unreliable without alignment (see the skill notes): only API backends count
+                whisper_language = "" if used_backend == "whisperx" else (getattr(all_segments, "language", "") or "")
                 track_available = True
                 transcript_state = "no speech" if not all_segments else "available"
                 if used_backend == "whisperx":

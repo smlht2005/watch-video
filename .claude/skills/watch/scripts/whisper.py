@@ -13,6 +13,7 @@ from __future__ import annotations
 import os
 import io
 import json
+from collections import Counter
 import math
 import mimetypes
 import shutil
@@ -329,7 +330,7 @@ def transcribe_chunks(
             )
             continue
         segments.extend(shift_segments(chunk_segments, offset))
-        if getattr(chunk_segments, "language", ""):
+        if chunk_segments and getattr(chunk_segments, "language", ""):  # only chunks that actually had speech vote
             languages.append(chunk_segments.language)
         print(
             f"[watch] chunk {index + 1}/{len(chunks)} → {len(chunk_segments)} segments",
@@ -340,7 +341,7 @@ def transcribe_chunks(
         raise SystemExit("Whisper failed on every audio chunk")
     segments.no_speech = not segments and not failures
     if languages:
-        segments.language = max(set(languages), key=languages.count)
+        segments.language = Counter(languages).most_common(1)[0][0]  # ties keep the earliest chunk's language
     return segments
 
 

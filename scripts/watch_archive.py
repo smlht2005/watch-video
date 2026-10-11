@@ -124,36 +124,75 @@ def detect_language(text: str) -> str:
     return "other"
 
 
-WHISPER_LANGUAGES = {
-    "english": "en", "chinese": "zh", "cantonese": "zh", "mandarin": "zh", "japanese": "ja", "korean": "ko",
-    "spanish": "es", "french": "fr", "german": "de", "portuguese": "pt", "russian": "ru", "italian": "it",
-    "vietnamese": "vi", "thai": "th", "indonesian": "id", "arabic": "ar", "hindi": "hi", "turkish": "tr",
-}
+# Whisper's language names -> codes (99 languages; 'cantonese' / 'yue' count as Chinese for our purposes)
+_WHISPER_NAMES = (
+    "afrikaans af|albanian sq|amharic am|arabic ar|armenian hy|assamese as|azerbaijani az|bashkir ba|basque eu|"
+    "belarusian be|bengali bn|bosnian bs|breton br|bulgarian bg|burmese my|catalan ca|chinese zh|croatian hr|"
+    "czech cs|danish da|dutch nl|english en|estonian et|faroese fo|finnish fi|french fr|galician gl|georgian ka|"
+    "german de|greek el|gujarati gu|haitian_creole ht|hausa ha|hawaiian haw|hebrew he|hindi hi|hungarian hu|"
+    "icelandic is|indonesian id|italian it|japanese ja|javanese jw|kannada kn|kazakh kk|khmer km|korean ko|lao lo|"
+    "latin la|latvian lv|lingala ln|lithuanian lt|luxembourgish lb|macedonian mk|malagasy mg|malay ms|"
+    "malayalam ml|maltese mt|maori mi|marathi mr|mongolian mn|nepali ne|norwegian no|occitan oc|pashto ps|"
+    "persian fa|polish pl|portuguese pt|punjabi pa|romanian ro|russian ru|sanskrit sa|serbian sr|shona sn|"
+    "sindhi sd|sinhala si|slovak sk|slovenian sl|somali so|spanish es|sundanese su|swahili sw|swedish sv|"
+    "tagalog tl|tajik tg|tamil ta|tatar tt|telugu te|thai th|tibetan bo|turkish tr|turkmen tk|ukrainian uk|"
+    "urdu ur|uzbek uz|vietnamese vi|welsh cy|yiddish yi|yoruba yo|cantonese zh|mandarin zh"
+)
+WHISPER_LANGUAGES = {pair.split()[0].replace("_", " "): pair.split()[1] for pair in _WHISPER_NAMES.split("|")}
+WHISPER_CODES = set(WHISPER_LANGUAGES.values()) | {"yue"}
+# Whisper often emits these on silence / music; they are not trustworthy language ids
+UNRELIABLE_WHISPER = {"nn", "nynorsk"}
 
 
 def normalize_whisper_language(raw: str) -> str:
-    """Whisper reports a language name ('english') or code ('en'); return a lowercase ISO-style code, '' if absent."""
-    name = (raw or "").strip().lower()
-    if not name:
-        return ""
-    if name in WHISPER_LANGUAGES:
-        return WHISPER_LANGUAGES[name]
-    return name.split("-")[0] if re.fullmatch(r"[a-z]{2,3}(-[a-z]+)?", name) else name
+    """Whisper reports a language name ('english') or code ('en', 'zh-TW', 'yue'); return a lowercase code.
+
+    Returns '' when absent, unparseable (digits, junk) or known to be unreliable ('nn'); the caller then falls back
+    to the text heuristic.
+    """
+    name = re.sub(r"\s+", " ", (raw or "").strip().lower().replace("_", " "))
+    for candidate in (name, re.split(r"[ \-(]", name)[0]):  # 'haitian creole', then 'chinese' from 'chinese (traditional)' / 'zh-tw'
+        if not candidate or candidate in UNRELIABLE_WHISPER:
+            return ""
+        if candidate in WHISPER_LANGUAGES:
+            return WHISPER_LANGUAGES[candidate]
+        if candidate == "yue":
+            return "zh"
+        if candidate in WHISPER_CODES:
+            return candidate
+    return ""
+
+
+def forced_language(arg_lang: str, environ=None) -> str:
+    """--lang, or WATCH_WHISPER_LANGUAGE already set in the environment: both force Whisper's language."""
+    return arg_lang or (environ if environ is not None else os.environ).get("WATCH_WHISPER_LANGUAGE", "")
+
+
+def _has_content(text: str) -> bool:
+    body = re.sub(r"\[\d{1,2}:\d{2}(?::\d{2})?\]|```|^#.*$|^_Source:.*$", "", text, flags=re.M)
+    return bool(re.search(r"[A-Za-z\u3040-\u30ff\u4e00-\u9fff\uac00-\ud7af]", body))
 
 
 def resolve_language(text: str, whisper_raw: str = "", forced: str = "") -> tuple[str, str]:
-    """Pick the language label and say where it came from: ('zh', 'whisper'|'heuristic'|'heuristic (forced --lang)').
+    """Pick the language label and say where it came from: (language, source).
 
-    Whisper's own language id is more reliable than character ratios (short or mixed-language text), so it wins when
-    present. It is ignored when --lang was forced (Whisper then just echoes the forced language). Platform captions
-    carry no Whisper language, so those fall back to detect_language().
+    source is 'whisper', 'whisper (text: zh)' (Whisper and the text disagree: a human should check),
+    'heuristic' or 'heuristic (forced --lang)'. Whisper's own language id wins when present (more reliable than
+    character ratios for short or mixed text) unless the language was forced (Whisper then just echoes it) or the
+    transcript has no content (silence/music: Whisper still reports a language). Platform captions carry no
+    Whisper language, so those use detect_language().
     """
     if forced:
         return detect_language(text), "heuristic (forced --lang)"
+    if not _has_content(text):
+        return "unknown", "heuristic"
     code = normalize_whisper_language(whisper_raw)
-    if code:
-        return code, "whisper"
-    return detect_language(text), "heuristic"
+    if not code:
+        return detect_language(text), "heuristic"
+    text_lang = detect_language(text)
+    cjk = ("zh", "ja", "ko")
+    conflict = (code in cjk and text_lang in cjk + ("en",) and text_lang != code) or (code not in cjk and text_lang in cjk)
+    return code, f"whisper (text: {text_lang})" if conflict else "whisper"
 
 
 def needs_zh_translation(detected: str) -> bool:
@@ -296,7 +335,10 @@ def main():
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
     detected_language, language_source = resolve_language(
-        transcript_raw, field(report, "Whisper language"), args.lang)
+        transcript_raw, field(report, "Whisper language"), forced_language(args.lang))
+    if "(text:" in language_source:
+        print(f"WARNING: Whisper reported '{detected_language}' but the transcript text looks different "
+              f"({language_source}); check the language before relying on translation / conversion.", file=sys.stderr)
     to_zh_tw = convert_to_traditional(detected_language)
     if to_zh_tw:
         transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
@@ -393,8 +435,8 @@ def main():
 
     update_index(dest, meta)
     print(f"archived -> {dest.relative_to(ROOT)}")
-    if args.lang:
-        print(f"WARNING: --lang {args.lang} was forced to Whisper, so a wrong language would NOT be caught; "
+    if forced_language(args.lang):
+        print(f"WARNING: --lang {forced_language(args.lang)} was forced to Whisper, so a wrong language would NOT be caught; "
               "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
     if detected_language == "zh":
         print(f"language: zh [{language_source}]（已轉繁體 zh-TW）")
