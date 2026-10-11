@@ -35,7 +35,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media]`
    - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → Groq Whisper 轉錄（帶語言與詞典提示詞）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
    - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
-   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
+   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
    - `--keep-media` 才保留 `media/<stem>_video.<ext>`；影片只存本機（gitignore）。
 
 3. **校稿**（腳本不會自動做）：
@@ -50,6 +50,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - **投影片／主題分段**：看 `frames/` 後在 `meta.json` 寫 `slides`。簡報類影片一張投影片一段；沒有投影片的影片（訪談、實拍、操作畫面）則依講述主題或場景切段，每段的 `start` 取該主題開始的時間、`title` 寫主題名：`[{"start":"00:06","frame":"frame_0019.jpg","title":"…","note":"本張投影片重點","keywords":[…]}]`，報告就會「每段一張圖 + 說明文字 + 該段逐字稿」，不再逐畫面切碎。`frame` 選字幕與游標最乾淨的一張；沒有 `slides` 時才退回逐畫面。
    - **校正去哪裡**：穩定、不會誤傷的專有名詞錯誤 → 對應領域詞典 `glossary/domains/<領域>.json` 的 `replace`（key 用繁體、至少 3 字或帶上下文）或 `terms`；任何主題都成立的 → `glossary/common.json`；只這支影片成立或不確定的 → `known_asr_errors`。
    - 詞典新增後，對目前逐字稿直接替換並寫入 `meta.json.glossary_applied`，不必為此重跑 Whisper。
+   - **外語影片加中譯**：逐字稿不是中文（如英文平台字幕）時，寫 `transcript.zh.md`：與 `transcript.md` 同格式 `[mm:ss] 譯文`，時間戳沿用原文；碎片句合併成完整句，掛在句首時間戳（其餘行省略）。不要讓一句譯文跨越 `slides` 的 `start` 邊界。報告每段會在原文下方加「**中譯：**」；重跑不會覆蓋此檔。
 
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
 

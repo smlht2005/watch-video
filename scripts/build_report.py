@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Build a readable report (<stem>_report.md + <stem>_report.docx) from an archived watch folder.
 
-Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg
+Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg,
+         transcript.zh.md (optional: Traditional Chinese translation of a foreign-language transcript,
+         same "[mm:ss] text" lines; shown under the original text of each section)
 Writes : <stem>_report.md   (frames interleaved with the transcript)
          <stem>_report.docx (same content as a Word document)
 
@@ -36,17 +38,49 @@ def to_sec(ts: str) -> int:
     return n[0] * 3600 + n[1] * 60 + n[2]
 
 
-def load(dest: Path):
-    meta = json.loads((dest / "meta.json").read_text(encoding="utf-8"))
-    summary = (dest / "summary.md").read_text(encoding="utf-8")
+def read_segs(path: Path):
     segs = []
-    for line in (dest / "transcript.md").read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8").splitlines():
         m = SEG_RE.match(line.strip())
         if m:
             segs.append((m.group(1), m.group(2)))
+    return segs
+
+
+def load(dest: Path):
+    meta = json.loads((dest / "meta.json").read_text(encoding="utf-8"))
+    summary = (dest / "summary.md").read_text(encoding="utf-8")
+    segs = read_segs(dest / "transcript.md")
+    zpath = dest / "transcript.zh.md"
+    meta["_zh"] = read_segs(zpath) if zpath.exists() else []
     fpath = dest / "frames.json"
     frames = json.loads(fpath.read_text(encoding="utf-8")) if fpath.exists() else []
     return meta, summary, segs, frames
+
+
+def join_text(parts):
+    """Join transcript fragments: spaces for Latin-script text, Chinese commas otherwise."""
+    parts = [p.strip() for p in parts if p and p.strip()]
+    if not parts:
+        return ""
+    body = "".join(parts)
+    if sum(c.isascii() for c in body) > 0.6 * len(body):
+        text = " ".join(parts)
+        return text if text[-1] in ".?!" else text + "."
+    text = "".join(p if p[-1] in "，。？！；：、" else p + "，" for p in parts)
+    return text.rstrip("，") + ("" if text.rstrip("，")[-1] in "。？！" else "。")
+
+
+def text_lines(meta, segs, lo, hi):
+    """Original text for [lo, hi) seconds, plus its translation from transcript.zh.md if present."""
+    L = []
+    text = join_text(t for ts, t in segs if lo <= to_sec(ts) < hi)
+    if text:
+        L += [text, ""]
+    zh = "".join(t.strip() for ts, t in meta.get("_zh", []) if lo <= to_sec(ts) < hi)
+    if zh:
+        L += [f"**中譯：** {zh}", ""]
+    return L
 
 
 def sections(segs, frames):
@@ -83,9 +117,7 @@ def slide_blocks(meta, segs):
             L += [f"**重點：** {sl['note']}", ""]
         if sl.get("keywords"):
             L += ["**標籤：** " + " ".join(f"#{k}" for k in sl["keywords"]), ""]
-        text = "，".join(t for ts, t in segs if lo <= to_sec(ts) < hi and t)
-        if text:
-            L += [text + "。", ""]
+        L += text_lines(meta, segs, lo, hi)
     return L
 
 
@@ -94,15 +126,15 @@ def frame_blocks(meta, segs, frames):
     end = meta.get("duration", "").split(" ")[0]
     L = []
     for n, (frame, items) in enumerate(secs):
+        nxt = secs[n + 1][0]["t"] if frame and n + 1 < len(secs) else end
         if frame:
-            nxt = secs[n + 1][0]["t"] if n + 1 < len(secs) else end
             L += [f"### 畫面 {frame['t']}–{nxt}", "", f"![{frame['t']}](frames/{frame['file']})", ""]
             tags = meta.get("section_keywords", {}).get(frame["t"], [])
             if tags:
                 L += ["**標籤：** " + " ".join(f"#{k}" for k in tags), ""]
-        text = "，".join(t for _, t in items if t)
-        if text:
-            L += [text + "。", ""]
+        lo = to_sec(frame["t"]) if frame and n else 0
+        hi = to_sec(nxt) if frame and nxt else 10 ** 9
+        L += text_lines(meta, segs, lo, hi)
     return L
 
 
@@ -117,7 +149,7 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
-    L += ["## 圖文對照（畫面 + 逐字稿）", ""]
+    L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
     if meta.get("slides"):
         L += slide_blocks(meta, segs)
     else:
