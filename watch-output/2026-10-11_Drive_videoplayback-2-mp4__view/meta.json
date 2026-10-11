@@ -6,20 +6,24 @@
   "title_raw": "videoplayback (2).mp4",
   "title_override": "",
   "whisper_hints": {
-    "language": "zh",
-    "prompt": ""
+    "language": "auto",
+    "prompt": "Kubernetes、kubectl、kubeconfig、Kind、Docker、control plane、worker node、cluster、context、YAML"
   },
   "glossaries": [
     "kubernetes"
   ],
   "glossary_applied": {
-    "QBectal": 2,
-    "Cubectl": 2,
-    "cubectl": 1,
-    "cubectal": 3,
-    "cubiconfig": 4,
-    "控制棚": 1,
-    "工作核心": 1
+    "kindversion": 1,
+    "kindcreatecluster": 1,
+    "KindGetClusters": 1,
+    "kubectlGetNodes": 1,
+    "kubectl clusterinfo": 1,
+    "KindMyCluster": 1,
+    "Chocolaty": 1,
+    "config get contexts": 1,
+    "config use context": 1,
+    "config current context": 1,
+    "kind load docker image": 1
   },
   "source_hashtags": [],
   "uploader": "",
@@ -31,29 +35,19 @@
   "last_updated": "2026-10-11",
   "known_asr_errors": [
     {
-      "time": "00:02",
-      "heard": "KIND是Docker的Kubernetes",
-      "expected": "Kind 即 Kubernetes in Docker"
-    },
-    {
-      "time": "00:30",
-      "heard": "專用的專用團體／核檔",
-      "expected": "（原文：容器節點／叢集，Whisper 誤聽嚴重，以中譯與投影片為準）"
-    },
-    {
       "time": "02:40",
-      "heard": "團隊／單元團隊",
-      "expected": "cluster（叢集）；推測"
+      "heard": "kindcreatecluster / kindversion / KindGetClusters / kubectlGetNodes",
+      "expected": "kind create cluster / kind version / kind get clusters / kubectl get nodes（指令空格被吞，已由詞典修正）"
     },
     {
-      "time": "04:16",
-      "heard": "框架／主項",
-      "expected": "port mapping／host（連接埠對應／主機）；推測"
+      "time": "06:20",
+      "heard": "kubectl config use context / current context",
+      "expected": "use-context / current-context（連字號，已由詞典修正）"
     },
     {
-      "time": "07:38",
-      "heard": "明鏡與點點欄目",
-      "expected": "片尾宣傳語，非教學內容"
+      "time": "05:47",
+      "heard": "…building and testing container images Understanding kubectl contexts…",
+      "expected": "兩句被合併、缺標點，內容無誤"
     }
   ],
   "keywords": [
@@ -101,7 +95,7 @@
       ]
     },
     {
-      "start": "01:52",
+      "start": "01:55",
       "frame": "frame_0021.jpg",
       "title": "安裝 Kind",
       "note": "Linux 用 curl+chmod+mv；macOS 用 brew install kind；Windows 用 choco install kind；kind version 驗證。",
@@ -111,7 +105,7 @@
       ]
     },
     {
-      "start": "02:35",
+      "start": "02:36",
       "frame": "frame_0028.jpg",
       "title": "建立第一個叢集",
       "note": "kind create cluster；--name 自訂名稱；kubectl cluster-info --context 驗證。",
@@ -120,7 +114,7 @@
       ]
     },
     {
-      "start": "03:20",
+      "start": "03:21",
       "frame": "frame_0035.jpg",
       "title": "多節點叢集設定",
       "note": "YAML 定義 1 個 control-plane 與 3 個 worker；kind create cluster --config。",
@@ -131,7 +125,7 @@
       ]
     },
     {
-      "start": "04:16",
+      "start": "04:17",
       "frame": "frame_0045.jpg",
       "title": "連接埠對應設定",
       "note": "extraPortMappings：容器 80→主機 8080、443→8443，協定 TCP。",
@@ -149,7 +143,7 @@
       ]
     },
     {
-      "start": "05:49",
+      "start": "05:47",
       "frame": "frame_0061.jpg",
       "title": "kubectl context 管理",
       "note": "context 以 kind- 為前綴；get-contexts、use-context、current-context。",
@@ -158,7 +152,7 @@
       ]
     },
     {
-      "start": "06:42",
+      "start": "06:45",
       "frame": "frame_0070.jpg",
       "title": "常見使用情境",
       "note": "本機開發、測試與 CI/CD、學習 Kubernetes、展示與概念驗證。",
@@ -170,7 +164,7 @@
       "start": "07:38",
       "frame": "frame_0079.jpg",
       "title": "片尾",
-      "note": "請觀眾按讚、訂閱、轉發（非教學內容）。",
+      "note": "片尾為按讚動畫，無旁白（先前中文逐字稿的宣傳語是 Whisper 在 --lang zh 下的幻聽，已移除）。",
       "keywords": []
     }
   ]
