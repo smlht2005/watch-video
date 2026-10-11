@@ -64,5 +64,6 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 - TikTok 短網址（vt.tiktok.com）自動解析成真正的影片 ID；Facebook 標題的「views · reactions |」前綴與作者後綴會自動去除，原始標題在 `meta.json.title_raw`。
 - 簡轉繁採台灣用字，技術詞會被換成台灣詞（算子→運算元、優化→最佳化）；OpenCC 對「里／裡」等一對多字有漏轉，由 `glossary/common.json` 兜底。
 - Groq 轉錄有誤聽很正常；提示詞只提高機率，詞典才是確定的修正。
+- YouTube 在雲端環境常回 403／429「Sign in to confirm you're not a bot」：提供 cookies.txt 即可，三選一：`--cookies <檔>`、環境變數 `WATCH_COOKIES_FILE=<檔>`、環境變數 `WATCH_COOKIES_CONTENT=<cookies.txt 全文>`（適合放環境 secrets）；本機可用 `--cookies-from-browser chrome`。建議用專用小帳號匯出，絕不 commit 或印出 cookies。沒有 deno 但有 node 時自動加 `--js-runtimes node`。
 - 失敗時回報錯誤類別與原因（網路／下載／轉錄／權限），不要印出 key。
 - 版權：來源是他人影片；repo 設為 private 時僅供個人參考，改 public 或分享前不要附影片。

@@ -2,8 +2,11 @@
 """Bounded captions and isolated per-run media downloads through yt-dlp."""
 from __future__ import annotations
 
+import atexit
 import json
+import os
 import re
+import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -26,14 +29,35 @@ def resolve_local(path: str) -> dict:
     return {'video_path': str(p), 'subtitle_path': None, 'info': {'title': p.name, 'url': str(p)}, 'downloaded': False}
 
 
+def _cookies_from_env() -> str | None:
+    """WATCH_COOKIES_CONTENT (Netscape cookies.txt text, e.g. from an environment secret) -> private temp file."""
+    text = os.environ.get('WATCH_COOKIES_CONTENT')
+    if not text or not text.strip():
+        return None
+    fd, path = tempfile.mkstemp(prefix='watch-cookies-', suffix='.txt')
+    with os.fdopen(fd, 'w', encoding='utf-8') as fh:  # mkstemp creates the file 0600
+        fh.write(text if text.endswith('\n') else text + '\n')
+    atexit.register(lambda: Path(path).unlink(missing_ok=True))
+    return path
+
+
+def _js_runtime_args() -> list[str]:
+    # yt-dlp only auto-enables deno; fall back to node so YouTube signature/PO-token extraction works.
+    if shutil.which('deno') or not shutil.which('node'):
+        return []
+    return ['--js-runtimes', 'node']
+
+
 def auth_args(cookies_file=None, cookies_from_browser=None) -> list[str]:
     if cookies_file and cookies_from_browser:
         raise SystemExit('Choose either --cookies or --cookies-from-browser, not both.')
+    js = _js_runtime_args()
     if cookies_from_browser:
-        return ['--no-cookies', '--cookies-from-browser', cookies_from_browser]
+        return [*js, '--no-cookies', '--cookies-from-browser', cookies_from_browser]
+    cookies_file = cookies_file or _cookies_from_env()
     if cookies_file:
-        return ['--no-cookies-from-browser', '--cookies', str(Path(cookies_file).expanduser().resolve())]
-    return []
+        return [*js, '--no-cookies-from-browser', '--cookies', str(Path(cookies_file).expanduser().resolve())]
+    return js
 
 
 def _common(directory: Path, auth: list[str]) -> list[str]:

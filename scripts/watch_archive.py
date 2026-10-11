@@ -174,6 +174,8 @@ def main():
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
     ap.add_argument("--lang", default="", help="Whisper language hint, e.g. zh (default: auto-detect)")
     ap.add_argument("--terms", default="", help="extra comma-separated terms to hint Whisper (names, jargon)")
+    ap.add_argument("--cookies", default=None, help="yt-dlp cookies.txt for sites that block datacenter IPs (e.g. YouTube); or set WATCH_COOKIES_FILE / WATCH_COOKIES_CONTENT")
+    ap.add_argument("--cookies-from-browser", default=None, help="yt-dlp browser selector, e.g. chrome (local machines)")
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
     ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (local only, gitignored)")
@@ -196,7 +198,9 @@ def main():
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
         [sys.executable, str(WATCH), args.url, "--question", args.question,
-         "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)],
+         "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work),
+         *(["--cookies", args.cookies] if args.cookies else []),
+         *(["--cookies-from-browser", args.cookies_from_browser] if args.cookies_from_browser else [])],
         capture_output=True, text=True, env=env,
     )
     if proc.returncode != 0:
