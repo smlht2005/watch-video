@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Build a readable report (report.md + report.docx) from an archived watch folder.
+"""Build a readable report (<stem>_report.md + <stem>_report.docx) from an archived watch folder.
 
 Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg
-Writes : report.md   (frames interleaved with the transcript)
-         report.docx (same content as a Word document)
+Writes : <stem>_report.md   (frames interleaved with the transcript)
+         <stem>_report.docx (same content as a Word document)
 
 Usage: python3 scripts/build_report.py watch-output/<folder>
 """
@@ -19,6 +19,13 @@ from docx.shared import Cm, Pt
 
 CJK_FONT = "Microsoft JhengHei"
 SEG_RE = re.compile(r"^\[(\d+:\d+(?::\d+)?)\]\s*(.*)$")
+
+
+def file_stem(dest: Path) -> str:
+    """<date>_<platform>_<title (<=20 chars)>__<video-id>, derived from the folder name."""
+    head, _, vid = dest.name.rpartition("__")
+    date, platform, title = (head.split("_", 2) + ["", ""])[:3]
+    return f"{date}_{platform}_{title[:20].rstrip('-')}__{vid}"
 
 
 def to_sec(ts: str) -> int:
@@ -174,9 +181,13 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
 def build(dest: Path):
     meta, summary, segs, frames = load(dest)
     md = build_md(dest, meta, summary, segs, frames)
-    (dest / "report.md").write_text(md, encoding="utf-8")
-    md_to_docx(dest, md, dest / "report.docx", meta.get("keywords"))
-    return dest / "report.md", dest / "report.docx"
+    stem = file_stem(dest)
+    for old in ("report.md", "report.docx", *dest.glob("*_report.*")):  # drop stale / legacy names
+        (dest / old).unlink(missing_ok=True)
+    out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
+    out_md.write_text(md, encoding="utf-8")
+    md_to_docx(dest, md, out_docx, meta.get("keywords"))
+    return out_md, out_docx
 
 
 if __name__ == "__main__":

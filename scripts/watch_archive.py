@@ -5,7 +5,8 @@ Folder name: <date>_<platform>_<title>__<video-id>
 A folder whose name ends with __<video-id> is reused (updated in place), so one
 video always maps to exactly one folder.
 
-Outputs per video: meta.json, transcript.md, summary.md, frames/, report.md, report.docx
+Outputs per video: meta.json, transcript.md, summary.md, frames/, <stem>_report.md, <stem>_report.docx, media/<stem>_video.<ext> (--keep-media)
+where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
 
 Usage:
   python3 scripts/watch_archive.py URL [--question Q] [--whisper groq] [--detail balanced] [--keep-media]
@@ -154,7 +155,7 @@ def main():
             shutil.rmtree(media)
         media.mkdir()
         for p in work.rglob("video.*"):
-            shutil.move(str(p), media / p.name)
+            shutil.move(str(p), media / f"{build_report.file_stem(dest)}_video{p.suffix}")
             break
     shutil.rmtree(work, ignore_errors=True)
 
