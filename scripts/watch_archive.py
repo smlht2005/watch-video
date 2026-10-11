@@ -75,7 +75,7 @@ def main():
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
-    ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (gitignored)")
+    ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (committed to git; use LFS if >50MB)")
     args = ap.parse_args()
 
     platform, raw_id = platform_and_id(args.url)

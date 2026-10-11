@@ -1,4 +1,3 @@
 __pycache__/
 
-# watch-output: 只提交文字檔，媒體不進 git
-watch-output/**/media/
+# watch-output: media/ (video) is committed; files >50MB should use Git LFS
