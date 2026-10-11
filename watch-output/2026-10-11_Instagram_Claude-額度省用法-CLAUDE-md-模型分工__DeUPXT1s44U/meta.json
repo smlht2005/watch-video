@@ -1,0 +1,111 @@
+{
+  "url": "https://www.instagram.com/reel/DeUPXT1s44U/?dlrf=N3lvc2d2cHVvYjFx",
+  "platform": "Instagram",
+  "video_id": "DeUPXT1s44U",
+  "title": "Claude 額度省用法：CLAUDE.md 模型分工",
+  "title_raw": "Video by gptsavyy",
+  "title_override": "Claude 額度省用法：CLAUDE.md 模型分工",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度"
+  },
+  "detected_language": "zh",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {
+    "ClaudeMd": 2,
+    "CLAUDE可以": 1,
+    "CLAUDE Code": 1
+  },
+  "source_hashtags": [],
+  "uploader": "S的 AI 研究所",
+  "duration": "00:42 (42.1s)",
+  "detail": "balanced",
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "00:14",
+      "heard": "複雜的任務才交給最強的模型",
+      "expected": "講者未點名模型；畫面 CLAUDE.md 範例寫「不要所有任務都使用Fable」，最強模型推測指 Fable"
+    },
+    {
+      "time": "00:29",
+      "heard": "便宜大概快一半",
+      "expected": "講者口述「快一半」；畫面圖示標 -40% 與 +30%，兩者略有出入（數字皆為講者主張，未查證）"
+    }
+  ],
+  "keywords": [
+    "Claude 額度",
+    "CLAUDE.md",
+    "Claude Code",
+    "Opus 5.5",
+    "Sub Agent",
+    "模型分工",
+    "省成本"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "開場：Claude 額度不夠用？",
+      "note": "額度常常不到一天就用完；Opus 5.5 之後有個隱藏用法能更有效率地用額度。",
+      "keywords": [
+        "Claude 額度",
+        "Opus 5.5"
+      ]
+    },
+    {
+      "start": "00:07",
+      "frame": "frame_0005.jpg",
+      "title": "建立 CLAUDE.md",
+      "note": "CLAUDE.md 是 Claude Code 每次工作前都會讀的說明書。",
+      "keywords": [
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "start": "00:12",
+      "frame": "frame_0007.jpg",
+      "title": "在 CLAUDE.md 寫下分工規則",
+      "note": "複雜任務才交給最強模型、簡單工作用 Opus 5.5；適合拆開的任務交給不同 Sub Agent。畫面範例：「永遠不要自己執行任務，一律交給 Sub agent 處理」「不要所有任務都使用 Fable，簡單…」。",
+      "keywords": [
+        "Sub Agent",
+        "模型分工"
+      ]
+    },
+    {
+      "start": "00:23",
+      "frame": "frame_0009.jpg",
+      "title": "Smart：依工作選模型與 Agent",
+      "note": "不必每個任務都用最高成本的模型，Claude 依工作自動選模型與 Agent。",
+      "keywords": [
+        "SMART"
+      ]
+    },
+    {
+      "start": "00:29",
+      "frame": "frame_0011.jpg",
+      "title": "Opus 5.5 的成本與速度（講者主張）",
+      "note": "成本比 Opus 5 便宜「快一半」、輸出快超過 30%；畫面圖示 -40%／+30%。",
+      "keywords": [
+        "成本",
+        "速度"
+      ]
+    },
+    {
+      "start": "00:35",
+      "frame": "frame_0012.jpg",
+      "title": "行動呼籲",
+      "note": "常把額度用爆的人這設定一定要加；留言「省錢」可取得完整指令。",
+      "keywords": [
+        "留言省錢"
+      ]
+    }
+  ]
+}

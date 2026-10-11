@@ -1,0 +1,23 @@
+{
+  "_說明": "Claude / Claude Code 領域。用 --glossary claude-code 載入。Whisper 常把 Claude 聽成 Cloud。",
+  "terms": [
+    "Claude",
+    "Claude Code",
+    "CLAUDE.md",
+    "Opus 5.5",
+    "Sub Agent",
+    "額度"
+  ],
+  "replace": {
+    "Cloud MD": "CLAUDE.md",
+    "Cloud Code": "Claude Code",
+    "Cloud 額度": "Claude 額度",
+    "告訴Cloud": "告訴 Claude",
+    "Cloud 可以": "Claude 可以",
+    "OPUS 5.5": "Opus 5.5",
+    "比OPUS 5": "比 Opus 5 ",
+    "ClaudeMd": "CLAUDE.md",
+    "CLAUDE可以": "Claude 可以",
+    "CLAUDE Code": "Claude Code"
+  }
+}
