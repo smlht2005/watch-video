@@ -15,9 +15,12 @@ if ! command -v yt-dlp >/dev/null 2>&1; then
     || echo "/watch: yt-dlp 安裝失敗，請手動執行 pip install -U \"yt-dlp[default,curl-cffi]\""
 fi
 
-# 首次執行時套用預設：本機引擎、balanced 抽幀、僅使用字幕（不需 API key）
+# 首次執行時套用預設：本機引擎、balanced 抽幀。
+# 環境有 GROQ_API_KEY（建議設為環境 secret）時以 Groq 作為語音轉錄備援，否則僅使用字幕。
 if [ ! -f "$HOME/.config/watch/.env" ] && [ -f "$SETUP" ]; then
-  python3 "$SETUP" --engine local --backend none --detail balanced >/dev/null 2>&1 || true
+  BACKEND=none
+  [ -n "${GROQ_API_KEY:-}" ] && BACKEND=groq
+  python3 "$SETUP" --engine local --backend "$BACKEND" --detail balanced >/dev/null 2>&1 || true
 fi
 
 exit 0
