@@ -30,6 +30,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ## 注意
 
 - 逐字稿來源在 `meta.json.transcript_source`（`whisper (groq)` = 語音轉錄；否則為平台字幕）。
-- Groq 轉錄可能有誤聽（同音字、英文縮寫）；校正寫進 `known_asr_errors`，**不要改 `transcript.md` 原文**。
+- **逐字稿預設繁體中文（zh-TW）**：腳本用 OpenCC（s2twp）把簡體轉繁體；轉換前的原文存成 `transcript.raw.md`。需先 `pip install opencc-python-reimplemented`，缺少時腳本會警告並保留原文。
+- Groq 轉錄可能有誤聽（同音字、英文縮寫）；校正寫進 `known_asr_errors`，**不要手改 `transcript.md`**（原始轉錄在 `transcript.raw.md`）。
 - 失敗時回報錯誤類別與原因（網路/下載/轉錄/權限），不要印出 key。
 - 版權：來源是他人影片；repo 設為 private 時僅供個人參考，改 public 或分享前不要附影片。

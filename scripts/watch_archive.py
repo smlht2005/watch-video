@@ -5,7 +5,7 @@ Folder name: <date>_<platform>_<title>__<video-id>
 A folder whose name ends with __<video-id> is reused (updated in place), so one
 video always maps to exactly one folder.
 
-Outputs per video: meta.json, transcript.md, summary.md, frames/, <stem>_report.md, <stem>_report.docx, media/<stem>_video.<ext> (--keep-media)
+Outputs per video: meta.json, transcript.md (Traditional; transcript.raw.md if converted), summary.md, frames/, <stem>_report.md, <stem>_report.docx, media/<stem>_video.<ext> (--keep-media)
 where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
 
 Usage:
@@ -53,6 +53,30 @@ def platform_and_id(url: str):
     return name, (parts[-1] if parts else re.sub(r"\W+", "", host))
 
 
+try:
+    from opencc import OpenCC
+    _S2T = OpenCC("s2twp")  # Simplified -> Traditional (Taiwan standard + common phrases)
+except ImportError:  # pip install opencc-python-reimplemented
+    _S2T = None
+
+
+def to_traditional(text: str) -> str:
+    """Convert Simplified Chinese to Traditional (zh-TW). No-op for other languages."""
+    return _S2T.convert(text) if _S2T else text
+
+
+def tidy_title(raw: str, uploader: str = "") -> str:
+    """Drop Facebook noise: '86K views · 1.3K reactions |' prefix, '| <uploader>' suffix, #hashtags."""
+    parts = [p.strip() for p in raw.split("|")]
+    parts = [p for p in parts if p and not re.search(r"\b(views?|reactions?|likes?)\b", p, re.I) and p != uploader]
+    t = re.sub(r"#\S+", "", parts[0] if parts else raw).strip()
+    return t or raw.strip()
+
+
+def hashtags(raw: str):
+    return list(dict.fromkeys(re.findall(r"#([^\s#|]+)", raw)))
+
+
 def clean_title(title: str) -> str:
     t = re.sub(r'[\\/:*?"<>|]', "", title)
     t = re.sub(r"[\s｜，。！？、；：,.!?;（）()\[\]【】「」『』]+", "-", t).strip("-")
@@ -92,9 +116,14 @@ def main():
         sys.exit(proc.returncode)
     report = proc.stdout
 
-    title = field(report, "Title") or "untitled"
+    title_raw = field(report, "Title") or "untitled"
+    title = tidy_title(title_raw, field(report, "Uploader"))
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
-    transcript = tm.group(1).strip() if tm else ""
+    transcript_raw = tm.group(1).strip() if tm else ""
+    transcript = to_traditional(transcript_raw)
+    title = to_traditional(title)
+    if _S2T is None:
+        print("WARNING: opencc not installed; transcript left as-is (pip install opencc-python-reimplemented)", file=sys.stderr)
     src_m = re.search(r"_Source:\s*(.+?)\._", transcript)
     transcript_source = src_m.group(1) if src_m else "unknown"
 
@@ -107,6 +136,10 @@ def main():
     existing = sorted(OUT_ROOT.glob(f"*__{vid}"))
     if existing:
         dest = existing[0]
+        # keep the original date prefix but follow title changes (e.g. Simplified -> Traditional)
+        renamed = OUT_ROOT / f"{dest.name.split('_')[0]}_{platform}_{clean_title(title)}__{vid}"[:NAME_MAX]
+        if renamed != dest and not renamed.exists():
+            dest = dest.rename(renamed)
     else:
         name = f"{dt.date.today():%Y-%m-%d}_{platform}_{clean_title(title)}__{vid}"
         dest = OUT_ROOT / name[:NAME_MAX]
@@ -118,7 +151,9 @@ def main():
         "platform": platform,
         "video_id": vid,
         "title": title,
-        "uploader": field(report, "Uploader"),
+        "title_raw": title_raw,
+        "source_hashtags": hashtags(title_raw),
+        "uploader": to_traditional(field(report, "Uploader")),
         "duration": field(report, "Duration"),
         "detail": args.detail,
         "transcript_source": transcript_source,
@@ -131,6 +166,11 @@ def main():
     }
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dest / "transcript.md").write_text(f"# {title}\n\n{transcript}\n", encoding="utf-8")
+    raw_path = dest / "transcript.raw.md"  # untouched ASR output, kept only if conversion changed it
+    if transcript_raw != transcript:
+        raw_path.write_text(f"# {title_raw}\n\n{transcript_raw}\n", encoding="utf-8")
+    else:
+        raw_path.unlink(missing_ok=True)
     # summary.md is written by the agent/user after reading the transcript; keep any existing one.
     if not (dest / "summary.md").exists():
         (dest / "summary.md").write_text(f"# 摘要：{title}\n\n_待補：請依逐字稿撰寫含時間戳的摘要。_\n", encoding="utf-8")

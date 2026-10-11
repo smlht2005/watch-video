@@ -24,7 +24,7 @@ Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間�
 
 - 環境變數 `GROQ_API_KEY`（無字幕時用 Groq Whisper 轉錄；不要把 key 寫進任何檔案）
 - `python3 .claude/skills/watch/scripts/setup.py --backend groq --detail balanced`
-- `pip install python-docx`（產生 Word 檔）；轉 PDF 目視檢查另需 LibreOffice
+- `pip install python-docx opencc-python-reimplemented`（產生 Word 檔；簡體逐字稿自動轉繁體）；轉 PDF 目視檢查另需 LibreOffice
 
 ### 指令
 
@@ -43,7 +43,8 @@ watch-output/
 └── <日期>_<平台>_<標題>__<影片ID>/              # 同一影片 ID 只會有一個資料夾，重跑為更新
     ├── <stem>_report.docx / <stem>_report.md  # 圖文報告（摘要、名詞說明、畫面+逐字稿、關鍵字標籤）
     ├── meta.json                              # 網址、標題、上傳者、轉錄來源、關鍵字、已知轉錄錯誤
-    ├── transcript.md                          # 原始逐字稿（不修改）
+    ├── transcript.md                          # 逐字稿（預設轉為繁體中文，時間戳不變）
+    ├── transcript.raw.md                      # 轉繁體前的原始轉錄（僅在內容有變動時產生）
     ├── summary.md                             # 摘要（時間戳重點 + 名詞/縮寫說明）
     ├── frames/、frames.json                   # 截圖與其時間戳（小檔，進 git）
     └── media/<stem>_video.<ext>               # 僅 --keep-media；只存本機（gitignore）

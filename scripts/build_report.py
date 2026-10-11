@@ -58,8 +58,8 @@ def sections(segs, frames):
     for ts, text in segs:
         s = to_sec(ts)
         idx = 0
-        for i, f in enumerate(frames):
-            if to_sec(f["t"]) <= s:
+        for i, f in enumerate(frames):  # first frame among those sharing the latest start time
+            if to_sec(f["t"]) <= s and to_sec(f["t"]) > to_sec(frames[idx]["t"]) or i == 0:
                 idx = i
         out[idx][1].append((ts, text))
     return out
@@ -81,7 +81,7 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
     L.append("")
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
     L += ["## 圖文對照（畫面 + 逐字稿）", ""]
-    secs = sections(segs, frames)
+    secs = [(f, it) for f, it in sections(segs, frames) if f is None or it]  # skip frames with no speech
     end = meta.get("duration", "").split(" ")[0]
     for n, (frame, items) in enumerate(secs):
         if frame:
@@ -193,7 +193,9 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
         elif (im := re.match(r"^!\[[^\]]*\]\(([^)]+)\)$", line.strip())):
             img = dest / im.group(1)
             if img.exists():
-                doc.add_picture(str(img), width=Cm(12))
+                from PIL import Image
+                w, h = Image.open(img).size  # cap height so portrait (vertical) videos don't fill whole pages
+                doc.add_picture(str(img), width=Cm(min(12, 7 * w / h)))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
         elif line.startswith("- "):
             add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
