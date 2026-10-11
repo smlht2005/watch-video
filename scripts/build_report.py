@@ -69,6 +69,43 @@ def strip_h1(md: str) -> str:
     return re.sub(r"\A# .*\n+", "", md)
 
 
+def slide_blocks(meta, segs):
+    """One block per slide: one frame, optional note, then the transcript spoken while it is on screen."""
+    slides = sorted(meta["slides"], key=lambda x: to_sec(x["start"]))
+    end = meta.get("duration", "").split(" ")[0]
+    L = []
+    for n, sl in enumerate(slides):
+        nxt = slides[n + 1]["start"] if n + 1 < len(slides) else end
+        lo, hi = to_sec(sl["start"]), (to_sec(nxt) if nxt else 10 ** 9)
+        title = f"：{sl['title']}" if sl.get("title") else ""
+        L += [f"### 投影片 {n + 1}{title}（{sl['start']}–{nxt}）", "", f"![{sl['start']}](frames/{sl['frame']})", ""]
+        if sl.get("note"):
+            L += [f"**重點：** {sl['note']}", ""]
+        if sl.get("keywords"):
+            L += ["**標籤：** " + " ".join(f"#{k}" for k in sl["keywords"]), ""]
+        text = "，".join(t for ts, t in segs if lo <= to_sec(ts) < hi and t)
+        if text:
+            L += [text + "。", ""]
+    return L
+
+
+def frame_blocks(meta, segs, frames):
+    secs = [(f, it) for f, it in sections(segs, frames) if f is None or it]  # skip frames with no speech
+    end = meta.get("duration", "").split(" ")[0]
+    L = []
+    for n, (frame, items) in enumerate(secs):
+        if frame:
+            nxt = secs[n + 1][0]["t"] if n + 1 < len(secs) else end
+            L += [f"### 畫面 {frame['t']}–{nxt}", "", f"![{frame['t']}](frames/{frame['file']})", ""]
+            tags = meta.get("section_keywords", {}).get(frame["t"], [])
+            if tags:
+                L += ["**標籤：** " + " ".join(f"#{k}" for k in tags), ""]
+        text = "，".join(t for _, t in items if t)
+        if text:
+            L += [text + "。", ""]
+    return L
+
+
 def build_md(dest: Path, meta, summary, segs, frames) -> str:
     L = [f"# {meta['title']}", ""]
     L += [f"- 來源：{meta['url']}",
@@ -81,18 +118,10 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
     L.append("")
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
     L += ["## 圖文對照（畫面 + 逐字稿）", ""]
-    secs = [(f, it) for f, it in sections(segs, frames) if f is None or it]  # skip frames with no speech
-    end = meta.get("duration", "").split(" ")[0]
-    for n, (frame, items) in enumerate(secs):
-        if frame:
-            nxt = secs[n + 1][0]["t"] if n + 1 < len(secs) else end
-            L += [f"### 畫面 {frame['t']}–{nxt}", "", f"![{frame['t']}](frames/{frame['file']})", ""]
-            tags = meta.get("section_keywords", {}).get(frame["t"], [])
-            if tags:
-                L += ["**標籤：** " + " ".join(f"#{k}" for k in tags), ""]
-        text = "，".join(t for _, t in items if t)
-        if text:
-            L += [text + "。", ""]
+    if meta.get("slides"):
+        L += slide_blocks(meta, segs)
+    else:
+        L += frame_blocks(meta, segs, frames)
     if meta.get("known_asr_errors"):
         L += ["## 已知轉錄錯誤", "", "| 時間 | 聽成 | 應為 |", "|---|---|---|"]
         for e in meta["known_asr_errors"]:

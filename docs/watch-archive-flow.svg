@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="'WenQuanYi Zen Hei','Noto Sans CJK TC','Microsoft JhengHei',sans-serif">
+<rect width="1600" height="900" fill="#0f172a"/>
+<text x="800" y="52" text-anchor="middle" font-size="34" font-weight="bold" fill="#f8fafc">watch-archive 全流程鳥瞰：影片網址 → 圖文報告</text>
+<text x="800" y="84" text-anchor="middle" font-size="18" fill="#94a3b8">腳本自動（藍）｜Claude 人工判斷（橘）｜交付（綠）</text>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
+<g stroke="#94a3b8" stroke-width="3" fill="none" marker-end="url(#a)">
+<path d="M270,200 H320"/><path d="M590,200 H640"/><path d="M910,200 H960"/><path d="M1230,200 H1280"/>
+<path d="M1420,270 V330 H1330"/>
+<path d="M1060,400 H1010"/><path d="M780,400 H730"/><path d="M500,400 H450"/>
+<path d="M310,470 V540 H350"/><path d="M620,610 H670"/><path d="M940,610 H990"/><path d="M1260,610 H1310"/>
+</g>
+<g font-size="20" fill="#f8fafc">
+<!-- row 1 -->
+<rect x="30" y="130" width="240" height="140" rx="14" fill="#1e3a8a"/><text x="150" y="165" text-anchor="middle" font-weight="bold" font-size="22">0 環境</text><text x="150" y="198" text-anchor="middle" font-size="17">GROQ_API_KEY（只報長度）</text><text x="150" y="224" text-anchor="middle" font-size="17">python-docx / OpenCC</text><text x="150" y="250" text-anchor="middle" font-size="17">開新 claude/... 分支</text>
+<rect x="320" y="130" width="270" height="140" rx="14" fill="#9a3412"/><text x="455" y="165" text-anchor="middle" font-weight="bold" font-size="22">1 選參數</text><text x="455" y="198" text-anchor="middle" font-size="17">--lang zh　--glossary 領域</text><text x="455" y="224" text-anchor="middle" font-size="17">--title　--terms　--question</text>
+<rect x="640" y="130" width="270" height="140" rx="14" fill="#1e3a8a"/><text x="775" y="165" text-anchor="middle" font-weight="bold" font-size="22">2 歸檔 watch_archive.py</text><text x="775" y="198" text-anchor="middle" font-size="17">下載 → Groq Whisper 轉錄</text><text x="775" y="224" text-anchor="middle" font-size="17">簡轉繁 → 詞典校正 → 截圖</text>
+<rect x="960" y="130" width="270" height="140" rx="14" fill="#9a3412"/><text x="1095" y="165" text-anchor="middle" font-weight="bold" font-size="22">3 校稿</text><text x="1095" y="198" text-anchor="middle" font-size="17">通讀 transcript.md</text><text x="1095" y="224" text-anchor="middle" font-size="17">用畫面字幕交叉核對</text>
+<rect x="1280" y="130" width="290" height="140" rx="14" fill="#9a3412"/><text x="1425" y="165" text-anchor="middle" font-weight="bold" font-size="21">4a 看截圖分投影片或主題</text><text x="1425" y="198" text-anchor="middle" font-size="17">合併零碎畫面 → slides（段落）</text><text x="1425" y="224" text-anchor="middle" font-size="17">每段選最乾淨的一張圖</text>
+<!-- row 2 -->
+<rect x="1060" y="330" width="270" height="140" rx="14" fill="#9a3412"/><text x="1195" y="365" text-anchor="middle" font-weight="bold" font-size="22">4b 補內容</text><text x="1195" y="398" text-anchor="middle" font-size="17">summary.md 摘要／名詞</text><text x="1195" y="424" text-anchor="middle" font-size="17">keywords／known_asr_errors</text><text x="1195" y="450" text-anchor="middle" font-size="17">校正寫入詞典</text>
+<rect x="780" y="330" width="230" height="140" rx="14" fill="#1e3a8a"/><text x="895" y="365" text-anchor="middle" font-weight="bold" font-size="22">5 重建報告</text><text x="895" y="398" text-anchor="middle" font-size="17">build_report.py</text><text x="895" y="424" text-anchor="middle" font-size="17">有 slides → 一投影片／主題一段</text><text x="895" y="450" text-anchor="middle" font-size="17">否則逐畫面</text>
+<rect x="500" y="330" width="230" height="140" rx="14" fill="#9a3412"/><text x="615" y="365" text-anchor="middle" font-weight="bold" font-size="22">5b 目視檢查</text><text x="615" y="398" text-anchor="middle" font-size="17">docx → PDF → 看圖</text><text x="615" y="424" text-anchor="middle" font-size="17">中文／截圖／頁數</text>
+<rect x="220" y="330" width="230" height="140" rx="14" fill="#166534"/><text x="335" y="365" text-anchor="middle" font-weight="bold" font-size="22">6 交付</text><text x="335" y="398" text-anchor="middle" font-size="17">SendUserFile *.docx</text><text x="335" y="424" text-anchor="middle" font-size="17">說明逐字稿來源</text>
+<!-- row 3 outputs -->
+<rect x="350" y="540" width="270" height="140" rx="14" fill="#166534"/><text x="485" y="575" text-anchor="middle" font-weight="bold" font-size="22">7 提交</text><text x="485" y="608" text-anchor="middle" font-size="17">commit + push 指定分支</text><text x="485" y="634" text-anchor="middle" font-size="17">合併方式依使用者指示</text>
+</g>
+<!-- output box -->
+<rect x="670" y="520" width="900" height="180" rx="14" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+<text x="700" y="555" font-size="20" font-weight="bold" fill="#f8fafc">watch-output/&lt;日期&gt;_&lt;平台&gt;_&lt;標題&gt;__&lt;影片ID&gt;/</text>
+<g font-size="17" fill="#cbd5e1">
+<text x="700" y="590">meta.json（keywords／slides／known_asr_errors，重跑保留）</text>
+<text x="700" y="618">transcript.md（繁體校正）＋ transcript.raw.md（原文）</text>
+<text x="700" y="646">frames/ ＋ frames.json　　summary.md</text>
+<text x="700" y="674">*_report.docx ／ *_report.md（每段：圖 → 重點 → 逐字稿）</text>
+</g>
+<!-- bottom rules -->
+<rect x="30" y="740" width="1540" height="130" rx="14" fill="#111c33" stroke="#334155" stroke-width="2"/>
+<text x="55" y="775" font-size="20" font-weight="bold" fill="#f8fafc">守則</text>
+<g font-size="17" fill="#cbd5e1">
+<text x="55" y="808">• 不印出 API key　• 逐字稿預設繁體，以畫面文字為準　• 穩定的校正進領域詞典，不確定的進 known_asr_errors</text>
+<text x="55" y="836">• 簡報或非簡報影片：先合併成投影片／主題段落，避免逐畫面切碎　• 同一影片 ID 只一個資料夾，重跑 = 更新</text>
+<text x="55" y="864">• 失敗回報類別（網路／下載／轉錄／權限）　• 他人影片不入庫，只存報告與截圖</text>
+</g>
+</svg>

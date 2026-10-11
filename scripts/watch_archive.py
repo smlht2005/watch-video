@@ -258,6 +258,7 @@ def main():
         "known_asr_errors": prev.get("known_asr_errors", []),  # hand-curated: never overwrite
         "keywords": prev.get("keywords", []),  # hand-curated: never overwrite
         "section_keywords": prev.get("section_keywords", {}),  # keyed by frame start time
+        "slides": prev.get("slides", []),  # hand-curated: one entry per slide, overrides per-frame sections
     }
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dest / "transcript.md").write_text(f"# {title}\n\n{transcript}\n", encoding="utf-8")

@@ -9,10 +9,15 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 ## 流程總覽
 
+![watch-archive 流程鳥瞰圖](../../../docs/watch-archive-flow.png)
+
 ```text
 網址 ─▶ 0 環境 ─▶ 1 選參數 ─▶ 2 歸檔(下載→Groq 轉錄→轉繁體→詞典校正→截圖→報告)
-     ─▶ 3 校稿 ─▶ 4 補內容(摘要/關鍵字/校正) ─▶ 5 重建並目視檢查 ─▶ 6 交付 ─▶ 7 提交
+     ─▶ 3 校稿 ─▶ 4a 看截圖分投影片或主題(slides) ─▶ 4b 補內容(摘要/關鍵字/校正)
+     ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
 ```
+
+藍＝腳本自動、橘＝Claude 判斷、綠＝交付；圖源 `docs/watch-archive-flow.svg`。
 
 ## 步驟
 
@@ -37,10 +42,12 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 通讀 `transcript.md`，挑出可疑處：專有名詞、英文縮寫、同音字、斷句異常。
    - 用 `frames/`（Read 看圖）上的畫面字幕交叉核對；以畫面文字為準。
    - **不要手改 `transcript.md` 以外的原始轉錄**；`transcript.raw.md` 是轉換前原文，保持不動。
+   - **重跑會覆蓋 `transcript.md`**（重新轉錄，手改全部消失；`slides`、`keywords`、`known_asr_errors`、`summary.md` 會保留）。所以：穩定的校正先寫進詞典（見步驟 4）再重跑，讓它自動套用；只對這支影片成立的修正，重跑後要再手改一次 `transcript.md`，並用 `known_asr_errors` 記錄。
 
-4. **補內容**：
+4. **補內容**（4a 先做投影片／主題分段，再做 4b）：
    - 改寫 `summary.md`：一句話重點、含時間戳的重點表、名詞與縮寫說明、轉錄校正備註。評論／立場性影片寫「講者主張…」，數字註明未經查證。
-   - 編輯 `meta.json`（重跑時以下欄位會保留）：`keywords`（約 8–10 個）、`section_keywords`（key 為畫面起始時間，如 `"00:12"`）、`known_asr_errors`（`{"time","heard","expected"}`，推測的要標「推測」）。
+   - 編輯 `meta.json`（重跑時以下欄位會保留）：`keywords`（約 8–10 個）、`section_keywords`（key 為畫面起始時間，如 `"00:12"`）、`known_asr_errors`（`{"time","heard","expected"}`，推測的要標「推測」）、`slides`（見下）。
+   - **投影片／主題分段**：看 `frames/` 後在 `meta.json` 寫 `slides`。簡報類影片一張投影片一段；沒有投影片的影片（訪談、實拍、操作畫面）則依講述主題或場景切段，每段的 `start` 取該主題開始的時間、`title` 寫主題名：`[{"start":"00:06","frame":"frame_0019.jpg","title":"…","note":"本張投影片重點","keywords":[…]}]`，報告就會「每段一張圖 + 說明文字 + 該段逐字稿」，不再逐畫面切碎。`frame` 選字幕與游標最乾淨的一張；沒有 `slides` 時才退回逐畫面。
    - **校正去哪裡**：穩定、不會誤傷的專有名詞錯誤 → 對應領域詞典 `glossary/domains/<領域>.json` 的 `replace`（key 用繁體、至少 3 字或帶上下文）或 `terms`；任何主題都成立的 → `glossary/common.json`；只這支影片成立或不確定的 → `known_asr_errors`。
    - 詞典新增後，對目前逐字稿直接替換並寫入 `meta.json.glossary_applied`，不必為此重跑 Whisper。
 

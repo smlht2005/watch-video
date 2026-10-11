@@ -1,0 +1,127 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0004.jpg",
+    "t": "00:04",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "00:06",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "00:07",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "00:10",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0012.jpg",
+    "t": "00:16",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0018.jpg",
+    "t": "00:25",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0019.jpg",
+    "t": "00:26",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0025.jpg",
+    "t": "00:35",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0026.jpg",
+    "t": "00:36",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0028.jpg",
+    "t": "00:39",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0031.jpg",
+    "t": "00:43",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0035.jpg",
+    "t": "00:49",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0036.jpg",
+    "t": "00:50",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0038.jpg",
+    "t": "00:53",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0040.jpg",
+    "t": "00:56",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0044.jpg",
+    "t": "01:02",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0047.jpg",
+    "t": "01:06",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0049.jpg",
+    "t": "01:09",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0052.jpg",
+    "t": "01:13",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0053.jpg",
+    "t": "01:15",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0054.jpg",
+    "t": "01:16",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0056.jpg",
+    "t": "01:19",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0058.jpg",
+    "t": "01:22",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0059.jpg",
+    "t": "01:24",
+    "reason": "uniform"
+  }
+]
