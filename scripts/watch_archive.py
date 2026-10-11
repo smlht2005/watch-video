@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Run the watch skill and archive the result into watch-output/.
+
+Folder name: <date>_<platform>_<title>__<video-id>
+A folder whose name ends with __<video-id> is reused (updated in place), so one
+video always maps to exactly one folder.
+
+Usage:
+  python3 scripts/watch_archive.py URL [--question Q] [--whisper groq] [--detail balanced] [--keep-media]
+"""
+import argparse
+import datetime as dt
+import json
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+from urllib.parse import parse_qs, urlparse
+
+ROOT = Path(__file__).resolve().parent.parent
+WATCH = ROOT / ".claude/skills/watch/scripts/watch.py"
+OUT_ROOT = ROOT / "watch-output"
+TITLE_MAX = 40
+NAME_MAX = 120
+
+
+def platform_and_id(url: str):
+    u = urlparse(url)
+    host = u.netloc.lower()
+    parts = [p for p in u.path.split("/") if p]
+    if "youtu.be" in host and parts:
+        return "YouTube", parts[0]
+    if "youtube.com" in host:
+        if "v" in parse_qs(u.query):
+            return "YouTube", parse_qs(u.query)["v"][0]
+        if len(parts) >= 2 and parts[0] in ("shorts", "embed", "live"):
+            return "YouTube", parts[1]
+    if "facebook.com" in host or "fb.watch" in host:
+        if "v" in parse_qs(u.query):
+            return "Facebook", parse_qs(u.query)["v"][0]
+        for key in ("v", "videos", "reel"):
+            if key in parts and parts.index(key) + 1 < len(parts):
+                return "Facebook", parts[parts.index(key) + 1]
+        if parts:
+            return "Facebook", parts[-1]
+    name = host.removeprefix("www.").split(".")[0].capitalize() or "Web"
+    return name, (parts[-1] if parts else re.sub(r"\W+", "", host))
+
+
+def clean_title(title: str) -> str:
+    t = re.sub(r'[\\/:*?"<>|]', "", title)
+    t = re.sub(r"[\s｜，。！？、；：,.!?;（）()\[\]【】「」『』]+", "-", t).strip("-")
+    t = t[:TITLE_MAX].strip("-")
+    return t or "untitled"
+
+
+def safe_id(vid: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_-]", "", vid) or "unknown"
+
+
+def field(report: str, label: str) -> str:
+    m = re.search(rf"^- \*\*{re.escape(label)}:\*\*\s*(.+)$", report, re.M)
+    return m.group(1).strip() if m else ""
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("url")
+    ap.add_argument("--question", default="請摘要影片內容並附時間戳")
+    ap.add_argument("--whisper", default="groq")
+    ap.add_argument("--detail", default="balanced")
+    ap.add_argument("--keep-media", action="store_true", help="keep media/ (video + frames)")
+    args = ap.parse_args()
+
+    platform, raw_id = platform_and_id(args.url)
+    vid = safe_id(raw_id)
+
+    work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
+    proc = subprocess.run(
+        [sys.executable, str(WATCH), args.url, "--question", args.question,
+         "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)],
+        capture_output=True, text=True,
+    )
+    if proc.returncode != 0:
+        print(f"watch.py failed (exit {proc.returncode}):\n{proc.stderr[-2000:]}", file=sys.stderr)
+        sys.exit(proc.returncode)
+    report = proc.stdout
+
+    title = field(report, "Title") or "untitled"
+    tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
+    transcript = tm.group(1).strip() if tm else ""
+    src_m = re.search(r"_Source:\s*(.+?)\._", transcript)
+    transcript_source = src_m.group(1) if src_m else "unknown"
+
+    # Reuse an existing folder for the same video ID; otherwise create a new one.
+    OUT_ROOT.mkdir(exist_ok=True)
+    existing = sorted(OUT_ROOT.glob(f"*__{vid}"))
+    if existing:
+        dest = existing[0]
+    else:
+        name = f"{dt.date.today():%Y-%m-%d}_{platform}_{clean_title(title)}__{vid}"
+        dest = OUT_ROOT / name[:NAME_MAX]
+    dest.mkdir(exist_ok=True)
+
+    meta = {
+        "url": args.url,
+        "platform": platform,
+        "video_id": vid,
+        "title": title,
+        "uploader": field(report, "Uploader"),
+        "duration": field(report, "Duration"),
+        "detail": args.detail,
+        "transcript_source": transcript_source,
+        "question": args.question,
+        "first_archived": (json.loads((dest / "meta.json").read_text(encoding="utf-8")).get("first_archived")
+                           if (dest / "meta.json").exists() else dt.date.today().isoformat()),
+        "last_updated": dt.date.today().isoformat(),
+        "known_asr_errors": [],
+    }
+    (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (dest / "transcript.md").write_text(f"# {title}\n\n{transcript}\n", encoding="utf-8")
+    # summary.md is written by the agent/user after reading the transcript; keep any existing one.
+    if not (dest / "summary.md").exists():
+        (dest / "summary.md").write_text(f"# 摘要：{title}\n\n_待補：請依逐字稿撰寫含時間戳的摘要。_\n", encoding="utf-8")
+
+    if args.keep_media:
+        media = dest / "media"
+        if media.exists():
+            shutil.rmtree(media)
+        media.mkdir()
+        for p in work.rglob("video.*"):
+            shutil.move(str(p), media / p.name)
+            break
+        frames = work / "frames"
+        if frames.is_dir():
+            shutil.move(str(frames), media / "frames")
+    shutil.rmtree(work, ignore_errors=True)
+
+    update_index(dest, meta)
+    print(f"archived -> {dest.relative_to(ROOT)}")
+
+
+def update_index(dest: Path, meta: dict):
+    idx = OUT_ROOT / "index.md"
+    header = ("# watch-output 索引\n\n"
+              "| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|\n")
+    rows = []
+    if idx.exists():
+        rows = [l for l in idx.read_text(encoding="utf-8").splitlines()
+                if l.startswith("| ") and not l.startswith("| 日期") and f"__{meta['video_id']}/" not in l]
+    safe_title = meta["title"].replace("|", "｜")
+    rows.append(f"| {meta['last_updated']} | {meta['platform']} | {safe_title} | {meta['duration']} | "
+                f"{meta['transcript_source']} | [開啟](./{dest.name}/) |")
+    idx.write_text(header + "\n".join(sorted(rows)) + "\n", encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()
