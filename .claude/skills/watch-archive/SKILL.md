@@ -12,12 +12,13 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ![watch-archive 流程鳥瞰圖](../../../docs/watch-archive-flow.png)
 
 ```text
-網址 ─▶ 0 環境 ─▶ 1 選參數 ─▶ 2 歸檔(下載→Groq 轉錄→轉繁體→詞典校正→截圖→報告)
-     ─▶ 3 校稿 ─▶ 4a 看截圖分投影片或主題(slides) ─▶ 4b 補內容(摘要/關鍵字/校正)
+網址 ─▶ 0 環境 ─▶ 1 選參數 ─▶ 2 歸檔(下載→平台字幕或 Groq 轉錄→轉繁體→詞典校正→截圖→報告)
+     ─▶ 3 校稿 ─▶ 4a 看截圖分投影片或主題(slides) ─▶ 4b 補內容(摘要/關鍵字/校正/外語中譯)
      ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
 ```
 
-藍＝腳本自動、橘＝Claude 判斷、綠＝交付；圖源 `docs/watch-archive-flow.svg`。
+藍＝腳本自動、橘＝Claude 判斷、綠＝交付；圖源 `docs/watch-archive-flow.svg`。改圖後重新產生 PNG：
+`/opt/pw-browsers/chromium-1194/chrome-linux/chrome --headless --no-sandbox --hide-scrollbars --window-size=1600,1100 --screenshot=docs/watch-archive-flow.png file://$PWD/docs/watch-archive-flow.svg`，再用 PIL 裁成 1600×900（視窗外框會吃掉底部，故先開大再裁）。
 
 ## 步驟
 
@@ -26,7 +27,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    從最新的 `main` 開新分支 `claude/...`（不要重用已合併的分支）。
 
 1. **選參數**（沒有把握就用預設）：
-   - 中文影片 → `--lang zh`（英文影片不要加）。
+   - 中文影片 → `--lang zh`（英文影片不要加）。平台有字幕時（如 X、YouTube 英文字幕）會直接採用字幕，`--lang` 不影響結果；外語逐字稿在步驟 4b 補中譯。
    - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`electronics`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
@@ -54,7 +55,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
 
-6. **交付**：用 SendUserFile 傳 `*_report.docx`；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄還是平台字幕（`meta.json.transcript_source`）。
+6. **交付**：用 SendUserFile 傳 `*_report.docx`；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
 
 7. **提交**：在 `claude/...` 分支 commit 並 push。合併方式依使用者指示（PR + Squash and merge，或直接合併）；使用者沒說就先問，不強制 push、不重用已合併分支。
 
