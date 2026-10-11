@@ -42,6 +42,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 通讀 `transcript.md`，挑出可疑處：專有名詞、英文縮寫、同音字、斷句異常。
    - 用 `frames/`（Read 看圖）上的畫面字幕交叉核對；以畫面文字為準。
    - **不要手改 `transcript.md` 以外的原始轉錄**；`transcript.raw.md` 是轉換前原文，保持不動。
+   - **重跑會覆蓋 `transcript.md`**（重新轉錄，手改全部消失；`slides`、`keywords`、`known_asr_errors`、`summary.md` 會保留）。所以：穩定的校正先寫進詞典（見步驟 4）再重跑，讓它自動套用；只對這支影片成立的修正，重跑後要再手改一次 `transcript.md`，並用 `known_asr_errors` 記錄。
 
 4. **補內容**（4a 先做投影片／主題分段，再做 4b）：
    - 改寫 `summary.md`：一句話重點、含時間戳的重點表、名詞與縮寫說明、轉錄校正備註。評論／立場性影片寫「講者主張…」，數字註明未經查證。
