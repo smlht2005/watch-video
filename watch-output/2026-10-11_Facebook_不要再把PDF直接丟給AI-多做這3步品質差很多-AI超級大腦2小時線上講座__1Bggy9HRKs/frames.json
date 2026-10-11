@@ -1,0 +1,47 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "first-frame"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "00:12",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0003.jpg",
+    "t": "00:46",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0004.jpg",
+    "t": "01:07",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "01:28",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "02:10",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0007.jpg",
+    "t": "02:15",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "02:44",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0009.jpg",
+    "t": "02:50",
+    "reason": "scene-change"
+  }
+]

@@ -5,10 +5,14 @@ Folder name: <date>_<platform>_<title>__<video-id>
 A folder whose name ends with __<video-id> is reused (updated in place), so one
 video always maps to exactly one folder.
 
+Outputs per video: meta.json, transcript.md, summary.md, frames/, <stem>_report.md, <stem>_report.docx, media/<stem>_video.<ext> (--keep-media)
+where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
+
 Usage:
   python3 scripts/watch_archive.py URL [--question Q] [--whisper groq] [--detail balanced] [--keep-media]
 """
 import argparse
+import build_report
 import datetime as dt
 import json
 import re
@@ -71,7 +75,7 @@ def main():
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
-    ap.add_argument("--keep-media", action="store_true", help="keep media/ (video + frames)")
+    ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (local only, gitignored)")
     args = ap.parse_args()
 
     platform, raw_id = platform_and_id(args.url)
@@ -94,6 +98,10 @@ def main():
     src_m = re.search(r"_Source:\s*(.+?)\._", transcript)
     transcript_source = src_m.group(1) if src_m else "unknown"
 
+    frames = []
+    for m in re.finditer(r"^- `([^`]+)` \(t=([\d:]+), reason=([^)]*)\)", report, re.M):
+        frames.append({"src": m.group(1), "t": m.group(2), "reason": m.group(3)})
+
     # Reuse an existing folder for the same video ID; otherwise create a new one.
     OUT_ROOT.mkdir(exist_ok=True)
     existing = sorted(OUT_ROOT.glob(f"*__{vid}"))
@@ -104,6 +112,7 @@ def main():
         dest = OUT_ROOT / name[:NAME_MAX]
     dest.mkdir(exist_ok=True)
 
+    prev = json.loads((dest / "meta.json").read_text(encoding="utf-8")) if (dest / "meta.json").exists() else {}
     meta = {
         "url": args.url,
         "platform": platform,
@@ -114,10 +123,11 @@ def main():
         "detail": args.detail,
         "transcript_source": transcript_source,
         "question": args.question,
-        "first_archived": (json.loads((dest / "meta.json").read_text(encoding="utf-8")).get("first_archived")
-                           if (dest / "meta.json").exists() else dt.date.today().isoformat()),
+        "first_archived": prev.get("first_archived", dt.date.today().isoformat()),
         "last_updated": dt.date.today().isoformat(),
-        "known_asr_errors": [],
+        "known_asr_errors": prev.get("known_asr_errors", []),  # hand-curated: never overwrite
+        "keywords": prev.get("keywords", []),  # hand-curated: never overwrite
+        "section_keywords": prev.get("section_keywords", {}),  # keyed by frame start time
     }
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dest / "transcript.md").write_text(f"# {title}\n\n{transcript}\n", encoding="utf-8")
@@ -125,18 +135,31 @@ def main():
     if not (dest / "summary.md").exists():
         (dest / "summary.md").write_text(f"# 摘要：{title}\n\n_待補：請依逐字稿撰寫含時間戳的摘要。_\n", encoding="utf-8")
 
+    # Frames are small (~25 KB each) and make the report readable: always keep them.
+    fdir = dest / "frames"
+    if fdir.exists():
+        shutil.rmtree(fdir)
+    fdir.mkdir()
+    saved = []
+    for f in frames:
+        src = Path(f["src"])
+        if src.exists():
+            shutil.copy2(src, fdir / src.name)
+            saved.append({"file": src.name, "t": f["t"], "reason": f["reason"]})
+    (dest / "frames.json").write_text(json.dumps(saved, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    # The full video is large: only with --keep-media (gitignored).
     if args.keep_media:
         media = dest / "media"
         if media.exists():
             shutil.rmtree(media)
         media.mkdir()
         for p in work.rglob("video.*"):
-            shutil.move(str(p), media / p.name)
+            shutil.move(str(p), media / f"{build_report.file_stem(dest)}_video{p.suffix}")
             break
-        frames = work / "frames"
-        if frames.is_dir():
-            shutil.move(str(frames), media / "frames")
     shutil.rmtree(work, ignore_errors=True)
+
+    build_report.build(dest)
 
     update_index(dest, meta)
     print(f"archived -> {dest.relative_to(ROOT)}")
