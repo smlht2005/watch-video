@@ -223,8 +223,13 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
             img = dest / im.group(1)
             if img.exists():
                 from PIL import Image
-                w, h = Image.open(img).size  # cap height so portrait (vertical) videos don't fill whole pages
-                doc.add_picture(str(img), width=Cm(min(12, 7 * w / h)))
+                import io
+                pil = Image.open(img)
+                w, h = pil.size  # cap height so portrait (vertical) videos don't fill whole pages
+                buf = io.BytesIO()  # re-encode: some ffmpeg JPEGs lack a JFIF header that python-docx requires
+                pil.convert("RGB").save(buf, "JPEG", quality=90)
+                buf.seek(0)
+                doc.add_picture(buf, width=Cm(min(12, 7 * w / h)))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
         elif line.startswith("- "):
             add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
