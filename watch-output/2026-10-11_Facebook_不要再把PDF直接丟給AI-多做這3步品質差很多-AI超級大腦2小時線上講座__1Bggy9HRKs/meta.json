@@ -1,0 +1,35 @@
+{
+  "url": "https://www.facebook.com/share/v/1Bggy9HRKs/",
+  "platform": "Facebook",
+  "video_id": "1Bggy9HRKs",
+  "title": "不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座",
+  "uploader": "李佳達",
+  "duration": "03:01 (181.3s)",
+  "detail": "balanced",
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "01:24",
+      "heard": "BLM",
+      "expected": "VLM"
+    },
+    {
+      "time": "01:46",
+      "heard": "投資金域",
+      "expected": "書名未確認"
+    },
+    {
+      "time": "00:23",
+      "heard": "嘗試",
+      "expected": "常識（推測）"
+    },
+    {
+      "time": "00:40",
+      "heard": "誇張解",
+      "expected": "跨章節（推測）"
+    }
+  ]
+}
