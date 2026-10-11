@@ -67,7 +67,10 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
           f"- 平台 / 上傳者：{meta['platform']} / {meta.get('uploader', '')}",
           f"- 長度：{meta.get('duration', '')}",
           f"- 逐字稿來源：{meta.get('transcript_source', '')}",
-          f"- 更新日期：{meta.get('last_updated', '')}", ""]
+          f"- 更新日期：{meta.get('last_updated', '')}"]
+    if meta.get("keywords"):
+        L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
+    L.append("")
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
     L += ["## 圖文對照（畫面 + 逐字稿）", ""]
     secs = sections(segs, frames)
@@ -76,6 +79,9 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         if frame:
             nxt = secs[n + 1][0]["t"] if n + 1 < len(secs) else end
             L += [f"### 畫面 {frame['t']}–{nxt}", "", f"![{frame['t']}](frames/{frame['file']})", ""]
+            tags = meta.get("section_keywords", {}).get(frame["t"], [])
+            if tags:
+                L += ["**標籤：** " + " ".join(f"#{k}" for k in tags), ""]
         text = "，".join(t for _, t in items if t)
         if text:
             L += [text + "。", ""]
@@ -112,7 +118,7 @@ def add_inline(par, text, size=10.5):
             set_font(par.add_run(tok), size)
 
 
-def md_to_docx(dest: Path, md: str, out: Path):
+def md_to_docx(dest: Path, md: str, out: Path, kw=None):
     doc = Document()
     sec = doc.sections[0]
     sec.left_margin = sec.right_margin = Cm(2)
@@ -160,6 +166,8 @@ def md_to_docx(dest: Path, md: str, out: Path):
         elif line.strip():
             add_inline(doc.add_paragraph(), line.strip())
         i += 1
+    if kw:
+        doc.core_properties.keywords = ", ".join(kw)
     doc.save(str(out))
 
 
@@ -167,7 +175,7 @@ def build(dest: Path):
     meta, summary, segs, frames = load(dest)
     md = build_md(dest, meta, summary, segs, frames)
     (dest / "report.md").write_text(md, encoding="utf-8")
-    md_to_docx(dest, md, dest / "report.docx")
+    md_to_docx(dest, md, dest / "report.docx", meta.get("keywords"))
     return dest / "report.md", dest / "report.docx"
 
 
