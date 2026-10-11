@@ -165,9 +165,9 @@ def supplement_lines(dest: Path):
     """Body of supplement.md for the report, under '## 補充資料'.
 
     The file's leading '# …' title is dropped; '#'/'##' headings -> '###' heading; '###' and deeper -> bold line
-    (the docx converter handles at most three heading levels). Fenced blocks (``` or ~~~) are kept verbatim as
-    ``` blocks (an unclosed fence is closed at the end); md_to_docx renders them as indented monospace.
-    Returns [] when the file is missing or has no content besides its title.
+    (the docx converter handles at most three heading levels). Fenced blocks (``` or ~~~) are kept verbatim with
+    their original markers, so a ~~~ block may contain ```; an unclosed fence is closed at the end, and md_to_docx
+    renders fences as indented monospace. Returns [] when the file is missing or has no content besides its title.
     """
     path = dest / "supplement.md"
     if not path.exists():
@@ -177,13 +177,13 @@ def supplement_lines(dest: Path):
         m_fence = FENCE_OPEN.match(line)
         if fence:
             if fence_close(fence, line):
+                out.append(fence)
                 fence = None
-                out.append("```")
             else:
                 out.append(line)
         elif m_fence:
             fence, has_body, started = m_fence.group(1), True, True
-            out.append("```")
+            out.append(fence)
         elif (m := re.match(r"^(#{1,6})\s+(.*)$", line)):
             level, text = len(m.group(1)), m.group(2).strip()
             if level == 1 and not started:  # the file's own title; the section heading replaces it
@@ -196,7 +196,7 @@ def supplement_lines(dest: Path):
                 started = has_body = True
             out.append(line)
     if fence:
-        out.append("```")
+        out.append(fence)
     if not has_body:
         return []
     return ["## 補充資料（影片未呈現的資訊）", ""] + out + [""]

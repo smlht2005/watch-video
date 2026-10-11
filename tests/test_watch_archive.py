@@ -39,12 +39,38 @@ class DetectLanguage(unittest.TestCase):
         text = "[00:01] 日本国内経済成長率予測発表政府統計調査結果概要説明資料公開である\n" * 3
         self.assertEqual(wa.detect_language(text), "ja")
 
+    def test_chinese_with_katakana_brands_is_zh(self):
+        self.assertEqual(wa.detect_language("[00:01] 今天我們去了東京的ユニクロ和セブンイレブン，買了很多東西回家。\n" * 3), "zh")
+        self.assertEqual(wa.detect_language("[00:01] 這台車的外觀很好看，內裝比トヨタ還要精緻，但是價格比トヨタ貴很多。\n" * 3), "zh")
+
+    def test_short_real_chinese_is_unknown_not_other(self):
+        self.assertEqual(wa.detect_language("[00:01] 好的謝謝\n"), "unknown")
+
     def test_repeated_single_word_is_unknown(self):
         self.assertEqual(wa.detect_language("[00:01] ok\n" * 15), "unknown")
 
-    def test_balanced_mixed_text_does_not_claim_japanese_or_korean(self):
+    def test_mostly_english_with_little_chinese_is_other(self):
+        text = "[00:01] hello world this is some english words and more english text here 中文\n" * 5
+        self.assertEqual(wa.detect_language(text), "other")  # too much Chinese for 'en', too little for 'zh'
+
+    def test_balanced_mixed_text_is_zh_by_design(self):
         text = "[00:01] hello world this is some english words and 中文字幾個\n" * 3
-        self.assertNotIn(wa.detect_language(text), ("ja", "ko", "unknown"))
+        self.assertEqual(wa.detect_language(text), "zh")  # >=10 han characters and >=20% of the units
+
+
+class LanguagePolicy(unittest.TestCase):
+    def test_translation_flag_only_for_en_ja_ko(self):
+        for lang, expected in (("en", True), ("ja", True), ("ko", True), ("zh", False), ("other", False), ("unknown", False)):
+            self.assertEqual(wa.needs_zh_translation(lang), expected, lang)
+
+    def test_opencc_skipped_for_ja_ko_other(self):
+        for lang, expected in (("zh", True), ("unknown", True), ("en", True), ("ja", False), ("ko", False), ("other", False)):
+            self.assertEqual(wa.convert_to_traditional(lang), expected, lang)
+
+    def test_opencc_would_really_corrupt_japanese(self):
+        if wa._S2T is None:
+            self.skipTest("opencc not installed")
+        self.assertNotEqual(wa.to_traditional("会議学校"), "会議学校")  # the reason for the ja/ko skip
 
 
 class SupplementLines(unittest.TestCase):
@@ -68,9 +94,16 @@ class SupplementLines(unittest.TestCase):
         i = out.index("```")
         self.assertEqual(out[i + 1:i + 3], ["# in fence", "**b**"])  # verbatim, not parsed as heading/bold
 
-    def test_tilde_fence_normalised_and_unclosed_fence_closed(self):
+    def test_tilde_fence_kept_and_unclosed_fence_closed(self):
         out = self.run_sup("## S1\n~~~\ncode\n")
-        self.assertEqual(out.count("```"), 2)
+        self.assertEqual(out.count("~~~"), 2)  # opened as ~~~, closed with ~~~ at the end
+
+    def test_tilde_fence_may_contain_backtick_fence(self):
+        out = self.run_sup("## S1\n~~~\n```\ninner\n```\n~~~\nafter\n")
+        i = out.index("~~~")
+        self.assertEqual(out[i + 1:i + 4], ["```", "inner", "```"])  # inner fence does not close the outer one
+        self.assertEqual(out[i + 4], "~~~")
+        self.assertIn("after", out)
 
     def test_first_h1_dropped_even_if_not_named_supplement(self):
         out = self.run_sup("# 別的標題\n\n## S1\nbody\n")

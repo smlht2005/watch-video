@@ -96,6 +96,7 @@ def detect_language(text: str) -> str:
     body = re.sub(r"\[\d{1,2}:\d{2}(?::\d{2})?\]|```|^#.*$|^_Source:.*$", "", text, flags=re.M)
     han = len(re.findall(r"[\u4e00-\u9fff]", body))
     kana = len(re.findall(r"[\u3040-\u30ff]", body))
+    hira = len(re.findall(r"[\u3040-\u309f]", body))  # particles (の は を です…) exist only in Japanese; katakana brands appear in Chinese too
     hangul = len(re.findall(r"[\uac00-\ud7af]", body))
     latin = len(re.findall(r"[A-Za-z]+", body))
     cjk = han + kana + hangul
@@ -104,7 +105,7 @@ def detect_language(text: str) -> str:
         return "unknown"
     if hangul >= 5 and hangul / cjk >= 0.3:
         return "ko"
-    if kana >= 5 and kana / cjk >= 0.05:  # Chinese has essentially no kana; kanji-heavy Japanese still has some
+    if hira >= 5 and hira / cjk >= 0.05:  # kanji-heavy Japanese still has some hiragana
         return "ja"
     if han >= 10 and han / total >= 0.2:
         return "zh"
@@ -113,6 +114,19 @@ def detect_language(text: str) -> str:
     if latin >= 10 and cjk / total < 0.05:
         return "en"  # Latin-script non-Chinese (may be Spanish etc.); the translation flag is what matters
     return "other"
+
+
+def needs_zh_translation(detected: str) -> bool:
+    """en / ja / ko always get a Traditional Chinese translation; other / unknown are left to a human check."""
+    return detected in ("en", "ja", "ko")
+
+
+def convert_to_traditional(detected: str) -> bool:
+    """OpenCC + full-width punctuation only for text that may be Chinese.
+
+    Skipped for ja / ko (would corrupt kanji, e.g. 会議 -> 會議) and for 'other' (unclear: a human decides first).
+    """
+    return detected not in ("ja", "ko", "other")
 
 
 def load_glossary(domains):
@@ -242,11 +256,12 @@ def main():
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
     detected_language = detect_language(transcript_raw)
-    if detected_language in ("ja", "ko"):  # OpenCC / full-width punctuation would corrupt Japanese and Korean text
-        transcript, glossary_applied = apply_glossary(transcript_raw, gl_replace)
-    else:
+    to_zh_tw = convert_to_traditional(detected_language)
+    if to_zh_tw:
         transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
-    title = to_traditional(title)
+        title = to_traditional(title)
+    else:  # keep ja / ko / unclear text untouched
+        transcript, glossary_applied = apply_glossary(transcript_raw, gl_replace)
     if _S2T is None:
         print("WARNING: opencc not installed; transcript left as-is (pip install opencc-python-reimplemented)", file=sys.stderr)
     src_m = re.search(r"_Source:\s*(.+?)\._", transcript)
@@ -281,11 +296,11 @@ def main():
         "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
         "detected_language": detected_language,
         "forced_lang": args.lang,
-        "needs_zh_translation": detected_language not in ("zh", "unknown"),
+        "needs_zh_translation": needs_zh_translation(detected_language),
         "glossaries": domains,
         "glossary_applied": glossary_applied,
         "source_hashtags": hashtags(title_raw),
-        "uploader": to_traditional(field(report, "Uploader")),
+        "uploader": to_traditional(field(report, "Uploader")) if to_zh_tw else field(report, "Uploader"),
         "duration": field(report, "Duration"),
         "detail": args.detail,
         "transcript_source": transcript_source,
@@ -344,7 +359,7 @@ def main():
     elif detected_language == "unknown":
         print("language: unknown（逐字稿太短或缺失，請自行判斷是否需要中譯）")
     elif detected_language == "other":
-        print("language: other（混雜或無法判斷）：請讀逐字稿確認；若非中文，請依 SKILL 步驟 4b 寫 transcript.zh.md")
+        print("language: other（混雜或無法判斷）：已跳過簡轉繁；請讀逐字稿確認，中文請手動轉繁體，非中文請依 SKILL 步驟 4b 寫 transcript.zh.md")
     else:
         print(f"language: {detected_language} -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
 
