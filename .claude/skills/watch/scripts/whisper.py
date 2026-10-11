@@ -315,6 +315,7 @@ def transcribe_chunks(
     """
     segments = Segments()
     failures = 0
+    languages: list[str] = []  # Local patch: language reported per chunk
     for index, (path, offset) in enumerate(chunks):
         try:
             chunk_segments = transcribe_one(path)
@@ -328,6 +329,8 @@ def transcribe_chunks(
             )
             continue
         segments.extend(shift_segments(chunk_segments, offset))
+        if getattr(chunk_segments, "language", ""):
+            languages.append(chunk_segments.language)
         print(
             f"[watch] chunk {index + 1}/{len(chunks)} → {len(chunk_segments)} segments",
             file=sys.stderr,
@@ -336,6 +339,8 @@ def transcribe_chunks(
     if failures == len(chunks):
         raise SystemExit("Whisper failed on every audio chunk")
     segments.no_speech = not segments and not failures
+    if languages:
+        segments.language = max(set(languages), key=languages.count)
     return segments
 
 

@@ -124,9 +124,41 @@ def detect_language(text: str) -> str:
     return "other"
 
 
+WHISPER_LANGUAGES = {
+    "english": "en", "chinese": "zh", "cantonese": "zh", "mandarin": "zh", "japanese": "ja", "korean": "ko",
+    "spanish": "es", "french": "fr", "german": "de", "portuguese": "pt", "russian": "ru", "italian": "it",
+    "vietnamese": "vi", "thai": "th", "indonesian": "id", "arabic": "ar", "hindi": "hi", "turkish": "tr",
+}
+
+
+def normalize_whisper_language(raw: str) -> str:
+    """Whisper reports a language name ('english') or code ('en'); return a lowercase ISO-style code, '' if absent."""
+    name = (raw or "").strip().lower()
+    if not name:
+        return ""
+    if name in WHISPER_LANGUAGES:
+        return WHISPER_LANGUAGES[name]
+    return name.split("-")[0] if re.fullmatch(r"[a-z]{2,3}(-[a-z]+)?", name) else name
+
+
+def resolve_language(text: str, whisper_raw: str = "", forced: str = "") -> tuple[str, str]:
+    """Pick the language label and say where it came from: ('zh', 'whisper'|'heuristic'|'heuristic (forced --lang)').
+
+    Whisper's own language id is more reliable than character ratios (short or mixed-language text), so it wins when
+    present. It is ignored when --lang was forced (Whisper then just echoes the forced language). Platform captions
+    carry no Whisper language, so those fall back to detect_language().
+    """
+    if forced:
+        return detect_language(text), "heuristic (forced --lang)"
+    code = normalize_whisper_language(whisper_raw)
+    if code:
+        return code, "whisper"
+    return detect_language(text), "heuristic"
+
+
 def needs_zh_translation(detected: str) -> bool:
-    """en / ja / ko always get a Traditional Chinese translation; other / unknown are left to a human check."""
-    return detected in ("en", "ja", "ko")
+    """Any known non-Chinese language (en, ja, ko, es…) gets a Traditional Chinese translation; other / unknown are left to a human check."""
+    return detected not in ("zh", "other", "unknown")
 
 
 def convert_to_traditional(detected: str) -> bool:
@@ -263,7 +295,8 @@ def main():
     title = title_override or tidy_title(title_raw, field(report, "Uploader"))
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
-    detected_language = detect_language(transcript_raw)
+    detected_language, language_source = resolve_language(
+        transcript_raw, field(report, "Whisper language"), args.lang)
     to_zh_tw = convert_to_traditional(detected_language)
     if to_zh_tw:
         transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
@@ -303,6 +336,7 @@ def main():
         "title_override": title_override,
         "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
         "detected_language": detected_language,
+        "language_source": language_source,
         "forced_lang": args.lang,
         "needs_zh_translation": needs_zh_translation(detected_language),
         "glossaries": domains,
@@ -363,13 +397,13 @@ def main():
         print(f"WARNING: --lang {args.lang} was forced to Whisper, so a wrong language would NOT be caught; "
               "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
     if detected_language == "zh":
-        print("language: zh (converted to Traditional zh-TW)")
+        print(f"language: zh [{language_source}]（已轉繁體 zh-TW）")
     elif detected_language == "unknown":
         print("language: unknown（逐字稿太短或缺失，請自行判斷是否需要中譯）")
     elif detected_language == "other":
         print("language: other（混雜或無法判斷）：已跳過簡轉繁；請讀逐字稿確認，中文請手動轉繁體，非中文請依 SKILL 步驟 4b 寫 transcript.zh.md")
     else:
-        print(f"language: {detected_language} -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
+        print(f"language: {detected_language} [{language_source}] -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
 
 
 def update_index(dest: Path, meta: dict):

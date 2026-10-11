@@ -57,7 +57,7 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
 
 ### 提高轉錄準確度
 
-- **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。轉錄後腳本從輸出文字判斷語言，寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`other`／`unknown`）、`forced_lang` 與 `needs_zh_translation`（只有 `en`／`ja`／`ko` 時為 true；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
+- **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
   - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`electronics`、`kubernetes`、`claude-code`。新增領域只要新增一個檔案。
@@ -65,7 +65,7 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
   - 單支影片才成立的修正，不要放進詞典，改用 `--terms` 或 `meta.json.known_asr_errors`。
   - `WATCH_GLOSSARY_DIR` 可指向別處（例如獨立的詞典 repo），方便跨專案共用。
 - `--terms "詞1,詞2"`：只對這一支影片額外提示的詞（人名、術語）。
-- Whisper 的語言與提示詞由 `.claude/skills/watch/scripts/whisper.py` 的環境變數 `WATCH_WHISPER_LANGUAGE` / `WATCH_WHISPER_PROMPT` 傳入（本專案對上游 skill 的小幅修改，更新上游時需重新套用）。
+- Whisper 的語言與提示詞由 `.claude/skills/watch/scripts/whisper.py` 的環境變數 `WATCH_WHISPER_LANGUAGE` / `WATCH_WHISPER_PROMPT` 傳入（本專案對上游 skill 的小幅修改，更新上游時需重新套用）。另外 `transcribe.py`、`whisper.py`、`watch.py` 各有少量修改：保留 Whisper 回報的 `language`（多段音訊取最多數），並在報告表頭輸出 `Whisper language`，供 `watch_archive.py` 讀取。
 
 ### 輸出結構
 
@@ -95,7 +95,7 @@ watch-output/
 | `slides` | 投影片分段（`start`、`frame`、`title`、`note`、`keywords`）；有設定時每張投影片只放一張圖，說明文字與逐字稿接在下方 |
 | `known_asr_errors` | 轉錄誤聽校正（時間、聽成、應為） |
 | `first_archived` | 首次歸檔日期 |
-| `detected_language`／`forced_lang`／`needs_zh_translation` | 由腳本每次重跑時重新判斷（不保留舊值） |
+| `detected_language`／`language_source`／`forced_lang`／`needs_zh_translation` | 由腳本每次重跑時重新判斷（不保留舊值） |
 | `title_override` | `--title` 指定的標題（重跑沿用） |
 | `glossaries` | `--glossary` 選用的詞典領域（重跑沿用） |
 
@@ -121,7 +121,7 @@ python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md 解析
 ### 限制與風險
 
 - **平台**：YouTube 在雲端環境常被擋（HTTP 429、要求登入），歸檔會失敗；Google Drive 影片須設成「知道連結的任何人」才抓得到（403 通常是權限問題，歸檔後建議改回私人）。上游 `watch` skill 的 Gemini 引擎可能遇到服務塞車（503）或模型停用（例如 `gemini-2.5-flash` 已不開放新使用者；預設模型為 `gemini-3.7-flash`），失敗時不會自動降級，需明確改用本機引擎（設定環境變數 `WATCH_ENGINE=local` 後再執行；`watch_archive.py` 本身沒有 `--engine` 參數）。
-- **語言偵測是啟發式**：只看輸出文字的字元比例（門檻為經驗值，僅在少數影片實測）。`en` 代表拉丁字母的非中文（西班牙文也會標 `en`）；`other`（混雜）與 `unknown`（太短或缺失）必須人工確認；`--lang` 強制語言時偵測不出錯誤。`ja`／`ko`／`other` 不做簡轉繁，是為了避免把日文漢字改壞（会議→會議）。
+- **語言偵測**：Whisper 轉錄的影片直接採用 Whisper 回報的語言（已在真實影片驗證）；平台字幕來源與強制 `--lang` 時退回啟發式，只看文字的字元比例（門檻為經驗值，僅在少數影片實測），此時 `en` 代表拉丁字母的非中文（西班牙文也會標 `en`）；`other`（混雜）與 `unknown`（太短或缺失）必須人工確認；`--lang` 強制語言時偵測不出錯誤。`ja`／`ko`／`other` 不做簡轉繁，是為了避免把日文漢字改壞（会議→會議）。
 - **偵測的已知盲點**：日文以平假名判斷（至少一半含漢字的行有平假名，且占比 ≥15% 才判 `ja`，5–15% 判 `other` 交給人確認；中文只在少數行夾日文會維持 `zh`），所以①以漢字為主的日文（新聞標題、名詞列表）可能判成 `zh` 而被簡轉繁改字；②純片假名日文判成 `other`；③帶漢字的韓文可能判成 `zh`；④`unknown`（太短）仍會簡轉繁，短日文句（如「会議です」）會被改。整份逐字稿只有一兩行的極短影片，中文夾日文仍可能誤判。`main()` 的語言分流與資料夾改名目前沒有自動化測試。
 - **轉錄品質**：Whisper 常把 Claude 聽成 Cloud 等；詞典 `claude-code` 的替換假設講者在談 Claude，若影片在講雲端請勿載入。Whisper 提示詞以「、」串接，可能讓它偏向中文，尚未驗證。
 - **舊資料**：語言偵測加入前歸檔的影片，`meta.json` 沒有 `detected_language`，重跑歸檔才會補上。
