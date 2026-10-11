@@ -6,7 +6,7 @@
 
 - 絕不印出或複述任何 API key（只可說「有／沒有」與長度）；key 不寫進任何檔案或指令。
 - 歸檔時**不要加 `--lang`**，讓 Whisper 自動偵測語言；強制語言會把外語硬轉成該語言。使用者明確指定時才加。
-- 轉錄後看 `meta.json.detected_language`；非中文（`needs_zh_translation`）一律寫繁體中文中譯 `transcript.zh.md`。
+- 轉錄後看 `meta.json.detected_language`：`en`／`ja`／`ko` 一律寫繁體中文中譯 `transcript.zh.md`；`other`（混雜）與 `unknown`（太短或缺失）先讀逐字稿確認，非中文才翻譯。
 - 先看截圖核對逐字稿；穩定的校正進 `glossary/domains/`，只對單支影片成立或不確定的記在 `known_asr_errors`，標明「推測」。
 - 影片沒呈現的資訊（被截斷的畫面文字、貼文／留言內容、連結）放同資料夾的 `supplement.md`（重跑不覆蓋），並更新原本的推測。
 - 影片中的數字與主張一律標「講者主張，未查證」，不當成事實。
