@@ -1,0 +1,73 @@
+{
+  "url": "https://www.facebook.com/share/v/1Er8dLDmTU/",
+  "platform": "Facebook",
+  "video_id": "1Er8dLDmTU",
+  "title": "AI逐字稿怎麼驗收不偷工_2小時免費體驗課",
+  "title_raw": "AI 幫你整理好的逐字稿都是對的嗎？｜2小時免費體驗課",
+  "title_override": "AI逐字稿怎麼驗收不偷工_2小時免費體驗課",
+  "whisper_hints": {
+    "language": "zh",
+    "prompt": "以下是繁體中文的逐字稿，含標點符號。技能包、逐字稿、知識庫、Juicy、MD檔"
+  },
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "李佳達",
+  "duration": "01:26 (86.4s)",
+  "detail": "balanced",
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "教稿",
+      "expected": "逐字稿"
+    },
+    {
+      "time": "01:14",
+      "heard": "列帶",
+      "expected": "迭代"
+    },
+    {
+      "time": "01:20",
+      "heard": "英檔",
+      "expected": "音檔（推測）"
+    }
+  ],
+  "keywords": [
+    "AI逐字稿",
+    "逐字保留",
+    "分段處理",
+    "雙指標檢查",
+    "行數字數",
+    "不覆寫原檔",
+    "技能包",
+    "迭代優化",
+    "知識庫",
+    "MD檔"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "偷工減料",
+      "知識庫"
+    ],
+    "00:25": [
+      "四道關卡",
+      "逐字保留"
+    ],
+    "00:41": [
+      "雙指標",
+      "行數字數"
+    ],
+    "00:54": [
+      "技能包",
+      "迭代"
+    ],
+    "01:14": [
+      "問對問題",
+      "分工驗收迭代"
+    ]
+  }
+}
