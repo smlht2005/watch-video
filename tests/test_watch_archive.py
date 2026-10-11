@@ -34,10 +34,25 @@ class DetectLanguage(unittest.TestCase):
         text = "# 標題標題標題標題標題標題標題標題\n_Source: whisper (groq)._\n```\n[00:01] ok\n```\n"
         self.assertEqual(wa.detect_language(text), "unknown")
 
-    def test_kanji_heavy_japanese_is_ja(self):
-        # kana is only ~14% of the CJK characters here, below the old 0.15 threshold
+    def test_real_japanese_prose_is_ja(self):
+        self.assertEqual(wa.detect_language("[00:01] これはテストです。今日は東京で会議があります。\n" * 5), "ja")
+
+    def test_kanji_heavy_japanese_is_left_for_human_check(self):
+        # hiragana is only ~9% of the CJK characters: not confident enough for 'ja', must not become 'zh'
         text = "[00:01] 日本国内経済成長率予測発表政府統計調査結果概要説明資料公開である\n" * 3
-        self.assertEqual(wa.detect_language(text), "ja")
+        self.assertEqual(wa.detect_language(text), "other")
+
+    CHINESE_LINES = ("[00:01] 今天要跟大家分享一個很實用的方法，可以讓你的工作效率提升很多，而且完全不用花錢。\n"
+                     "[00:08] 首先打開設定頁面，選擇你需要的功能，接著按照畫面上的步驟一步一步操作就可以了。\n"
+                     "[00:15] 最後記得儲存，這樣下次打開的時候就會自動套用，非常方便，大家可以試試看。\n")
+
+    def test_chinese_with_one_japanese_phrase_is_zh(self):
+        text = self.CHINESE_LINES + "[00:22] 影片最後講者用日文說了ありがとうございます，謝謝大家的收看。\n"
+        self.assertEqual(wa.detect_language(text), "zh")
+
+    def test_chinese_mentioning_japanese_titles_is_zh(self):
+        text = self.CHINESE_LINES + "[00:22] 我最喜歡的宮崎駿作品是となりのトトロ和もののけ姫，劇情非常感人，畫面也很美。\n"
+        self.assertEqual(wa.detect_language(text), "zh")
 
     def test_chinese_with_katakana_brands_is_zh(self):
         self.assertEqual(wa.detect_language("[00:01] 今天我們去了東京的ユニクロ和セブンイレブン，買了很多東西回家。\n" * 3), "zh")

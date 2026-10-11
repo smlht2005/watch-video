@@ -105,8 +105,16 @@ def detect_language(text: str) -> str:
         return "unknown"
     if hangul >= 5 and hangul / cjk >= 0.3:
         return "ko"
-    if hira >= 5 and hira / cjk >= 0.05:  # kanji-heavy Japanese still has some hiragana
-        return "ja"
+    if hira >= 5:
+        # Real Japanese has hiragana (particles) on almost every line; Chinese quoting a Japanese phrase or title
+        # has it on a minority of lines, and then falls through to the Chinese check below.
+        cjk_lines = [ln for ln in body.splitlines() if re.search(r"[\u3040-\u30ff\u4e00-\u9fff]", ln)]
+        hira_share = sum(1 for ln in cjk_lines if re.search(r"[\u3040-\u309f]", ln)) / max(len(cjk_lines), 1)
+        if hira_share >= 0.5:
+            if hira / cjk >= 0.15:  # real Japanese prose is typically 30-60% hiragana
+                return "ja"
+            if hira / cjk >= 0.05:
+                return "other"  # kanji-heavy Japanese (headlines, noun lists): a human decides
     if han >= 10 and han / total >= 0.2:
         return "zh"
     if cjk == 0 and len({w.lower() for w in re.findall(r"[A-Za-z]+", body)}) < 4:
