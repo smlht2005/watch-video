@@ -3,7 +3,7 @@
 Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間戳的畫面與逐字稿，讓 Claude 回答影片內容。
 
 - Skill 來源：[bradautomates/claude-video](https://github.com/bradautomates/claude-video)（v0.3.2，MIT），位於 `.claude/skills/watch/`
-- `.claude/hooks/session-start.sh`：雲端 session（`CLAUDE_CODE_REMOTE=true`）啟動時自動安裝 `yt-dlp`，並在缺少設定時寫入預設值（本機引擎、`balanced`、僅使用字幕）
+- `.claude/hooks/session-start.sh`：雲端 session（`CLAUDE_CODE_REMOTE=true`）啟動時自動安裝 `yt-dlp` 與 `requirements.txt` 的 Python 套件（`python-docx`、`opencc-python-reimplemented`），並在缺少設定時寫入預設值（本機引擎、`balanced`、僅使用字幕）
 - `.claude/settings.json`：註冊上述 SessionStart hook
 
 ## 使用
@@ -24,7 +24,7 @@ Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間�
 
 - 環境變數 `GROQ_API_KEY`（無字幕時用 Groq Whisper 轉錄；不要把 key 寫進任何檔案）
 - `python3 .claude/skills/watch/scripts/setup.py --backend groq --detail balanced`
-- `pip install python-docx opencc-python-reimplemented`（產生 Word 檔；簡體逐字稿自動轉繁體）；轉 PDF 目視檢查另需 LibreOffice
+- `pip install -r requirements.txt`（雲端 session 由 hook 自動安裝；產生 Word 檔；簡體逐字稿自動轉繁體）；轉 PDF 目視檢查另需 LibreOffice
 
 ### 流程
 
