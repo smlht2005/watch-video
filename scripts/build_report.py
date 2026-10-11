@@ -14,6 +14,7 @@ from pathlib import Path
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
 
@@ -113,11 +114,37 @@ def set_font(run, size=None, bold=None, mono=False):
         run.bold = bold
 
 
+URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+")
+
+
+def add_hyperlink(par, url, size):
+    """Append a real clickable hyperlink run to a python-docx paragraph."""
+    rid = par.part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", is_external=True)
+    link = OxmlElement("w:hyperlink")
+    link.set(qn("r:id"), rid)
+    run = OxmlElement("w:r")
+    rpr = OxmlElement("w:rPr")
+    for tag, attrs in (("w:rStyle", {"w:val": "Hyperlink"}), ("w:color", {"w:val": "0563C1"}), ("w:u", {"w:val": "single"}),
+                       ("w:sz", {"w:val": str(int(size * 2))})):
+        el = OxmlElement(tag)
+        for k, v in attrs.items():
+            el.set(qn(k), v)
+        rpr.append(el)
+    run.append(rpr)
+    text = OxmlElement("w:t")
+    text.text = url
+    run.append(text)
+    link.append(run)
+    par._p.append(link)
+
+
 def add_inline(par, text, size=10.5):
-    for tok in re.split(r"(\*\*[^*]+\*\*|`[^`]+`)", text):
+    for tok in re.split(r"(\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
         if not tok:
             continue
-        if tok.startswith("**"):
+        if URL_RE.fullmatch(tok):
+            add_hyperlink(par, tok, size)
+        elif tok.startswith("**"):
             set_font(par.add_run(tok[2:-2]), size, bold=True)
         elif tok.startswith("`"):
             set_font(par.add_run(tok[1:-1]), size - 1, mono=True)
