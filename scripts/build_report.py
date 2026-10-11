@@ -182,6 +182,9 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         for e in meta["known_asr_errors"]:
             L.append(f"| {e['time']} | {e['heard']} | {e['expected']} |")
         L.append("")
+    if (dest / "supplement.md").exists():
+        L += ["## 補充資料連結", "",
+              "- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）", ""]
     return "\n".join(L)
 
 
@@ -223,10 +226,16 @@ def add_hyperlink(par, url, size):
 
 
 def add_inline(par, text, size=10.5):
-    for tok in re.split(r"(\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
+    for tok in re.split(r"(\[[^\]]+\]\([^)\s]+\)|\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
         if not tok:
             continue
-        if URL_RE.fullmatch(tok):
+        if (lm := re.fullmatch(r"\[([^\]]+)\]\(([^)\s]+)\)", tok)):
+            label, target = lm.groups()
+            if URL_RE.fullmatch(target):
+                add_hyperlink(par, target, size)
+            else:
+                set_font(par.add_run(label), size, mono=True)
+        elif URL_RE.fullmatch(tok):
             add_hyperlink(par, tok, size)
         elif tok.startswith("**"):
             set_font(par.add_run(tok[2:-2]), size, bold=True)
