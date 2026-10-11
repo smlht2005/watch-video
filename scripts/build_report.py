@@ -3,7 +3,9 @@
 
 Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg,
          transcript.zh.md (optional: Traditional Chinese translation of a foreign-language transcript,
-         same "[mm:ss] text" lines; shown under the original text of each section)
+         same "[mm:ss] text" lines; shown under the original text of each section),
+         supplement.md (optional, hand-written, never overwritten by watch_archive: information the video
+         does not show, e.g. the full text of a screen capture that was cut off, post captions, links)
 Writes : <stem>_report.md   (frames interleaved with the transcript)
          <stem>_report.docx (same content as a Word document)
 
@@ -138,6 +140,26 @@ def frame_blocks(meta, segs, frames):
     return L
 
 
+def supplement_lines(dest: Path):
+    """Body of supplement.md for the report: its own headings sit under '## 補充資料'; fenced blocks become '> ' quotes."""
+    path = dest / "supplement.md"
+    if not path.exists():
+        return []
+    out, fenced = ["## 補充資料（影片未呈現的資訊）", ""], False
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip().startswith("```"):
+            fenced = not fenced
+            out.append("")
+        elif fenced:
+            out.append(f"> {line}" if line.strip() else ">")
+        elif re.match(r"^#{1,2}\s", line):
+            if not re.match(r"^#\s+補充資料", line):  # drop the file's own title; the section heading replaces it
+                out.append(re.sub(r"^#+", "###", line))
+        else:
+            out.append(line)
+    return out + [""]
+
+
 def build_md(dest: Path, meta, summary, segs, frames) -> str:
     L = [f"# {meta['title']}", ""]
     L += [f"- 來源：{meta['url']}",
@@ -149,6 +171,7 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
     L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
+    L += supplement_lines(dest)
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
     if meta.get("slides"):
         L += slide_blocks(meta, segs)
@@ -263,6 +286,11 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
                 buf.seek(0)
                 doc.add_picture(buf, width=Cm(min(12, 7 * w / h)))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+        elif line.startswith(">"):  # quoted block (fenced text from supplement.md): indented, monospace
+            par = doc.add_paragraph()
+            par.paragraph_format.left_indent = Cm(0.8)
+            par.paragraph_format.space_after = Pt(0)
+            set_font(par.add_run(line[1:].strip()), 10, mono=True)
         elif line.startswith("- "):
             add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
         elif line.strip():

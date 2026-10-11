@@ -37,7 +37,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media]`
    - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → Groq Whisper 轉錄（帶語言與詞典提示詞）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
    - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
-   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
+   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`supplement.md`（選用：影片未呈現的補充資料）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
    - 語言判斷順序：平台字幕語言 → Whisper 自動偵測結果（腳本以字元比例判斷 `detected_language`）→ 中文轉繁體（OpenCC）／非中文留給步驟 4b 中譯。
    - `--keep-media` 才保留 `media/<stem>_video.<ext>`；影片只存本機（gitignore）。
 
@@ -54,6 +54,8 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - **校正去哪裡**：穩定、不會誤傷的專有名詞錯誤 → 對應領域詞典 `glossary/domains/<領域>.json` 的 `replace`（key 用繁體、至少 3 字或帶上下文）或 `terms`；任何主題都成立的 → `glossary/common.json`；只這支影片成立或不確定的 → `known_asr_errors`。
    - 詞典新增後，對目前逐字稿直接替換並寫入 `meta.json.glossary_applied`，不必為此重跑 Whisper。
    - **外語影片加中譯**：執行輸出出現 `language: en`（或 `meta.json.needs_zh_translation` 為 true）時，一律寫 `transcript.zh.md`；翻成**繁體中文（台灣用字）**，專有名詞與指令保留英文原文。逐字稿不是中文（如英文影片或英文平台字幕）時，寫 `transcript.zh.md`：與 `transcript.md` 同格式 `[mm:ss] 譯文`，時間戳沿用原文；碎片句合併成完整句，掛在句首時間戳（其餘行省略）。不要讓一句譯文跨越 `slides` 的 `start` 邊界。報告每段會在原文下方加「**中譯：**」；重跑不會覆蓋此檔。
+
+   - **補充資料（`supplement.md`）**：影片沒呈現、或畫面一閃而過而遺漏的資訊（如被截斷的畫面文字、貼文說明欄／留言回傳的完整內容、連結、講者後續補充），由使用者提供或我查到後，另存成同資料夾的 `supplement.md`（獨立檔，重跑不會覆蓋）。寫法：`# 補充資料` 開頭，列出**來源**與**為何需要補充**；原文放進 ``` 程式碼區塊逐字保留；再加「與影片對照」（哪些畫面已出現、補充多了什麼、能確認哪些原本的推測）與「備註」（主張未查證等）。`build_report.py` 會自動把它放在報告的「摘要」之後、「圖文對照」之前（原文以縮排等寬區塊呈現）。補充內容若解決了 `known_asr_errors` 或摘要裡的推測，一併更新。
 
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
 
