@@ -10,7 +10,11 @@
     "prompt": "以下是繁體中文的逐字稿，含標點符號。技能包、逐字稿、知識庫、Juicy、MD檔"
   },
   "glossaries": [],
-  "glossary_applied": {},
+  "glossary_applied": {
+    "驗收、列帶": 1,
+    "這個教稿": 1,
+    "後面教稿": 1
+  },
   "source_hashtags": [],
   "uploader": "李佳達",
   "duration": "01:26 (86.4s)",
