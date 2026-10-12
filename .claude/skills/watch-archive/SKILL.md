@@ -12,12 +12,12 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ![watch-archive 流程鳥瞰圖](../../../docs/watch-archive-flow.png)
 
 ```text
-網址 ─▶ 0 環境 ─▶ 1 選參數(不強制 --lang) ─▶ 2 歸檔(下載→平台字幕或 Groq 轉錄→偵測語言→中文轉繁體→詞典校正→截圖→報告)
-     ─▶ 3 校稿 ─▶ 4a 看截圖分投影片或主題(slides) ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md)
+網址 ─▶ 0 環境 ─▶ 1 選參數(不強制 --lang；長錄影加 --timestamps/--resolution) ─▶ 2 歸檔(下載→平台字幕或 Groq 轉錄→偵測語言→中文轉繁體→詞典校正→截圖→報告)
+     ─▶ 3 校稿 ─▶ 4a 看截圖分投影片或主題(slides，每段 2–4 分鐘；截圖不足→補 cue 回到 2 重跑) ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md)
      ─▶ 4c 補充資料(選用 supplement.md) ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
 ```
 
-藍＝腳本自動、橘＝Claude 判斷、綠＝交付；新增「偵測語言」（步驟 2）與「補充資料」（步驟 4c）；圖源 `docs/watch-archive-flow.svg`。改圖後重新產生 PNG：
+藍＝腳本自動、橘＝Claude 判斷、綠＝交付；新增「偵測語言」（步驟 2）、「補充資料」（步驟 4c）與「截圖不足時補 cue 重跑」的回圈（4a→2，黃色虛線）；圖源 `docs/watch-archive-flow.svg`。改圖後重新產生 PNG：
 `/opt/pw-browsers/chromium-1194/chrome-linux/chrome --headless --no-sandbox --hide-scrollbars --window-size=1600,1100 --screenshot=docs/watch-archive-flow.png file://$PWD/docs/watch-archive-flow.svg`，再用 PIL 裁成 1600×900（視窗外框會吃掉底部，故先開大再裁）。
 
 ## 步驟
