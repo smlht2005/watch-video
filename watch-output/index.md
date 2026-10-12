@@ -13,3 +13,4 @@
 | 2026-10-12 | GoogleDrive | MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成 | 09:17 (557.4s) | whisper (groq) | [開啟](./2026-10-12_GoogleDrive_MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成__1EIhyh60imHgwatjkElA-8di38oYtiv0T/) |
 | 2026-10-12 | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211/) |
 | 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
+| 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
