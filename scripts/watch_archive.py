@@ -69,6 +69,11 @@ def platform_and_id(url: str):
                 return "Facebook", parts[parts.index(key) + 1]
         if parts:
             return "Facebook", parts[-1]
+    if "drive.google.com" in host:  # /file/d/<id>/view or open?id=<id>
+        if "d" in parts and parts.index("d") + 1 < len(parts):
+            return "GoogleDrive", parts[parts.index("d") + 1]
+        if "id" in parse_qs(u.query):
+            return "GoogleDrive", parse_qs(u.query)["id"][0]
     name = host.removeprefix("www.").split(".")[0].capitalize() or "Web"
     return name, (parts[-1] if parts else re.sub(r"\W+", "", host))
 
@@ -195,7 +200,7 @@ def main():
 
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
-        [sys.executable, str(WATCH), args.url, "--question", args.question,
+        [sys.executable, str(WATCH), args.url, "--engine", "local", "--question", args.question,
          "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)],
         capture_output=True, text=True, env=env,
     )
@@ -203,6 +208,10 @@ def main():
         print(f"watch.py failed (exit {proc.returncode}):\n{proc.stderr[-2000:]}", file=sys.stderr)
         sys.exit(proc.returncode)
     report = proc.stdout
+    if "## Transcript" not in report and "frame_" not in report:
+        print("watch.py returned neither frames nor a transcript (download or engine problem); nothing archived.\n"
+              + report[:1500], file=sys.stderr)
+        sys.exit(1)
 
     title_raw = field(report, "Title") or "untitled"
     prev_dirs = sorted(OUT_ROOT.glob(f"*__{vid}"))

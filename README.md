@@ -25,7 +25,7 @@ Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間�
 ### 事前準備
 
 - 環境變數 `GROQ_API_KEY`（無字幕時用 Groq Whisper 轉錄；不要把 key 寫進任何檔案）
-- `python3 .claude/skills/watch/scripts/setup.py --backend groq --detail balanced`
+- `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`
 - `pip install -r requirements.txt`（雲端 session 由 hook 自動安裝；產生 Word 檔；簡體逐字稿自動轉繁體）；轉 PDF 目視檢查另需 LibreOffice
 
 ### 流程

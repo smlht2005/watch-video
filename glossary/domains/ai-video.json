@@ -1,0 +1,24 @@
+{
+  "_說明": "AI 影片生成、本地部署（ComfyUI 等）主題。replace 的 key 用繁體，長度 ≥3 字或帶上下文。",
+  "terms": [
+    "ComfyUI",
+    "MiniMax H3",
+    "文生影片",
+    "圖生影片",
+    "工作流",
+    "自訂節點",
+    "量化版",
+    "LoRA",
+    "NF4",
+    "BF16",
+    "DiffSynth-Studio",
+    "ModelScope"
+  ],
+  "replace": {
+    "紋身影片": "文生影片",
+    "自定結點": "自訂節點",
+    "MiniMax、H3": "MiniMax H3",
+    "越域版": "越獄版",
+    "域域版": "越獄版"
+  }
+}

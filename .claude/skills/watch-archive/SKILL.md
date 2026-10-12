@@ -23,7 +23,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ## 步驟
 
 0. **環境**：確認 `GROQ_API_KEY` 存在（只報有/沒有與長度）；確認 `pip install python-docx opencc-python-reimplemented`。
-   若 `.claude/skills/watch` 尚未設定，先跑 `python3 .claude/skills/watch/scripts/setup.py --backend groq --detail balanced`（exit 0）。
+   若 `.claude/skills/watch` 尚未設定，先跑 `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`（exit 0；一定要帶 `--engine local`，否則有 `GEMINI_API_KEY` 時會改走 Gemini，不產生截圖與逐字稿）。
    從最新的 `main` 開新分支 `claude/...`（不要重用已合併的分支）。
 
 1. **選參數**（沒有把握就用預設）：
