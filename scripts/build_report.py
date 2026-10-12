@@ -3,7 +3,9 @@
 
 Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg,
          transcript.zh.md (optional: Traditional Chinese translation of a foreign-language transcript,
-         same "[mm:ss] text" lines; shown under the original text of each section)
+         same "[mm:ss] text" lines; shown under the original text of each section),
+         supplement.md (optional, hand-written, never overwritten by watch_archive: information the video
+         does not show, e.g. the full text of a screen capture that was cut off, post captions, links)
 Writes : <stem>_report.md   (frames interleaved with the transcript)
          <stem>_report.docx (same content as a Word document)
 
@@ -138,6 +140,68 @@ def frame_blocks(meta, segs, frames):
     return L
 
 
+FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})")
+
+
+def fence_close(marker: str, line: str) -> bool:
+    """A closing fence is a bare run of the same character, at least as long as the opening one (so ```python never closes)."""
+    m = re.fullmatch(r"\s*(`{3,}|~{3,})\s*", line)
+    return bool(m) and m.group(1)[0] == marker[0] and len(m.group(1)) >= len(marker)
+
+
+def close_open_fence(md: str) -> str:
+    """Append a closing fence if the markdown ends inside one, so a stray ``` cannot swallow the rest of the report."""
+    fence = None
+    for line in md.splitlines():
+        if fence:
+            if fence_close(fence, line):
+                fence = None
+        elif (m := FENCE_OPEN.match(line)):
+            fence = m.group(1)
+    return md + "\n" + fence if fence else md
+
+
+def supplement_lines(dest: Path):
+    """Body of supplement.md for the report, under '## 補充資料'.
+
+    The file's leading '# …' title is dropped; '#'/'##' headings -> '###' heading; '###' and deeper -> bold line
+    (the docx converter handles at most three heading levels). Fenced blocks (``` or ~~~) are kept verbatim with
+    their original markers, so a ~~~ block may contain ```; an unclosed fence is closed at the end, and md_to_docx
+    renders fences as indented monospace. Returns [] when the file is missing or has no content besides its title.
+    """
+    path = dest / "supplement.md"
+    if not path.exists():
+        return []
+    out, fence, has_body, started = [], None, False, False
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m_fence = FENCE_OPEN.match(line)
+        if fence:
+            if fence_close(fence, line):
+                out.append(fence)
+                fence = None
+            else:
+                out.append(line)
+        elif m_fence:
+            fence, has_body, started = m_fence.group(1), True, True
+            out.append(fence)
+        elif (m := re.match(r"^(#{1,6})\s+(.*)$", line)):
+            level, text = len(m.group(1)), m.group(2).strip()
+            if level == 1 and not started:  # the file's own title; the section heading replaces it
+                started = True
+                continue
+            started = has_body = True
+            out.append(f"**{text}**" if level >= 3 else f"### {text}")
+        else:
+            if line.strip():
+                started = has_body = True
+            out.append(line)
+    if fence:
+        out.append(fence)
+    if not has_body:
+        return []
+    return ["## 補充資料（影片未呈現的資訊）", ""] + out + [""]
+
+
 def build_md(dest: Path, meta, summary, segs, frames) -> str:
     L = [f"# {meta['title']}", ""]
     L += [f"- 來源：{meta['url']}",
@@ -148,7 +212,9 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
     if meta.get("keywords"):
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
-    L += ["## 摘要與名詞說明", "", strip_h1(summary).strip(), ""]
+    L += ["## 摘要與名詞說明", "", close_open_fence(strip_h1(summary).strip()), ""]
+    sup = supplement_lines(dest)
+    L += sup
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
     if meta.get("slides"):
         L += slide_blocks(meta, segs)
@@ -159,6 +225,9 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         for e in meta["known_asr_errors"]:
             L.append(f"| {e['time']} | {e['heard']} | {e['expected']} |")
         L.append("")
+    if sup:
+        L += ["## 補充資料連結", "",
+              "- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）", ""]
     return "\n".join(L)
 
 
@@ -178,7 +247,7 @@ def set_font(run, size=None, bold=None, mono=False):
 URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+")
 
 
-def add_hyperlink(par, url, size):
+def add_hyperlink(par, url, size, label=None):
     """Append a real clickable hyperlink run to a python-docx paragraph."""
     rid = par.part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", is_external=True)
     link = OxmlElement("w:hyperlink")
@@ -193,17 +262,23 @@ def add_hyperlink(par, url, size):
         rpr.append(el)
     run.append(rpr)
     text = OxmlElement("w:t")
-    text.text = url
+    text.text = label or url
     run.append(text)
     link.append(run)
     par._p.append(link)
 
 
 def add_inline(par, text, size=10.5):
-    for tok in re.split(r"(\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
+    for tok in re.split(r"(\[[^\]]+\]\((?:[^()\s]|\([^()\s]*\))+\)|\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
         if not tok:
             continue
-        if URL_RE.fullmatch(tok):
+        if (lm := re.fullmatch(r"\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)", tok)):
+            label, target = lm.groups()
+            if URL_RE.fullmatch(target):
+                add_hyperlink(par, target, size, label)
+            else:
+                set_font(par.add_run(label), size, mono=True)
+        elif URL_RE.fullmatch(tok):
             add_hyperlink(par, tok, size)
         elif tok.startswith("**"):
             set_font(par.add_run(tok[2:-2]), size, bold=True)
@@ -227,6 +302,18 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
     i = 0
     while i < len(lines):
         line = lines[i]
+        if (fm := FENCE_OPEN.match(line)):  # fenced block (``` or ~~~): verbatim, indented, monospace
+            marker = fm.group(1)
+            i += 1
+            while i < len(lines) and not fence_close(marker, lines[i]):
+                par = doc.add_paragraph()
+                par.paragraph_format.left_indent = Cm(0.8)
+                par.paragraph_format.space_after = Pt(0)
+                set_font(par.add_run(lines[i]), 10, mono=True)
+                i += 1
+            i += 1
+            doc.add_paragraph()
+            continue
         if line.startswith("|"):
             rows = []
             while i < len(lines) and lines[i].startswith("|"):

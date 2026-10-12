@@ -264,12 +264,15 @@ def main() -> int:
         frames = merge_frames(frames, cue_frames)
 
     transcript_state = "missing"
+    whisper_language = ""  # Local patch: language reported by Whisper, shown in the report header
     if not track_available and backend_choice != "none" and video_path and meta.get("has_audio"):
         backend, api_key = ("whisperx", None) if backend_choice == "whisperx" else load_api_key(None if backend_choice == "auto" else backend_choice)
         if backend:
             try:
                 all_segments, used_backend = transcribe_video(video_path, work / "audio.mp3", backend=backend, api_key=api_key)
                 gaps = getattr(all_segments, "gaps", [])
+                # WhisperX's JSON language is unreliable without alignment (see the skill notes): only API backends count
+                whisper_language = "" if used_backend == "whisperx" else (getattr(all_segments, "language", "") or "")
                 track_available = True
                 transcript_state = "no speech" if not all_segments else "available"
                 if used_backend == "whisperx":
@@ -311,6 +314,8 @@ def main() -> int:
     if info.get("uploader"):
         print(f"- **Uploader:** {info['uploader']}")
     print(f"- **Duration:** {format_time(full_duration)} ({full_duration:.1f}s)")
+    if whisper_language:
+        print(f"- **Whisper language:** {whisper_language}")
     if focused:
         print(
             f"- **Focus range:** {format_time(effective_start)} → {format_time(effective_end)} "

@@ -17,10 +17,11 @@ TAG_RE = re.compile(r'<[^>]*>')
 
 class Segments(list):
     """Internal metadata without changing the public segment dictionaries."""
-    def __init__(self, values=(), *, gaps=None, no_speech=False):
+    def __init__(self, values=(), *, gaps=None, no_speech=False, language=""):
         super().__init__(values)
         self.gaps = list(gaps or [])
         self.no_speech = no_speech
+        self.language = language  # Local patch: language reported by Whisper verbose_json (e.g. "english"), "" if absent
 
 
 def normalize_segments(data: object) -> Segments:
@@ -42,6 +43,8 @@ def normalize_segments(data: object) -> Segments:
         previous = start
         out.append({'start': round(start, 6), 'end': round(end, 6), 'text': text.strip()})
     out.no_speech = not out
+    lang = data.get('language')  # Local patch: keep Whisper's own language id instead of dropping it
+    out.language = lang.strip().lower() if isinstance(lang, str) else ""
     return out
 
 

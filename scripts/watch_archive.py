@@ -90,6 +90,129 @@ def to_traditional(text: str) -> str:
     return _S2T.convert(text) if _S2T else text
 
 
+def detect_language(text: str) -> str:
+    """Rough language of a transcript from its characters.
+
+    Returns 'zh', 'ja', 'ko', 'en', 'other' (mixed / unclear) or 'unknown' (too little text to judge).
+    Counts CJK ideographs, kana, hangul and Latin *words* (not letters), so Chinese transcripts full of English
+    technical terms still count as Chinese. Whisper's own language guess is not surfaced in the watch report,
+    so this judges the output text; it says nothing reliable when Whisper ran with a forced --lang.
+    """
+    body = re.sub(r"\[\d{1,2}:\d{2}(?::\d{2})?\]|```|^#.*$|^_Source:.*$", "", text, flags=re.M)
+    han = len(re.findall(r"[\u4e00-\u9fff]", body))
+    kana = len(re.findall(r"[\u3040-\u30ff]", body))
+    hira = len(re.findall(r"[\u3040-\u309f]", body))  # particles (の は を です…) exist only in Japanese; katakana brands appear in Chinese too
+    hangul = len(re.findall(r"[\uac00-\ud7af]", body))
+    latin = len(re.findall(r"[A-Za-z]+", body))
+    cjk = han + kana + hangul
+    total = cjk + latin
+    if total < 10:
+        return "unknown"
+    if hangul >= 5 and hangul / cjk >= 0.3:
+        return "ko"
+    if hira >= 5:
+        # Real Japanese has hiragana (particles) on almost every line; Chinese quoting a Japanese phrase or title
+        # has it on a minority of lines, and then falls through to the Chinese check below.
+        cjk_lines = [ln for ln in body.splitlines() if re.search(r"[\u3040-\u30ff\u4e00-\u9fff]", ln)]
+        hira_share = sum(1 for ln in cjk_lines if re.search(r"[\u3040-\u309f]", ln)) / max(len(cjk_lines), 1)
+        if hira_share >= 0.5:
+            if hira / cjk >= 0.15:  # real Japanese prose is typically 30-60% hiragana
+                return "ja"
+            if hira / cjk >= 0.05:
+                return "other"  # kanji-heavy Japanese (headlines, noun lists): a human decides
+    if han >= 10 and han / total >= 0.2:
+        return "zh"
+    if cjk == 0 and len({w.lower() for w in re.findall(r"[A-Za-z]+", body)}) < 4:
+        return "unknown"  # e.g. fifteen lines of "ok": plenty of words, no information
+    if latin >= 10 and cjk / total < 0.05:
+        return "en"  # Latin-script non-Chinese (may be Spanish etc.); the translation flag is what matters
+    return "other"
+
+
+# Whisper's language names -> codes (99 languages; 'cantonese' / 'yue' count as Chinese for our purposes)
+_WHISPER_NAMES = (
+    "afrikaans af|albanian sq|amharic am|arabic ar|armenian hy|assamese as|azerbaijani az|bashkir ba|basque eu|"
+    "belarusian be|bengali bn|bosnian bs|breton br|bulgarian bg|burmese my|catalan ca|chinese zh|croatian hr|"
+    "czech cs|danish da|dutch nl|english en|estonian et|faroese fo|finnish fi|french fr|galician gl|georgian ka|"
+    "german de|greek el|gujarati gu|haitian_creole ht|hausa ha|hawaiian haw|hebrew he|hindi hi|hungarian hu|"
+    "icelandic is|indonesian id|italian it|japanese ja|javanese jw|kannada kn|kazakh kk|khmer km|korean ko|lao lo|"
+    "latin la|latvian lv|lingala ln|lithuanian lt|luxembourgish lb|macedonian mk|malagasy mg|malay ms|"
+    "malayalam ml|maltese mt|maori mi|marathi mr|mongolian mn|nepali ne|norwegian no|occitan oc|pashto ps|"
+    "persian fa|polish pl|portuguese pt|punjabi pa|romanian ro|russian ru|sanskrit sa|serbian sr|shona sn|"
+    "sindhi sd|sinhala si|slovak sk|slovenian sl|somali so|spanish es|sundanese su|swahili sw|swedish sv|"
+    "tagalog tl|tajik tg|tamil ta|tatar tt|telugu te|thai th|tibetan bo|turkish tr|turkmen tk|ukrainian uk|"
+    "urdu ur|uzbek uz|vietnamese vi|welsh cy|yiddish yi|yoruba yo|cantonese zh|mandarin zh"
+)
+WHISPER_LANGUAGES = {pair.split()[0].replace("_", " "): pair.split()[1] for pair in _WHISPER_NAMES.split("|")}
+WHISPER_CODES = set(WHISPER_LANGUAGES.values()) | {"yue"}
+# Whisper often emits these on silence / music; they are not trustworthy language ids
+UNRELIABLE_WHISPER = {"nn", "nynorsk"}
+
+
+def normalize_whisper_language(raw: str) -> str:
+    """Whisper reports a language name ('english') or code ('en', 'zh-TW', 'yue'); return a lowercase code.
+
+    Returns '' when absent, unparseable (digits, junk) or known to be unreliable ('nn'); the caller then falls back
+    to the text heuristic.
+    """
+    name = re.sub(r"\s+", " ", (raw or "").strip().lower().replace("_", " "))
+    for candidate in (name, re.split(r"[ \-(]", name)[0]):  # 'haitian creole', then 'chinese' from 'chinese (traditional)' / 'zh-tw'
+        if not candidate or candidate in UNRELIABLE_WHISPER:
+            return ""
+        if candidate in WHISPER_LANGUAGES:
+            return WHISPER_LANGUAGES[candidate]
+        if candidate == "yue":
+            return "zh"
+        if candidate in WHISPER_CODES:
+            return candidate
+    return ""
+
+
+def forced_language(arg_lang: str, environ=None) -> str:
+    """--lang, or WATCH_WHISPER_LANGUAGE already set in the environment: both force Whisper's language."""
+    return arg_lang or (environ if environ is not None else os.environ).get("WATCH_WHISPER_LANGUAGE", "")
+
+
+def _has_content(text: str) -> bool:
+    body = re.sub(r"\[\d{1,2}:\d{2}(?::\d{2})?\]|```|^#.*$|^_Source:.*$", "", text, flags=re.M)
+    return bool(re.search(r"[A-Za-z\u3040-\u30ff\u4e00-\u9fff\uac00-\ud7af]", body))
+
+
+def resolve_language(text: str, whisper_raw: str = "", forced: str = "") -> tuple[str, str]:
+    """Pick the language label and say where it came from: (language, source).
+
+    source is 'whisper', 'whisper (text: zh)' (Whisper and the text disagree: a human should check),
+    'heuristic' or 'heuristic (forced --lang)'. Whisper's own language id wins when present (more reliable than
+    character ratios for short or mixed text) unless the language was forced (Whisper then just echoes it) or the
+    transcript has no content (silence/music: Whisper still reports a language). Platform captions carry no
+    Whisper language, so those use detect_language().
+    """
+    if forced:
+        return detect_language(text), "heuristic (forced --lang)"
+    if not _has_content(text):
+        return "unknown", "heuristic"
+    code = normalize_whisper_language(whisper_raw)
+    if not code:
+        return detect_language(text), "heuristic"
+    text_lang = detect_language(text)
+    cjk = ("zh", "ja", "ko")
+    conflict = (code in cjk and text_lang in cjk + ("en",) and text_lang != code) or (code not in cjk and text_lang in cjk)
+    return code, f"whisper (text: {text_lang})" if conflict else "whisper"
+
+
+def needs_zh_translation(detected: str) -> bool:
+    """Any known non-Chinese language (en, ja, ko, es…) gets a Traditional Chinese translation; other / unknown are left to a human check."""
+    return detected not in ("zh", "other", "unknown")
+
+
+def convert_to_traditional(detected: str) -> bool:
+    """OpenCC + full-width punctuation only for text that may be Chinese.
+
+    Skipped for ja / ko (would corrupt kanji, e.g. 会議 -> 會議) and for 'other' (unclear: a human decides first).
+    """
+    return detected not in ("ja", "ko", "other")
+
+
 def load_glossary(domains):
     """Merge glossary/common.json + glossary/domains/<name>.json (dir overridable via WATCH_GLOSSARY_DIR).
 
@@ -177,7 +300,7 @@ def main():
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
     ap.add_argument("--title", help="override the display title/folder name (remembered in meta.json as title_override)")
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
-    ap.add_argument("--lang", default="", help="Whisper language hint, e.g. zh (default: auto-detect)")
+    ap.add_argument("--lang", default="", help="force Whisper language, e.g. zh. Leave empty (default) so the language is auto-detected and reported; forcing a wrong language yields garbage")
     ap.add_argument("--terms", default="", help="extra comma-separated terms to hint Whisper (names, jargon)")
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
@@ -198,9 +321,12 @@ def main():
     if terms:
         env["WATCH_WHISPER_PROMPT"] = whisper_prompt(terms, args.lang)
 
+    # Archiving needs frames + transcript, which only the local engine returns; with GEMINI_API_KEY set,
+    # watch.py's "auto" would pick Gemini and the archive would come out empty. WATCH_ENGINE overrides.
+    engine = os.environ.get("WATCH_ENGINE", "local")
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
-        [sys.executable, str(WATCH), args.url, "--engine", "local", "--question", args.question,
+        [sys.executable, str(WATCH), args.url, "--engine", engine, "--question", args.question,
          "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)],
         capture_output=True, text=True, env=env,
     )
@@ -220,8 +346,17 @@ def main():
     title = title_override or tidy_title(title_raw, field(report, "Uploader"))
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
-    transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
-    title = to_traditional(title)
+    detected_language, language_source = resolve_language(
+        transcript_raw, field(report, "Whisper language"), forced_language(args.lang))
+    if "(text:" in language_source:
+        print(f"WARNING: Whisper reported '{detected_language}' but the transcript text looks different "
+              f"({language_source}); check the language before relying on translation / conversion.", file=sys.stderr)
+    to_zh_tw = convert_to_traditional(detected_language)
+    if to_zh_tw:
+        transcript, glossary_applied = apply_glossary(fullwidth_punct(to_traditional(transcript_raw)), gl_replace)
+        title = to_traditional(title)
+    else:  # keep ja / ko / unclear text untouched
+        transcript, glossary_applied = apply_glossary(transcript_raw, gl_replace)
     if _S2T is None:
         print("WARNING: opencc not installed; transcript left as-is (pip install opencc-python-reimplemented)", file=sys.stderr)
     src_m = re.search(r"_Source:\s*(.+?)\._", transcript)
@@ -254,10 +389,14 @@ def main():
         "title_raw": title_raw,
         "title_override": title_override,
         "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
+        "detected_language": detected_language,
+        "language_source": language_source,
+        "forced_lang": args.lang,
+        "needs_zh_translation": needs_zh_translation(detected_language),
         "glossaries": domains,
         "glossary_applied": glossary_applied,
         "source_hashtags": hashtags(title_raw),
-        "uploader": to_traditional(field(report, "Uploader")),
+        "uploader": to_traditional(field(report, "Uploader")) if to_zh_tw else field(report, "Uploader"),
         "duration": field(report, "Duration"),
         "detail": args.detail,
         "transcript_source": transcript_source,
@@ -308,6 +447,17 @@ def main():
 
     update_index(dest, meta)
     print(f"archived -> {dest.relative_to(ROOT)}")
+    if forced_language(args.lang):
+        print(f"WARNING: --lang {forced_language(args.lang)} was forced to Whisper, so a wrong language would NOT be caught; "
+              "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
+    if detected_language == "zh":
+        print(f"language: zh [{language_source}]（已轉繁體 zh-TW）")
+    elif detected_language == "unknown":
+        print("language: unknown（逐字稿太短或缺失，請自行判斷是否需要中譯）")
+    elif detected_language == "other":
+        print("language: other（混雜或無法判斷）：已跳過簡轉繁；請讀逐字稿確認，中文請手動轉繁體，非中文請依 SKILL 步驟 4b 寫 transcript.zh.md")
+    else:
+        print(f"language: {detected_language} [{language_source}] -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
 
 
 def update_index(dest: Path, meta: dict):

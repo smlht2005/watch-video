@@ -304,5 +304,8 @@
     }
   ],
   "original_url": "https://youtu.be/NbL9xD2KV4E",
-  "source_note": "YouTube 擋雲端 IP，改由使用者上傳至 Google Drive 的同一支影片下載；原影片 2026-09-10 上傳"
+  "source_note": "YouTube 擋雲端 IP，改由使用者上傳至 Google Drive 的同一支影片下載；原影片 2026-09-10 上傳",
+  "detected_language": "zh",
+  "language_source": "heuristic (forced --lang)",
+  "needs_zh_translation": false
 }
