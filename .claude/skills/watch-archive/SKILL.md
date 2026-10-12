@@ -22,21 +22,23 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 ## 步驟
 
-0. **環境**：確認 `GROQ_API_KEY` 存在（只報有/沒有與長度）；確認 `pip install python-docx opencc-python-reimplemented`。
-   若 `.claude/skills/watch` 尚未設定，先跑 `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`（exit 0；一定要帶 `--engine local`，否則有 `GEMINI_API_KEY` 時會改走 Gemini，不產生截圖與逐字稿）。
+0. **環境**：確認 Groq key 是否存在（環境變數 `GROQ_API_KEY` 或 `~/.config/watch/.env`；只報有/沒有與長度）。有就預設用 Groq 轉錄；沒有則依 `setup.py --json` 的 `whisper_backend`（例如本地 WhisperX），兩者都沒有時，無字幕影片會拿不到逐字稿，要先告知使用者。**雲端 session（`CLAUDE_CODE_REMOTE=true`）只能用 Groq**：容器沒有 WhisperX，不要加 `--local`；沒有 key 就先告知使用者到環境 secret 設定 `GROQ_API_KEY`。確認 `pip install python-docx opencc-python-reimplemented`。
+   若 `.claude/skills/watch` 尚未設定，先跑 `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`（沒有 Groq key 時把 `groq` 換成 `whisperx`）（exit 0；一定要帶 `--engine local`，否則有 `GEMINI_API_KEY` 時會改走 Gemini，不產生截圖與逐字稿）。
    從最新的 `main` 開新分支 `claude/...`（不要重用已合併的分支）。
 
 1. **選參數**（沒有把握就用預設）：
    - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會讓任何語言都被硬轉成該語言（英文影片加 `--lang zh` 會得到不通順的中文，且無法事後偵測）。只有使用者明確指定、或已確認整支影片是同一種語言且自動偵測不準時才加；腳本會對強制語言印警告。
    - 語言優先採用 **Whisper 回報的語言**（報告表頭 `Whisper language`）；平台字幕來源與強制 `--lang` 時才從輸出文字判斷。寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`；每次重跑重新判斷）、`language_source`、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false），並在結尾印出 `language: …`。中文夾雜英文術語仍會判為 `zh`；`other`（混雜）與 `unknown`（逐字稿太短）要自己讀逐字稿確認：`other` 為避免改壞日韓文，**不會做簡轉繁**（`ja`／`ko` 同樣不轉），確定是中文時請手動轉繁體；`unknown` 仍照常轉換。平台有字幕時直接採用字幕，語言以字幕為準。
+   - **轉錄方式**：預設不加。有 Groq key 時用 Groq；使用者要求本地轉錄（不上傳音訊）時加 `--local`（本地 WhisperX，雲端不可用）；要指定其他後端用 `--whisper groq|openai|whisperx`（不可與 `--local` 同時用）。選擇會記在 `meta.json.whisper_choice`，重跑自動沿用（用過 `--local` 的影片重跑不會改上傳 Groq；要改回加 `--whisper groq`）。影片有平台字幕時不轉錄，這個參數不影響結果。
+   - **WhisperX 不支援提示詞**：`--glossary`／`--terms` 的術語提示不會送給 WhisperX（腳本會印警告），詞典只在轉錄後做固定替換，所以本地轉錄的專有名詞錯誤會比較多，步驟 4 校稿要多留意。`--lang` 只接受兩個小寫字母（例如 `zh`）。
    - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`electronics`、`kubernetes`、`claude-code`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
    - **長的螢幕錄影／notebook／投影片影片** → 加 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024`。自動抽圖依畫面變化挑圖，緩慢捲動的 notebook 會被當成重複畫面丟掉，結果一段十幾分鐘只剩標題卡。做法：先跑一次讀逐字稿，找出各主題開始的時間，在每個時間點後約 20–40 秒放一個 cue（避開標題卡與轉場），再重跑；1024px 讓程式碼與小字可讀。兩個值會記在 `meta.json`（`cue_timestamps`、`resolution`），之後重跑自動沿用；重跑時 `slides` 的圖檔會依時間自動對到新截圖。
 
 2. **歸檔**：
-   `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media]`
-   - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → Groq Whisper 轉錄（帶語言與詞典提示詞）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
+   `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media] [--local]`
+   - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → 平台字幕，或 Whisper 轉錄（Groq 帶語言與詞典提示詞；`--local` 時本地 WhisperX，只帶語言）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
    - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
    - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`supplement.md`（選用：影片未呈現的補充資料）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
    - 語言判斷順序：Whisper 回報的語言（Whisper 轉錄時）→ 否則（平台字幕、強制 `--lang`）以字數／字元比例判斷（此時 `en` 代表拉丁字母的非中文，西班牙文等也會標成 `en`）→ 中文轉繁體（OpenCC）／非中文留給步驟 4b 中譯。
@@ -81,7 +83,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
 
-6. **交付**：用 SendUserFile 傳 `*_report.docx`；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
+6. **交付**：用 SendUserFile 傳 `*_report.docx`；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄、本地 WhisperX 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
 
 7. **提交**：在 `claude/...` 分支 commit 並 push。合併方式依使用者指示（PR + Squash and merge，或直接合併）；使用者沒說就先問，不強制 push、不重用已合併分支。
 

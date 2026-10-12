@@ -1,8 +1,10 @@
 """Unit tests for language detection and supplement.md handling. Run: python3 -m unittest discover -s tests -v"""
+import os
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import build_report as br  # noqa: E402
@@ -213,6 +215,69 @@ class DocxFenceAndLinks(unittest.TestCase):
         xml = doc.element.xml
         self.assertIn("說明", xml)
         self.assertIn("supplement.md", xml)
+
+
+class PickWhisper(unittest.TestCase):
+    def test_groq_when_key_exists(self):
+        self.assertEqual(wa.pick_whisper(None, False, "", True), "groq")
+
+    def test_no_key_defers_to_watch_config(self):
+        self.assertIsNone(wa.pick_whisper(None, False, "", False))
+
+    def test_local_switch_beats_groq_key(self):
+        self.assertEqual(wa.pick_whisper(None, True, "", True), "whisperx")
+
+    def test_explicit_backend_wins(self):
+        self.assertEqual(wa.pick_whisper("openai", True, "whisperx", True), "openai")
+
+    def test_remembered_choice_beats_groq_key(self):
+        self.assertEqual(wa.pick_whisper(None, False, "whisperx", True), "whisperx")
+
+    def test_explicit_overrides_remembered(self):
+        self.assertEqual(wa.pick_whisper("groq", False, "whisperx", True), "groq")
+
+
+class HasGroqKey(unittest.TestCase):
+    def check(self, env_value, file_text):
+        with tempfile.TemporaryDirectory() as d:
+            cfg = Path(d) / ".env"
+            cfg.write_text(file_text, encoding="utf-8")
+            env = {k: v for k, v in os.environ.items() if k != "GROQ_API_KEY"}
+            if env_value is not None:
+                env["GROQ_API_KEY"] = env_value
+            with mock.patch.dict(os.environ, env, clear=True), mock.patch.object(wa.watch_config, "CONFIG_FILE", cfg), \
+                    mock.patch.object(wa.watch_config.Path, "cwd", return_value=Path(d) / "nowhere"):
+                return wa.has_groq_key()
+
+    def test_key_in_env(self):
+        self.assertTrue(self.check("k", ""))
+
+    def test_key_only_in_config_file(self):
+        self.assertTrue(self.check(None, 'GROQ_API_KEY="k"\n'))
+
+    def test_blank_everywhere(self):
+        self.assertFalse(self.check("  ", "GROQ_API_KEY=\n"))
+
+
+class WhisperHints(unittest.TestCase):
+    def test_api_backend_gets_language_and_prompt(self):
+        env, lang, prompt, warnings = wa.whisper_hints("groq", "zh", "詞1、詞2")
+        self.assertEqual(env, {"WATCH_WHISPER_LANGUAGE": "zh", "WATCH_WHISPER_PROMPT": "詞1、詞2"})
+        self.assertEqual((lang, prompt, warnings), ("zh", "詞1、詞2", []))
+
+    def test_api_backend_without_hints_sets_nothing(self):
+        self.assertEqual(wa.whisper_hints("groq", "", ""), ({}, "", "", []))
+
+    def test_whisperx_maps_language_and_drops_prompt(self):
+        env, lang, prompt, warnings = wa.whisper_hints("whisperx", "zh", "詞1")
+        self.assertEqual(env, {"WATCH_WHISPERX_LANGUAGE": "zh"})
+        self.assertEqual((lang, prompt), ("zh", ""))
+        self.assertEqual(len(warnings), 1)
+
+    def test_whisperx_rejects_non_two_letter_language(self):
+        env, lang, _, warnings = wa.whisper_hints("whisperx", "zh-TW", "")
+        self.assertEqual((env, lang), ({}, ""))
+        self.assertEqual(len(warnings), 1)
 
 
 if __name__ == "__main__":
