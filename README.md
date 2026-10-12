@@ -25,8 +25,9 @@ Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間�
 ### 事前準備
 
 - 轉錄方式（擇一，僅在影片沒有平台字幕時使用）：
-  - **Groq Whisper**：設環境變數 `GROQ_API_KEY`（不要把 key 寫進任何檔案）；有這個 key 時 `watch_archive.py` 預設就用 Groq
-  - **本地 WhisperX**：不需 key，`python3 .claude/skills/watch/scripts/setup.py --install-whisperx` 安裝；有 Groq key 時用 `--local` 切換
+  - **Groq Whisper**：設環境變數 `GROQ_API_KEY`（不要把 key 寫進 repo 的檔案；也可放在 `~/.config/watch/.env`）；有這個 key 時 `watch_archive.py` 預設就用 Groq
+  - **本地 WhisperX**（桌機用）：不需 key、不上傳音訊，`python3 .claude/skills/watch/scripts/setup.py --install-whisperx` 安裝（會下載 PyTorch 與模型）；有 Groq key 時用 `--local` 切換
+- **雲端（Claude Code on the web）**：在環境 secret 設 `GROQ_API_KEY`，session-start hook 會自動設定成 Groq。**雲端不要加 `--local`**：容器沒有裝 WhisperX，加了只會有截圖、沒有逐字稿；沒設 key 時，無字幕影片同樣拿不到逐字稿
 - `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`（沒有 Groq key 的機器把 `groq` 換成 `whisperx`）
 - `pip install -r requirements.txt`（雲端 session 由 hook 自動安裝；產生 Word 檔；簡體逐字稿自動轉繁體）；轉 PDF 目視檢查另需 LibreOffice
 
@@ -37,7 +38,7 @@ flowchart LR
     A[影片網址] --> B[watch_archive.py]
     B --> B1[解析平台 / 影片 ID<br/>TikTok 短網址先解析]
     B1 --> B2[下載 + 截圖]
-    B2 --> B3[平台字幕或 Whisper 轉錄<br/>有 GROQ_API_KEY 用 Groq，--local 用本地 WhisperX<br/>自動偵測語言 / 詞典提示詞]
+    B2 --> B3[平台字幕或 Whisper 轉錄<br/>有 GROQ_API_KEY 用 Groq，--local 用本地 WhisperX<br/>自動偵測語言 / 詞典提示詞（僅 Groq）]
     B3 --> B4[偵測語言 detected_language<br/>中文：簡轉繁 OpenCC + 全形標點 + 詞典替換<br/>ja / ko / other 跳過簡轉繁]
     B4 --> C[(watch-output/資料夾)]
     C --> D[Claude 校稿與補內容<br/>summary / keywords / 校正<br/>非中文：寫 transcript.zh.md 繁中中譯]
@@ -57,14 +58,19 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
 
 **轉錄方式**（只在影片沒有平台字幕時才轉錄）：
 
+依下表由上往下，第一個符合的就採用：
+
 | 情況 | 使用 |
 |---|---|
-| 有 `GROQ_API_KEY`（預設） | Groq Whisper |
-| 加 `--local` | 本地 WhisperX（不上傳音訊、不需 key，較慢） |
 | 加 `--whisper <backend>` | 指定的後端（`groq`／`openai`／`whisperx`） |
-| 沒有 `GROQ_API_KEY` | `setup.py` 存的 `WATCH_WHISPER_BACKEND`（`~/.config/watch/.env`） |
+| 加 `--local` | 本地 WhisperX（不上傳音訊、不需 key，較慢） |
+| 這支影片之前用 `--local`／`--whisper` 歸檔過 | 沿用上次的選擇（`meta.json.whisper_choice`） |
+| 有 `GROQ_API_KEY`（環境變數或 `~/.config/watch/.env`） | Groq Whisper（預設） |
+| 都沒有 | `setup.py` 存的 `WATCH_WHISPER_BACKEND`（`~/.config/watch/.env`） |
 
-`--local` 與 `--whisper` 不能同時使用。實際用的來源寫在 `meta.json.transcript_source`。
+- `--local` 與 `--whisper` 不能同時使用。用 `--local` 歸檔過的影片，重跑時會繼續用本地轉錄，不會把音訊上傳到 Groq；要改回 Groq 就加 `--whisper groq`。
+- **WhisperX 不支援提示詞**：`--glossary`／`--terms` 的術語提示不會送給 WhisperX，詞典只在轉錄後做固定替換（腳本會印警告，`meta.json.whisper_hints.prompt` 記為空）。`--lang` 會轉成 WhisperX 的語言參數，但只接受兩個小寫字母（例如 `zh`）。
+- 實際用的來源寫在 `meta.json.transcript_source`。
 
 在 Claude Code 說「用 watch-archive 處理 <網址>」，會依 `.claude/skills/watch-archive/SKILL.md` 完成整套流程（選參數 → 歸檔 → 校稿 → 補摘要與關鍵字 → 重建報告 → 傳送 Word 檔 → 提交）。
 
@@ -112,6 +118,7 @@ watch-output/
 | `detected_language`／`language_source`／`forced_lang`／`needs_zh_translation` | 由腳本每次重跑時重新判斷（不保留舊值） |
 | `title_override` | `--title` 指定的標題（重跑沿用） |
 | `glossaries` | `--glossary` 選用的詞典領域（重跑沿用） |
+| `whisper_choice` | `--local`／`--whisper` 選的轉錄方式（`whisperx` 等；空白表示依 key 自動決定；重跑沿用） |
 
 ### 補充資料（`supplement.md`）
 
@@ -128,7 +135,7 @@ python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md 解析
 ### 注意事項
 
 - 已實測：Facebook、Instagram、X、小紅書、TikTok（含 `vt.tiktok.com` 短網址，會先解析出真正的影片 ID）、公開分享的 Google Drive 影片（分享權限須為「知道連結的任何人」，否則 yt-dlp 回 403）。YouTube 在雲端環境可能被擋（429／要求登入）。標題只有 #標籤 或太雜亂時，用 `--title` 指定；之後重跑會記住（`meta.json.title_override`）。
-- `meta.json.transcript_source` 標示逐字稿來源：`whisper (groq)` 為語音轉錄，否則為平台字幕。
+- `meta.json.transcript_source` 標示逐字稿來源：`whisper (groq)` 為 Groq 轉錄，`whisper (whisperx …)` 為本地 WhisperX 轉錄，否則為平台字幕。
 - 影片檔不進 git；報告內附來源網址的超連結。他人影片僅供個人參考，repo 改為 public 或分享前請勿附影片。
 - 開發請在 `claude/...` 分支進行，合併後的分支不要重用。
 
@@ -141,4 +148,5 @@ python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md 解析
 - **舊資料**：語言偵測加入前歸檔的影片，`meta.json` 沒有 `detected_language`，重跑歸檔才會補上。
 - **Word 報告**：字型為 Microsoft JhengHei；在缺此字型的環境轉 PDF 預覽可能出現方框（僅預覽問題，docx 內文字正確），但尚未在真正的 Word 逐份驗證。
 - **內容可信度**：影片中的數字、價格與效果都是講者主張，未經查證；補充資料（`supplement.md`）也只逐字保留來源文字，不代表已驗證。他人影片僅供個人參考，repo 改為 public 或分享前請勿附影片。
-- **相依**：沒有字幕時的轉錄需要 `GROQ_API_KEY` 或本地 WhisperX（擇一）；另需 ffmpeg 與 yt-dlp；轉 PDF 目視檢查另需 LibreOffice。
+- **相依**：沒有字幕時的轉錄需要 `GROQ_API_KEY` 或本地 WhisperX（擇一；雲端只能用 Groq）；另需 ffmpeg 與 yt-dlp；轉 PDF 目視檢查另需 LibreOffice。
+- **Windows 本機**：系統預設編碼是 cp950 時，`pip install -r requirements.txt` 會因中文註解失敗，`watch_archive.py` 讀取 `watch.py` 的中文輸出也會出錯。請設定使用者環境變數 `PYTHONUTF8=1`。

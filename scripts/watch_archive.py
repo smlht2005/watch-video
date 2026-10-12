@@ -11,8 +11,8 @@ where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
 Usage:
   python3 scripts/watch_archive.py URL [--question Q] [--local | --whisper groq|openai|whisperx] [--detail balanced] [--keep-media]
 
-Transcription (only when the video has no captions): groq if GROQ_API_KEY is set, otherwise the
-WATCH_WHISPER_BACKEND saved by setup.py; --local forces local WhisperX.
+Transcription (only when the video has no captions): --whisper > --local (WhisperX) > the choice remembered in
+meta.json > groq when GROQ_API_KEY exists (env or ~/.config/watch/.env) > WATCH_WHISPER_BACKEND saved by setup.py.
 """
 import argparse
 import build_report
@@ -29,6 +29,8 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 WATCH = ROOT / ".claude/skills/watch/scripts/watch.py"
+sys.path.insert(0, str(WATCH.parent))
+import config as watch_config  # noqa: E402  (the watch skill's key / backend settings)
 OUT_ROOT = ROOT / "watch-output"
 TITLE_MAX = 40
 NAME_MAX = 120
@@ -297,16 +299,48 @@ def field(report: str, label: str) -> str:
     return m.group(1).strip() if m else ""
 
 
-def pick_whisper(explicit: str | None, local: bool, environ) -> str | None:
-    """Transcription backend for watch.py: --whisper, else --local (WhisperX), else groq when GROQ_API_KEY is set.
+def has_groq_key() -> bool:
+    """GROQ_API_KEY from the environment, ~/.config/watch/.env or a project .env (same lookup as the watch skill)."""
+    return watch_config.load_api_key("groq")[0] is not None
 
-    None lets watch.py fall back to WATCH_WHISPER_BACKEND in ~/.config/watch/.env.
+
+def pick_whisper(explicit: str | None, local: bool, remembered: str, groq_key: bool) -> str | None:
+    """Transcription backend for watch.py: --whisper > --local (WhisperX) > the choice remembered in meta.json >
+    groq when a Groq key exists. None lets watch.py fall back to WATCH_WHISPER_BACKEND in ~/.config/watch/.env.
     """
     if explicit:
         return explicit
     if local:
         return "whisperx"
-    return "groq" if environ.get("GROQ_API_KEY", "").strip() else None
+    if remembered:
+        return remembered
+    return "groq" if groq_key else None
+
+
+def configured_backend() -> str:
+    try:
+        return watch_config.get_config()["whisper_backend"]
+    except watch_config.ConfigError:
+        return ""
+
+
+def whisper_hints(backend: str, lang: str, prompt: str) -> tuple[dict, str, str, list]:
+    """Env for watch.py plus the language / prompt that will really reach the backend, and warnings.
+
+    Groq / OpenAI read WATCH_WHISPER_LANGUAGE / WATCH_WHISPER_PROMPT. WhisperX only reads WATCH_WHISPERX_LANGUAGE
+    (two lowercase letters) and has no prompt, so glossary terms only apply as post-transcription replacements.
+    """
+    if backend != "whisperx":
+        env = {k: v for k, v in (("WATCH_WHISPER_LANGUAGE", lang), ("WATCH_WHISPER_PROMPT", prompt)) if v}
+        return env, lang, prompt, []
+    warnings = []
+    if prompt:
+        warnings.append("WhisperX has no prompt support: glossary / --terms hints are not sent "
+                        "(glossary replacements still apply after transcription).")
+    if lang and not re.fullmatch(r"[a-z]{2}", lang):
+        warnings.append(f"WhisperX needs a two-letter language code; --lang {lang} ignored, language auto-detected.")
+        lang = ""
+    return ({"WATCH_WHISPERX_LANGUAGE": lang} if lang else {}), lang, "", warnings
 
 
 def main():
@@ -319,8 +353,10 @@ def main():
     ap.add_argument("--terms", default="", help="extra comma-separated terms to hint Whisper (names, jargon)")
     wg = ap.add_mutually_exclusive_group()
     wg.add_argument("--whisper", choices=["groq", "openai", "whisperx"], default=None,
-                    help="transcription backend; default groq when GROQ_API_KEY is set, else WATCH_WHISPER_BACKEND from setup.py")
-    wg.add_argument("--local", action="store_true", help="transcribe with local WhisperX even when GROQ_API_KEY is set")
+                    help="transcription backend; default groq when a Groq key exists, else WATCH_WHISPER_BACKEND from "
+                         "setup.py; remembered in meta.json")
+    wg.add_argument("--local", action="store_true",
+                    help="transcribe with local WhisperX even when a Groq key exists; remembered in meta.json")
     ap.add_argument("--detail", default="balanced")
     ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (local only, gitignored)")
     ap.add_argument("--timestamps", default=None,
@@ -338,11 +374,13 @@ def main():
     domains = [d.strip() for d in args.glossary.split(",") if d.strip()] if args.glossary is not None else early_meta.get("glossaries", [])
     gl_terms, gl_replace = load_glossary(domains)
     terms = [t.strip() for t in args.terms.split(",") if t.strip()] + gl_terms
-    env = dict(os.environ)
-    if args.lang:
-        env["WATCH_WHISPER_LANGUAGE"] = args.lang
-    if terms:
-        env["WATCH_WHISPER_PROMPT"] = whisper_prompt(terms, args.lang)
+    whisper_choice = args.whisper or ("whisperx" if args.local else early_meta.get("whisper_choice", ""))
+    whisper = pick_whisper(args.whisper, args.local, early_meta.get("whisper_choice", ""), has_groq_key())
+    hint_env, lang, prompt, hint_warnings = whisper_hints(
+        whisper or configured_backend(), args.lang, whisper_prompt(terms, args.lang) if terms else "")
+    for w in hint_warnings:
+        print(f"WARNING: {w}", file=sys.stderr)
+    env = dict(os.environ, **hint_env)
 
     # Archiving needs frames + transcript, which only the local engine returns; with GEMINI_API_KEY set,
     # watch.py's "auto" would pick Gemini and the archive would come out empty. WATCH_ENGINE overrides.
@@ -350,7 +388,6 @@ def main():
     cue_timestamps = args.timestamps if args.timestamps is not None else early_meta.get("cue_timestamps", "")
     resolution = args.resolution or early_meta.get("resolution")
     extra = (["--timestamps", cue_timestamps] if cue_timestamps else []) + (["--resolution", str(resolution)] if resolution else [])
-    whisper = pick_whisper(args.whisper, args.local, os.environ)
     extra += ["--whisper", whisper] if whisper else []
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
@@ -375,7 +412,7 @@ def main():
     tm = re.search(r"## Transcript\s*\n(.*?)(?:\n---\n_Work dir|\Z)", report, re.S)
     transcript_raw = tm.group(1).strip() if tm else ""
     detected_language, language_source = resolve_language(
-        transcript_raw, field(report, "Whisper language"), forced_language(args.lang))
+        transcript_raw, field(report, "Whisper language"), forced_language(lang))
     if "(text:" in language_source:
         print(f"WARNING: Whisper reported '{detected_language}' but the transcript text looks different "
               f"({language_source}); check the language before relying on translation / conversion.", file=sys.stderr)
@@ -416,10 +453,11 @@ def main():
         "title": title,
         "title_raw": title_raw,
         "title_override": title_override,
-        "whisper_hints": {"language": args.lang or "auto", "prompt": env.get("WATCH_WHISPER_PROMPT", "")},
+        "whisper_hints": {"language": lang or "auto", "prompt": prompt},
+        "whisper_choice": whisper_choice,
         "detected_language": detected_language,
         "language_source": language_source,
-        "forced_lang": args.lang,
+        "forced_lang": lang,
         "needs_zh_translation": needs_zh_translation(detected_language),
         "glossaries": domains,
         "glossary_applied": glossary_applied,
@@ -481,8 +519,8 @@ def main():
 
     update_index(dest, meta)
     print(f"archived -> {dest.relative_to(ROOT)}")
-    if forced_language(args.lang):
-        print(f"WARNING: --lang {forced_language(args.lang)} was forced to Whisper, so a wrong language would NOT be caught; "
+    if forced_language(lang):
+        print(f"WARNING: --lang {forced_language(lang)} was forced to Whisper, so a wrong language would NOT be caught; "
               "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
     if detected_language == "zh":
         print(f"language: zh [{language_source}]（已轉繁體 zh-TW）")

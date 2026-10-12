@@ -20,6 +20,7 @@
 - YouTube 在雲端環境常被擋（429／要求登入）；Google Drive 影片須公開分享才抓得到，歸檔後提醒使用者改回私人。
 - 語言優先採用 Whisper 回報的語言；平台字幕與強制 `--lang` 時才用字元比例啟發式（`en` 含其他拉丁字母語言）；`other`／`unknown` 要自己讀逐字稿確認；`ja`／`ko`／`other` 不做簡轉繁，確定是中文時手動轉；漢字為主的日文與太短的 `unknown` 仍可能被誤轉。
 - `watch_archive.py` 預設以本機引擎執行（`WATCH_ENGINE` 未設時為 `local`），因為歸檔需要截圖與逐字稿，Gemini 引擎只回傳文字答案、會產生空報告。要改用 Gemini 才設 `WATCH_ENGINE=gemini`；Gemini 失敗（503／模型停用）不自動降級，先問使用者。
+- 轉錄方式：有 Groq key（環境變數或 `~/.config/watch/.env`）預設用 Groq；`--local` 改用本地 WhisperX，並記在 `meta.json.whisper_choice`，重跑會沿用。雲端只能用 Groq：容器沒有 WhisperX，不要加 `--local`。WhisperX 收不到詞典提示詞，專有名詞要在校稿時多留意。
 - 詞典 `claude-code` 假設講者在談 Claude，講雲端的影片不要載入。
 - Word 預覽缺字型會出現方框（僅預覽問題）；尚未在真正的 Word 逐份驗證。
 
@@ -31,6 +32,6 @@
 ## 常用指令
 
 ```bash
-python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024]   # 歸檔
+python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local]   # 歸檔
 python3 scripts/build_report.py watch-output/<資料夾>                           # 重建報告
 ```
