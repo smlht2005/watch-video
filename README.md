@@ -79,7 +79,7 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
 - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
-  - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`electronics`、`kubernetes`、`claude-code`。新增領域只要新增一個檔案。
+  - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`（淨土宗／佛學講座）。新增領域只要新增一個檔案。
   - 每個檔案有 `terms`（Whisper 提示詞，只放整個詞，總長約 200 字內；選中的領域優先）與 `replace`（轉錄後固定替換，key 用繁體、至少 3 字或帶上下文）。
   - 單支影片才成立的修正，不要放進詞典，改用 `--terms` 或 `meta.json.known_asr_errors`。
   - `WATCH_GLOSSARY_DIR` 可指向別處（例如獨立的詞典 repo），方便跨專案共用。
