@@ -1,0 +1,17 @@
+{
+  "_說明": "Neo4j／知識圖譜／Google ADK 領域。用 --glossary neo4j 載入。字幕與 Whisper 常把 Neo4j 寫成 new for j，把 Cypher 寫成 cipher。注意：`cipher` 相關替換只在帶 Cypher 語境的短語上，講密碼學的影片請勿載入。",
+  "terms": ["Neo4j", "Cypher", "knowledge graph", "GraphRAG", "Google ADK", "LiteLLM", "sub-agent", "root agent"],
+  "replace": {
+    "NewForJ": "Neo4j",
+    "new for J": "Neo4j",
+    "new for j": "Neo4j",
+    "nufer J": "Neo4j",
+    "valid cipher": "valid Cypher",
+    "cipher statement": "Cypher statement",
+    "the cipher that": "the Cypher that",
+    "from the cipher": "from Cypher",
+    "light LLM": "LiteLLM",
+    "GPT-4.0": "GPT-4o",
+    "Andreas Colliger": "Andreas Kollegger"
+  }
+}

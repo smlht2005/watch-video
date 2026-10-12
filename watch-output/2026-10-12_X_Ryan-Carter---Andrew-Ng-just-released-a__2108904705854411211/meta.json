@@ -1,0 +1,183 @@
+{
+  "url": "https://x.com/Grow_withAI/status/2108904705854411211",
+  "platform": "X",
+  "video_id": "2108904705854411211",
+  "title": "Ryan Carter - Andrew Ng just released a 1-hour course on building Agentic Knowledge...",
+  "title_raw": "Ryan Carter - Andrew Ng just released a 1-hour course on building Agentic Knowledge...",
+  "title_override": "DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理）",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "detected_language": "en",
+  "language_source": "heuristic",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [
+    "neo4j"
+  ],
+  "glossary_applied": {
+    "NewForJ": 5,
+    "new for J": 3,
+    "new for j": 4,
+    "nufer J": 1,
+    "valid cipher": 1,
+    "cipher statement": 3,
+    "the cipher that": 1,
+    "from the cipher": 1,
+    "light LLM": 1,
+    "GPT-4.0": 1,
+    "Andreas Colliger": 1
+  },
+  "source_hashtags": [],
+  "uploader": "Ryan Carter",
+  "duration": "1:04:46 (3885.8s)",
+  "detail": "balanced",
+  "transcript_source": "captions (en, manual, unknown)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-12",
+  "last_updated": "2026-10-12",
+  "known_asr_errors": [
+    {
+      "time": "00:22",
+      "heard": "Andreas Colliger",
+      "expected": "Andreas Kollegger（畫面螢幕上寫 Andreas Kollegger；已由詞典修正）"
+    },
+    {
+      "time": "26:34",
+      "heard": "new for J / NewForJ / nufer J",
+      "expected": "Neo4j（已由詞典修正）"
+    },
+    {
+      "time": "27:33",
+      "heard": "cipher",
+      "expected": "Cypher（Neo4j 查詢語言；已由詞典修正）"
+    },
+    {
+      "time": "32:19",
+      "heard": "light LLM",
+      "expected": "LiteLLM（已由詞典修正）"
+    },
+    {
+      "time": "24:31",
+      "heard": "GPT-4.0",
+      "expected": "GPT-4o（推測）"
+    },
+    {
+      "time": "16:10",
+      "heard": "This P agent here",
+      "expected": "圖中 B 代理的工具 p()（推測，指「被當成工具的代理」）"
+    },
+    {
+      "time": "02:46",
+      "heard": "Christopher Polycastro / Hara Salami",
+      "expected": "人名拼法無法由字幕確認（推測為其他拼法）"
+    },
+    {
+      "time": "00:00",
+      "heard": "（字幕不含講者名字標示）",
+      "expected": "字幕只出現 Andrew 與 Andreas 的名字；開場者與講師的對應以字幕內容為準，未以外貌辨識身分"
+    }
+  ],
+  "keywords": [
+    "知識圖譜",
+    "Neo4j",
+    "Cypher",
+    "多代理系統",
+    "Google ADK",
+    "GraphRAG",
+    "領域圖／詞彙圖／主題圖",
+    "LiteLLM",
+    "tool context",
+    "session state"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "課程簡介",
+      "note": "Neo4j 合作；用 Google ADK 設計多代理系統，把結構化與非結構化資料轉成知識圖譜；講師為 Neo4j 的 Andreas Kollegger。",
+      "keywords": [
+        "Neo4j",
+        "多代理",
+        "知識圖譜"
+      ]
+    },
+    {
+      "start": "03:13",
+      "frame": "frame_0013.jpg",
+      "title": "什麼是知識圖譜：從 join 到圖與 Cypher",
+      "note": "以「推薦某人沒買過的商品」對比關聯式 join 與圖樣式比對；畫面為 Cypher 查詢（含 WHERE NOT 否定樣式）。節點、關係（一等公民）、鍵值屬性、標籤。",
+      "keywords": [
+        "Cypher",
+        "圖樣式比對",
+        "推薦查詢"
+      ]
+    },
+    {
+      "start": "09:37",
+      "frame": "frame_0014.jpg",
+      "title": "根因分析情境與三個子圖",
+      "note": "家具製造商的客訴根因分析；CSV 物料清單成為領域圖、Markdown 評論成為詞彙圖，中間以主題圖連接（畫面：Domain←Subject←Lexical 模型）。",
+      "keywords": [
+        "領域圖",
+        "詞彙圖",
+        "主題圖"
+      ]
+    },
+    {
+      "start": "13:41",
+      "frame": "frame_0017.jpg",
+      "title": "什麼是代理與多代理系統",
+      "note": "代理＝迴圈＋LLM 呼叫＋工具；優缺點（慢、貴、非確定性為講者主張）；多代理：階層、專精、委派、代理當工具、與使用者的檢查點。",
+      "keywords": [
+        "agent",
+        "委派",
+        "子代理"
+      ]
+    },
+    {
+      "start": "16:31",
+      "frame": "frame_0019.jpg",
+      "title": "要建的知識圖譜代理架構",
+      "note": "三個工作流程代理（結構化、非結構化、GraphRAG）；使用者意圖→檔案建議→結構提案（提案者＋批評者）→圖建構計畫；實體與事實類型提案→知識抽取計畫；建圖工具。",
+      "keywords": [
+        "圖建構計畫",
+        "知識抽取計畫",
+        "GraphRAG"
+      ]
+    },
+    {
+      "start": "23:17",
+      "frame": "frame_0021.jpg",
+      "title": "Lesson 3 Part I：用 Google ADK 建第一個代理",
+      "note": "LiteLLM＋OpenAI（GPT-4o）；Neo4j for ADK 輔助庫；工具＝函式＋docstring；Cypher 查詢參數避免注入；Agent 五要素；Runner、session、事件迴圈；agent caller 工廠函式。畫面為標題卡。",
+      "keywords": [
+        "Google ADK",
+        "tool",
+        "Runner"
+      ]
+    },
+    {
+      "start": "44:47",
+      "frame": "frame_0023.jpg",
+      "title": "Lesson 3 Part II：多代理團隊與記憶",
+      "note": "根代理＋問候／道別子代理；description 與 instruction 的寫法；委派時對話控制權一併交出；逐事件除錯；session state、tool context、output key；有狀態工具示範。畫面為標題卡。",
+      "keywords": [
+        "委派",
+        "session state",
+        "tool context"
+      ]
+    },
+    {
+      "start": "63:58",
+      "frame": "frame_0024.jpg",
+      "title": "結語",
+      "note": "Lesson 3 與整門課的總結：已具備建立知識圖譜多代理系統的基礎。",
+      "keywords": [
+        "總結"
+      ]
+    }
+  ]
+}
