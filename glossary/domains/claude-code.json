@@ -1,0 +1,35 @@
+{
+  "_說明": "Claude / Claude Code 領域。用 --glossary claude-code 載入。Whisper 常把 Claude 聽成 Cloud。注意：`Cloud Code`、`cloud code`、`Cloud 可以` 等替換假設講者在談 Claude；若影片真的在講雲端（Google Cloud 等）請勿載入本詞典。",
+  "terms": [
+    "Claude",
+    "Claude Code",
+    "CLAUDE.md",
+    "Opus 5.5",
+    "Sub Agent",
+    "額度",
+    "prompt cache",
+    "sub-agent",
+    "compact",
+    "managed settings",
+    "Fable 5.1"
+  ],
+  "replace": {
+    "Cloud MD": "CLAUDE.md",
+    "Cloud Code": "Claude Code",
+    "Cloud 額度": "Claude 額度",
+    "告訴Cloud": "告訴 Claude",
+    "Cloud 可以": "Claude 可以",
+    "OPUS 5.5": "Opus 5.5",
+    "ClaudeMd": "CLAUDE.md",
+    "CLAUDE可以": "Claude 可以",
+    "CLAUDE Code": "Claude Code",
+    "cloud code": "Claude Code",
+    "CloudMD": "CLAUDE.md",
+    "cloud MD": "CLAUDE.md",
+    "CloudMd": "CLAUDE.md",
+    "Cloud API Prompt Audit": "/claude-api prompt-audit",
+    "cash expired": "cache expired",
+    "cash had": "cache had",
+    "OPUS 5": "Opus 5"
+  }
+}

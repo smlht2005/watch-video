@@ -1,0 +1,77 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "first-frame"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "02:22",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0003.jpg",
+    "t": "04:33",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0004.jpg",
+    "t": "04:53",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "05:21",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "06:15",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0007.jpg",
+    "t": "10:09",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "15:50",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0009.jpg",
+    "t": "16:13",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0010.jpg",
+    "t": "18:35",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0011.jpg",
+    "t": "26:28",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0012.jpg",
+    "t": "26:34",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0013.jpg",
+    "t": "26:34",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0014.jpg",
+    "t": "26:34",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0015.jpg",
+    "t": "26:34",
+    "reason": "scene-change"
+  }
+]

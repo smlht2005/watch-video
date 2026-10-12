@@ -1,6 +1,4 @@
 __pycache__/
 
-# watch-output: media/ (video) is committed; files >50MB should use Git LFS
-
 # watch-output: media/ (full video) stays local, not committed; the report links to the source URL
 watch-output/**/media/

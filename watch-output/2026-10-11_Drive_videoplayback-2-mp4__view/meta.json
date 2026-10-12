@@ -1,0 +1,173 @@
+{
+  "url": "https://drive.google.com/file/d/1bVcAjmgzoAhVKgMyXApHrQSOl-7_ZoGa/view?usp=drivesdk",
+  "platform": "Drive",
+  "video_id": "view",
+  "title": "videoplayback (2).mp4",
+  "title_raw": "videoplayback (2).mp4",
+  "title_override": "",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Kubernetes、kubectl、kubeconfig、Kind、Docker、control plane、worker node、cluster、context、YAML"
+  },
+  "glossaries": [
+    "kubernetes"
+  ],
+  "glossary_applied": {
+    "kindversion": 1,
+    "kindcreatecluster": 1,
+    "KindGetClusters": 1,
+    "kubectlGetNodes": 1,
+    "kubectl clusterinfo": 1,
+    "KindMyCluster": 1,
+    "Chocolaty": 1,
+    "config get contexts": 1,
+    "config use context": 1,
+    "config current context": 1,
+    "kind load docker image": 1
+  },
+  "source_hashtags": [],
+  "uploader": "",
+  "duration": "07:55 (475.2s)",
+  "detail": "balanced",
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "02:40",
+      "heard": "kindcreatecluster / kindversion / KindGetClusters / kubectlGetNodes",
+      "expected": "kind create cluster / kind version / kind get clusters / kubectl get nodes（指令空格被吞，已由詞典修正）"
+    },
+    {
+      "time": "06:20",
+      "heard": "kubectl config use context / current context",
+      "expected": "use-context / current-context（連字號，已由詞典修正）"
+    },
+    {
+      "time": "05:47",
+      "heard": "…building and testing container images Understanding kubectl contexts…",
+      "expected": "兩句被合併、缺標點，內容無誤"
+    }
+  ],
+  "keywords": [
+    "Kind",
+    "Kubernetes in Docker",
+    "kubectl",
+    "kubeconfig",
+    "多節點叢集",
+    "control plane",
+    "worker node",
+    "extraPortMappings",
+    "kubectl context",
+    "CI/CD"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "Kind：Kubernetes in Docker",
+      "note": "在本機用 Docker 建立輕量 Kubernetes 叢集，適合測試、學習與開發。",
+      "keywords": [
+        "Kind",
+        "Docker"
+      ]
+    },
+    {
+      "start": "00:30",
+      "frame": "frame_0006.jpg",
+      "title": "什麼是 Kind",
+      "note": "以 Docker 容器節點執行本機叢集；優點：建立快、資源少、支援多節點、適合測試。",
+      "keywords": [
+        "Kind",
+        "多節點"
+      ]
+    },
+    {
+      "start": "01:13",
+      "frame": "frame_0014.jpg",
+      "title": "安裝前置需求",
+      "note": "Docker Engine 20.10+、kubectl、至少 2GB RAM 與 20GB 磁碟。",
+      "keywords": [
+        "Docker",
+        "kubectl"
+      ]
+    },
+    {
+      "start": "01:55",
+      "frame": "frame_0021.jpg",
+      "title": "安裝 Kind",
+      "note": "Linux 用 curl+chmod+mv；macOS 用 brew install kind；Windows 用 choco install kind；kind version 驗證。",
+      "keywords": [
+        "brew",
+        "choco"
+      ]
+    },
+    {
+      "start": "02:36",
+      "frame": "frame_0028.jpg",
+      "title": "建立第一個叢集",
+      "note": "kind create cluster；--name 自訂名稱；kubectl cluster-info --context 驗證。",
+      "keywords": [
+        "kind create cluster"
+      ]
+    },
+    {
+      "start": "03:21",
+      "frame": "frame_0035.jpg",
+      "title": "多節點叢集設定",
+      "note": "YAML 定義 1 個 control-plane 與 3 個 worker；kind create cluster --config。",
+      "keywords": [
+        "YAML",
+        "control plane",
+        "worker"
+      ]
+    },
+    {
+      "start": "04:17",
+      "frame": "frame_0045.jpg",
+      "title": "連接埠對應設定",
+      "note": "extraPortMappings：容器 80→主機 8080、443→8443，協定 TCP。",
+      "keywords": [
+        "extraPortMappings"
+      ]
+    },
+    {
+      "start": "05:08",
+      "frame": "frame_0053.jpg",
+      "title": "叢集管理指令",
+      "note": "get clusters、get nodes、delete cluster、export/get kubeconfig、load docker-image。",
+      "keywords": [
+        "kind load docker-image"
+      ]
+    },
+    {
+      "start": "05:47",
+      "frame": "frame_0061.jpg",
+      "title": "kubectl context 管理",
+      "note": "context 以 kind- 為前綴；get-contexts、use-context、current-context。",
+      "keywords": [
+        "context"
+      ]
+    },
+    {
+      "start": "06:45",
+      "frame": "frame_0070.jpg",
+      "title": "常見使用情境",
+      "note": "本機開發、測試與 CI/CD、學習 Kubernetes、展示與概念驗證。",
+      "keywords": [
+        "CI/CD"
+      ]
+    },
+    {
+      "start": "07:38",
+      "frame": "frame_0079.jpg",
+      "title": "片尾",
+      "note": "片尾為按讚動畫，無旁白（先前中文逐字稿的宣傳語是 Whisper 在 --lang zh 下的幻聽，已移除）。",
+      "keywords": []
+    }
+  ],
+  "detected_language": "en",
+  "needs_zh_translation": true
+}
