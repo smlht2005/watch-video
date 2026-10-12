@@ -1,0 +1,282 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "first-frame"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "00:02",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0003.jpg",
+    "t": "00:22",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0004.jpg",
+    "t": "00:35",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "01:43",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "02:02",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0007.jpg",
+    "t": "02:05",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0000.jpg",
+    "t": "02:10",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "02:38",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0009.jpg",
+    "t": "02:51",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0010.jpg",
+    "t": "02:59",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0011.jpg",
+    "t": "03:03",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0012.jpg",
+    "t": "03:13",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0001.jpg",
+    "t": "03:35",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0002.jpg",
+    "t": "05:35",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0003.jpg",
+    "t": "06:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0004.jpg",
+    "t": "08:30",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0013.jpg",
+    "t": "08:57",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0005.jpg",
+    "t": "10:00",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0006.jpg",
+    "t": "11:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0014.jpg",
+    "t": "13:31",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0015.jpg",
+    "t": "13:40",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0016.jpg",
+    "t": "13:49",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0007.jpg",
+    "t": "14:05",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0017.jpg",
+    "t": "15:21",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0008.jpg",
+    "t": "15:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0018.jpg",
+    "t": "16:31",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0019.jpg",
+    "t": "16:54",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0020.jpg",
+    "t": "17:02",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0009.jpg",
+    "t": "17:05",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0010.jpg",
+    "t": "18:45",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0011.jpg",
+    "t": "21:00",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0012.jpg",
+    "t": "22:20",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0021.jpg",
+    "t": "23:17",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0022.jpg",
+    "t": "23:31",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0013.jpg",
+    "t": "23:55",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0014.jpg",
+    "t": "25:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0015.jpg",
+    "t": "28:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0016.jpg",
+    "t": "30:55",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0017.jpg",
+    "t": "32:05",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0018.jpg",
+    "t": "34:15",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0019.jpg",
+    "t": "36:45",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0020.jpg",
+    "t": "38:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0021.jpg",
+    "t": "41:50",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0022.jpg",
+    "t": "43:50",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0023.jpg",
+    "t": "44:47",
+    "reason": "scene-change"
+  },
+  {
+    "file": "cue_0023.jpg",
+    "t": "45:25",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0024.jpg",
+    "t": "48:20",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0025.jpg",
+    "t": "50:10",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0026.jpg",
+    "t": "52:30",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0027.jpg",
+    "t": "56:10",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0028.jpg",
+    "t": "58:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0029.jpg",
+    "t": "1:01:40",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0030.jpg",
+    "t": "1:03:10",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "frame_0024.jpg",
+    "t": "1:04:22",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0025.jpg",
+    "t": "1:04:39",
+    "reason": "scene-change"
+  }
+]

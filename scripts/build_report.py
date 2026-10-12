@@ -288,6 +288,36 @@ def add_inline(par, text, size=10.5):
             set_font(par.add_run(tok), size)
 
 
+def crop_dark_borders(im, threshold=16, min_trim=0.05):
+    """Trim near-black letterbox / pillarbox bars (e.g. a notebook recorded in the middle of a wide frame).
+
+    Only bars wider than min_trim of the image are cut, so normal dark-edged frames stay as they are. The saved frame
+    files are not changed; this only affects the picture inserted into the docx.
+    """
+    gray = im.convert("L")
+    w, h = gray.size
+    px = gray.load()
+    step_y, step_x = max(1, h // 60), max(1, w // 60)
+
+    def col_dark(x):
+        return max(px[x, y] for y in range(0, h, step_y)) <= threshold
+
+    def row_dark(y):
+        return max(px[x, y] for x in range(0, w, step_x)) <= threshold
+
+    left = next((x for x in range(w) if not col_dark(x)), 0)
+    right = next((x for x in range(w - 1, -1, -1) if not col_dark(x)), w - 1) + 1
+    top = next((y for y in range(h) if not row_dark(y)), 0)
+    bottom = next((y for y in range(h - 1, -1, -1) if not row_dark(y)), h - 1) + 1
+    if right <= left or bottom <= top:
+        return im  # an all-dark frame: leave it alone
+    left = left if left >= w * min_trim else 0
+    right = right if w - right >= w * min_trim else w
+    top = top if top >= h * min_trim else 0
+    bottom = bottom if h - bottom >= h * min_trim else h
+    return im.crop((left, top, right, bottom)) if (left, top, right, bottom) != (0, 0, w, h) else im
+
+
 def md_to_docx(dest: Path, md: str, out: Path, kw=None):
     doc = Document()
     sec = doc.sections[0]
@@ -343,12 +373,14 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
             if img.exists():
                 from PIL import Image
                 import io
-                pil = Image.open(img)
-                w, h = pil.size  # cap height so portrait (vertical) videos don't fill whole pages
+                pil = crop_dark_borders(Image.open(img).convert("RGB"))
+                w, h = pil.size
+                # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to 9 cm tall, 16 cm wide
+                width_cm = min(12, 7 * w / h) if h > w else min(16, 9 * w / h)
                 buf = io.BytesIO()  # re-encode: some ffmpeg JPEGs lack a JFIF header that python-docx requires
-                pil.convert("RGB").save(buf, "JPEG", quality=90)
+                pil.save(buf, "JPEG", quality=90)
                 buf.seek(0)
-                doc.add_picture(buf, width=Cm(min(12, 7 * w / h)))
+                doc.add_picture(buf, width=Cm(width_cm))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
         elif line.startswith("- "):
             add_inline(doc.add_paragraph(style="List Bullet"), line[2:])

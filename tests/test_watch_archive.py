@@ -88,6 +88,45 @@ class LanguagePolicy(unittest.TestCase):
         self.assertNotEqual(wa.to_traditional("会議学校"), "会議学校")  # the reason for the ja/ko skip
 
 
+class CropDarkBorders(unittest.TestCase):
+    def test_pillarboxed_frame_is_trimmed(self):
+        from PIL import Image
+        im = Image.new("RGB", (1024, 576), "black")
+        im.paste(Image.new("RGB", (512, 576), "white"), (256, 0))
+        self.assertEqual(br.crop_dark_borders(im).size, (512, 576))
+
+    def test_normal_and_all_dark_frames_untouched(self):
+        from PIL import Image
+        normal = Image.new("RGB", (640, 360), "gray")
+        self.assertEqual(br.crop_dark_borders(normal).size, (640, 360))
+        dark = Image.new("RGB", (640, 360), "black")
+        self.assertEqual(br.crop_dark_borders(dark).size, (640, 360))
+
+    def test_thin_dark_edge_is_kept(self):
+        from PIL import Image
+        im = Image.new("RGB", (1000, 500), "white")
+        im.paste(Image.new("RGB", (20, 500), "black"), (0, 0))  # 2% bar: below the 5% minimum
+        self.assertEqual(br.crop_dark_borders(im).size, (1000, 500))
+
+
+class RemapSlideFrames(unittest.TestCase):
+    def test_slides_follow_their_old_frame_time_after_renumbering(self):
+        old = [{"file": "frame_0002.jpg", "t": "02:05"}, {"file": "frame_0013.jpg", "t": "08:57"}]
+        new = [{"file": "frame_0002.jpg", "t": "00:02"}, {"file": "frame_0007.jpg", "t": "02:05"},
+               {"file": "frame_0020.jpg", "t": "08:55"}, {"file": "frame_0021.jpg", "t": "09:30"}]
+        slides = [{"start": "01:43", "frame": "frame_0002.jpg"}, {"start": "03:13", "frame": "frame_0013.jpg"}]
+        out = wa.remap_slide_frames(slides, old, new)
+        self.assertEqual([s["frame"] for s in out], ["frame_0007.jpg", "frame_0020.jpg"])
+
+    def test_unknown_old_frame_falls_back_to_slide_start(self):
+        out = wa.remap_slide_frames([{"start": "09:35", "frame": "gone.jpg"}], [], [{"file": "a.jpg", "t": "09:30"}, {"file": "b.jpg", "t": "20:00"}])
+        self.assertEqual(out[0]["frame"], "a.jpg")
+
+    def test_hour_long_times(self):
+        out = wa.remap_slide_frames([{"start": "63:58", "frame": "x.jpg"}], [], [{"file": "a.jpg", "t": "1:04:22"}, {"file": "b.jpg", "t": "10:00"}])
+        self.assertEqual(out[0]["frame"], "a.jpg")
+
+
 class SupplementLines(unittest.TestCase):
     def run_sup(self, text):
         d = Path(tempfile.mkdtemp())

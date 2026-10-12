@@ -49,7 +49,7 @@ flowchart LR
 ### 指令
 
 ```bash
-python3 scripts/watch_archive.py "<影片網址>" [--glossary ai-chips,electronics] [--lang zh（一般不要加）] [--title "自訂標題"] [--terms "詞1,詞2"] [--question "..."] [--keep-media]
+python3 scripts/watch_archive.py "<影片網址>" [--glossary ai-chips,electronics] [--lang zh（一般不要加）] [--title "自訂標題"] [--terms "詞1,詞2"] [--timestamps "MM:SS,..."] [--resolution 1024] [--question "..."] [--keep-media]
 python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md / meta.json 後重建報告
 ```
 
@@ -65,6 +65,7 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
   - 單支影片才成立的修正，不要放進詞典，改用 `--terms` 或 `meta.json.known_asr_errors`。
   - `WATCH_GLOSSARY_DIR` 可指向別處（例如獨立的詞典 repo），方便跨專案共用。
 - `--terms "詞1,詞2"`：只對這一支影片額外提示的詞（人名、術語）。
+- `--timestamps "MM:SS,…"`／`--resolution 1024`：在指定時間點加抽截圖、提高截圖解析度。適合長的螢幕錄影或 notebook 示範（自動抽圖會把緩慢捲動的畫面當成重複而丟掉）。兩者記在 `meta.json`，重跑沿用；`slides` 的圖檔會依時間自動對到新截圖。Word 報告插圖時會自動裁掉影片左右／上下的純黑邊。
 - Whisper 的語言與提示詞由 `.claude/skills/watch/scripts/whisper.py` 的環境變數 `WATCH_WHISPER_LANGUAGE` / `WATCH_WHISPER_PROMPT` 傳入（本專案對上游 skill 的小幅修改，更新上游時需重新套用）。另外 `transcribe.py`、`whisper.py`、`watch.py` 各有少量修改：保留 Whisper 回報的 `language`（多段音訊取最多數），並在報告表頭輸出 `Whisper language`，供 `watch_archive.py` 讀取。
 
 ### 輸出結構

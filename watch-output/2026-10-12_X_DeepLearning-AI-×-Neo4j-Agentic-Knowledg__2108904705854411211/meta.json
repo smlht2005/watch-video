@@ -1,0 +1,430 @@
+{
+  "url": "https://x.com/Grow_withAI/status/2108904705854411211",
+  "platform": "X",
+  "video_id": "2108904705854411211",
+  "title": "DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理）",
+  "title_raw": "Ryan Carter - Andrew Ng just released a 1-hour course on building Agentic Knowledge...",
+  "title_override": "DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理）",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Neo4j、Cypher、knowledge graph、GraphRAG、Google ADK、LiteLLM、sub-agent、root agent"
+  },
+  "detected_language": "en",
+  "language_source": "heuristic",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [
+    "neo4j"
+  ],
+  "glossary_applied": {
+    "cipher statement": 3,
+    "Andreas Colliger": 1,
+    "the cipher that": 1,
+    "from the cipher": 1,
+    "valid cipher": 1,
+    "new for J": 3,
+    "new for j": 4,
+    "light LLM": 1,
+    "NewForJ": 5,
+    "nufer J": 1,
+    "GPT-4.0": 1
+  },
+  "source_hashtags": [],
+  "uploader": "Ryan Carter",
+  "duration": "1:04:46 (3885.8s)",
+  "detail": "balanced",
+  "cue_timestamps": "02:10,03:35,05:35,06:40,08:30,10:00,11:40,14:05,15:40,17:05,18:45,21:00,22:20,23:55,25:40,28:40,30:55,32:05,34:15,36:45,38:40,41:50,43:50,45:25,48:20,50:10,52:30,56:10,58:40,1:01:40,1:03:10",
+  "resolution": 1024,
+  "transcript_source": "captions (en, manual, unknown)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-12",
+  "last_updated": "2026-10-12",
+  "known_asr_errors": [
+    {
+      "time": "00:22",
+      "heard": "Andreas Colliger",
+      "expected": "Andreas Kollegger（畫面螢幕上寫 Andreas Kollegger；已由詞典修正）"
+    },
+    {
+      "time": "26:34",
+      "heard": "new for J / NewForJ / nufer J",
+      "expected": "Neo4j（已由詞典修正）"
+    },
+    {
+      "time": "27:33",
+      "heard": "cipher",
+      "expected": "Cypher（Neo4j 查詢語言；已由詞典修正）"
+    },
+    {
+      "time": "32:19",
+      "heard": "light LLM",
+      "expected": "LiteLLM（已由詞典修正）"
+    },
+    {
+      "time": "24:31",
+      "heard": "GPT-4.0",
+      "expected": "GPT-4o（推測）"
+    },
+    {
+      "time": "16:10",
+      "heard": "This P agent here",
+      "expected": "圖中 B 代理的工具 p()（推測，指「被當成工具的代理」）"
+    },
+    {
+      "time": "02:46",
+      "heard": "Christopher Polycastro / Hara Salami",
+      "expected": "人名拼法無法由字幕確認（推測為其他拼法）"
+    },
+    {
+      "time": "00:00",
+      "heard": "（字幕不含講者名字標示）",
+      "expected": "字幕只出現 Andrew 與 Andreas 的名字；開場者與講師的對應以字幕內容為準，未以外貌辨識身分"
+    }
+  ],
+  "keywords": [
+    "知識圖譜",
+    "Neo4j",
+    "Cypher",
+    "多代理系統",
+    "Google ADK",
+    "GraphRAG",
+    "領域圖／詞彙圖／主題圖",
+    "LiteLLM",
+    "tool context",
+    "session state"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "課程簡介",
+      "note": "Neo4j 合作；用 Google ADK 設計多代理系統，把結構化與非結構化資料轉成知識圖譜；講師為 Andreas Kollegger。",
+      "keywords": [
+        "Neo4j",
+        "知識圖譜"
+      ]
+    },
+    {
+      "start": "01:43",
+      "frame": "cue_0000.jpg",
+      "title": "方法概覽：用多代理決定圖結構",
+      "note": "先定圖結構（節點與關係類型）再建圖；由多代理而非人工看資料來決定結構。",
+      "keywords": [
+        "graph schema",
+        "ADK"
+      ]
+    },
+    {
+      "start": "03:13",
+      "frame": "cue_0001.jpg",
+      "title": "關聯式資料庫的 join",
+      "note": "人、商品與中間的關聯表；「買過什麼」「誰也買過」「推薦什麼」需要愈來愈多 join。",
+      "keywords": [
+        "join",
+        "關聯式"
+      ]
+    },
+    {
+      "start": "05:15",
+      "frame": "cue_0002.jpg",
+      "title": "把 join 改成圖",
+      "note": "丟掉無關紀錄、把關聯表列變成直接連接的箭頭，重排後一目了然。",
+      "keywords": [
+        "圖",
+        "關係"
+      ]
+    },
+    {
+      "start": "06:04",
+      "frame": "cue_0003.jpg",
+      "title": "Cypher 樣式比對",
+      "note": "以 Cypher 描述「某人→買過的商品←其他人→其他商品」，加上否定樣式只留沒買過的商品。",
+      "keywords": [
+        "Cypher",
+        "WHERE NOT"
+      ]
+    },
+    {
+      "start": "08:09",
+      "frame": "cue_0004.jpg",
+      "title": "知識圖譜的定義與向量結合",
+      "note": "節點＋一等公民的關係（有語意、方向、單一類型）＋鍵值屬性；可同時用樣式比對與向量相似度搜尋。",
+      "keywords": [
+        "節點",
+        "關係",
+        "向量"
+      ]
+    },
+    {
+      "start": "09:37",
+      "frame": "cue_0005.jpg",
+      "title": "根因分析情境",
+      "note": "家具製造商的客訴：哪些產品問題最多、是零件還是其他原因；資料有物料清單 CSV 與網路評論。",
+      "keywords": [
+        "根因分析",
+        "BOM"
+      ]
+    },
+    {
+      "start": "11:23",
+      "frame": "cue_0006.jpg",
+      "title": "目標資料模型：三個子圖",
+      "note": "CSV→領域圖；Markdown 切塊→詞彙圖；抽出的實體與事實→主題圖，再連回領域圖。",
+      "keywords": [
+        "領域圖",
+        "詞彙圖",
+        "主題圖"
+      ]
+    },
+    {
+      "start": "13:41",
+      "frame": "cue_0007.jpg",
+      "title": "什麼是代理",
+      "note": "迴圈＋LLM 呼叫＋執行動作；優點是推理、工具、記憶；缺點是慢、貴、非確定性（講者主張）。",
+      "keywords": [
+        "agent",
+        "控制流程"
+      ]
+    },
+    {
+      "start": "15:20",
+      "frame": "cue_0008.jpg",
+      "title": "多代理系統",
+      "note": "代理與子代理的階層、專精、互相委派、代理當工具、與使用者的檢查點。",
+      "keywords": [
+        "委派",
+        "agent as tool"
+      ]
+    },
+    {
+      "start": "16:31",
+      "frame": "cue_0009.jpg",
+      "title": "知識圖譜代理的整體架構",
+      "note": "最上層對話代理引導流程；下層有結構化、非結構化、GraphRAG 三個工作流程代理。",
+      "keywords": [
+        "Knowledge Graph Agent",
+        "GraphRAG"
+      ]
+    },
+    {
+      "start": "18:20",
+      "frame": "cue_0010.jpg",
+      "title": "結構化資料流程",
+      "note": "使用者意圖→檔案建議→結構提案（提案者＋批評者）→圖建構計畫。",
+      "keywords": [
+        "schema proposal",
+        "critic"
+      ]
+    },
+    {
+      "start": "20:37",
+      "frame": "cue_0011.jpg",
+      "title": "非結構化資料流程",
+      "note": "前兩步相同；第三步由代理提出可抽取的實體與事實類型，輸出知識抽取計畫。",
+      "keywords": [
+        "entity",
+        "fact",
+        "知識抽取計畫"
+      ]
+    },
+    {
+      "start": "22:01",
+      "frame": "cue_0012.jpg",
+      "title": "建圖工具與課程安排",
+      "note": "依兩份計畫建領域圖、切塊嵌入、抽實體事實並連回；第四到八課逐步實作。",
+      "keywords": [
+        "construction tool"
+      ]
+    },
+    {
+      "start": "23:17",
+      "frame": "cue_0013.jpg",
+      "title": "Lesson 3 Part I：匯入與 LiteLLM",
+      "note": "匯入 Agent、LiteLLM、session 服務與 Runner；用 GPT-4o 測試連線。",
+      "keywords": [
+        "Google ADK",
+        "LiteLLM"
+      ]
+    },
+    {
+      "start": "25:10",
+      "frame": "cue_0014.jpg",
+      "title": "Neo4j for ADK 輔助函式庫",
+      "note": "把查詢結果包成 success／error 字典並可序列化；單一連線 graphdb。",
+      "keywords": [
+        "neo4j_for_adk",
+        "graphdb"
+      ]
+    },
+    {
+      "start": "28:01",
+      "frame": "cue_0015.jpg",
+      "title": "定義工具 say_hello",
+      "note": "工具＝函式＋docstring（交給 LLM 理解用途、參數、回傳）。畫面可見 say_hello 程式碼。",
+      "keywords": [
+        "tool",
+        "docstring"
+      ]
+    },
+    {
+      "start": "30:34",
+      "frame": "cue_0016.jpg",
+      "title": "查詢參數避免注入",
+      "note": "Cypher 用 $ 參數而非字串串接，避免注入攻擊。",
+      "keywords": [
+        "query parameter",
+        "injection"
+      ]
+    },
+    {
+      "start": "31:35",
+      "frame": "cue_0017.jpg",
+      "title": "定義代理",
+      "note": "Agent 的 name（含版本）、model、description（供委派判斷）、instruction（系統提示）、tools。",
+      "keywords": [
+        "Agent",
+        "description",
+        "instruction"
+      ]
+    },
+    {
+      "start": "33:53",
+      "frame": "cue_0018.jpg",
+      "title": "執行環境：Runner",
+      "note": "Runner 管理事件迴圈與代理協調，搭配記憶等服務；畫面為 ADK 執行環境架構圖。",
+      "keywords": [
+        "Runner",
+        "session service"
+      ]
+    },
+    {
+      "start": "36:15",
+      "frame": "cue_0019.jpg",
+      "title": "Session 與使用者訊息",
+      "note": "建立 session，把訊息包成 Content（role＝user、parts）。",
+      "keywords": [
+        "session",
+        "Content"
+      ]
+    },
+    {
+      "start": "38:02",
+      "frame": "cue_0020.jpg",
+      "title": "事件迴圈與最終回應",
+      "note": "run_async 逐一處理事件，遇到最終回應取文字；escalate 代表交回上層。畫面略往右捲。",
+      "keywords": [
+        "run_async",
+        "final response",
+        "escalate"
+      ]
+    },
+    {
+      "start": "41:17",
+      "frame": "cue_0021.jpg",
+      "title": "Agent caller 輔助類別",
+      "note": "把流程包成 AgentCaller 與工廠函式 make_agent_caller，後續各課共用。",
+      "keywords": [
+        "AgentCaller",
+        "make_agent_caller"
+      ]
+    },
+    {
+      "start": "43:27",
+      "frame": "cue_0022.jpg",
+      "title": "執行一段對話",
+      "note": "兩句對話測試友善聊天代理；Lesson 3 Part I 小結。",
+      "keywords": [
+        "conversation"
+      ]
+    },
+    {
+      "start": "44:47",
+      "frame": "cue_0023.jpg",
+      "title": "Lesson 3 Part II：多代理團隊",
+      "note": "根代理（協調者）＋問候、道別兩個子代理。",
+      "keywords": [
+        "root agent",
+        "sub-agent"
+      ]
+    },
+    {
+      "start": "47:35",
+      "frame": "cue_0024.jpg",
+      "title": "子代理的 description 與 instruction",
+      "note": "好的描述與指示是多代理系統的重點；道別代理示範 few-shot 例子。",
+      "keywords": [
+        "prompt engineering",
+        "few-shot"
+      ]
+    },
+    {
+      "start": "49:19",
+      "frame": "cue_0025.jpg",
+      "title": "根代理與委派",
+      "note": "根代理沒有工具，只聊天或委派；sub_agents 連結兩個子代理。畫面可見 root_agent 程式碼。",
+      "keywords": [
+        "sub_agents",
+        "delegate"
+      ]
+    },
+    {
+      "start": "51:17",
+      "frame": "cue_0026.jpg",
+      "title": "逐事件追蹤委派過程",
+      "note": "根代理轉交問候子代理→呼叫 say_hello；「thanks, bye」時轉交道別子代理。",
+      "keywords": [
+        "transfer_to_agent",
+        "debug"
+      ]
+    },
+    {
+      "start": "55:33",
+      "frame": "cue_0027.jpg",
+      "title": "記憶：session state",
+      "note": "state 是 ADK 追蹤變動的字典；透過 tool context 或 output key 讀寫。",
+      "keywords": [
+        "session state",
+        "tool context",
+        "output key"
+      ]
+    },
+    {
+      "start": "58:03",
+      "frame": "cue_0028.jpg",
+      "title": "有狀態的工具",
+      "note": "say_hello_stateful 寫入使用者名稱，say_goodbye_stateful 讀出；畫面可見 tool_context.state 程式碼。",
+      "keywords": [
+        "ToolContext",
+        "stateful"
+      ]
+    },
+    {
+      "start": "61:07",
+      "frame": "cue_0029.jpg",
+      "title": "測試記憶：前後狀態對照",
+      "note": "初始狀態為空，對話後狀態包含使用者名稱。",
+      "keywords": [
+        "state"
+      ]
+    },
+    {
+      "start": "62:44",
+      "frame": "cue_0030.jpg",
+      "title": "互動模式",
+      "note": "沒報名字時 LLM 會自己猜名字；說出名字後記憶才正確更新。",
+      "keywords": [
+        "interactive"
+      ]
+    },
+    {
+      "start": "63:58",
+      "frame": "frame_0024.jpg",
+      "title": "結語",
+      "note": "Lesson 3 與整門課的總結。",
+      "keywords": [
+        "總結"
+      ]
+    }
+  ]
+}
