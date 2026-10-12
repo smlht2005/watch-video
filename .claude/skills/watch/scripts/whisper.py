@@ -345,6 +345,54 @@ def transcribe_chunks(
     return segments
 
 
+# Local patch: Groq's long-form transcription sometimes ends a 30 s window right after a short heading,
+# silently dropping the rest of that window's speech; the same span sent alone transcribes fine.
+GAP_REFILL_SECONDS = 15.0
+REFILL_PIECE_SECONDS = 30.0
+MAX_GAP_REFILLS = 40  # bounds extra API calls on long music / silence
+
+
+def find_gaps(segments: list[dict], total_seconds: float,
+              min_gap: float = GAP_REFILL_SECONDS) -> list[tuple[float, float]]:
+    """Spans with no segment for at least min_gap seconds, split into pieces of at most 30 s."""
+    edges, cursor = [], 0.0
+    for seg in segments:
+        if seg["start"] - cursor >= min_gap:
+            edges.append((cursor, seg["start"]))
+        cursor = max(cursor, seg["end"])
+    if total_seconds - cursor >= min_gap:
+        edges.append((cursor, total_seconds))
+    pieces = []
+    for start, end in edges:
+        while end - start > REFILL_PIECE_SECONDS:
+            pieces.append((start, start + REFILL_PIECE_SECONDS))
+            start += REFILL_PIECE_SECONDS
+        pieces.append((start, end))
+    return pieces
+
+
+def fill_gaps(segments: Segments, gaps: list[tuple[float, float]], slice_audio, transcribe_one) -> Segments:
+    """Re-transcribe each gap on its own and merge the results back in time order.
+
+    slice_audio(start, duration) returns an audio file for that span; transcribe_one(file) returns its
+    0-based segments. Text that runs past the gap is dropped; a failed refill is logged and skipped.
+    """
+    if not gaps:
+        return segments
+    merged = list(segments)
+    for start, end in gaps:
+        try:
+            refill = transcribe_one(slice_audio(start, end - start))
+        except SystemExit as exc:
+            print(f"[watch] gap {start:.0f}-{end:.0f}s refill failed — skipping ({exc})", file=sys.stderr)
+            continue
+        merged += [seg for seg in shift_segments(refill, start) if seg["start"] < end]
+    out = Segments(sorted(merged, key=lambda seg: seg["start"]),
+                   gaps=segments.gaps, no_speech=segments.no_speech, language=segments.language)
+    print(f"[watch] refilled {len(gaps)} gap(s): {len(segments)} → {len(out)} segments", file=sys.stderr)
+    return out
+
+
 def _transcribe_file(backend: str, api_key: str, audio_path: Path) -> list[dict]:
     """Upload one audio file and return its 0-based segments."""
     if backend == "groq":
@@ -414,6 +462,15 @@ def transcribe_video(
         if any(path.stat().st_size > MAX_UPLOAD_BYTES for path, _ in chunks):
             raise SystemExit("A split audio chunk exceeds the upload budget; no chunks were uploaded.")
         segments = transcribe_chunks(chunks, transcribe_one)
+
+    gaps = find_gaps(segments, audio_duration(audio_path)) if segments else []
+    if len(gaps) > MAX_GAP_REFILLS:
+        print(f"[watch] {len(gaps)} gaps found; refilling only the first {MAX_GAP_REFILLS}", file=sys.stderr)
+        gaps = gaps[:MAX_GAP_REFILLS]
+    if gaps:
+        def slice_audio(start: float, duration: float) -> Path:
+            return split_audio(audio_path, audio_out.parent / "gaps" / f"{start:.0f}", [(start, duration)])[0][0]
+        segments = fill_gaps(segments, gaps, slice_audio, transcribe_one)
 
     if not segments:
         print("[watch] Whisper detected no speech", file=sys.stderr)
