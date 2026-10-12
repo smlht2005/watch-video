@@ -305,6 +305,11 @@ def main():
     ap.add_argument("--whisper", default="groq")
     ap.add_argument("--detail", default="balanced")
     ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (local only, gitignored)")
+    ap.add_argument("--timestamps", default=None,
+                    help="comma-separated cue times (MM:SS or H:MM:SS) to grab extra frames at, e.g. at topic changes in long "
+                         "screen-recording / notebook sections that scene detection skips; remembered in meta.json")
+    ap.add_argument("--resolution", type=int, default=None,
+                    help="frame width in pixels (watch default 512); 1024 makes code and small slide text readable; remembered")
     args = ap.parse_args()
 
     platform, raw_id = platform_and_id(args.url)
@@ -324,10 +329,13 @@ def main():
     # Archiving needs frames + transcript, which only the local engine returns; with GEMINI_API_KEY set,
     # watch.py's "auto" would pick Gemini and the archive would come out empty. WATCH_ENGINE overrides.
     engine = os.environ.get("WATCH_ENGINE", "local")
+    cue_timestamps = args.timestamps if args.timestamps is not None else early_meta.get("cue_timestamps", "")
+    resolution = args.resolution or early_meta.get("resolution")
+    extra = (["--timestamps", cue_timestamps] if cue_timestamps else []) + (["--resolution", str(resolution)] if resolution else [])
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
         [sys.executable, str(WATCH), args.url, "--engine", engine, "--question", args.question,
-         "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)],
+         "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)] + extra,
         capture_output=True, text=True, env=env,
     )
     if proc.returncode != 0:
@@ -399,6 +407,8 @@ def main():
         "uploader": to_traditional(field(report, "Uploader")) if to_zh_tw else field(report, "Uploader"),
         "duration": field(report, "Duration"),
         "detail": args.detail,
+        "cue_timestamps": cue_timestamps,
+        "resolution": resolution,
         "transcript_source": transcript_source,
         "question": args.question,
         "first_archived": prev.get("first_archived", dt.date.today().isoformat()),
@@ -421,6 +431,7 @@ def main():
 
     # Frames are small (~25 KB each) and make the report readable: always keep them.
     fdir = dest / "frames"
+    old_frames = json.loads((dest / "frames.json").read_text(encoding="utf-8")) if (dest / "frames.json").exists() else []
     if fdir.exists():
         shutil.rmtree(fdir)
     fdir.mkdir()
@@ -431,6 +442,9 @@ def main():
             shutil.copy2(src, fdir / src.name)
             saved.append({"file": src.name, "t": f["t"], "reason": f["reason"]})
     (dest / "frames.json").write_text(json.dumps(saved, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if meta["slides"] and saved:
+        meta["slides"] = remap_slide_frames(meta["slides"], old_frames, saved)
+        (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     # The full video is large: only with --keep-media (gitignored).
     if args.keep_media:
@@ -458,6 +472,27 @@ def main():
         print("language: other（混雜或無法判斷）：已跳過簡轉繁；請讀逐字稿確認，中文請手動轉繁體，非中文請依 SKILL 步驟 4b 寫 transcript.zh.md")
     else:
         print(f"language: {detected_language} [{language_source}] -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
+
+
+def remap_slide_frames(slides: list, old_frames: list, new_frames: list) -> list:
+    """Point each slide at the new frame closest in time to the frame it used before.
+
+    frames/ is rebuilt on every run and its files are renumbered (frame_0013 may become another moment), so a slide's
+    'frame' is resolved through the old frames.json time. Slides whose old frame time is unknown fall back to their
+    own start time.
+    """
+    old_t = {f["file"]: build_report.to_sec(f["t"]) for f in old_frames if f.get("file") and f.get("t")}
+    new = [(build_report.to_sec(f["t"]), f["file"]) for f in new_frames if f.get("file") and f.get("t")]
+    if not new:
+        return slides
+    out = []
+    for sl in slides:
+        target = old_t.get(sl.get("frame"), build_report.to_sec(sl["start"]) if sl.get("start") else None)
+        if target is None:
+            out.append(sl)
+            continue
+        out.append({**sl, "frame": min(new, key=lambda tf: abs(tf[0] - target))[1]})
+    return out
 
 
 def update_index(dest: Path, meta: dict):
