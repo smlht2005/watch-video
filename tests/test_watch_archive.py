@@ -215,5 +215,22 @@ class DocxFenceAndLinks(unittest.TestCase):
         self.assertIn("supplement.md", xml)
 
 
+class PickWhisper(unittest.TestCase):
+    def test_groq_when_key_in_env(self):
+        self.assertEqual(wa.pick_whisper(None, False, {"GROQ_API_KEY": "k"}), "groq")
+
+    def test_blank_key_counts_as_missing(self):
+        self.assertIsNone(wa.pick_whisper(None, False, {"GROQ_API_KEY": "  "}))
+
+    def test_no_key_defers_to_watch_config(self):
+        self.assertIsNone(wa.pick_whisper(None, False, {}))
+
+    def test_local_switch_beats_groq_key(self):
+        self.assertEqual(wa.pick_whisper(None, True, {"GROQ_API_KEY": "k"}), "whisperx")
+
+    def test_explicit_backend_wins(self):
+        self.assertEqual(wa.pick_whisper("openai", False, {"GROQ_API_KEY": "k"}), "openai")
+
+
 if __name__ == "__main__":
     unittest.main()

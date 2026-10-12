@@ -9,7 +9,10 @@ Outputs per video: meta.json, transcript.md (Traditional; transcript.raw.md if c
 where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
 
 Usage:
-  python3 scripts/watch_archive.py URL [--question Q] [--whisper groq] [--detail balanced] [--keep-media]
+  python3 scripts/watch_archive.py URL [--question Q] [--local | --whisper groq|openai|whisperx] [--detail balanced] [--keep-media]
+
+Transcription (only when the video has no captions): groq if GROQ_API_KEY is set, otherwise the
+WATCH_WHISPER_BACKEND saved by setup.py; --local forces local WhisperX.
 """
 import argparse
 import build_report
@@ -294,6 +297,18 @@ def field(report: str, label: str) -> str:
     return m.group(1).strip() if m else ""
 
 
+def pick_whisper(explicit: str | None, local: bool, environ) -> str | None:
+    """Transcription backend for watch.py: --whisper, else --local (WhisperX), else groq when GROQ_API_KEY is set.
+
+    None lets watch.py fall back to WATCH_WHISPER_BACKEND in ~/.config/watch/.env.
+    """
+    if explicit:
+        return explicit
+    if local:
+        return "whisperx"
+    return "groq" if environ.get("GROQ_API_KEY", "").strip() else None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
@@ -302,7 +317,10 @@ def main():
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
     ap.add_argument("--lang", default="", help="force Whisper language, e.g. zh. Leave empty (default) so the language is auto-detected and reported; forcing a wrong language yields garbage")
     ap.add_argument("--terms", default="", help="extra comma-separated terms to hint Whisper (names, jargon)")
-    ap.add_argument("--whisper", default="groq")
+    wg = ap.add_mutually_exclusive_group()
+    wg.add_argument("--whisper", choices=["groq", "openai", "whisperx"], default=None,
+                    help="transcription backend; default groq when GROQ_API_KEY is set, else WATCH_WHISPER_BACKEND from setup.py")
+    wg.add_argument("--local", action="store_true", help="transcribe with local WhisperX even when GROQ_API_KEY is set")
     ap.add_argument("--detail", default="balanced")
     ap.add_argument("--keep-media", action="store_true", help="also keep the full video in media/ (local only, gitignored)")
     ap.add_argument("--timestamps", default=None,
@@ -332,10 +350,12 @@ def main():
     cue_timestamps = args.timestamps if args.timestamps is not None else early_meta.get("cue_timestamps", "")
     resolution = args.resolution or early_meta.get("resolution")
     extra = (["--timestamps", cue_timestamps] if cue_timestamps else []) + (["--resolution", str(resolution)] if resolution else [])
+    whisper = pick_whisper(args.whisper, args.local, os.environ)
+    extra += ["--whisper", whisper] if whisper else []
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
         [sys.executable, str(WATCH), args.url, "--engine", engine, "--question", args.question,
-         "--whisper", args.whisper, "--detail", args.detail, "--out-dir", str(work)] + extra,
+         "--detail", args.detail, "--out-dir", str(work)] + extra,
         capture_output=True, text=True, env=env,
     )
     if proc.returncode != 0:

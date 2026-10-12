@@ -24,8 +24,10 @@ Claude Code 的 `/watch` skill：把影片網址或本機檔案轉成帶時間�
 
 ### 事前準備
 
-- 環境變數 `GROQ_API_KEY`（無字幕時用 Groq Whisper 轉錄；不要把 key 寫進任何檔案）
-- `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`
+- 轉錄方式（擇一，僅在影片沒有平台字幕時使用）：
+  - **Groq Whisper**：設環境變數 `GROQ_API_KEY`（不要把 key 寫進任何檔案）；有這個 key 時 `watch_archive.py` 預設就用 Groq
+  - **本地 WhisperX**：不需 key，`python3 .claude/skills/watch/scripts/setup.py --install-whisperx` 安裝；有 Groq key 時用 `--local` 切換
+- `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`（沒有 Groq key 的機器把 `groq` 換成 `whisperx`）
 - `pip install -r requirements.txt`（雲端 session 由 hook 自動安裝；產生 Word 檔；簡體逐字稿自動轉繁體）；轉 PDF 目視檢查另需 LibreOffice
 
 ### 流程
@@ -35,7 +37,7 @@ flowchart LR
     A[影片網址] --> B[watch_archive.py]
     B --> B1[解析平台 / 影片 ID<br/>TikTok 短網址先解析]
     B1 --> B2[下載 + 截圖]
-    B2 --> B3[平台字幕或 Groq Whisper 轉錄<br/>自動偵測語言 / 詞典提示詞]
+    B2 --> B3[平台字幕或 Whisper 轉錄<br/>有 GROQ_API_KEY 用 Groq，--local 用本地 WhisperX<br/>自動偵測語言 / 詞典提示詞]
     B3 --> B4[偵測語言 detected_language<br/>中文：簡轉繁 OpenCC + 全形標點 + 詞典替換<br/>ja / ko / other 跳過簡轉繁]
     B4 --> C[(watch-output/資料夾)]
     C --> D[Claude 校稿與補內容<br/>summary / keywords / 校正<br/>非中文：寫 transcript.zh.md 繁中中譯]
@@ -49,9 +51,20 @@ flowchart LR
 ### 指令
 
 ```bash
-python3 scripts/watch_archive.py "<影片網址>" [--glossary ai-chips,electronics] [--lang zh（一般不要加）] [--title "自訂標題"] [--terms "詞1,詞2"] [--timestamps "MM:SS,..."] [--resolution 1024] [--question "..."] [--keep-media]
+python3 scripts/watch_archive.py "<影片網址>" [--glossary ai-chips,electronics] [--lang zh（一般不要加）] [--title "自訂標題"] [--terms "詞1,詞2"] [--timestamps "MM:SS,..."] [--resolution 1024] [--question "..."] [--keep-media] [--local | --whisper groq|openai|whisperx]
 python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md / meta.json 後重建報告
 ```
+
+**轉錄方式**（只在影片沒有平台字幕時才轉錄）：
+
+| 情況 | 使用 |
+|---|---|
+| 有 `GROQ_API_KEY`（預設） | Groq Whisper |
+| 加 `--local` | 本地 WhisperX（不上傳音訊、不需 key，較慢） |
+| 加 `--whisper <backend>` | 指定的後端（`groq`／`openai`／`whisperx`） |
+| 沒有 `GROQ_API_KEY` | `setup.py` 存的 `WATCH_WHISPER_BACKEND`（`~/.config/watch/.env`） |
+
+`--local` 與 `--whisper` 不能同時使用。實際用的來源寫在 `meta.json.transcript_source`。
 
 在 Claude Code 說「用 watch-archive 處理 <網址>」，會依 `.claude/skills/watch-archive/SKILL.md` 完成整套流程（選參數 → 歸檔 → 校稿 → 補摘要與關鍵字 → 重建報告 → 傳送 Word 檔 → 提交）。
 
@@ -128,4 +141,4 @@ python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md 解析
 - **舊資料**：語言偵測加入前歸檔的影片，`meta.json` 沒有 `detected_language`，重跑歸檔才會補上。
 - **Word 報告**：字型為 Microsoft JhengHei；在缺此字型的環境轉 PDF 預覽可能出現方框（僅預覽問題，docx 內文字正確），但尚未在真正的 Word 逐份驗證。
 - **內容可信度**：影片中的數字、價格與效果都是講者主張，未經查證；補充資料（`supplement.md`）也只逐字保留來源文字，不代表已驗證。他人影片僅供個人參考，repo 改為 public 或分享前請勿附影片。
-- **相依**：需要 `GROQ_API_KEY`（沒有字幕時轉錄用）、ffmpeg 與 yt-dlp；轉 PDF 目視檢查另需 LibreOffice。
+- **相依**：沒有字幕時的轉錄需要 `GROQ_API_KEY` 或本地 WhisperX（擇一）；另需 ffmpeg 與 yt-dlp；轉 PDF 目視檢查另需 LibreOffice。
