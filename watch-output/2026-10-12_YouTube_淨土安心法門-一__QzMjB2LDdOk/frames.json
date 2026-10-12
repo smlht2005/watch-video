@@ -75,6 +75,11 @@
     "reason": "transcript-cue"
   },
   {
+    "file": "slide_02.jpg",
+    "t": "05:58",
+    "reason": "clean-slide"
+  },
+  {
     "file": "frame_0014.jpg",
     "t": "06:19",
     "reason": "scene-change"
@@ -83,6 +88,16 @@
     "file": "cue_0002.jpg",
     "t": "08:00",
     "reason": "transcript-cue"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "08:58",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "09:46",
+    "reason": "clean-slide"
   },
   {
     "file": "cue_0003.jpg",
@@ -100,6 +115,11 @@
     "reason": "transcript-cue"
   },
   {
+    "file": "slide_05.jpg",
+    "t": "15:50",
+    "reason": "clean-slide"
+  },
+  {
     "file": "frame_0016.jpg",
     "t": "18:13",
     "reason": "scene-change"
@@ -115,9 +135,19 @@
     "reason": "transcript-cue"
   },
   {
+    "file": "slide_06.jpg",
+    "t": "19:12",
+    "reason": "clean-slide"
+  },
+  {
     "file": "frame_0018.jpg",
     "t": "21:05",
     "reason": "scene-change"
+  },
+  {
+    "file": "slide_07.jpg",
+    "t": "22:40",
+    "reason": "clean-slide"
   },
   {
     "file": "frame_0019.jpg",
@@ -128,6 +158,11 @@
     "file": "cue_0006.jpg",
     "t": "24:40",
     "reason": "transcript-cue"
+  },
+  {
+    "file": "slide_08.jpg",
+    "t": "26:02",
+    "reason": "clean-slide"
   },
   {
     "file": "frame_0020.jpg",
@@ -145,14 +180,29 @@
     "reason": "transcript-cue"
   },
   {
+    "file": "slide_09.jpg",
+    "t": "30:12",
+    "reason": "clean-slide"
+  },
+  {
     "file": "cue_0008.jpg",
     "t": "31:30",
     "reason": "transcript-cue"
   },
   {
+    "file": "slide_10.jpg",
+    "t": "33:52",
+    "reason": "clean-slide"
+  },
+  {
     "file": "cue_0009.jpg",
     "t": "34:30",
     "reason": "transcript-cue"
+  },
+  {
+    "file": "slide_11.jpg",
+    "t": "35:48",
+    "reason": "clean-slide"
   },
   {
     "file": "cue_0010.jpg",
@@ -168,6 +218,11 @@
     "file": "frame_0023.jpg",
     "t": "37:21",
     "reason": "scene-change"
+  },
+  {
+    "file": "slide_12.jpg",
+    "t": "39:24",
+    "reason": "clean-slide"
   },
   {
     "file": "frame_0024.jpg",
@@ -195,6 +250,11 @@
     "reason": "scene-change"
   },
   {
+    "file": "slide_14.jpg",
+    "t": "44:40",
+    "reason": "clean-slide"
+  },
+  {
     "file": "cue_0012.jpg",
     "t": "47:40",
     "reason": "transcript-cue"
@@ -213,5 +273,10 @@
     "file": "frame_0030.jpg",
     "t": "49:35",
     "reason": "scene-change"
+  },
+  {
+    "file": "slide_15.jpg",
+    "t": "49:42",
+    "reason": "clean-slide"
   }
 ]
