@@ -1,0 +1,240 @@
+{
+  "url": "https://youtu.be/fAWliYuOiuc",
+  "platform": "YouTube",
+  "video_id": "fAWliYuOiuc",
+  "title": "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）",
+  "title_raw": "如何才能免費製作 AI 影片？將 ComfyUI 接上 Claude (ChatGPT) 讓影片生成不再卡關！本機電腦變成超級創作工坊！",
+  "title_override": "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "ComfyUI、MiniMax H3、文生影片、圖生影片、工作流、自訂節點、量化版、LoRA、NF4、BF16、DiffSynth-Studio、ModelScope"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "ai-video"
+  ],
+  "glossary_applied": {
+    "The Image Turbo": 1,
+    "GBT Image": 1,
+    "ConfitUI": 1,
+    "Kombi UI": 1,
+    "confyMCP": 1,
+    "KonfiUI": 9,
+    "confyUI": 7,
+    "comfyUI": 6,
+    "AceStep": 1,
+    "ZImage": 2
+  },
+  "source_hashtags": [],
+  "uploader": "PAPAYA 電腦教室",
+  "duration": "15:03 (903.3s)",
+  "detail": "balanced",
+  "cue_timestamps": "00:30,01:00,01:45,02:20,02:55,03:25,03:45,04:10,04:40,04:52,05:15,05:26,05:42,06:05,06:45,07:15,07:30,08:03,08:30,09:10,09:30,09:50,10:10,10:25,10:42,11:20,11:45,12:20,12:35,13:30,13:47,14:05,14:30",
+  "resolution": 1024,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-13",
+  "last_updated": "2026-10-13",
+  "known_asr_errors": [
+    {
+      "time": "多處",
+      "heard": "KonfiUI／confyUI／ConfitUI／Kombi UI／Config UI",
+      "expected": "ComfyUI（已入 ai-video 詞典，Config UI 只在本支修正）"
+    },
+    {
+      "time": "多處",
+      "heard": "Cloud",
+      "expected": "Claude（只在本支影片成立，雲端講座不可套用）"
+    },
+    {
+      "time": "02:27",
+      "heard": "The Image Turbo",
+      "expected": "Z-Image Turbo（依畫面範本名）"
+    },
+    {
+      "time": "05:37、12:41",
+      "heard": "支援面板",
+      "expected": "資產面板（畫面為 Media Assets；用字推測）"
+    },
+    {
+      "time": "06:52",
+      "heard": "MiniMax H3就會自動把缺少的檔案補齊",
+      "expected": "ComfyUI 就會自動…（此段是 ACE-Step，推測）"
+    },
+    {
+      "time": "06:57",
+      "heard": "Ctrl或Ctrl-R",
+      "expected": "Ctrl 或 Command-R（依 04:16 同句，推測）"
+    },
+    {
+      "time": "07:39",
+      "heard": "設定看看深圳好的音樂",
+      "expected": "試聽看看生成好的音樂（推測）"
+    },
+    {
+      "time": "09:11",
+      "heard": "Confit的雲端算圖是採取點數字",
+      "expected": "Comfy 的雲端算圖是採取點數制"
+    },
+    {
+      "time": "10:49",
+      "heard": "這一來年",
+      "expected": "這一年來（推測）"
+    },
+    {
+      "time": "12:15",
+      "heard": "例如請大家到",
+      "expected": "例如請它到（推測）"
+    },
+    {
+      "time": "13:30",
+      "heard": "相量插畫",
+      "expected": "向量插畫（依畫面提示詞）"
+    },
+    {
+      "time": "03:05、06:31",
+      "heard": "引數、型別（OpenCC s2twp 轉換）",
+      "expected": "參數、類型"
+    }
+  ],
+  "keywords": [
+    "ComfyUI",
+    "Comfy Cloud",
+    "MCP",
+    "Claude",
+    "Z-Image Turbo",
+    "ACE-Step",
+    "MiniMax H3",
+    "GPT Image 2",
+    "工作流程",
+    "節點"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "ComfyUI",
+      "本地執行",
+      "範本",
+      "皇冠",
+      "節點操作"
+    ],
+    "03:54": [
+      "缺少模型",
+      "Z-Image",
+      "Output 資料夾",
+      "資產面板",
+      "儲存工作流程"
+    ],
+    "06:31": [
+      "ACE-Step",
+      "文字生成音樂",
+      "曲風",
+      "歌詞",
+      "BPM"
+    ],
+    "08:07": [
+      "MiniMax H3",
+      "圖生影片",
+      "Comfy Cloud",
+      "點數制",
+      "初始影格"
+    ],
+    "10:45": [
+      "MCP",
+      "Comfy MCP",
+      "Claude",
+      "信任工作區",
+      "生成音樂"
+    ],
+    "13:06": [
+      "GPT Image 2",
+      "改造工作流程",
+      "三種風格",
+      "分鏡",
+      "動畫"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "cue_0001.jpg",
+      "title": "開場、下載安裝與主介面範本",
+      "note": "ComfyUI 以節點流程生成影像；官網下載桌面版，選「本地」執行（雲端 GPU 需另付費）。內建範本可依類別瀏覽，皇冠代表只能雲端執行，可用篩選只看本機範本；示範選 Z-Image Turbo，並介紹拖曳節點、縮放／平移畫布、句號鍵聚焦節點等基本操作。",
+      "keywords": [
+        "ComfyUI",
+        "本地執行",
+        "範本",
+        "皇冠",
+        "節點操作"
+      ]
+    },
+    {
+      "start": "03:54",
+      "frame": "cue_0011.jpg",
+      "title": "一鍵下載缺少的模型、生成並儲存圖片",
+      "note": "側邊欄可一次下載所有欠缺的模型，完成後 Ctrl／Command-R 重新整理；模型存放位置寫在畫布左側說明卡片，可從設定的「儲存」分頁開啟資料夾。以 Z-Image 生成 1280×720 古裝女子泡茶圖，作品存在 Output 資料夾，也可在資產面板檢視；Ctrl／Command+S 儲存工作流程。",
+      "keywords": [
+        "缺少模型",
+        "Z-Image",
+        "Output 資料夾",
+        "資產面板",
+        "儲存工作流程"
+      ]
+    },
+    {
+      "start": "06:31",
+      "frame": "cue_0015.jpg",
+      "title": "ACE-Step：用文字生成音樂",
+      "note": "音訊類別選 ACE-Step，同樣一鍵補齊模型。欄位依序為曲風描述（Funk、充滿能量）、歌詞（講者主張支援 50 種以上語言，未查證）、速度 120、調性（明亮大調）、長度 60 秒；生成後可從節點選單下載。",
+      "keywords": [
+        "ACE-Step",
+        "文字生成音樂",
+        "曲風",
+        "歌詞",
+        "BPM"
+      ]
+    },
+    {
+      "start": "08:07",
+      "frame": "cue_0023.jpg",
+      "title": "MiniMax H3 圖生影片（Comfy Cloud 雲端算圖）",
+      "note": "講者表示 MiniMax H3 可本機執行但硬體需求高、主要針對 NVIDIA 顯示卡，Mac 跑起來勉強，因此改用雲端（篩選「External or Remote API」）。需註冊 Comfy 帳號並儲值點數（示範儲值 10 美元）；以女子泡茶圖為初始影格，設定解析度與長度（最長 15 秒，越長點數越多），示範 5 秒影片。",
+      "keywords": [
+        "MiniMax H3",
+        "圖生影片",
+        "Comfy Cloud",
+        "點數制",
+        "初始影格"
+      ]
+    },
+    {
+      "start": "10:45",
+      "frame": "cue_0025.jpg",
+      "title": "Comfy MCP：讓 Claude 操作 ComfyUI",
+      "note": "講者主張這一年來 ComfyUI 最大的變化是支援 MCP，AI 助理可直接操作工作流程、降低入門門檻。安裝：官網「Ask your agent to install Comfy MCP」複製提示詞，在 Claude 指定 ComfyUI 安裝資料夾、信任工作區後貼上執行，再重啟 Claude。示範請 Claude 用現有音樂工作流程生成中文歌，Claude 會先確認主唱性別、是否預覽歌詞等細節。",
+      "keywords": [
+        "MCP",
+        "Comfy MCP",
+        "Claude",
+        "信任工作區",
+        "生成音樂"
+      ]
+    },
+    {
+      "start": "13:06",
+      "frame": "cue_0029.jpg",
+      "title": "請 Claude 改造工作流程、規劃動畫分鏡",
+      "note": "請 Claude 把 Z-Image 文生圖流程改用 GPT Image 2（使用 Comfy 點數），一次生成寫實照片、向量插畫、3D 動畫三種風格（1920×1080），並以警察企鵝為主題；修改後的流程也出現在 ComfyUI 畫布，可直接換主題（柴犬廚師炒飯）執行。最後請 Claude 把柴犬故事拆成多個分鏡，以 MiniMax 工作流程生成 15 秒動畫。",
+      "keywords": [
+        "GPT Image 2",
+        "改造工作流程",
+        "三種風格",
+        "分鏡",
+        "動畫"
+      ]
+    }
+  ]
+}

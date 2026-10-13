@@ -12,13 +12,29 @@
     "NF4",
     "BF16",
     "DiffSynth-Studio",
-    "ModelScope"
+    "ModelScope",
+    "Comfy Cloud",
+    "Comfy MCP",
+    "Z-Image Turbo",
+    "ACE-Step",
+    "GPT Image 2",
+    "MCP"
   ],
   "replace": {
     "紋身影片": "文生影片",
     "自定結點": "自訂節點",
     "MiniMax、H3": "MiniMax H3",
     "越域版": "越獄版",
-    "域域版": "越獄版"
+    "域域版": "越獄版",
+    "KonfiUI": "ComfyUI",
+    "confyUI": "ComfyUI",
+    "comfyUI": "ComfyUI",
+    "ConfitUI": "ComfyUI",
+    "Kombi UI": "ComfyUI",
+    "confyMCP": "Comfy MCP",
+    "GBT Image": "GPT Image",
+    "ZImage": "Z-Image",
+    "The Image Turbo": "Z-Image Turbo",
+    "AceStep": "ACE-Step"
   }
 }
