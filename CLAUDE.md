@@ -29,7 +29,7 @@
 - 本地 WhisperX（`small`）自動偵測語言不可靠：曾把中文講座判成日文並翻成日文，還有大量重複幻覺。中文影片優先用 Groq，或加 `--lang zh`。
 - Windows 本機：要設 `PYTHONUTF8=1`（否則 `watch_archive.py` 解碼中文輸出失敗）；YouTube 擋下載時只能用 Firefox cookies（Chrome／Edge 的 App-Bound 加密 yt-dlp 解不開）；使用者開著 Word 時 `build_report.py` 會 `PermissionError`，請使用者關掉。
 - 重跑 `watch_archive.py` 會清空 `frames/`，手動加的 `slide_NN.jpg` 會消失，要重做。
-- 詞典 `claude-code` 假設講者在談 Claude，講雲端的影片不要載入；佛學講座用 `pure-land`。
+- 詞典 `claude-code` 假設講者在談 Claude，講雲端的影片不要載入；佛學講座用 `pure-land`（載入時自動去除「呢」「啊」等語助詞，`--keep-fillers` 可保留；`transcript.raw.md` 保留原話）。
 - Word 預覽缺字型會出現方框（僅預覽問題）；尚未在真正的 Word 逐份驗證。
 
 ## Git
@@ -40,6 +40,6 @@
 ## 常用指令
 
 ```bash
-python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local] [--sop|--no-sop]   # 歸檔
+python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local] [--sop|--no-sop] [--clean-fillers|--keep-fillers]   # 歸檔
 python3 scripts/build_report.py watch-output/<資料夾>                           # 重建報告
 ```

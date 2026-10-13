@@ -33,9 +33,8 @@ def strip_fillers(text: str) -> str:
     return text.strip()
 
 
-def clean_file(path: Path):
-    """Clean the segment lines of a transcript.md in place. Returns (lines changed, lines dropped)."""
-    raw = path.read_text(encoding="utf-8")
+def clean_text(raw: str):
+    """Clean the "[mm:ss] text" lines inside the fenced block of a transcript. Returns (text, changed, dropped)."""
     out, in_fence, changed, dropped = [], False, 0, 0
     for line in raw.split("\n"):
         if line.startswith("```"):
@@ -52,8 +51,14 @@ def clean_file(path: Path):
             changed += 1
         else:
             dropped += 1
+    return "\n".join(out), changed, dropped
+
+
+def clean_file(path: Path):
+    """Clean a transcript.md in place. Returns (lines changed, lines dropped)."""
+    text, changed, dropped = clean_text(path.read_text(encoding="utf-8"))
     if changed or dropped:
-        path.write_text("\n".join(out), encoding="utf-8")
+        path.write_text(text, encoding="utf-8")
     return changed, dropped
 
 

@@ -458,6 +458,13 @@ class CleanFillers(unittest.TestCase):
         self.assertEqual(s("啊"), "")
         self.assertEqual(s("呢，"), "")
 
+    def test_clean_text_same_rules_as_file(self):
+        raw = "_Source: whisper (groq)._\n\n```\n[00:01] 這個呢，很好啊。\n[00:05] 啊\n```\n"
+        text, changed, dropped = self.cf.clean_text(raw)
+        self.assertEqual(text, "_Source: whisper (groq)._\n\n```\n[00:01] 這個，很好。\n```\n")
+        self.assertEqual((changed, dropped), (1, 1))
+        self.assertEqual(self.cf.clean_text(text), (text, 0, 0))
+
     def test_file_only_touches_segment_lines_and_drops_empty_ones(self):
         d = Path(tempfile.mkdtemp())
         p = d / "transcript.md"
@@ -551,6 +558,39 @@ class SopMode(unittest.TestCase):
     def test_both_flags_rejected_by_cli(self):
         import subprocess
         p = subprocess.run([sys.executable, str(Path(wa.__file__)), "https://youtu.be/x", "--sop", "--no-sop"],
+                           capture_output=True, text=True, env=dict(os.environ, PYTHONUTF8="1"))
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("not allowed with", p.stderr)
+
+
+class FillersMode(unittest.TestCase):
+    def test_mode_resolution(self):
+        self.assertEqual(wa.resolve_fillers_mode(False, False, ""), "auto")
+        self.assertEqual(wa.resolve_fillers_mode(True, False, ""), "on")
+        self.assertEqual(wa.resolve_fillers_mode(False, True, "on"), "off")
+        self.assertEqual(wa.resolve_fillers_mode(False, False, "off"), "off")  # rerun keeps it
+        self.assertEqual(wa.resolve_fillers_mode(False, False, "weird"), "auto")
+
+    def test_auto_means_pure_land_lectures_only(self):
+        self.assertTrue(wa.fillers_enabled("auto", ["common", "pure-land"]))
+        self.assertTrue(wa.fillers_enabled("auto", ["pure-land"]))
+        self.assertFalse(wa.fillers_enabled("auto", ["ai-video"]))
+        self.assertFalse(wa.fillers_enabled("auto", []))
+        self.assertTrue(wa.fillers_enabled("on", []))
+        self.assertFalse(wa.fillers_enabled("off", ["pure-land"]))
+
+    def test_apply_fillers_only_for_chinese_and_enabled_mode(self):
+        t = "```\n[00:01] 這個呢，很好啊。\n```\n"
+        cleaned = "```\n[00:01] 這個，很好。\n```\n"
+        self.assertEqual(wa.apply_fillers(t, True, "auto", ["pure-land"]), (cleaned, 1, 0))
+        self.assertEqual(wa.apply_fillers(t, True, "on", []), (cleaned, 1, 0))
+        self.assertEqual(wa.apply_fillers(t, False, "on", ["pure-land"]), (t, 0, 0))  # ja / ko / unclear text untouched
+        self.assertEqual(wa.apply_fillers(t, True, "auto", ["ai-video"]), (t, 0, 0))
+        self.assertEqual(wa.apply_fillers(t, True, "off", ["pure-land"]), (t, 0, 0))
+
+    def test_both_flags_rejected_by_cli(self):
+        import subprocess
+        p = subprocess.run([sys.executable, str(Path(wa.__file__)), "https://youtu.be/x", "--clean-fillers", "--keep-fillers"],
                            capture_output=True, text=True, env=dict(os.environ, PYTHONUTF8="1"))
         self.assertNotEqual(p.returncode, 0)
         self.assertIn("not allowed with", p.stderr)

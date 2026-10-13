@@ -16,6 +16,7 @@ meta.json > groq when GROQ_API_KEY exists (env or ~/.config/watch/.env) > WATCH_
 """
 import argparse
 import build_report
+import clean_fillers
 import datetime as dt
 import json
 import os
@@ -304,6 +305,27 @@ def has_groq_key() -> bool:
     return watch_config.load_api_key("groq")[0] is not None
 
 
+def resolve_fillers_mode(clean: bool, keep: bool, remembered: str) -> str:
+    """'on'/'off' forced by --clean-fillers/--keep-fillers (remembered across reruns); otherwise 'auto'."""
+    if clean:
+        return "on"
+    if keep:
+        return "off"
+    return remembered if remembered in ("on", "off") else "auto"
+
+
+def fillers_enabled(mode: str, domains) -> bool:
+    """auto = Buddhist lecture glossary loaded: spoken-lecture particles (呢、啊…) are stripped from transcript.md."""
+    return mode == "on" or (mode == "auto" and "pure-land" in domains)
+
+
+def apply_fillers(transcript: str, to_zh_tw: bool, mode: str, domains):
+    """Strip filler particles when enabled and the transcript is Chinese. Returns (text, lines changed, lines dropped)."""
+    if to_zh_tw and fillers_enabled(mode, domains):
+        return clean_fillers.clean_text(transcript)
+    return transcript, 0, 0
+
+
 def resolve_sop_mode(sop: bool, no_sop: bool, remembered: str) -> str:
     """'on'/'off' forced by --sop/--no-sop (remembered across reruns); otherwise 'auto' = Claude decides from the video."""
     if sop:
@@ -376,6 +398,9 @@ def main():
     sg = ap.add_mutually_exclusive_group()
     sg.add_argument("--sop", action="store_true", help="force the step-by-step SOP step (computer-tool tutorials); remembered")
     sg.add_argument("--no-sop", action="store_true", help="skip the SOP step even if sop.md exists; remembered")
+    fg = ap.add_mutually_exclusive_group()
+    fg.add_argument("--clean-fillers", action="store_true", help="strip filler particles (呢、啊…) from the Chinese transcript; default for --glossary pure-land; remembered")
+    fg.add_argument("--keep-fillers", action="store_true", help="keep filler particles even for pure-land lectures; remembered")
     args = ap.parse_args()
 
     platform, raw_id = platform_and_id(args.url)
@@ -434,6 +459,10 @@ def main():
         title = to_traditional(title)
     else:  # keep ja / ko / unclear text untouched
         transcript, glossary_applied = apply_glossary(transcript_raw, gl_replace)
+    fillers_mode = resolve_fillers_mode(args.clean_fillers, args.keep_fillers, early_meta.get("clean_fillers", ""))
+    transcript, n_changed, n_dropped = apply_fillers(transcript, to_zh_tw, fillers_mode, domains)  # raw.md keeps the original
+    if n_changed or n_dropped:
+        print(f"[watch] filler particles removed: {n_changed} line(s) cleaned, {n_dropped} dropped")
     if _S2T is None:
         print("WARNING: opencc not installed; transcript left as-is (pip install opencc-python-reimplemented)", file=sys.stderr)
     src_m = re.search(r"_Source:\s*(.+?)\._", transcript)
@@ -488,6 +517,7 @@ def main():
         "section_keywords": prev.get("section_keywords", {}),  # keyed by frame start time
         "slides": prev.get("slides", []),  # hand-curated: one entry per slide, overrides per-frame sections
         "video_type": prev.get("video_type", ""),  # hand-curated: "tutorial" for a screen-operation tutorial
+        "clean_fillers": fillers_mode,
         "sop_mode": resolve_sop_mode(args.sop, args.no_sop, prev.get("sop_mode", early_meta.get("sop_mode", ""))),
     }
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
