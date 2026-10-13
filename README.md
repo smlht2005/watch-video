@@ -79,13 +79,13 @@ python3 scripts/build_report.py watch-output/<資料夾>   # 編輯 summary.md /
 - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
-  - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`electronics`、`kubernetes`、`claude-code`。新增領域只要新增一個檔案。
+  - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`（淨土宗／佛學講座）。新增領域只要新增一個檔案。
   - 每個檔案有 `terms`（Whisper 提示詞，只放整個詞，總長約 200 字內；選中的領域優先）與 `replace`（轉錄後固定替換，key 用繁體、至少 3 字或帶上下文）。
   - 單支影片才成立的修正，不要放進詞典，改用 `--terms` 或 `meta.json.known_asr_errors`。
   - `WATCH_GLOSSARY_DIR` 可指向別處（例如獨立的詞典 repo），方便跨專案共用。
 - `--terms "詞1,詞2"`：只對這一支影片額外提示的詞（人名、術語）。
 - `--timestamps "MM:SS,…"`／`--resolution 1024`：在指定時間點加抽截圖、提高截圖解析度。適合長的螢幕錄影或 notebook 示範（自動抽圖會把緩慢捲動的畫面當成重複而丟掉）。兩者記在 `meta.json`，重跑沿用；`slides` 的圖檔會依時間自動對到新截圖。Word 報告插圖時會自動裁掉影片左右／上下的純黑邊。
-- Whisper 的語言與提示詞由 `.claude/skills/watch/scripts/whisper.py` 的環境變數 `WATCH_WHISPER_LANGUAGE` / `WATCH_WHISPER_PROMPT` 傳入（本專案對上游 skill 的小幅修改，更新上游時需重新套用）。另外 `transcribe.py`、`whisper.py`、`watch.py` 各有少量修改：保留 Whisper 回報的 `language`（多段音訊取最多數），並在報告表頭輸出 `Whisper language`，供 `watch_archive.py` 讀取。
+- Whisper 的語言與提示詞由 `.claude/skills/watch/scripts/whisper.py` 的環境變數 `WATCH_WHISPER_LANGUAGE` / `WATCH_WHISPER_PROMPT` 傳入（本專案對上游 skill 的小幅修改，更新上游時需重新套用）。另外 `transcribe.py`、`whisper.py`、`watch.py` 各有少量修改：保留 Whisper 回報的 `language`（多段音訊取最多數），並在報告表頭輸出 `Whisper language`，供 `watch_archive.py` 讀取。另外 `whisper.py` 會在 API 轉錄（Groq／OpenAI）後**自動補漏**：Groq 處理長音訊時，有些 30 秒窗格會在短標題後提早結束、漏掉其餘人聲，段落間空白 ≥15 秒時把該段音訊單獨重送再依時間插回（最多 40 段）。
 
 ### 輸出結構
 
