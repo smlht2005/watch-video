@@ -282,6 +282,21 @@ class BuildWithSop(unittest.TestCase):
         self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
 
 
+class StaleCleanupWithRelativeDest(BuildWithSop):
+    def test_legacy_outputs_removed_when_dest_is_a_relative_path(self):
+        d = self.make(self.SOP)
+        (d / "x_sop.md").write_text("old", encoding="utf-8")
+        (d / "y_report.md").write_text("old", encoding="utf-8")
+        cwd = os.getcwd()
+        os.chdir(d.parent)
+        try:
+            br.build(Path(d.name))  # as the CLI does: watch-output/<folder>
+        finally:
+            os.chdir(cwd)
+        self.assertFalse((d / "x_sop.md").exists())
+        self.assertFalse((d / "y_report.md").exists())
+
+
 class KbBundle(BuildWithSop):
     def kb_files(self, d):
         kb = d / "kb"

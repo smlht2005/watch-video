@@ -476,7 +476,7 @@ def build(dest: Path):
     md = build_md(dest, meta, summary, segs, frames)
     stem = file_stem(dest)
     for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*"), *dest.glob("*_操作SOP.*")):  # drop stale / legacy names
-        (dest / old).unlink(missing_ok=True)
+        (old if isinstance(old, Path) else dest / old).unlink(missing_ok=True)  # glob() already includes dest
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
     md_to_docx(dest, md, out_docx, meta.get("keywords"))
