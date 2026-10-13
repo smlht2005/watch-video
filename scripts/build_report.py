@@ -161,15 +161,29 @@ def close_open_fence(md: str) -> str:
     return md + "\n" + fence if fence else md
 
 
-def supplement_lines(dest: Path):
-    """Body of supplement.md for the report, under '## 補充資料'.
+FRAME_REF = re.compile(r"!\[([^\]]*)\]\(frame@(\d+:\d+(?::\d+)?)\)")
+
+
+def resolve_frame_ref(line: str, frames: list) -> str:
+    """Replace ![alt](frame@MM:SS) with the frames/ file closest in time (frames/ is renumbered on every run, so
+    hand-written files refer to a time, not a file name). With no frames, leave a text note instead of a broken image."""
+    def repl(m):
+        cands = [(abs(to_sec(f["t"]) - to_sec(m.group(2))), f["file"]) for f in frames if f.get("file") and f.get("t")]
+        if not cands:
+            return f"（缺截圖：{m.group(2)}）"
+        return f"![{m.group(1)}](frames/{min(cands)[1]})"
+    return FRAME_REF.sub(repl, line)
+
+
+def include_lines(path: Path, heading: str, frames=None):
+    """Body of a hand-written side file (supplement.md, sop.md) for the report, under '## <heading>'.
 
     The file's leading '# …' title is dropped; '#'/'##' headings -> '###' heading; '###' and deeper -> bold line
     (the docx converter handles at most three heading levels). Fenced blocks (``` or ~~~) are kept verbatim with
     their original markers, so a ~~~ block may contain ```; an unclosed fence is closed at the end, and md_to_docx
-    renders fences as indented monospace. Returns [] when the file is missing or has no content besides its title.
+    renders fences as indented monospace. Outside fences, ![alt](frame@MM:SS) is resolved against `frames` (when
+    given). Returns [] when the file is missing or has no content besides its title.
     """
-    path = dest / "supplement.md"
     if not path.exists():
         return []
     out, fence, has_body, started = [], None, False, False
@@ -194,12 +208,20 @@ def supplement_lines(dest: Path):
         else:
             if line.strip():
                 started = has_body = True
-            out.append(line)
+            out.append(resolve_frame_ref(line, frames) if frames is not None else line)
     if fence:
         out.append(fence)
     if not has_body:
         return []
-    return ["## 補充資料（影片未呈現的資訊）", ""] + out + [""]
+    return [f"## {heading}", ""] + out + [""]
+
+
+def supplement_lines(dest: Path):
+    return include_lines(dest / "supplement.md", "補充資料（影片未呈現的資訊）")
+
+
+def sop_lines(dest: Path, frames: list):
+    return include_lines(dest / "sop.md", "操作 SOP（依影片整理，照著做）", frames)
 
 
 def build_md(dest: Path, meta, summary, segs, frames) -> str:
@@ -213,6 +235,8 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
     L += ["## 摘要與名詞說明", "", close_open_fence(strip_h1(summary).strip()), ""]
+    if meta.get("sop_mode") != "off":
+        L += sop_lines(dest, frames)
     sup = supplement_lines(dest)
     L += sup
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
@@ -229,6 +253,70 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L += ["## 補充資料連結", "",
               "- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）", ""]
     return "\n".join(L)
+
+
+def sop_md(dest: Path, meta, frames):
+    """Standalone SOP document (no transcript): title, source, then the SOP chapters one heading level up."""
+    if meta.get("sop_mode") == "off":
+        return None
+    lines = sop_lines(dest, frames)
+    if not lines:
+        return None
+    body = ["## " + l[4:] if l.startswith("### ") else l for l in lines[2:]]
+    head = [f"# {meta['title']}：操作 SOP", "",
+            f"- 來源：{meta['url']}（步驟後標註影片時間）",
+            f"- 更新日期：{meta.get('last_updated', '')}",
+            "- 說明：本文由影片整理；影片中的價格、硬體需求與效果為講者主張，未查證。", ""]
+    return "\n".join(head + body)
+
+
+def sop_name(meta) -> str:
+    """Readable file stem for the SOP outputs: '<video title>_操作SOP' (characters Windows forbids removed)."""
+    safe = re.sub(r'[\\/:*?"<>|]', "", meta["title"]).strip()[:60].strip() or "video"
+    return f"{safe}_操作SOP"
+
+
+def build_kb(dest: Path, meta, frames):
+    """Portable knowledge-base bundle for Obsidian/Notion: kb/<title>.md (YAML frontmatter) + kb/attachments/.
+
+    Images get stable names from their video time (step-MMSS.jpg) and relative links, so the folder can be copied
+    anywhere and survives the renumbering of frames/ on a rerun. Returns the .md path, or None when there is no SOP.
+    """
+    import shutil
+    kb = dest / "kb"
+    # kb/ may be opened as an Obsidian vault (.obsidian/, the user's own notes): remove only what we generated
+    for old in [*kb.glob("*_操作SOP.md"), *(kb / "attachments").glob("step-*.jpg")]:
+        old.unlink(missing_ok=True)
+    for d in (kb / "attachments", kb):  # drop the folders only if nothing else lives there
+        if d.is_dir() and not any(d.iterdir()):
+            d.rmdir()
+    body = sop_md(dest, meta, frames)
+    if not body:
+        return None
+    t_of = {f["file"]: f["t"] for f in frames if f.get("file") and f.get("t")}
+    (kb / "attachments").mkdir(parents=True, exist_ok=True)
+
+    def repl(m):
+        src = dest / "frames" / m.group(2)
+        if not src.exists():
+            return m.group(0)
+        name = "step-" + t_of.get(m.group(2), m.group(2).rsplit(".", 1)[0]).replace(":", "") + ".jpg"
+        shutil.copyfile(src, kb / "attachments" / name)
+        return f"![{m.group(1)}](attachments/{name})"
+
+    body = re.sub(r"!\[([^\]]*)\]\(frames/([^)]+)\)", repl, body)
+    tags = ["sop", "tutorial"]
+    for k in meta.get("keywords", []):  # Obsidian tag: letters/digits/_/-//, not purely numeric
+        tag = re.sub(r"[^\w/-]+", "-", k.strip()).strip("-/")
+        if tag and not tag.isdigit() and tag not in tags:
+            tags.append(tag)
+    q = lambda v: json.dumps(str(v), ensure_ascii=False)  # a JSON string is a valid YAML scalar: no escaping surprises
+    front = ["---", f"title: {q(meta['title'] + '：操作 SOP')}", "type: sop", f"source: {q(meta['url'])}",
+             f"platform: {q(meta.get('platform', ''))}", f"video_id: {q(meta.get('video_id', ''))}",
+             f"date: {q(meta.get('last_updated', ''))}", "tags:"] + [f"  - {q(t)}" for t in tags] + ["---", ""]
+    out = kb / f"{sop_name(meta)}.md"
+    out.write_text("\n".join(front) + body + "\n", encoding="utf-8")
+    return out
 
 
 # ---------- Markdown -> docx (small subset: headings, tables, bullets, images, **bold**, `code`) ----------
@@ -318,7 +406,7 @@ def crop_dark_borders(im, threshold=16, min_trim=0.05):
     return im.crop((left, top, right, bottom)) if (left, top, right, bottom) != (0, 0, w, h) else im
 
 
-def md_to_docx(dest: Path, md: str, out: Path, kw=None):
+def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
     doc = Document()
     sec = doc.sections[0]
     sec.left_margin = sec.right_margin = Cm(2)
@@ -375,15 +463,15 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
                 import io
                 pil = crop_dark_borders(Image.open(img).convert("RGB"))
                 w, h = pil.size
-                # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to 9 cm tall, 16 cm wide
-                width_cm = min(12, 7 * w / h) if h > w else min(16, 9 * w / h)
+                # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to max_img_h cm tall, 16 cm wide
+                width_cm = min(12, 7 * w / h) if h > w else min(16, max_img_h * w / h)
                 buf = io.BytesIO()  # re-encode: some ffmpeg JPEGs lack a JFIF header that python-docx requires
                 pil.save(buf, "JPEG", quality=90)
                 buf.seek(0)
                 doc.add_picture(buf, width=Cm(width_cm))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
-        elif line.startswith("- "):
-            add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
+        elif line.lstrip().startswith("- "):  # also indented sub-items under a numbered step
+            add_inline(doc.add_paragraph(style="List Bullet"), line.lstrip()[2:])
         elif line.strip():
             add_inline(doc.add_paragraph(), line.strip())
         i += 1
@@ -396,12 +484,20 @@ def build(dest: Path):
     meta, summary, segs, frames = load(dest)
     md = build_md(dest, meta, summary, segs, frames)
     stem = file_stem(dest)
-    for old in ("report.md", "report.docx", *dest.glob("*_report.*")):  # drop stale / legacy names
-        (dest / old).unlink(missing_ok=True)
+    for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*"), *dest.glob("*_操作SOP.*")):  # drop stale / legacy names
+        (old if isinstance(old, Path) else dest / old).unlink(missing_ok=True)  # glob() already includes dest
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
     md_to_docx(dest, md, out_docx, meta.get("keywords"))
-    return out_md, out_docx
+    outs = [out_md, out_docx]
+    standalone = sop_md(dest, meta, frames)
+    if standalone:
+        s_md, s_docx = dest / f"{sop_name(meta)}.md", dest / f"{sop_name(meta)}.docx"
+        s_md.write_text(standalone, encoding="utf-8")
+        md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5)  # many step shots: keep them compact
+        outs += [s_md, s_docx]
+    build_kb(dest, meta, frames)  # also clears a stale kb/ when there is no SOP
+    return tuple(outs)
 
 
 if __name__ == "__main__":

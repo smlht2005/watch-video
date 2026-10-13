@@ -304,6 +304,15 @@ def has_groq_key() -> bool:
     return watch_config.load_api_key("groq")[0] is not None
 
 
+def resolve_sop_mode(sop: bool, no_sop: bool, remembered: str) -> str:
+    """'on'/'off' forced by --sop/--no-sop (remembered across reruns); otherwise 'auto' = Claude decides from the video."""
+    if sop:
+        return "on"
+    if no_sop:
+        return "off"
+    return remembered if remembered in ("on", "off") else "auto"
+
+
 def pick_whisper(explicit: str | None, local: bool, remembered: str, groq_key: bool) -> str | None:
     """Transcription backend for watch.py: --whisper > --local (WhisperX) > the choice remembered in meta.json >
     groq when a Groq key exists. None lets watch.py fall back to WATCH_WHISPER_BACKEND in ~/.config/watch/.env.
@@ -364,6 +373,9 @@ def main():
                          "screen-recording / notebook sections that scene detection skips; remembered in meta.json")
     ap.add_argument("--resolution", type=int, default=None,
                     help="frame width in pixels (watch default 512); 1024 makes code and small slide text readable; remembered")
+    sg = ap.add_mutually_exclusive_group()
+    sg.add_argument("--sop", action="store_true", help="force the step-by-step SOP step (computer-tool tutorials); remembered")
+    sg.add_argument("--no-sop", action="store_true", help="skip the SOP step even if sop.md exists; remembered")
     args = ap.parse_args()
 
     platform, raw_id = platform_and_id(args.url)
@@ -475,6 +487,8 @@ def main():
         "keywords": prev.get("keywords", []),  # hand-curated: never overwrite
         "section_keywords": prev.get("section_keywords", {}),  # keyed by frame start time
         "slides": prev.get("slides", []),  # hand-curated: one entry per slide, overrides per-frame sections
+        "video_type": prev.get("video_type", ""),  # hand-curated: "tutorial" for a screen-operation tutorial
+        "sop_mode": resolve_sop_mode(args.sop, args.no_sop, prev.get("sop_mode", early_meta.get("sop_mode", ""))),
     }
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dest / "transcript.md").write_text(f"# {title}\n\n{transcript}\n", encoding="utf-8")

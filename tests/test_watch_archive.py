@@ -167,6 +167,258 @@ class SupplementLines(unittest.TestCase):
         self.assertIn("### S1", out)
 
 
+class SopLines(unittest.TestCase):
+    FRAMES = [{"file": "cue_0001.jpg", "t": "01:00"}, {"file": "cue_0002.jpg", "t": "05:26"},
+              {"file": "cue_0003.jpg", "t": "1:02:03"}]
+
+    def run_sop(self, text, frames=None):
+        d = Path(tempfile.mkdtemp())
+        if text is not None:
+            (d / "sop.md").write_text(text, encoding="utf-8")
+        return br.sop_lines(d, self.FRAMES if frames is None else frames)
+
+    def test_missing_empty_and_title_only(self):
+        self.assertEqual(self.run_sop(None), [])
+        self.assertEqual(self.run_sop(""), [])
+        self.assertEqual(self.run_sop("# 操作 SOP\n\n"), [])
+
+    def test_heading_and_chapters(self):
+        out = self.run_sop("# 操作 SOP\n\n## 一、安裝\n1. 下載\n### 注意事項\n- 費用\n")
+        self.assertEqual(out[0], "## 操作 SOP（依影片整理，照著做）")
+        self.assertIn("### 一、安裝", out)
+        self.assertIn("1. 下載", out)
+        self.assertIn("**注意事項**", out)
+
+    def test_frame_ref_picks_nearest_frame(self):
+        out = "\n".join(self.run_sop("## 一\n![設定畫面](frame@05:00)\n![x](frame@1:02:00)\n"))
+        self.assertIn("![設定畫面](frames/cue_0002.jpg)", out)  # 05:00 is closer to 05:26 than 01:00
+        self.assertIn("![x](frames/cue_0003.jpg)", out)
+
+    def test_frame_ref_inside_fence_untouched(self):
+        out = self.run_sop("## 一\n```\n![a](frame@01:00)\n```\n")
+        self.assertIn("![a](frame@01:00)", out)
+
+    def test_frame_ref_without_any_frames_leaves_note_not_broken_image(self):
+        out = "\n".join(self.run_sop("## 一\n![a](frame@01:00)\n步驟\n", frames=[]))
+        self.assertNotIn("frame@", out)
+        self.assertNotIn("![", out)
+        self.assertIn("（缺截圖：01:00）", out)
+        self.assertIn("步驟", out)
+
+    def test_supplement_behaviour_unchanged(self):
+        d = Path(tempfile.mkdtemp())
+        (d / "supplement.md").write_text("# 補充資料\n\n## S1｜x\n- a\n", encoding="utf-8")
+        out = br.supplement_lines(d)
+        self.assertEqual(out[0], "## 補充資料（影片未呈現的資訊）")
+        self.assertIn("### S1｜x", out)
+
+
+class BuildWithSop(unittest.TestCase):
+    SOP = "# 操作 SOP\n\n## 一、安裝\n1. 下載（00:30）\n![畫面](frame@00:31)\n"
+
+    def make(self, sop=None, sop_mode=None):
+        import json
+        from PIL import Image
+        root = Path(tempfile.mkdtemp())
+        d = root / "2026-10-13_YouTube_測試影片__abc123"
+        (d / "frames").mkdir(parents=True)
+        Image.new("RGB", (320, 180), (200, 200, 200)).save(d / "frames" / "cue_0001.jpg")
+        meta = {"url": "https://example.com/v", "platform": "YouTube", "title": "測試影片", "duration": "01:00 (60s)",
+                "keywords": ["k"], "slides": []}
+        if sop_mode:
+            meta["sop_mode"] = sop_mode
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        (d / "summary.md").write_text("# 摘要\n\n內容\n", encoding="utf-8")
+        (d / "transcript.md").write_text("# t\n\n```\n[00:01] 你好\n```\n", encoding="utf-8")
+        (d / "frames.json").write_text(json.dumps([{"file": "cue_0001.jpg", "t": "00:30"}]), encoding="utf-8")
+        if sop is not None:
+            (d / "sop.md").write_text(sop, encoding="utf-8")
+        return d
+
+    def names(self, d, suffix):
+        return sorted(d / p.name for p in d.iterdir() if p.is_file() and p.name.endswith(suffix))
+
+    def test_sop_in_report_before_supplement_and_standalone_files(self):
+        d = self.make(self.SOP)
+        (d / "supplement.md").write_text("## S1\n- a\n", encoding="utf-8")
+        outs = br.build(d)
+        self.assertEqual(len(outs), 4)
+        md = outs[0].read_text(encoding="utf-8")
+        self.assertLess(md.index("## 摘要與名詞說明"), md.index("## 操作 SOP"))
+        self.assertLess(md.index("## 操作 SOP"), md.index("## 補充資料"))
+        self.assertIn("![畫面](frames/cue_0001.jpg)", md)
+        sop = self.names(d, "_操作SOP.md")[0].read_text(encoding="utf-8")
+        self.assertTrue(sop.startswith("# 測試影片：操作 SOP"))
+        self.assertNotIn("## 摘要", sop)
+        self.assertNotIn("你好", sop)  # no transcript in the standalone SOP
+        self.assertIn("## 一、安裝", sop)
+        self.assertNotIn("### 一、安裝", sop)  # chapters promoted one level
+        from docx import Document
+        doc = Document(str(self.names(d, "_操作SOP.docx")[0]))
+        self.assertEqual(len(doc.inline_shapes), 1)
+
+    def test_no_sop_file_means_no_section_and_no_sop_outputs(self):
+        d = self.make(None)
+        outs = br.build(d)
+        self.assertEqual(len(outs), 2)
+        self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
+        self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
+
+    def test_title_only_sop_means_nothing(self):
+        d = self.make("# 操作 SOP\n\n")
+        self.assertEqual(len(br.build(d)), 2)
+
+    def test_sop_mode_off_skips_even_with_file(self):
+        d = self.make(self.SOP, sop_mode="off")
+        outs = br.build(d)
+        self.assertEqual(len(outs), 2)
+        self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
+
+    def test_stale_sop_outputs_removed_when_sop_deleted(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "sop.md").unlink()
+        br.build(d)
+        self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
+
+
+class StaleCleanupWithRelativeDest(BuildWithSop):
+    def test_legacy_outputs_removed_when_dest_is_a_relative_path(self):
+        d = self.make(self.SOP)
+        (d / "x_sop.md").write_text("old", encoding="utf-8")
+        (d / "y_report.md").write_text("old", encoding="utf-8")
+        cwd = os.getcwd()
+        os.chdir(d.parent)
+        try:
+            br.build(Path(d.name))  # as the CLI does: watch-output/<folder>
+        finally:
+            os.chdir(cwd)
+        self.assertFalse((d / "x_sop.md").exists())
+        self.assertFalse((d / "y_report.md").exists())
+
+
+class KbBundle(BuildWithSop):
+    def kb_files(self, d):
+        kb = d / "kb"
+        return sorted(p.name for p in kb.glob("*.md")) if kb.exists() else []
+
+    def test_bundle_has_frontmatter_portable_images_and_no_build_refs(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        self.assertEqual(self.kb_files(d), ["測試影片_操作SOP.md"])
+        md = (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8")
+        self.assertTrue(md.startswith("---\n"))
+        head = md.split("---\n")[1]
+        for key in ('title: "測試影片：操作 SOP"', "type: sop", 'source: "https://example.com/v"', "tags:", '  - "sop"'):
+            self.assertIn(key, head)
+        self.assertIn("![畫面](attachments/step-0030.jpg)", md)
+        self.assertNotIn("frames/", md)
+        self.assertNotIn("frame@", md)
+        self.assertTrue((d / "kb" / "attachments" / "step-0030.jpg").exists())
+        self.assertIn("# 測試影片：操作 SOP", md)
+
+    def test_sop_name_is_readable_and_filesystem_safe(self):
+        self.assertEqual(br.sop_name({"title": "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）"}),
+                         "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）_操作SOP")
+        self.assertEqual(br.sop_name({"title": 'a\\b/c:d*e?f"g<h>i|j'}), "abcdefghij_操作SOP")
+        self.assertEqual(br.sop_name({"title": "x" * 100}), "x" * 60 + "_操作SOP")
+
+    def test_tags_have_no_spaces(self):
+        d = self.make(self.SOP)
+        import json
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m["keywords"] = ["Comfy Cloud", "MCP"]
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        head = (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8").split("---\n")[1]
+        self.assertIn('  - "Comfy-Cloud"', head)
+        self.assertNotIn("Comfy Cloud", head)
+
+    def test_no_sop_or_off_means_no_bundle_and_stale_bundle_removed(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "sop.md").unlink()
+        br.build(d)
+        self.assertFalse((d / "kb").exists())
+        d2 = self.make(self.SOP, sop_mode="off")
+        br.build(d2)
+        self.assertFalse((d2 / "kb").exists())
+
+    def test_rebuild_replaces_old_generated_attachments(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "kb" / "attachments" / "step-9999.jpg").write_bytes(b"x")
+        br.build(d)
+        self.assertFalse((d / "kb" / "attachments" / "step-9999.jpg").exists())
+
+    def test_rebuild_keeps_users_own_files_in_kb(self):
+        """kb/ may be opened as an Obsidian vault: .obsidian/ and the user's own notes/images must survive."""
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "kb" / ".obsidian").mkdir()
+        (d / "kb" / ".obsidian" / "app.json").write_text("{}", encoding="utf-8")
+        (d / "kb" / "my note.md").write_text("mine", encoding="utf-8")
+        (d / "kb" / "attachments" / "mine.png").write_bytes(b"x")
+        br.build(d)
+        self.assertTrue((d / "kb" / ".obsidian" / "app.json").exists())
+        self.assertEqual((d / "kb" / "my note.md").read_text(encoding="utf-8"), "mine")
+        self.assertTrue((d / "kb" / "attachments" / "mine.png").exists())
+        self.assertTrue((d / "kb" / "測試影片_操作SOP.md").exists())
+        (d / "sop.md").unlink()  # no SOP any more: only generated files go, user files stay
+        br.build(d)
+        self.assertFalse((d / "kb" / "測試影片_操作SOP.md").exists())
+        self.assertTrue((d / "kb" / "my note.md").exists())
+        self.assertTrue((d / "kb" / "attachments" / "mine.png").exists())
+
+    def test_renamed_title_does_not_leave_old_sop_md_in_kb(self):
+        import json
+        d = self.make(self.SOP)
+        br.build(d)
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m["title"] = "新標題"
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        self.assertEqual(self.kb_files(d), ["新標題_操作SOP.md"])
+
+    def front(self, d):
+        return (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8").split("---\n")[1]
+
+    def test_frontmatter_is_valid_yaml_for_hostile_values(self):
+        import json
+        try:
+            import yaml
+        except ImportError:
+            self.skipTest("PyYAML not installed")
+        d = self.make(self.SOP)
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m.update({"title": "測試影片", "video_id": "123456", "url": "https://example.com/v?a=1&b=#x",
+                  "keywords": ["*star", "#hash", "C++", "2026", "a: b", "[x]", "Comfy Cloud", "!bang", "中文"]})
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        data = yaml.safe_load(self.front(d))
+        self.assertEqual(data["video_id"], "123456")  # a string, not the integer 123456
+        self.assertEqual(data["source"], "https://example.com/v?a=1&b=#x")
+        self.assertTrue(all(isinstance(t, str) and t and not t.isdigit() for t in data["tags"]))
+        self.assertIn("Comfy-Cloud", data["tags"])
+        self.assertIn("中文", data["tags"])
+        self.assertTrue(all(c not in t for t in data["tags"] for c in " #*!:[]+"))
+
+    def test_frontmatter_title_with_backslash_and_quote(self):
+        import json
+        try:
+            import yaml
+        except ImportError:
+            self.skipTest("PyYAML not installed")
+        d = self.make(self.SOP)
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m["title"] = 'C:\\new\\data "x"'
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        f = [p for p in (d / "kb").glob("*.md")][0]
+        data = yaml.safe_load(f.read_text(encoding="utf-8").split("---\n")[1])
+        self.assertEqual(data["title"], 'C:\\new\\data "x"：操作 SOP')
+
+
 class FenceHelpers(unittest.TestCase):
     def test_language_tag_inside_fence_does_not_close_it(self):
         out = Path(tempfile.mkdtemp())
@@ -210,11 +462,48 @@ class DocxFenceAndLinks(unittest.TestCase):
         doc = self.build("## x\n\n~~~\n# not a heading\n~~~\n")
         self.assertEqual([p.style.name for p in doc.paragraphs if p.text == "# not a heading"], ["Normal"])
 
+    def test_indented_bullet_is_a_bullet(self):
+        doc = self.build("1. 步驟\n   - 子項目\n- 一般項目\n")
+        styles = {p.text: p.style.name for p in doc.paragraphs}
+        self.assertEqual(styles["子項目"], "List Bullet")
+        self.assertEqual(styles["一般項目"], "List Bullet")
+        self.assertEqual(styles["1. 步驟"], "Normal")
+
+    def test_max_img_h_caps_landscape_image_height(self):
+        from PIL import Image
+        d = Path(tempfile.mkdtemp())
+        (d / "frames").mkdir()
+        Image.new("RGB", (320, 180), (200, 200, 200)).save(d / "frames" / "a.jpg")
+        out = d / "t.docx"
+        br.md_to_docx(d, "![x](frames/a.jpg)\n", out, max_img_h=6)
+        from docx import Document as D
+        self.assertLessEqual(D(str(out)).inline_shapes[0].height.cm, 6.01)
+
     def test_link_label_and_url(self):
         doc = self.build("- [說明](https://example.com/a_(b)) 與 [supplement.md](supplement.md)\n")
         xml = doc.element.xml
         self.assertIn("說明", xml)
         self.assertIn("supplement.md", xml)
+
+
+class SopMode(unittest.TestCase):
+    def test_default_is_auto(self):
+        self.assertEqual(wa.resolve_sop_mode(False, False, ""), "auto")
+
+    def test_flags_override_and_are_remembered(self):
+        self.assertEqual(wa.resolve_sop_mode(True, False, ""), "on")
+        self.assertEqual(wa.resolve_sop_mode(False, True, "on"), "off")
+        self.assertEqual(wa.resolve_sop_mode(False, False, "off"), "off")  # rerun without flag keeps it
+
+    def test_unknown_remembered_value_falls_back_to_auto(self):
+        self.assertEqual(wa.resolve_sop_mode(False, False, "weird"), "auto")
+
+    def test_both_flags_rejected_by_cli(self):
+        import subprocess
+        p = subprocess.run([sys.executable, str(Path(wa.__file__)), "https://youtu.be/x", "--sop", "--no-sop"],
+                           capture_output=True, text=True, env=dict(os.environ, PYTHONUTF8="1"))
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("not allowed with", p.stderr)
 
 
 class PickWhisper(unittest.TestCase):
