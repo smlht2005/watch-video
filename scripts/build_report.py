@@ -357,7 +357,7 @@ def crop_dark_borders(im, threshold=16, min_trim=0.05):
     return im.crop((left, top, right, bottom)) if (left, top, right, bottom) != (0, 0, w, h) else im
 
 
-def md_to_docx(dest: Path, md: str, out: Path, kw=None):
+def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
     doc = Document()
     sec = doc.sections[0]
     sec.left_margin = sec.right_margin = Cm(2)
@@ -414,15 +414,15 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None):
                 import io
                 pil = crop_dark_borders(Image.open(img).convert("RGB"))
                 w, h = pil.size
-                # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to 9 cm tall, 16 cm wide
-                width_cm = min(12, 7 * w / h) if h > w else min(16, 9 * w / h)
+                # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to max_img_h cm tall, 16 cm wide
+                width_cm = min(12, 7 * w / h) if h > w else min(16, max_img_h * w / h)
                 buf = io.BytesIO()  # re-encode: some ffmpeg JPEGs lack a JFIF header that python-docx requires
                 pil.save(buf, "JPEG", quality=90)
                 buf.seek(0)
                 doc.add_picture(buf, width=Cm(width_cm))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
-        elif line.startswith("- "):
-            add_inline(doc.add_paragraph(style="List Bullet"), line[2:])
+        elif line.lstrip().startswith("- "):  # also indented sub-items under a numbered step
+            add_inline(doc.add_paragraph(style="List Bullet"), line.lstrip()[2:])
         elif line.strip():
             add_inline(doc.add_paragraph(), line.strip())
         i += 1
@@ -445,7 +445,7 @@ def build(dest: Path):
     if standalone:
         s_md, s_docx = dest / f"{stem}_sop.md", dest / f"{stem}_sop.docx"
         s_md.write_text(standalone, encoding="utf-8")
-        md_to_docx(dest, standalone, s_docx, meta.get("keywords"))
+        md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5)  # many step shots: keep them compact
         outs += [s_md, s_docx]
     return tuple(outs)
 

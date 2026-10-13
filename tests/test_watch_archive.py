@@ -325,6 +325,23 @@ class DocxFenceAndLinks(unittest.TestCase):
         doc = self.build("## x\n\n~~~\n# not a heading\n~~~\n")
         self.assertEqual([p.style.name for p in doc.paragraphs if p.text == "# not a heading"], ["Normal"])
 
+    def test_indented_bullet_is_a_bullet(self):
+        doc = self.build("1. 步驟\n   - 子項目\n- 一般項目\n")
+        styles = {p.text: p.style.name for p in doc.paragraphs}
+        self.assertEqual(styles["子項目"], "List Bullet")
+        self.assertEqual(styles["一般項目"], "List Bullet")
+        self.assertEqual(styles["1. 步驟"], "Normal")
+
+    def test_max_img_h_caps_landscape_image_height(self):
+        from PIL import Image
+        d = Path(tempfile.mkdtemp())
+        (d / "frames").mkdir()
+        Image.new("RGB", (320, 180), (200, 200, 200)).save(d / "frames" / "a.jpg")
+        out = d / "t.docx"
+        br.md_to_docx(d, "![x](frames/a.jpg)\n", out, max_img_h=6)
+        from docx import Document as D
+        self.assertLessEqual(D(str(out)).inline_shapes[0].height.cm, 6.01)
+
     def test_link_label_and_url(self):
         doc = self.build("- [說明](https://example.com/a_(b)) 與 [supplement.md](supplement.md)\n")
         xml = doc.element.xml
