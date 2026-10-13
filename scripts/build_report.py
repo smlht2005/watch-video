@@ -284,12 +284,17 @@ def build_kb(dest: Path, meta, frames):
     """
     import shutil
     kb = dest / "kb"
-    shutil.rmtree(kb, ignore_errors=True)
+    # kb/ may be opened as an Obsidian vault (.obsidian/, the user's own notes): remove only what we generated
+    for old in [*kb.glob("*_操作SOP.md"), *(kb / "attachments").glob("step-*.jpg")]:
+        old.unlink(missing_ok=True)
+    for d in (kb / "attachments", kb):  # drop the folders only if nothing else lives there
+        if d.is_dir() and not any(d.iterdir()):
+            d.rmdir()
     body = sop_md(dest, meta, frames)
     if not body:
         return None
     t_of = {f["file"]: f["t"] for f in frames if f.get("file") and f.get("t")}
-    (kb / "attachments").mkdir(parents=True)
+    (kb / "attachments").mkdir(parents=True, exist_ok=True)
 
     def repl(m):
         src = dest / "frames" / m.group(2)
@@ -300,11 +305,15 @@ def build_kb(dest: Path, meta, frames):
         return f"![{m.group(1)}](attachments/{name})"
 
     body = re.sub(r"!\[([^\]]*)\]\(frames/([^)]+)\)", repl, body)
-    tags = ["sop", "tutorial"] + [re.sub(r"\s+", "-", k.strip()) for k in meta.get("keywords", []) if k.strip()]
-    title = meta["title"].replace('"', "'")
-    front = ["---", f'title: "{title}：操作 SOP"', "type: sop", f"source: {meta['url']}",
-             f"platform: {meta.get('platform', '')}", f"video_id: {meta.get('video_id', '')}",
-             f"date: {meta.get('last_updated', '')}", "tags:"] + [f"  - {t}" for t in tags] + ["---", ""]
+    tags = ["sop", "tutorial"]
+    for k in meta.get("keywords", []):  # Obsidian tag: letters/digits/_/-//, not purely numeric
+        tag = re.sub(r"[^\w/-]+", "-", k.strip()).strip("-/")
+        if tag and not tag.isdigit() and tag not in tags:
+            tags.append(tag)
+    q = lambda v: json.dumps(str(v), ensure_ascii=False)  # a JSON string is a valid YAML scalar: no escaping surprises
+    front = ["---", f"title: {q(meta['title'] + '：操作 SOP')}", "type: sop", f"source: {q(meta['url'])}",
+             f"platform: {q(meta.get('platform', ''))}", f"video_id: {q(meta.get('video_id', ''))}",
+             f"date: {q(meta.get('last_updated', ''))}", "tags:"] + [f"  - {q(t)}" for t in tags] + ["---", ""]
     out = kb / f"{sop_name(meta)}.md"
     out.write_text("\n".join(front) + body + "\n", encoding="utf-8")
     return out

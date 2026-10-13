@@ -1,23 +1,23 @@
 ---
 title: "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）：操作 SOP"
 type: sop
-source: https://youtu.be/fAWliYuOiuc
-platform: YouTube
-video_id: fAWliYuOiuc
-date: 2026-10-13
+source: "https://youtu.be/fAWliYuOiuc"
+platform: "YouTube"
+video_id: "fAWliYuOiuc"
+date: "2026-10-13"
 tags:
-  - sop
-  - tutorial
-  - ComfyUI
-  - Comfy-Cloud
-  - MCP
-  - Claude
-  - Z-Image-Turbo
-  - ACE-Step
-  - MiniMax-H3
-  - GPT-Image-2
-  - 工作流程
-  - 節點
+  - "sop"
+  - "tutorial"
+  - "ComfyUI"
+  - "Comfy-Cloud"
+  - "MCP"
+  - "Claude"
+  - "Z-Image-Turbo"
+  - "ACE-Step"
+  - "MiniMax-H3"
+  - "GPT-Image-2"
+  - "工作流程"
+  - "節點"
 ---
 # 免費製作 AI 影片：ComfyUI 接上 Claude（MCP）：操作 SOP
 

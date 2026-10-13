@@ -309,7 +309,7 @@ class KbBundle(BuildWithSop):
         md = (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8")
         self.assertTrue(md.startswith("---\n"))
         head = md.split("---\n")[1]
-        for key in ("title: ", "type: sop", "source: https://example.com/v", "tags:", "  - sop"):
+        for key in ('title: "測試影片：操作 SOP"', "type: sop", 'source: "https://example.com/v"', "tags:", '  - "sop"'):
             self.assertIn(key, head)
         self.assertIn("![畫面](attachments/step-0030.jpg)", md)
         self.assertNotIn("frames/", md)
@@ -331,7 +331,7 @@ class KbBundle(BuildWithSop):
         (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
         br.build(d)
         head = (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8").split("---\n")[1]
-        self.assertIn("  - Comfy-Cloud", head)
+        self.assertIn('  - "Comfy-Cloud"', head)
         self.assertNotIn("Comfy Cloud", head)
 
     def test_no_sop_or_off_means_no_bundle_and_stale_bundle_removed(self):
@@ -344,12 +344,79 @@ class KbBundle(BuildWithSop):
         br.build(d2)
         self.assertFalse((d2 / "kb").exists())
 
-    def test_rebuild_replaces_old_attachments(self):
+    def test_rebuild_replaces_old_generated_attachments(self):
         d = self.make(self.SOP)
         br.build(d)
-        (d / "kb" / "attachments" / "old.jpg").write_bytes(b"x")
+        (d / "kb" / "attachments" / "step-9999.jpg").write_bytes(b"x")
         br.build(d)
-        self.assertFalse((d / "kb" / "attachments" / "old.jpg").exists())
+        self.assertFalse((d / "kb" / "attachments" / "step-9999.jpg").exists())
+
+    def test_rebuild_keeps_users_own_files_in_kb(self):
+        """kb/ may be opened as an Obsidian vault: .obsidian/ and the user's own notes/images must survive."""
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "kb" / ".obsidian").mkdir()
+        (d / "kb" / ".obsidian" / "app.json").write_text("{}", encoding="utf-8")
+        (d / "kb" / "my note.md").write_text("mine", encoding="utf-8")
+        (d / "kb" / "attachments" / "mine.png").write_bytes(b"x")
+        br.build(d)
+        self.assertTrue((d / "kb" / ".obsidian" / "app.json").exists())
+        self.assertEqual((d / "kb" / "my note.md").read_text(encoding="utf-8"), "mine")
+        self.assertTrue((d / "kb" / "attachments" / "mine.png").exists())
+        self.assertTrue((d / "kb" / "測試影片_操作SOP.md").exists())
+        (d / "sop.md").unlink()  # no SOP any more: only generated files go, user files stay
+        br.build(d)
+        self.assertFalse((d / "kb" / "測試影片_操作SOP.md").exists())
+        self.assertTrue((d / "kb" / "my note.md").exists())
+        self.assertTrue((d / "kb" / "attachments" / "mine.png").exists())
+
+    def test_renamed_title_does_not_leave_old_sop_md_in_kb(self):
+        import json
+        d = self.make(self.SOP)
+        br.build(d)
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m["title"] = "新標題"
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        self.assertEqual(self.kb_files(d), ["新標題_操作SOP.md"])
+
+    def front(self, d):
+        return (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8").split("---\n")[1]
+
+    def test_frontmatter_is_valid_yaml_for_hostile_values(self):
+        import json
+        try:
+            import yaml
+        except ImportError:
+            self.skipTest("PyYAML not installed")
+        d = self.make(self.SOP)
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m.update({"title": "測試影片", "video_id": "123456", "url": "https://example.com/v?a=1&b=#x",
+                  "keywords": ["*star", "#hash", "C++", "2026", "a: b", "[x]", "Comfy Cloud", "!bang", "中文"]})
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        data = yaml.safe_load(self.front(d))
+        self.assertEqual(data["video_id"], "123456")  # a string, not the integer 123456
+        self.assertEqual(data["source"], "https://example.com/v?a=1&b=#x")
+        self.assertTrue(all(isinstance(t, str) and t and not t.isdigit() for t in data["tags"]))
+        self.assertIn("Comfy-Cloud", data["tags"])
+        self.assertIn("中文", data["tags"])
+        self.assertTrue(all(c not in t for t in data["tags"] for c in " #*!:[]+"))
+
+    def test_frontmatter_title_with_backslash_and_quote(self):
+        import json
+        try:
+            import yaml
+        except ImportError:
+            self.skipTest("PyYAML not installed")
+        d = self.make(self.SOP)
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m["title"] = 'C:\\new\\data "x"'
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        f = [p for p in (d / "kb").glob("*.md")][0]
+        data = yaml.safe_load(f.read_text(encoding="utf-8").split("---\n")[1])
+        self.assertEqual(data["title"], 'C:\\new\\data "x"：操作 SOP')
 
 
 class FenceHelpers(unittest.TestCase):
