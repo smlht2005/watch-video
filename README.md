@@ -100,6 +100,9 @@ watch-output/
     ├── transcript.zh.md                       # 非中文影片的繁體中文中譯（Claude 補寫，重跑保留）
     ├── summary.md                             # 摘要（時間戳重點 + 名詞/縮寫說明）
     ├── supplement.md                          # 選用：影片未呈現的補充資料（重跑保留，報告自動納入）
+    ├── sop.md                                 # 選用：電腦工具教學影片的操作 SOP（Claude 手寫，重跑保留）
+    ├── <影片標題>_操作SOP.docx / .md          # 只有 SOP 與截圖的版本（有 sop.md 時產生）
+    ├── kb/                                    # 知識庫包：<影片標題>_操作SOP.md（YAML frontmatter）＋ attachments/ 圖片，可放進 Obsidian／Notion
     ├── frames/、frames.json                   # 截圖與其時間戳（小檔，進 git）
     └── media/<stem>_video.<ext>               # 僅 --keep-media；只存本機（gitignore）
 ```
@@ -120,6 +123,15 @@ watch-output/
 | `glossaries` | `--glossary` 選用的詞典領域（重跑沿用） |
 | `whisper_choice` | `--local`／`--whisper` 選的轉錄方式（`whisperx` 等；空白表示依 key 自動決定；重跑沿用） |
 
+### 操作 SOP（`sop.md`，電腦工具教學影片）
+
+影片是在螢幕上示範軟體、網頁服務、CLI、程式碼、手機 App 或系統設定的操作時，歸檔多一個步驟：消化報告後，把它整理成 step by step 的 SOP（`sop.md`，Claude 手寫，重跑不覆蓋）。`meta.json.video_type: "tutorial"` 標記這類影片；`--sop`／`--no-sop` 可強制開關（記在 `sop_mode`，重跑沿用）。
+
+- **內容**：依任務分章，每章有前置條件、編號步驟（動作＋畫面按鈕原文＋預期結果＋影片時間）、注意事項；有示範錯誤時加排解表。只收可重現的操作；影片沒示範的標「影片未示範」或「推測」，價格與硬體需求標「講者主張，未查證」。
+- **截圖**：寫 `![說明](frame@MM:SS)`，建報告時換成最接近該時間的 `frames/` 截圖，重跑後重新編號也對得上。
+- **產出**：主報告多一節「操作 SOP」；另有 `<影片標題>_操作SOP.docx／.md`；以及 `kb/` 知識庫包（YAML frontmatter＋`attachments/step-MMSS.jpg`，相對路徑）。Obsidian：用「Open folder as vault」開 `kb/` 或複製進 vault；Notion：Import → Markdown & CSV，選 `kb/` 壓成的 zip。重建只會更新自己產生的檔（`*_操作SOP.md`、`attachments/step-*.jpg`），不會動你在 `kb/` 裡新增的筆記、圖片或 `.obsidian/` 設定。
+- 完整寫法見 `.claude/skills/watch-archive/SKILL.md` 步驟 4d。
+
 ### 補充資料（`supplement.md`）
 
 影片沒呈現、或畫面一閃而過而遺漏的資訊（被截斷的畫面文字、貼文說明欄／留言回傳的完整內容、連結、更正），另存成同資料夾的 `supplement.md`（獨立檔，重跑不覆蓋）。`build_report.py` 會把它放在報告「摘要」之後，並在報告最後加「補充資料連結」。
@@ -129,7 +141,7 @@ watch-output/
 ### 測試
 
 ```bash
-python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md 解析、docx 轉換
+python3 -m unittest discover -s tests -v   # 語言偵測、supplement.md／sop.md 解析、docx 轉換、知識庫包
 ```
 
 ### 注意事項

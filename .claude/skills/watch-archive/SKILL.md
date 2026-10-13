@@ -14,7 +14,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ```text
 網址 ─▶ 0 環境 ─▶ 1 選參數(不強制 --lang；長錄影加 --timestamps/--resolution；本地轉錄加 --local) ─▶ 2 歸檔(下載→平台字幕或 Groq／WhisperX 轉錄→偵測語言→中文轉繁體→詞典校正→截圖→報告)
      ─▶ 3 校稿(先驗收：語言錯／重複幻覺／30 秒漏轉（已自動補漏）／提示詞外洩→保存舊稿後回到 2 重跑、兩次互補；第一輪批次替換→第二輪逐行重讀全文) ─▶ 4a 看截圖分投影片或主題(slides，每段 2–4 分鐘；截圖不足→補 cue 回到 2 重跑；講者交疊→改挑乾淨投影片)
-     ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md) ─▶ 4c 補充資料(選用 supplement.md；有原講稿→二次校對) ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
+     ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md) ─▶ 4c 補充資料(選用 supplement.md；有原講稿→二次校對) ─▶ 4d 電腦工具教學→操作 SOP(選用 sop.md) ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
 ```
 
 藍＝腳本自動、橘＝Claude 判斷、綠＝交付；黃色虛線是兩條重跑回圈：「截圖不足時補 cue 重跑」（4a→2）與「語言錯／整段漏轉時重跑」（3→2）；圖源 `docs/watch-archive-flow.svg`。改圖後重新產生 PNG：
@@ -39,13 +39,14 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
+   - **電腦工具教學影片**（螢幕示範軟體／網頁／CLI／App 操作）→ 步驟 4d 會另寫操作 SOP；不想要時加 `--no-sop`，想強制時加 `--sop`（兩者擇一，記在 `meta.json.sop_mode`）。
    - **長的螢幕錄影／notebook／投影片影片** → 加 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024`。自動抽圖依畫面變化挑圖，緩慢捲動的 notebook 會被當成重複畫面丟掉，結果一段十幾分鐘只剩標題卡。做法：先跑一次讀逐字稿，找出各主題開始的時間，在每個時間點後約 20–40 秒放一個 cue（避開標題卡與轉場），再重跑；1024px 讓程式碼與小字可讀。兩個值會記在 `meta.json`（`cue_timestamps`、`resolution`），之後重跑自動沿用；重跑時 `slides` 的圖檔會依時間自動對到新截圖。
 
 2. **歸檔**：
    `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media] [--local]`
    - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → 平台字幕，或 Whisper 轉錄（Groq 帶語言與詞典提示詞；`--local` 時本地 WhisperX，只帶語言）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
    - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
-   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`supplement.md`（選用：影片未呈現的補充資料）、`<stem>_report.md`、`<stem>_report.docx`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
+   - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`supplement.md`（選用：影片未呈現的補充資料）、`sop.md`（選用：教學影片的操作 SOP，見 4d）、`<stem>_report.md`、`<stem>_report.docx`，有 SOP 時另有 `<影片標題>_操作SOP.docx／.md` 與 `kb/`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
    - 語言判斷順序：Whisper 回報的語言（Whisper 轉錄時）→ 否則（平台字幕、強制 `--lang`）以字數／字元比例判斷（此時 `en` 代表拉丁字母的非中文，西班牙文等也會標成 `en`）→ 中文轉繁體（OpenCC）／非中文留給步驟 4b 中譯。
    - `--keep-media` 才保留 `media/<stem>_video.<ext>`；影片只存本機（gitignore）。
 
@@ -106,11 +107,19 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
        - 未查證的主張、版本號、可能過時之處
        ```
 
+   - **4d 操作 SOP（`sop.md`，電腦工具教學影片）**：影片是在螢幕上示範軟體、網頁服務、CLI、程式碼、手機 App 或系統設定的操作時（實體硬體教學不算），消化完報告後，把它重新整理成可照著做的 SOP，並在 `meta.json` 寫 `"video_type": "tutorial"`。`--sop`／`--no-sop` 可強制開啟或關閉（記在 `meta.json.sop_mode`，重跑沿用）；`sop.md` 與 `supplement.md` 一樣是手寫檔，重跑不覆蓋。
+     - **依任務分章**（安裝、生成圖片…），每章：`### 前置條件`（硬體、帳號、費用、要先完成的章節）、編號步驟、`### 注意事項`。
+     - **每個步驟**：動作＋畫面上的按鈕或欄位**原文**（以截圖為準，不憑逐字稿）＋預期結果＋影片時間（括號）。關鍵步驟（設定畫面、錯誤提示、參數欄位）附 `![說明](frame@MM:SS)`：建報告時會換成最接近該時間的截圖，所以重跑後 `frames/` 重新編號也對得上；缺圖時補 `--timestamps` cue 重跑。
+     - **只收可重現的操作**，講者的觀點與評價不收。影片沒示範的標「影片未示範」，Claude 補的標「推測」；價格、硬體需求、版本、效果一律標「講者主張，未查證」。
+     - 影片有示範錯誤時，最後加「錯誤排解」表（現象／原因／做法／影片時間）。
+     - **產出**（`build_report.py`）：主報告在「摘要」之後多一節「操作 SOP」；另輸出 `<影片標題>_操作SOP.docx／.md`（只有 SOP 與截圖）；以及 `kb/`（`<影片標題>_操作SOP.md`＋`attachments/`）：檔頭有 YAML frontmatter（title／type／source／date／tags），圖片依影片時間命名 `step-MMSS.jpg`、用相對路徑，整個資料夾可直接放進 Obsidian vault 或用 Notion 匯入（Markdown zip），當 AI 知識庫素材。
+     - 規模參考：ComfyUI 影片（15 分鐘、7 章）約 14 頁、19 張圖，這個規模可以接受。
+
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
    - 出現 `PermissionError` 寫不進 `*_report.docx`，代表使用者正在 Word 開著它（資料夾裡會有 `~$` 開頭的鎖定檔）：請使用者關掉 Word 再重建，不要強制結束 Word。`~$` 鎖定檔不要 commit。
    - Windows 轉 PDF：`soffice` 不在 PATH 時用 `"C:/Program Files/LibreOffice/program/soffice.com" --headless --convert-to pdf --outdir <暫存區> <docx>`。
 
-6. **交付**：用 SendUserFile 傳 `*_report.docx`；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄、本地 WhisperX 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
+6. **交付**：用 SendUserFile 傳 `*_report.docx`（有 SOP 時一併傳 `*_操作SOP.docx`，並提醒 `kb/` 可放進 Obsidian／Notion）；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄、本地 WhisperX 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
 
 7. **提交**：在 `claude/...` 分支 commit 並 push。合併方式依使用者指示（PR + Squash and merge，或直接合併）；使用者沒說就先問，不強制 push、不重用已合併分支。
 

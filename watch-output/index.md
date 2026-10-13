@@ -14,3 +14,4 @@
 | 2026-10-12 | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211/) |
 | 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
 | 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
+| 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |

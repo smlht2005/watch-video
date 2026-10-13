@@ -16,6 +16,7 @@
 - 轉錄完先驗收再校稿：語言對不對、有沒有重複幻覺、有沒有約 30 秒的整段漏轉（`whisper.py` 已自動補漏，看 `[watch] refilled` 訊息）、有沒有提示詞外洩。要重跑時，先保存舊稿以便互補。
 - 報告截圖只放乾淨的畫面：講者與投影片交疊的轉場不要用，改挑投影片全螢幕的畫面（做法見 SKILL 4a）。
 - 影片在帶讀某份講稿時，用原講稿做二次校對；原稿沒有的內容是影片主講者的延伸，不能用原稿去改。
+- 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 SKILL 4d。
 - 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
@@ -39,6 +40,6 @@
 ## 常用指令
 
 ```bash
-python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local]   # 歸檔
+python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local] [--sop|--no-sop]   # 歸檔
 python3 scripts/build_report.py watch-output/<資料夾>                           # 重建報告
 ```
