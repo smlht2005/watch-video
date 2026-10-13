@@ -12,6 +12,7 @@
 - 影片中的數字與主張一律標「講者主張，未查證」，不當成事實。
 - 報告分段：每段 2–4 分鐘、不超過約 5 分鐘，每段都要有一張屬於該段內容的截圖。
 - 長的螢幕錄影／notebook／投影片影片（自動抽圖會跳過緩慢捲動的畫面）：先歸檔一次、讀逐字稿找出各主題開始時間，在每個時間點後約 20–40 秒放 cue（避開標題卡與轉場），以 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024` 重跑；兩值記在 `meta.json`，`slides` 的圖檔會依時間自動對應。重跑後先拼縮圖檢查每張 cue 截圖都有內容。
+- 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 SKILL 4d。
 - 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
@@ -32,6 +33,6 @@
 ## 常用指令
 
 ```bash
-python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local]   # 歸檔
+python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local] [--sop|--no-sop]   # 歸檔
 python3 scripts/build_report.py watch-output/<資料夾>                           # 重建報告
 ```

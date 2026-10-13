@@ -236,5 +236,7 @@
         "動畫"
       ]
     }
-  ]
+  ],
+  "video_type": "tutorial",
+  "sop_mode": "on"
 }
