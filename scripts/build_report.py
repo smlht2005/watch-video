@@ -235,6 +235,8 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L.append("- **關鍵字：** " + " ".join(f"#{k}" for k in meta["keywords"]))
     L.append("")
     L += ["## 摘要與名詞說明", "", close_open_fence(strip_h1(summary).strip()), ""]
+    if meta.get("sop_mode") != "off":
+        L += sop_lines(dest, frames)
     sup = supplement_lines(dest)
     L += sup
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
@@ -251,6 +253,21 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L += ["## 補充資料連結", "",
               "- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）", ""]
     return "\n".join(L)
+
+
+def sop_md(dest: Path, meta, frames):
+    """Standalone SOP document (no transcript): title, source, then the SOP chapters one heading level up."""
+    if meta.get("sop_mode") == "off":
+        return None
+    lines = sop_lines(dest, frames)
+    if not lines:
+        return None
+    body = ["## " + l[4:] if l.startswith("### ") else l for l in lines[2:]]
+    head = [f"# {meta['title']}：操作 SOP", "",
+            f"- 來源：{meta['url']}（步驟後標註影片時間）",
+            f"- 更新日期：{meta.get('last_updated', '')}",
+            "- 說明：本文由影片整理；影片中的價格、硬體需求與效果為講者主張，未查證。", ""]
+    return "\n".join(head + body)
 
 
 # ---------- Markdown -> docx (small subset: headings, tables, bullets, images, **bold**, `code`) ----------
@@ -418,12 +435,19 @@ def build(dest: Path):
     meta, summary, segs, frames = load(dest)
     md = build_md(dest, meta, summary, segs, frames)
     stem = file_stem(dest)
-    for old in ("report.md", "report.docx", *dest.glob("*_report.*")):  # drop stale / legacy names
+    for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*")):  # drop stale / legacy names
         (dest / old).unlink(missing_ok=True)
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
     md_to_docx(dest, md, out_docx, meta.get("keywords"))
-    return out_md, out_docx
+    outs = [out_md, out_docx]
+    standalone = sop_md(dest, meta, frames)
+    if standalone:
+        s_md, s_docx = dest / f"{stem}_sop.md", dest / f"{stem}_sop.docx"
+        s_md.write_text(standalone, encoding="utf-8")
+        md_to_docx(dest, standalone, s_docx, meta.get("keywords"))
+        outs += [s_md, s_docx]
+    return tuple(outs)
 
 
 if __name__ == "__main__":

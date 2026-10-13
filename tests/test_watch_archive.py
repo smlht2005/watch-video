@@ -213,6 +213,75 @@ class SopLines(unittest.TestCase):
         self.assertIn("### S1｜x", out)
 
 
+class BuildWithSop(unittest.TestCase):
+    SOP = "# 操作 SOP\n\n## 一、安裝\n1. 下載（00:30）\n![畫面](frame@00:31)\n"
+
+    def make(self, sop=None, sop_mode=None):
+        import json
+        from PIL import Image
+        root = Path(tempfile.mkdtemp())
+        d = root / "2026-10-13_YouTube_測試影片__abc123"
+        (d / "frames").mkdir(parents=True)
+        Image.new("RGB", (320, 180), (200, 200, 200)).save(d / "frames" / "cue_0001.jpg")
+        meta = {"url": "https://example.com/v", "platform": "YouTube", "title": "測試影片", "duration": "01:00 (60s)",
+                "keywords": ["k"], "slides": []}
+        if sop_mode:
+            meta["sop_mode"] = sop_mode
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        (d / "summary.md").write_text("# 摘要\n\n內容\n", encoding="utf-8")
+        (d / "transcript.md").write_text("# t\n\n```\n[00:01] 你好\n```\n", encoding="utf-8")
+        (d / "frames.json").write_text(json.dumps([{"file": "cue_0001.jpg", "t": "00:30"}]), encoding="utf-8")
+        if sop is not None:
+            (d / "sop.md").write_text(sop, encoding="utf-8")
+        return d
+
+    def names(self, d, suffix):
+        return sorted(d / p.name for p in d.iterdir() if p.is_file() and p.name.endswith(suffix))
+
+    def test_sop_in_report_before_supplement_and_standalone_files(self):
+        d = self.make(self.SOP)
+        (d / "supplement.md").write_text("## S1\n- a\n", encoding="utf-8")
+        outs = br.build(d)
+        self.assertEqual(len(outs), 4)
+        md = outs[0].read_text(encoding="utf-8")
+        self.assertLess(md.index("## 摘要與名詞說明"), md.index("## 操作 SOP"))
+        self.assertLess(md.index("## 操作 SOP"), md.index("## 補充資料"))
+        self.assertIn("![畫面](frames/cue_0001.jpg)", md)
+        sop = self.names(d, "_sop.md")[0].read_text(encoding="utf-8")
+        self.assertTrue(sop.startswith("# 測試影片：操作 SOP"))
+        self.assertNotIn("## 摘要", sop)
+        self.assertNotIn("你好", sop)  # no transcript in the standalone SOP
+        self.assertIn("## 一、安裝", sop)
+        self.assertNotIn("### 一、安裝", sop)  # chapters promoted one level
+        from docx import Document
+        doc = Document(str(self.names(d, "_sop.docx")[0]))
+        self.assertEqual(len(doc.inline_shapes), 1)
+
+    def test_no_sop_file_means_no_section_and_no_sop_outputs(self):
+        d = self.make(None)
+        outs = br.build(d)
+        self.assertEqual(len(outs), 2)
+        self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
+        self.assertEqual(self.names(d, "_sop.md") + self.names(d, "_sop.docx"), [])
+
+    def test_title_only_sop_means_nothing(self):
+        d = self.make("# 操作 SOP\n\n")
+        self.assertEqual(len(br.build(d)), 2)
+
+    def test_sop_mode_off_skips_even_with_file(self):
+        d = self.make(self.SOP, sop_mode="off")
+        outs = br.build(d)
+        self.assertEqual(len(outs), 2)
+        self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
+
+    def test_stale_sop_outputs_removed_when_sop_deleted(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "sop.md").unlink()
+        br.build(d)
+        self.assertEqual(self.names(d, "_sop.md") + self.names(d, "_sop.docx"), [])
+
+
 class FenceHelpers(unittest.TestCase):
     def test_language_tag_inside_fence_does_not_close_it(self):
         out = Path(tempfile.mkdtemp())
