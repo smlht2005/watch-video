@@ -270,6 +270,12 @@ def sop_md(dest: Path, meta, frames):
     return "\n".join(head + body)
 
 
+def sop_name(meta) -> str:
+    """Readable file stem for the SOP outputs: '<video title>_操作SOP' (characters Windows forbids removed)."""
+    safe = re.sub(r'[\\/:*?"<>|]', "", meta["title"]).strip()[:60].strip() or "video"
+    return f"{safe}_操作SOP"
+
+
 def build_kb(dest: Path, meta, frames):
     """Portable knowledge-base bundle for Obsidian/Notion: kb/<title>.md (YAML frontmatter) + kb/attachments/.
 
@@ -299,8 +305,7 @@ def build_kb(dest: Path, meta, frames):
     front = ["---", f'title: "{title}：操作 SOP"', "type: sop", f"source: {meta['url']}",
              f"platform: {meta.get('platform', '')}", f"video_id: {meta.get('video_id', '')}",
              f"date: {meta.get('last_updated', '')}", "tags:"] + [f"  - {t}" for t in tags] + ["---", ""]
-    safe = re.sub(r'[\\/:*?"<>|]', "", meta["title"]).strip()[:60] or "sop"
-    out = kb / f"{safe}.md"
+    out = kb / f"{sop_name(meta)}.md"
     out.write_text("\n".join(front) + body + "\n", encoding="utf-8")
     return out
 
@@ -470,7 +475,7 @@ def build(dest: Path):
     meta, summary, segs, frames = load(dest)
     md = build_md(dest, meta, summary, segs, frames)
     stem = file_stem(dest)
-    for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*")):  # drop stale / legacy names
+    for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*"), *dest.glob("*_操作SOP.*")):  # drop stale / legacy names
         (dest / old).unlink(missing_ok=True)
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
@@ -478,7 +483,7 @@ def build(dest: Path):
     outs = [out_md, out_docx]
     standalone = sop_md(dest, meta, frames)
     if standalone:
-        s_md, s_docx = dest / f"{stem}_sop.md", dest / f"{stem}_sop.docx"
+        s_md, s_docx = dest / f"{sop_name(meta)}.md", dest / f"{sop_name(meta)}.docx"
         s_md.write_text(standalone, encoding="utf-8")
         md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5)  # many step shots: keep them compact
         outs += [s_md, s_docx]

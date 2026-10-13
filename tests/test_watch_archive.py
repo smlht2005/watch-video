@@ -247,14 +247,14 @@ class BuildWithSop(unittest.TestCase):
         self.assertLess(md.index("## 摘要與名詞說明"), md.index("## 操作 SOP"))
         self.assertLess(md.index("## 操作 SOP"), md.index("## 補充資料"))
         self.assertIn("![畫面](frames/cue_0001.jpg)", md)
-        sop = self.names(d, "_sop.md")[0].read_text(encoding="utf-8")
+        sop = self.names(d, "_操作SOP.md")[0].read_text(encoding="utf-8")
         self.assertTrue(sop.startswith("# 測試影片：操作 SOP"))
         self.assertNotIn("## 摘要", sop)
         self.assertNotIn("你好", sop)  # no transcript in the standalone SOP
         self.assertIn("## 一、安裝", sop)
         self.assertNotIn("### 一、安裝", sop)  # chapters promoted one level
         from docx import Document
-        doc = Document(str(self.names(d, "_sop.docx")[0]))
+        doc = Document(str(self.names(d, "_操作SOP.docx")[0]))
         self.assertEqual(len(doc.inline_shapes), 1)
 
     def test_no_sop_file_means_no_section_and_no_sop_outputs(self):
@@ -262,7 +262,7 @@ class BuildWithSop(unittest.TestCase):
         outs = br.build(d)
         self.assertEqual(len(outs), 2)
         self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
-        self.assertEqual(self.names(d, "_sop.md") + self.names(d, "_sop.docx"), [])
+        self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
 
     def test_title_only_sop_means_nothing(self):
         d = self.make("# 操作 SOP\n\n")
@@ -279,7 +279,7 @@ class BuildWithSop(unittest.TestCase):
         br.build(d)
         (d / "sop.md").unlink()
         br.build(d)
-        self.assertEqual(self.names(d, "_sop.md") + self.names(d, "_sop.docx"), [])
+        self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
 
 
 class KbBundle(BuildWithSop):
@@ -290,8 +290,8 @@ class KbBundle(BuildWithSop):
     def test_bundle_has_frontmatter_portable_images_and_no_build_refs(self):
         d = self.make(self.SOP)
         br.build(d)
-        self.assertEqual(self.kb_files(d), ["測試影片.md"])
-        md = (d / "kb" / "測試影片.md").read_text(encoding="utf-8")
+        self.assertEqual(self.kb_files(d), ["測試影片_操作SOP.md"])
+        md = (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8")
         self.assertTrue(md.startswith("---\n"))
         head = md.split("---\n")[1]
         for key in ("title: ", "type: sop", "source: https://example.com/v", "tags:", "  - sop"):
@@ -302,6 +302,12 @@ class KbBundle(BuildWithSop):
         self.assertTrue((d / "kb" / "attachments" / "step-0030.jpg").exists())
         self.assertIn("# 測試影片：操作 SOP", md)
 
+    def test_sop_name_is_readable_and_filesystem_safe(self):
+        self.assertEqual(br.sop_name({"title": "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）"}),
+                         "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）_操作SOP")
+        self.assertEqual(br.sop_name({"title": 'a\\b/c:d*e?f"g<h>i|j'}), "abcdefghij_操作SOP")
+        self.assertEqual(br.sop_name({"title": "x" * 100}), "x" * 60 + "_操作SOP")
+
     def test_tags_have_no_spaces(self):
         d = self.make(self.SOP)
         import json
@@ -309,7 +315,7 @@ class KbBundle(BuildWithSop):
         m["keywords"] = ["Comfy Cloud", "MCP"]
         (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
         br.build(d)
-        head = (d / "kb" / "測試影片.md").read_text(encoding="utf-8").split("---\n")[1]
+        head = (d / "kb" / "測試影片_操作SOP.md").read_text(encoding="utf-8").split("---\n")[1]
         self.assertIn("  - Comfy-Cloud", head)
         self.assertNotIn("Comfy Cloud", head)
 
