@@ -282,6 +282,55 @@ class BuildWithSop(unittest.TestCase):
         self.assertEqual(self.names(d, "_sop.md") + self.names(d, "_sop.docx"), [])
 
 
+class KbBundle(BuildWithSop):
+    def kb_files(self, d):
+        kb = d / "kb"
+        return sorted(p.name for p in kb.glob("*.md")) if kb.exists() else []
+
+    def test_bundle_has_frontmatter_portable_images_and_no_build_refs(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        self.assertEqual(self.kb_files(d), ["測試影片.md"])
+        md = (d / "kb" / "測試影片.md").read_text(encoding="utf-8")
+        self.assertTrue(md.startswith("---\n"))
+        head = md.split("---\n")[1]
+        for key in ("title: ", "type: sop", "source: https://example.com/v", "tags:", "  - sop"):
+            self.assertIn(key, head)
+        self.assertIn("![畫面](attachments/step-0030.jpg)", md)
+        self.assertNotIn("frames/", md)
+        self.assertNotIn("frame@", md)
+        self.assertTrue((d / "kb" / "attachments" / "step-0030.jpg").exists())
+        self.assertIn("# 測試影片：操作 SOP", md)
+
+    def test_tags_have_no_spaces(self):
+        d = self.make(self.SOP)
+        import json
+        m = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        m["keywords"] = ["Comfy Cloud", "MCP"]
+        (d / "meta.json").write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        br.build(d)
+        head = (d / "kb" / "測試影片.md").read_text(encoding="utf-8").split("---\n")[1]
+        self.assertIn("  - Comfy-Cloud", head)
+        self.assertNotIn("Comfy Cloud", head)
+
+    def test_no_sop_or_off_means_no_bundle_and_stale_bundle_removed(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "sop.md").unlink()
+        br.build(d)
+        self.assertFalse((d / "kb").exists())
+        d2 = self.make(self.SOP, sop_mode="off")
+        br.build(d2)
+        self.assertFalse((d2 / "kb").exists())
+
+    def test_rebuild_replaces_old_attachments(self):
+        d = self.make(self.SOP)
+        br.build(d)
+        (d / "kb" / "attachments" / "old.jpg").write_bytes(b"x")
+        br.build(d)
+        self.assertFalse((d / "kb" / "attachments" / "old.jpg").exists())
+
+
 class FenceHelpers(unittest.TestCase):
     def test_language_tag_inside_fence_does_not_close_it(self):
         out = Path(tempfile.mkdtemp())

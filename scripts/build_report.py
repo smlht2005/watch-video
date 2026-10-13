@@ -270,6 +270,41 @@ def sop_md(dest: Path, meta, frames):
     return "\n".join(head + body)
 
 
+def build_kb(dest: Path, meta, frames):
+    """Portable knowledge-base bundle for Obsidian/Notion: kb/<title>.md (YAML frontmatter) + kb/attachments/.
+
+    Images get stable names from their video time (step-MMSS.jpg) and relative links, so the folder can be copied
+    anywhere and survives the renumbering of frames/ on a rerun. Returns the .md path, or None when there is no SOP.
+    """
+    import shutil
+    kb = dest / "kb"
+    shutil.rmtree(kb, ignore_errors=True)
+    body = sop_md(dest, meta, frames)
+    if not body:
+        return None
+    t_of = {f["file"]: f["t"] for f in frames if f.get("file") and f.get("t")}
+    (kb / "attachments").mkdir(parents=True)
+
+    def repl(m):
+        src = dest / "frames" / m.group(2)
+        if not src.exists():
+            return m.group(0)
+        name = "step-" + t_of.get(m.group(2), m.group(2).rsplit(".", 1)[0]).replace(":", "") + ".jpg"
+        shutil.copyfile(src, kb / "attachments" / name)
+        return f"![{m.group(1)}](attachments/{name})"
+
+    body = re.sub(r"!\[([^\]]*)\]\(frames/([^)]+)\)", repl, body)
+    tags = ["sop", "tutorial"] + [re.sub(r"\s+", "-", k.strip()) for k in meta.get("keywords", []) if k.strip()]
+    title = meta["title"].replace('"', "'")
+    front = ["---", f'title: "{title}：操作 SOP"', "type: sop", f"source: {meta['url']}",
+             f"platform: {meta.get('platform', '')}", f"video_id: {meta.get('video_id', '')}",
+             f"date: {meta.get('last_updated', '')}", "tags:"] + [f"  - {t}" for t in tags] + ["---", ""]
+    safe = re.sub(r'[\\/:*?"<>|]', "", meta["title"]).strip()[:60] or "sop"
+    out = kb / f"{safe}.md"
+    out.write_text("\n".join(front) + body + "\n", encoding="utf-8")
+    return out
+
+
 # ---------- Markdown -> docx (small subset: headings, tables, bullets, images, **bold**, `code`) ----------
 
 def set_font(run, size=None, bold=None, mono=False):
@@ -447,6 +482,7 @@ def build(dest: Path):
         s_md.write_text(standalone, encoding="utf-8")
         md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5)  # many step shots: keep them compact
         outs += [s_md, s_docx]
+    build_kb(dest, meta, frames)  # also clears a stale kb/ when there is no SOP
     return tuple(outs)
 
 
