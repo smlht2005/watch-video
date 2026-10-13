@@ -419,6 +419,56 @@ class KbBundle(BuildWithSop):
         self.assertEqual(data["title"], 'C:\\new\\data "x"：操作 SOP')
 
 
+class CleanFillers(unittest.TestCase):
+    def setUp(self):
+        import clean_fillers
+        self.cf = clean_fillers
+
+    def test_removes_ne_and_a_in_clauses(self):
+        s = self.cf.strip_fillers
+        self.assertEqual(s("所以這個叫至誠，如果至誠的話呢，你看"), "所以這個叫至誠，如果至誠的話，你看")
+        self.assertEqual(s("那個在智者大師的書呢專以專實來解釋它"), "那個在智者大師的書專以專實來解釋它")
+        self.assertEqual(s("起是什麼意思啊，起就是內心"), "起是什麼意思，起就是內心")
+        self.assertEqual(s("什麼叫至啊？什麼叫誠啊？"), "什麼叫至？什麼叫誠？")
+
+    def test_sentence_final_particles_only_at_clause_end(self):
+        s = self.cf.strip_fillers
+        self.assertEqual(s("好嘛，我們看下去"), "好，我們看下去")
+        self.assertEqual(s("你看啦。"), "你看。")
+        self.assertEqual(s("囉嗦的人"), "囉嗦的人")  # not clause-final: untouched
+        self.assertEqual(s("啦啦隊"), "啦啦隊")
+
+    def test_protected_words_survive(self):
+        s = self.cf.strip_fillers
+        for w in ("嘛呢叭咪吽", "呢喃自語", "阿彌陀佛", "啊彌陀佛", "啊難尊者", "啊賴耶識"):
+            self.assertEqual(s(w), w)
+
+    def test_no_leading_or_doubled_punctuation_left_behind(self):
+        s = self.cf.strip_fillers
+        self.assertEqual(s("啊，起就是內心"), "起就是內心")
+        self.assertEqual(s("對啊，，你看"), "對，你看")
+        self.assertEqual(s("是啊。"), "是。")
+        self.assertEqual(s("好啊，。"), "好。")
+
+    def test_idempotent_and_empty_result(self):
+        s = self.cf.strip_fillers
+        once = s("這個呢，你看啊，很好呢。")
+        self.assertEqual(once, "這個，你看，很好。")
+        self.assertEqual(s(once), once)
+        self.assertEqual(s("啊"), "")
+        self.assertEqual(s("呢，"), "")
+
+    def test_file_only_touches_segment_lines_and_drops_empty_ones(self):
+        d = Path(tempfile.mkdtemp())
+        p = d / "transcript.md"
+        p.write_text("# 呢啊 標題\n\n_Source: whisper (groq)._\n\n```\n[00:01] 這個呢，很好啊。\n[00:05] 啊\n[00:07] 嗯，好\n```\n\n## 備註\n- 呢啊 不動\n", encoding="utf-8")
+        n = self.cf.clean_file(p)
+        out = p.read_text(encoding="utf-8")
+        self.assertEqual(out, "# 呢啊 標題\n\n_Source: whisper (groq)._\n\n```\n[00:01] 這個，很好。\n[00:07] 嗯，好\n```\n\n## 備註\n- 呢啊 不動\n")
+        self.assertEqual(n, (1, 1))  # (lines changed, lines dropped)
+        self.assertEqual(self.cf.clean_file(p), (0, 0))  # second run: nothing left to do
+
+
 class FenceHelpers(unittest.TestCase):
     def test_language_tag_inside_fence_does_not_close_it(self):
         out = Path(tempfile.mkdtemp())
