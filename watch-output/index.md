@@ -15,5 +15,6 @@
 | 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
 | 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
 | 2026-10-13 | Instagram | Video by good_job_ai | 00:56 (56.4s) | whisper (groq) | [開啟](./2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR/) |
+| 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
 | 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
