@@ -12,7 +12,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ![watch-archive 流程鳥瞰圖](../../../docs/watch-archive-flow.png)
 
 ```text
-網址 ─▶ 0 環境 ─▶ 1 選參數(不強制 --lang；長錄影加 --timestamps/--resolution；本地轉錄加 --local) ─▶ 2 歸檔(下載→平台字幕或 Groq／WhisperX 轉錄→偵測語言→中文轉繁體→詞典校正→截圖→報告)
+網址 ─▶ 0 環境 ─▶ 1 選參數(不強制 --lang；長錄影加 --timestamps/--resolution；本地轉錄加 --local；講座／講經加 --clean-fillers) ─▶ 2 歸檔(下載→平台字幕或 Groq／WhisperX 轉錄→偵測語言→中文轉繁體→詞典校正→(講座／講經)去語助詞→截圖→報告)
      ─▶ 3 校稿(先驗收：語言錯／重複幻覺／30 秒漏轉（已自動補漏）／提示詞外洩→保存舊稿後回到 2 重跑、兩次互補；第一輪批次替換→第二輪逐行重讀全文) ─▶ 4a 看截圖分投影片或主題(slides，每段 2–4 分鐘；截圖不足→補 cue 回到 2 重跑；講者交疊→改挑乾淨投影片)
      ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md) ─▶ 4c 補充資料(選用 supplement.md；有原講稿→二次校對) ─▶ 4d 電腦工具教學→操作 SOP(選用 sop.md) ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
 ```
@@ -39,6 +39,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
+   - **講座／講經／演講（口語、有大量「呢」「啊」等語助詞）**：看標題或上傳者判斷是不是講座類影片，是的話歸檔時加 `--clean-fillers`（用 `--glossary pure-land` 的佛學講座會自動開啟，不必加）；之後可在 `meta.json` 寫 `"video_type": "lecture"`，重跑歸檔時 `auto` 模式也會去語助詞。不想去除加 `--keep-fillers`。選擇記在 `meta.json.clean_fillers`（`auto`／`on`／`off`），重跑沿用。
    - **電腦工具教學影片**（螢幕示範軟體／網頁／CLI／App 操作）→ 步驟 4d 會另寫操作 SOP；不想要時加 `--no-sop`，想強制時加 `--sop`（兩者擇一，記在 `meta.json.sop_mode`）。
    - **長的螢幕錄影／notebook／投影片影片** → 加 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024`。自動抽圖依畫面變化挑圖，緩慢捲動的 notebook 會被當成重複畫面丟掉，結果一段十幾分鐘只剩標題卡。做法：先跑一次讀逐字稿，找出各主題開始的時間，在每個時間點後約 20–40 秒放一個 cue（避開標題卡與轉場），再重跑；1024px 讓程式碼與小字可讀。兩個值會記在 `meta.json`（`cue_timestamps`、`resolution`），之後重跑自動沿用；重跑時 `slides` 的圖檔會依時間自動對到新截圖。
 
@@ -65,13 +66,13 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
      - 補漏、接縫處插入的句子；Groq 重複兩次的整句；片尾幻覺（「多謝您的觀看，下次見！」）。
      - 一字之差的同音字（悔／毀、鑽／專、意念／憶念）與異體字不一致（唸／念，統一成一種）。
      第二輪改完，在 PDF 用 `get_text()` 搜尋第一、二輪改過的錯字，確認一個都不剩。使用者回報漏網的錯字時，修好後再做一次完整的第二輪，不要只改被指出的那一處。
-   - **去語助詞（淨土講座預設自動）**：歸檔時只要載入 `pure-land` 詞典（`--glossary pure-land`），腳本會在寫入 `transcript.md` 前自動去掉沒意義的「呢」「啊」與句尾的「啦／嘛／喔／哦／囉」（`scripts/clean_fillers.py`；只動逐字稿行，`transcript.raw.md` 保留原話；「嘛呢叭咪吽」「呢喃」「啊彌」等保留，句中的「嘛」不動）。`--keep-fillers` 保留語助詞、`--clean-fillers` 對其他中文影片強制去除（記在 `meta.json.clean_fillers`，重跑沿用）。因為在詞典替換後才處理，重跑歸檔不用再手動做；已歸檔的舊稿可手動跑 `python3 scripts/clean_fillers.py watch-output/<資料夾>`（可重複執行）。語助詞是影片原話，用 `--keep-fillers` 可保留，並在 `summary.md` 註明有沒有去除。
+   - **去語助詞（講座／講經預設自動）**：`meta.json.clean_fillers` 為 `auto` 時，只要是講座類——載入 `pure-land` 詞典，或 `meta.json.video_type` 為 `lecture`——腳本在詞典替換後、寫入 `transcript.md` 前，自動去掉沒意義的「呢」「啊」與句尾的「啦／嘛／喔／哦／囉」（`scripts/clean_fillers.py`；只動逐字稿行，`transcript.raw.md` 保留原話；「嘛呢叭咪吽」「呢喃」「啊彌」等保留，句中的「嘛」不動；只處理偵測為中文的逐字稿）。`--clean-fillers` 對任何中文影片強制去除、`--keep-fillers` 保留（記在 `meta.json.clean_fillers`，重跑沿用）。重跑歸檔會自動再做，不必手動；已歸檔的舊稿可手動跑 `python3 scripts/clean_fillers.py watch-output/<資料夾>`（可重複執行）。語助詞是影片原話，在 `summary.md` 註明有沒有去除。
    - **不要手改 `transcript.md` 以外的原始轉錄**；`transcript.raw.md` 是轉換前原文，保持不動。
    - **重跑會覆蓋 `transcript.md`**（重新轉錄，手改全部消失；`slides`、`keywords`、`known_asr_errors`、`summary.md` 會保留）。所以：穩定的校正先寫進詞典（見步驟 4）再重跑，讓它自動套用；只對這支影片成立的修正，重跑後要再手改一次 `transcript.md`，並用 `known_asr_errors` 記錄。
 
 4. **補內容**（4a 先做投影片／主題分段，再做 4b）：
    - 改寫 `summary.md`：一句話重點、含時間戳的重點表、名詞與縮寫說明、轉錄校正備註。評論／立場性影片寫「講者主張…」，數字註明未經查證。
-   - 編輯 `meta.json`（重跑時以下欄位會保留）：`keywords`（約 8–10 個）、`section_keywords`（key 為畫面起始時間，如 `"00:12"`）、`known_asr_errors`（`{"time","heard","expected"}`，推測的要標「推測」）、`slides`（見下）。
+   - 編輯 `meta.json`（重跑時以下欄位會保留）：`video_type`（`tutorial`＝電腦工具教學→4d SOP；`lecture`＝講座／講經→去語助詞）、`keywords`（約 8–10 個）、`section_keywords`（key 為畫面起始時間，如 `"00:12"`）、`known_asr_errors`（`{"time","heard","expected"}`，推測的要標「推測」）、`slides`（見下）。
    - **投影片／主題分段**：看 `frames/` 後在 `meta.json` 寫 `slides`。簡報類影片一張投影片一段；沒有投影片的影片（訪談、實拍、操作畫面）則依講述主題或場景切段，每段的 `start` 取該主題開始的時間、`title` 寫主題名：`[{"start":"00:06","frame":"frame_0019.jpg","title":"…","note":"本張投影片重點","keywords":[…]}]`，報告就會「每段一張圖 + 說明文字 + 該段逐字稿」，不再逐畫面切碎。**每段以 2–4 分鐘為宜，不要超過約 5 分鐘**；超過就再切，並確認每段都有一張屬於該段內容的截圖（不夠就補 `--timestamps`）。`frame` 選字幕與游標最乾淨的一張；沒有 `slides` 時才退回逐畫面。
    - **講者與投影片交疊的影片**（直播講座常見：投影片全螢幕＋左下角講者小視窗，換頁時有講者與投影片半透明交疊的轉場）：自動抽圖常抓到交疊畫面，使用者不要。做法：
      1. 用 yt-dlp 把影片下載到暫存區（不入庫，用完刪除），以 `ffmpeg -vf fps=1/2,scale=192:-1` 每 2 秒抽一張縮圖。

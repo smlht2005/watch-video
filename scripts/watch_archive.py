@@ -314,14 +314,15 @@ def resolve_fillers_mode(clean: bool, keep: bool, remembered: str) -> str:
     return remembered if remembered in ("on", "off") else "auto"
 
 
-def fillers_enabled(mode: str, domains) -> bool:
-    """auto = Buddhist lecture glossary loaded: spoken-lecture particles (呢、啊…) are stripped from transcript.md."""
-    return mode == "on" or (mode == "auto" and "pure-land" in domains)
+def fillers_enabled(mode: str, domains, video_type: str = "") -> bool:
+    """auto = a spoken lecture (講座／講經): the pure-land glossary is loaded or meta.json.video_type is "lecture";
+    its particles (呢、啊…) are then stripped from transcript.md."""
+    return mode == "on" or (mode == "auto" and ("pure-land" in domains or video_type == "lecture"))
 
 
-def apply_fillers(transcript: str, to_zh_tw: bool, mode: str, domains):
+def apply_fillers(transcript: str, to_zh_tw: bool, mode: str, domains, video_type: str = ""):
     """Strip filler particles when enabled and the transcript is Chinese. Returns (text, lines changed, lines dropped)."""
-    if to_zh_tw and fillers_enabled(mode, domains):
+    if to_zh_tw and fillers_enabled(mode, domains, video_type):
         return clean_fillers.clean_text(transcript)
     return transcript, 0, 0
 
@@ -399,8 +400,8 @@ def main():
     sg.add_argument("--sop", action="store_true", help="force the step-by-step SOP step (computer-tool tutorials); remembered")
     sg.add_argument("--no-sop", action="store_true", help="skip the SOP step even if sop.md exists; remembered")
     fg = ap.add_mutually_exclusive_group()
-    fg.add_argument("--clean-fillers", action="store_true", help="strip filler particles (呢、啊…) from the Chinese transcript; default for --glossary pure-land; remembered")
-    fg.add_argument("--keep-fillers", action="store_true", help="keep filler particles even for pure-land lectures; remembered")
+    fg.add_argument("--clean-fillers", action="store_true", help="strip filler particles (呢、啊…) from the Chinese transcript; default for lectures (講座／講經: --glossary pure-land or video_type lecture); remembered")
+    fg.add_argument("--keep-fillers", action="store_true", help="keep filler particles even for lectures; remembered")
     args = ap.parse_args()
 
     platform, raw_id = platform_and_id(args.url)
@@ -460,7 +461,7 @@ def main():
     else:  # keep ja / ko / unclear text untouched
         transcript, glossary_applied = apply_glossary(transcript_raw, gl_replace)
     fillers_mode = resolve_fillers_mode(args.clean_fillers, args.keep_fillers, early_meta.get("clean_fillers", ""))
-    transcript, n_changed, n_dropped = apply_fillers(transcript, to_zh_tw, fillers_mode, domains)  # raw.md keeps the original
+    transcript, n_changed, n_dropped = apply_fillers(transcript, to_zh_tw, fillers_mode, domains, early_meta.get("video_type", ""))  # raw.md keeps the original
     if n_changed or n_dropped:
         print(f"[watch] filler particles removed: {n_changed} line(s) cleaned, {n_dropped} dropped")
     if _S2T is None:

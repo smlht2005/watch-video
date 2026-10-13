@@ -579,6 +579,16 @@ class FillersMode(unittest.TestCase):
         self.assertTrue(wa.fillers_enabled("on", []))
         self.assertFalse(wa.fillers_enabled("off", ["pure-land"]))
 
+    def test_auto_also_for_lecture_video_type(self):
+        self.assertTrue(wa.fillers_enabled("auto", [], "lecture"))
+        self.assertTrue(wa.fillers_enabled("auto", ["ai-video"], "lecture"))
+        self.assertFalse(wa.fillers_enabled("auto", [], "tutorial"))
+        self.assertFalse(wa.fillers_enabled("auto", [], ""))
+        self.assertFalse(wa.fillers_enabled("off", ["pure-land"], "lecture"))  # --keep-fillers always wins
+        self.assertTrue(wa.fillers_enabled("on", [], "tutorial"))
+        t = "```\n[00:01] 這個呢，很好啊。\n```\n"
+        self.assertEqual(wa.apply_fillers(t, True, "auto", [], "lecture")[1:], (1, 0))
+
     def test_apply_fillers_only_for_chinese_and_enabled_mode(self):
         t = "```\n[00:01] 這個呢，很好啊。\n```\n"
         cleaned = "```\n[00:01] 這個，很好。\n```\n"
