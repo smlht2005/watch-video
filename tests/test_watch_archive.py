@@ -332,6 +332,26 @@ class DocxFenceAndLinks(unittest.TestCase):
         self.assertIn("supplement.md", xml)
 
 
+class SopMode(unittest.TestCase):
+    def test_default_is_auto(self):
+        self.assertEqual(wa.resolve_sop_mode(False, False, ""), "auto")
+
+    def test_flags_override_and_are_remembered(self):
+        self.assertEqual(wa.resolve_sop_mode(True, False, ""), "on")
+        self.assertEqual(wa.resolve_sop_mode(False, True, "on"), "off")
+        self.assertEqual(wa.resolve_sop_mode(False, False, "off"), "off")  # rerun without flag keeps it
+
+    def test_unknown_remembered_value_falls_back_to_auto(self):
+        self.assertEqual(wa.resolve_sop_mode(False, False, "weird"), "auto")
+
+    def test_both_flags_rejected_by_cli(self):
+        import subprocess
+        p = subprocess.run([sys.executable, str(Path(wa.__file__)), "https://youtu.be/x", "--sop", "--no-sop"],
+                           capture_output=True, text=True, env=dict(os.environ, PYTHONUTF8="1"))
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("not allowed with", p.stderr)
+
+
 class PickWhisper(unittest.TestCase):
     def test_groq_when_key_exists(self):
         self.assertEqual(wa.pick_whisper(None, False, "", True), "groq")
