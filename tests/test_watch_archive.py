@@ -167,6 +167,52 @@ class SupplementLines(unittest.TestCase):
         self.assertIn("### S1", out)
 
 
+class SopLines(unittest.TestCase):
+    FRAMES = [{"file": "cue_0001.jpg", "t": "01:00"}, {"file": "cue_0002.jpg", "t": "05:26"},
+              {"file": "cue_0003.jpg", "t": "1:02:03"}]
+
+    def run_sop(self, text, frames=None):
+        d = Path(tempfile.mkdtemp())
+        if text is not None:
+            (d / "sop.md").write_text(text, encoding="utf-8")
+        return br.sop_lines(d, self.FRAMES if frames is None else frames)
+
+    def test_missing_empty_and_title_only(self):
+        self.assertEqual(self.run_sop(None), [])
+        self.assertEqual(self.run_sop(""), [])
+        self.assertEqual(self.run_sop("# 操作 SOP\n\n"), [])
+
+    def test_heading_and_chapters(self):
+        out = self.run_sop("# 操作 SOP\n\n## 一、安裝\n1. 下載\n### 注意事項\n- 費用\n")
+        self.assertEqual(out[0], "## 操作 SOP（依影片整理，照著做）")
+        self.assertIn("### 一、安裝", out)
+        self.assertIn("1. 下載", out)
+        self.assertIn("**注意事項**", out)
+
+    def test_frame_ref_picks_nearest_frame(self):
+        out = "\n".join(self.run_sop("## 一\n![設定畫面](frame@05:00)\n![x](frame@1:02:00)\n"))
+        self.assertIn("![設定畫面](frames/cue_0002.jpg)", out)  # 05:00 is closer to 05:26 than 01:00
+        self.assertIn("![x](frames/cue_0003.jpg)", out)
+
+    def test_frame_ref_inside_fence_untouched(self):
+        out = self.run_sop("## 一\n```\n![a](frame@01:00)\n```\n")
+        self.assertIn("![a](frame@01:00)", out)
+
+    def test_frame_ref_without_any_frames_leaves_note_not_broken_image(self):
+        out = "\n".join(self.run_sop("## 一\n![a](frame@01:00)\n步驟\n", frames=[]))
+        self.assertNotIn("frame@", out)
+        self.assertNotIn("![", out)
+        self.assertIn("（缺截圖：01:00）", out)
+        self.assertIn("步驟", out)
+
+    def test_supplement_behaviour_unchanged(self):
+        d = Path(tempfile.mkdtemp())
+        (d / "supplement.md").write_text("# 補充資料\n\n## S1｜x\n- a\n", encoding="utf-8")
+        out = br.supplement_lines(d)
+        self.assertEqual(out[0], "## 補充資料（影片未呈現的資訊）")
+        self.assertIn("### S1｜x", out)
+
+
 class FenceHelpers(unittest.TestCase):
     def test_language_tag_inside_fence_does_not_close_it(self):
         out = Path(tempfile.mkdtemp())

@@ -161,15 +161,29 @@ def close_open_fence(md: str) -> str:
     return md + "\n" + fence if fence else md
 
 
-def supplement_lines(dest: Path):
-    """Body of supplement.md for the report, under '## 補充資料'.
+FRAME_REF = re.compile(r"!\[([^\]]*)\]\(frame@(\d+:\d+(?::\d+)?)\)")
+
+
+def resolve_frame_ref(line: str, frames: list) -> str:
+    """Replace ![alt](frame@MM:SS) with the frames/ file closest in time (frames/ is renumbered on every run, so
+    hand-written files refer to a time, not a file name). With no frames, leave a text note instead of a broken image."""
+    def repl(m):
+        cands = [(abs(to_sec(f["t"]) - to_sec(m.group(2))), f["file"]) for f in frames if f.get("file") and f.get("t")]
+        if not cands:
+            return f"（缺截圖：{m.group(2)}）"
+        return f"![{m.group(1)}](frames/{min(cands)[1]})"
+    return FRAME_REF.sub(repl, line)
+
+
+def include_lines(path: Path, heading: str, frames=None):
+    """Body of a hand-written side file (supplement.md, sop.md) for the report, under '## <heading>'.
 
     The file's leading '# …' title is dropped; '#'/'##' headings -> '###' heading; '###' and deeper -> bold line
     (the docx converter handles at most three heading levels). Fenced blocks (``` or ~~~) are kept verbatim with
     their original markers, so a ~~~ block may contain ```; an unclosed fence is closed at the end, and md_to_docx
-    renders fences as indented monospace. Returns [] when the file is missing or has no content besides its title.
+    renders fences as indented monospace. Outside fences, ![alt](frame@MM:SS) is resolved against `frames` (when
+    given). Returns [] when the file is missing or has no content besides its title.
     """
-    path = dest / "supplement.md"
     if not path.exists():
         return []
     out, fence, has_body, started = [], None, False, False
@@ -194,12 +208,20 @@ def supplement_lines(dest: Path):
         else:
             if line.strip():
                 started = has_body = True
-            out.append(line)
+            out.append(resolve_frame_ref(line, frames) if frames is not None else line)
     if fence:
         out.append(fence)
     if not has_body:
         return []
-    return ["## 補充資料（影片未呈現的資訊）", ""] + out + [""]
+    return [f"## {heading}", ""] + out + [""]
+
+
+def supplement_lines(dest: Path):
+    return include_lines(dest / "supplement.md", "補充資料（影片未呈現的資訊）")
+
+
+def sop_lines(dest: Path, frames: list):
+    return include_lines(dest / "sop.md", "操作 SOP（依影片整理，照著做）", frames)
 
 
 def build_md(dest: Path, meta, summary, segs, frames) -> str:
