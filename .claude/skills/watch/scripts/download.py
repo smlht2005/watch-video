@@ -108,6 +108,12 @@ def select_caption(info: dict, language: str = 'auto') -> dict | None:
         return target and (base == target or base.split('-')[0] == str(target).split('-')[0])
     def english_first(key):  # Unknown source language: prefer English over alphabetical order.
         return key.removesuffix('-orig').split('-')[0] != 'en', key
+    if language == 'auto' and manual:
+        # Creator-uploaded subtitles beat ASR-derived guesses: YouTube can tag a Chinese video's ASR as
+        # `en-orig`, which would otherwise make `target` English and skip the manual zh track.
+        meta_lang = str(info.get('language') or '').split('-')[0]
+        key = next((k for k in sorted(manual) if meta_lang and k.split('-')[0] == meta_lang), None) or sorted(manual, key=english_first)[0]
+        return {'key': key, 'language': key, 'kind': 'manual', 'provenance': 'original'}
     for kind, tracks in (('manual', manual), ('automatic', automatic)):
         keys = sorted(tracks, key=english_first)
         if target:
