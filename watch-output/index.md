@@ -19,3 +19,4 @@
 | 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
 | 2026-10-14 | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos/) |
+| 2026-10-13 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./2026-10-13_YouTube_會性法師-大佛頂首楞嚴經-第103集__kvsrMirvdDQ/) |
