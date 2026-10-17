@@ -1,0 +1,124 @@
+{
+  "url": "https://vt.tiktok.com/ZSg2x2pMw/",
+  "platform": "TikTok",
+  "video_id": "7697214960836873479",
+  "title": "22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權",
+  "title_raw": "22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權 #首頁連結加入溱姐寵粉社群 #珠寶 #溱姐寵粉 #元認知...",
+  "title_override": "",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "首頁連結加入溱姐寵粉社群",
+    "珠寶",
+    "溱姐寵粉",
+    "元認知..."
+  ],
+  "uploader": "tzgems999",
+  "duration": "01:26 (85.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-17",
+  "last_updated": "2026-10-17",
+  "known_asr_errors": [
+    {
+      "time": "00:00／00:38／01:14",
+      "heard": "古艾琳／古艾林／古愛玲",
+      "expected": "谷愛凌（畫面硬字幕 00:00、01:14 可證）"
+    },
+    {
+      "time": "00:28 等 4 處",
+      "heard": "原認知",
+      "expected": "元認知（標題與主題一致；畫面字幕未直接出現，屬依標題判斷）"
+    },
+    {
+      "time": "00:43",
+      "heard": "極堂",
+      "expected": "雞湯（推測：「不是雞湯」與後文「這是認知神經科學」語意相對）"
+    },
+    {
+      "time": "00:49",
+      "heard": "可說心",
+      "expected": "可塑性（推測：接在「大腦…發育成熟」之後談練習會改變大腦結構）"
+    },
+    {
+      "time": "01:07",
+      "heard": "8歲",
+      "expected": "18歲（推測：谷愛凌訪談字幕可見「…岁」字尾與「我每一天…」，但未見完整句，非確認）"
+    },
+    {
+      "time": "00:40／01:01",
+      "heard": "他說／他就是在鍛鍊",
+      "expected": "她說／它就是在鍛鍊（00:40 指谷愛凌，01:01 畫面字幕為「它就是在鍛鍊自己」）"
+    }
+  ],
+  "keywords": [
+    "元認知",
+    "谷愛凌",
+    "內省",
+    "寫日記",
+    "覆盤",
+    "大腦可塑性",
+    "25歲",
+    "認知神經科學",
+    "自我覺察"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0003.jpg",
+      "title": "開場：谷愛凌的內省式思考",
+      "note": "講者主張：22 歲的谷愛凌被記者問到為何回答又快又全面，她說自己很會內省，會寫日記、拆解並調整自己的思考過程。",
+      "keywords": [
+        "谷愛凌",
+        "內省",
+        "寫日記"
+      ]
+    },
+    {
+      "start": "00:25",
+      "frame": "frame_0008.jpg",
+      "title": "什麼是「元認知」",
+      "note": "講者把谷愛凌的做法對應到心理學的「元認知」：退後一步，用另一個視角看自己在想什麼，再決定要不要調整。",
+      "keywords": [
+        "元認知"
+      ]
+    },
+    {
+      "start": "00:40",
+      "frame": "frame_0009.jpg",
+      "title": "控制怎麼想，與大腦可塑性",
+      "note": "畫面引用谷愛凌訪談字幕：「你可以控制你怎麼想，因此你可以控制自己成為什麼樣的人」。講者主張大腦到 25 歲才發育成熟，之前可塑性大，反覆練習思維方式會改變大腦結構（講者主張，未查證）。",
+      "keywords": [
+        "大腦可塑性",
+        "25歲",
+        "認知神經科學"
+      ]
+    },
+    {
+      "start": "01:04",
+      "frame": "frame_0017.jpg",
+      "title": "成為自己認可的人，與自我提問",
+      "note": "結論：寫日記、覆盤、自我對話都在鍛鍊元認知；不需要是谷愛凌，現在就能問自己「剛剛在想什麼、這想法是我選的還是突然冒出來的」。",
+      "keywords": [
+        "覆盤",
+        "自我提問"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
