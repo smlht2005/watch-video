@@ -427,6 +427,9 @@ def main():
     resolution = args.resolution or early_meta.get("resolution")
     extra = (["--timestamps", cue_timestamps] if cue_timestamps else []) + (["--resolution", str(resolution)] if resolution else [])
     extra += ["--whisper", whisper] if whisper else []
+    # ~/.config/watch/.env may carry WATCH_SUB_LANG=en ("prefer English"), which would pick YouTube's English
+    # auto-translation of a Chinese video; the archive wants the video's own language.
+    extra += ["--sub-lang", "auto"]
     work = Path(tempfile.mkdtemp(prefix="watch-archive-"))
     proc = subprocess.run(
         [sys.executable, str(WATCH), args.url, "--engine", engine, "--question", args.question,
