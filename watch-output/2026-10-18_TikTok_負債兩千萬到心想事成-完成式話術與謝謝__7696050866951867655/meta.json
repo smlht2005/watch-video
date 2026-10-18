@@ -1,0 +1,135 @@
+{
+  "url": "https://vm.tiktok.com/ZSgMHMLbw/",
+  "platform": "TikTok",
+  "video_id": "7696050866951867655",
+  "title": "負債兩千萬到心想事成：完成式話術與謝謝",
+  "title_raw": "心想事成",
+  "title_override": "負債兩千萬到心想事成：完成式話術與謝謝",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "小池浩、從負債2000萬到心想事成每一天、宇宙"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "pindurensheng",
+  "duration": "05:11 (310.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-18",
+  "last_updated": "2026-10-18",
+  "known_asr_errors": [
+    {
+      "time": "00:24",
+      "heard": "小時號／小石浩（Whisper 多種聽法）",
+      "expected": "小時浩（依畫面字幕 frame_0020）；作者實名可能是「小池浩」（推測，未查證）"
+    },
+    {
+      "time": "01:05",
+      "heard": "怪我哥",
+      "expected": "怪我咯（推測，已修正）"
+    },
+    {
+      "time": "01:06",
+      "heard": "就能報復",
+      "expected": "就能暴富（依畫面 frame_0019「有錢能暴富」，已修正）"
+    },
+    {
+      "time": "03:15",
+      "heard": "巨瘦",
+      "expected": "拒收（推測，已修正）"
+    },
+    {
+      "time": "02:28",
+      "heard": "宇宙就不能花點時間給你",
+      "expected": "可能漏「備貨」（推測，未補）"
+    }
+  ],
+  "keywords": [
+    "心想事成",
+    "完成式話術",
+    "謝謝",
+    "宇宙下單",
+    "滯後效應",
+    "負債2000萬",
+    "財富自由",
+    "自我暗示"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "開場：欠債2000萬的日本大叔靠「說話」翻身",
+      "note": "講者介紹《從負債2000萬到心想事成每一天》，主張改變口頭禪可以走出越努力越倒楣的循環。",
+      "keywords": [
+        "負債",
+        "口頭禪"
+      ]
+    },
+    {
+      "start": "00:24",
+      "frame": "frame_0014.jpg",
+      "title": "宇宙是倉庫管理員：你說什麼它發什麼貨",
+      "note": "講者比喻：說「我沒錢」就像把帳戶凍結在沒錢的頻道上，抱怨是自己填的收貨地址。",
+      "keywords": [
+        "倉庫管理員",
+        "口頭禪"
+      ]
+    },
+    {
+      "start": "01:06",
+      "frame": "frame_0022.jpg",
+      "title": "第二課：別用「希望」下單，改用完成式＋謝謝",
+      "note": "講者主張「希望有錢」隱含「現在沒錢」；改說「債務已清零，謝謝」，並用電腦「刷機」比喻改口。",
+      "keywords": [
+        "完成式",
+        "希望",
+        "謝謝"
+      ]
+    },
+    {
+      "start": "02:16",
+      "frame": "frame_0039.jpg",
+      "title": "滯後效應與宇宙的送貨方式",
+      "note": "講者說改口後有看不到結果的空窗期，是終極測試；第一單瑣碎的工作讓他被陌生人注意而得到新機會。",
+      "keywords": [
+        "滯後效應",
+        "空窗期",
+        "小事"
+      ]
+    },
+    {
+      "start": "03:18",
+      "frame": "frame_0055.jpg",
+      "title": "說五萬次謝謝與三步公式",
+      "note": "講者稱作者決定說五萬次謝謝；完整公式：完成式話術下訂單、動手做小事、等待期穩住測試。",
+      "keywords": [
+        "五萬次謝謝",
+        "三步公式"
+      ]
+    },
+    {
+      "start": "04:05",
+      "frame": "frame_0072.jpg",
+      "title": "設定人生難度的人是自己：結語",
+      "note": "講者提醒注意自己的語言，推薦把書放床頭；書中尚有情緒暫停、把倒楣事轉成成長訊號等方法。",
+      "keywords": [
+        "麥克風",
+        "語言",
+        "書"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
