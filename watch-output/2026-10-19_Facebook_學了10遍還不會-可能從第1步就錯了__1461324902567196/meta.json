@@ -1,0 +1,66 @@
+{
+  "url": "https://www.facebook.com/reel/1461324902567196",
+  "platform": "Facebook",
+  "video_id": "1461324902567196",
+  "title": "學了10遍還不會？ 可能從第1步就錯了",
+  "title_raw": "853 reactions · 428 shares | 學了10遍還不會？ 可能從第1步就錯了 #ai#codex #claude#ai影片 | 吳宥婕",
+  "title_override": "",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "ai",
+    "codex",
+    "claude",
+    "ai影片"
+  ],
+  "uploader": "吳宥婕",
+  "duration": "00:51 (50.6s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-19",
+  "last_updated": "2026-10-19",
+  "known_asr_errors": [
+    {
+      "time": "00:21",
+      "heard": "容易不一樣的地方",
+      "expected": "容易搞混的地方（推測）"
+    }
+  ],
+  "keywords": [
+    "費曼學習法",
+    "AI prompting",
+    "學習教練",
+    "提示詞",
+    "五步驟",
+    "檢查理解",
+    "演講稿"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "費曼學習法 AI 提示詞：五步驟",
+      "note": "講者主張：請 AI 當學習教練，依五步驟（通俗解釋→拆解概念→五題檢查→指出漏洞→產出演講稿）用費曼學習法學新領域。",
+      "keywords": [
+        "費曼學習法",
+        "AI prompting"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
