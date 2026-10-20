@@ -25,3 +25,4 @@
 | 2026-10-19 | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./2026-10-19_Facebook_學了10遍還不會-可能從第1步就錯了__1461324902567196/) |
 | 2026-10-19 | Facebook | 斷捨離2.0：重新定義什麼叫必要 | 08:08 (488.1s) | whisper (groq) | [開啟](./2026-10-19_Facebook_斷捨離2-0-重新定義什麼叫必要__1KHcSPuXRR/) |
 | 2026-10-19 | Facebook | 養生功法 呼吸五步法 | 07:56 (475.7s) | whisper (groq) | [開啟](./2026-10-19_Facebook_養生功法-呼吸五步法__1DDHANhGtp/) |
+| 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
