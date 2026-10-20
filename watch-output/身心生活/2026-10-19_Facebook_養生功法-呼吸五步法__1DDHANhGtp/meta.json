@@ -1,0 +1,124 @@
+{
+  "url": "https://www.facebook.com/share/v/1DDHANhGtp/",
+  "platform": "Facebook",
+  "video_id": "1DDHANhGtp",
+  "title": "養生功法 呼吸五步法",
+  "title_raw": "43K views · 1.1K reactions | #传统文化 #养生功法 | 王多多",
+  "title_override": "養生功法 呼吸五步法",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "传统文化",
+    "养生功法"
+  ],
+  "uploader": "王多多",
+  "duration": "07:56 (475.7s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-19",
+  "last_updated": "2026-10-19",
+  "known_asr_errors": [
+    {
+      "time": "01:24",
+      "heard": "這就是你皮",
+      "expected": "這就是你疲（推測）"
+    },
+    {
+      "time": "00:10",
+      "heard": "磕頭地鐵子",
+      "expected": "磕頭遞帖子（畫面字幕「磕頭遞」，「帖子」為推測）"
+    },
+    {
+      "time": "04:23",
+      "heard": "心窩內骨暖意",
+      "expected": "心窩那股暖意（推測）"
+    },
+    {
+      "time": "04:12",
+      "heard": "氣開始扔露了",
+      "expected": "原文存疑，未改（不確定）"
+    },
+    {
+      "time": "06:24",
+      "heard": "這叫不住",
+      "expected": "這叫不助（推測：對應「別推它」，即勿忘勿助）"
+    },
+    {
+      "time": "04:45",
+      "heard": "泉水自己直到",
+      "expected": "泉水自己知道（推測）"
+    }
+  ],
+  "keywords": [
+    "養生功法",
+    "呼吸",
+    "丁樁",
+    "龜窩",
+    "沉爐",
+    "開合",
+    "化境",
+    "丹田",
+    "五步功法",
+    "講者主張"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "開場：為什麼講、你的氣沒到過肚子",
+      "note": "講者自稱「彭祖養生術傳承人」，主張一般只教吐納、等於深呼吸；氣只在喉嚨與胸口之間打轉（講者主張，未查證）。",
+      "keywords": [
+        "養生功法",
+        "氣"
+      ]
+    },
+    {
+      "start": "01:52",
+      "frame": "frame_0020.jpg",
+      "title": "第一步丁樁、第二步龜窩",
+      "note": "坐姿脊背挺直、舌抵上顎、守鼻尖呼吸，念頭跑了就輕輕拉回；第二步只管呼氣，輕帶一念讓氣落到心窩。",
+      "keywords": [
+        "丁樁",
+        "龜窩"
+      ]
+    },
+    {
+      "start": "04:16",
+      "frame": "frame_0045.jpg",
+      "title": "第三步沉爐、第四步開合",
+      "note": "把心窩暖意往下引到肚臍下三寸（小腹）；每天至少 40 分鐘；第四步等氣自行沿脊椎走一整圈，「不忘不助」。",
+      "keywords": [
+        "沉爐",
+        "開合",
+        "小腹"
+      ]
+    },
+    {
+      "start": "06:37",
+      "frame": "frame_0068.jpg",
+      "title": "第五步化境與總原則",
+      "note": "渾身如泡溫泉、頭頂發脹；總原則：全程放鬆、不憋氣不咬牙、呼吸細綿；沒有明確訊號不進下一關。",
+      "keywords": [
+        "化境",
+        "原則"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "category": "身心生活"
+}

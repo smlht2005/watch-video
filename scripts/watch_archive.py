@@ -35,6 +35,34 @@ import config as watch_config  # noqa: E402  (the watch skill's key / backend se
 OUT_ROOT = ROOT / "watch-output"
 TITLE_MAX = 40
 NAME_MAX = 120
+DEFAULT_CATEGORY = "未分類"
+# coarse category (the subfolder under watch-output/) inferred from the glossary domain when --category is not given
+CATEGORY_BY_DOMAIN = {
+    "ai-chips": "AI", "ai-video": "AI", "claude-code": "AI", "neo4j": "AI",
+    "kubernetes": "雲端", "electronics": "電子", "pure-land": "佛學", "lengyan": "佛學",
+}
+
+
+def safe_category(name: str) -> str:
+    """One path segment only: no separators, no leading dots."""
+    c = re.sub(r'[\\/:*?"<>|\s]+', "-", (name or "").strip()).strip(".-")
+    return c or DEFAULT_CATEGORY
+
+
+def pick_category(arg: str, prev: str, domains) -> str:
+    if arg:
+        return safe_category(arg)
+    if prev:
+        return prev
+    for d in domains:
+        if d in CATEGORY_BY_DOMAIN:
+            return CATEGORY_BY_DOMAIN[d]
+    return DEFAULT_CATEGORY
+
+
+def find_dirs(vid: str):
+    """Existing archive folder(s) for a video ID: <category>/<folder>, or a legacy flat <folder>."""
+    return sorted(OUT_ROOT.glob(f"*/*__{vid}")) + sorted(p for p in OUT_ROOT.glob(f"*__{vid}") if p.is_dir())
 
 
 def resolve_redirect(url: str) -> str:
@@ -379,6 +407,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
+    ap.add_argument("--category", default="", help="coarse category = subfolder under watch-output/ (e.g. AI, 佛學, 理財); default: remembered, else inferred from --glossary, else 未分類; changing it moves the folder")
     ap.add_argument("--title", help="override the display title/folder name (remembered in meta.json as title_override)")
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
     ap.add_argument("--lang", default="", help="force Whisper language, e.g. zh. Leave empty (default) so the language is auto-detected and reported; forcing a wrong language yields garbage")
@@ -407,7 +436,7 @@ def main():
     platform, raw_id = platform_and_id(args.url)
     vid = safe_id(raw_id)
 
-    early = sorted(OUT_ROOT.glob(f"*__{vid}"))
+    early = find_dirs(vid)
     early_meta = json.loads((early[0] / "meta.json").read_text(encoding="utf-8")) if early and (early[0] / "meta.json").exists() else {}
     domains = [d.strip() for d in args.glossary.split(",") if d.strip()] if args.glossary is not None else early_meta.get("glossaries", [])
     gl_terms, gl_replace = load_glossary(domains)
@@ -446,7 +475,7 @@ def main():
         sys.exit(1)
 
     title_raw = field(report, "Title") or "untitled"
-    prev_dirs = sorted(OUT_ROOT.glob(f"*__{vid}"))
+    prev_dirs = find_dirs(vid)
     prev0 = json.loads((prev_dirs[0] / "meta.json").read_text(encoding="utf-8")) if prev_dirs and (prev_dirs[0] / "meta.json").exists() else {}
     title_override = args.title or prev0.get("title_override", "")
     title = title_override or tidy_title(title_raw, field(report, "Uploader"))
@@ -478,16 +507,19 @@ def main():
 
     # Reuse an existing folder for the same video ID; otherwise create a new one.
     OUT_ROOT.mkdir(exist_ok=True)
-    existing = sorted(OUT_ROOT.glob(f"*__{vid}"))
+    existing = find_dirs(vid)
+    category = pick_category(args.category, prev0.get("category", ""), domains)
+    cat_dir = OUT_ROOT / category
+    cat_dir.mkdir(exist_ok=True)
     if existing:
+        # keep the original date prefix but follow title changes (e.g. Simplified -> Traditional) and category changes
         dest = existing[0]
-        # keep the original date prefix but follow title changes (e.g. Simplified -> Traditional)
-        renamed = OUT_ROOT / f"{dest.name.split('_')[0]}_{platform}_{clean_title(title)}__{vid}"[:NAME_MAX]
+        renamed = cat_dir / f"{dest.name.split('_')[0]}_{platform}_{clean_title(title)}__{vid}"[:NAME_MAX]
         if renamed != dest and not renamed.exists():
             dest = dest.rename(renamed)
     else:
         name = f"{dt.date.today():%Y-%m-%d}_{platform}_{clean_title(title)}__{vid}"
-        dest = OUT_ROOT / name[:NAME_MAX]
+        dest = cat_dir / name[:NAME_MAX]
     dest.mkdir(exist_ok=True)
 
     prev = json.loads((dest / "meta.json").read_text(encoding="utf-8")) if (dest / "meta.json").exists() else {}
@@ -498,6 +530,7 @@ def main():
         "title": title,
         "title_raw": title_raw,
         "title_override": title_override,
+        "category": category,
         "whisper_hints": {"language": lang or "auto", "prompt": prompt},
         "whisper_choice": whisper_choice,
         "detected_language": detected_language,
@@ -604,15 +637,16 @@ def remap_slide_frames(slides: list, old_frames: list, new_frames: list) -> list
 def update_index(dest: Path, meta: dict):
     idx = OUT_ROOT / "index.md"
     header = ("# watch-output 索引\n\n"
-              "| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|\n")
+              "| 日期 | 領域 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|---|\n")
     rows = []
     if idx.exists():
         rows = [l for l in idx.read_text(encoding="utf-8").splitlines()
                 if l.startswith("| ") and not l.startswith("| 日期") and f"__{meta['video_id']}/" not in l]
     safe_title = meta["title"].replace("|", "｜")
-    rows.append(f"| {meta['last_updated']} | {meta['platform']} | {safe_title} | {meta['duration']} | "
-                f"{meta['transcript_source']} | [開啟](./{dest.name}/) |")
-    idx.write_text(header + "\n".join(sorted(rows)) + "\n", encoding="utf-8")
+    rel = dest.relative_to(OUT_ROOT).as_posix()
+    rows.append(f"| {meta['last_updated']} | {meta.get('category', DEFAULT_CATEGORY)} | {meta['platform']} | {safe_title} | "
+                f"{meta['duration']} | {meta['transcript_source']} | [開啟](./{rel}/) |")
+    idx.write_text(header + "\n".join(sorted(rows, key=lambda r: (r.split(" | ")[1], r.split(" | ")[0]))) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

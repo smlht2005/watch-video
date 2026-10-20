@@ -21,6 +21,8 @@
 - 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
+- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域（AI／佛學／商業理財／身心生活／電子／雲端…），沒指定會依詞典推測或落入「未分類」，交付前確認。
+
 ## 已知限制（細節見 README「限制與風險」）
 
 - YouTube 在雲端環境常被擋（429／要求登入）；Google Drive 影片須公開分享才抓得到，歸檔後提醒使用者改回私人。
@@ -41,6 +43,6 @@
 ## 常用指令
 
 ```bash
-python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local] [--sop|--no-sop] [--clean-fillers|--keep-fillers]   # 歸檔
-python3 scripts/build_report.py watch-output/<資料夾>                           # 重建報告
+python3 scripts/watch_archive.py "<URL>" [--glossary <領域>] [--category <領域>] [--title "..."] [--timestamps "MM:SS,..."] [--resolution 1024] [--local] [--sop|--no-sop] [--clean-fillers|--keep-fillers]   # 歸檔
+python3 scripts/build_report.py watch-output/<領域>/<資料夾>                           # 重建報告
 ```

@@ -1,6 +1,6 @@
 ---
 name: watch-archive
-description: 看影片並歸檔成圖文報告。使用者給影片網址（Facebook/YouTube/TikTok 等），要求「看影片、摘要、逐字稿、轉 Word、歸檔」時使用。產出 watch-output/<資料夾>/ 內的 report.docx、report.md、截圖與 meta.json；逐字稿預設繁體中文，並用詞典校正。
+description: 看影片並歸檔成圖文報告。使用者給影片網址（Facebook/YouTube/TikTok 等），要求「看影片、摘要、逐字稿、轉 Word、歸檔」時使用。產出 watch-output/<領域>/<資料夾>/ 內的 report.docx、report.md、截圖與 meta.json；逐字稿預設繁體中文，並用詞典校正。
 ---
 
 # watch-archive：影片 → 圖文報告（Word / Markdown）
@@ -46,7 +46,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 2. **歸檔**：
    `python3 scripts/watch_archive.py "<URL>" [--lang zh] [--glossary a,b] [--title "..."] [--terms "..."] [--question "..."] [--keep-media] [--local]`
    - 內部依序：解析平台與影片 ID（TikTok 短網址會先解析）→ 下載 → 平台字幕，或 Whisper 轉錄（Groq 帶語言與詞典提示詞；`--local` 時本地 WhisperX，只帶語言）→ 簡轉繁（OpenCC `s2twp`）→ 半形標點轉全形 → 詞典固定替換 → 截圖 → 寫檔 → 建報告。
-   - 資料夾 `watch-output/<日期>_<平台>_<標題>__<影片ID>/`；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
+   - 資料夾 `watch-output/<領域>/<日期>_<平台>_<標題>__<影片ID>/`（領域用 `--category` 指定，未指定則依詞典推測，否則「未分類」，歸檔後請確認分類合適）；同一影片 ID 只會有一個資料夾（重跑 = 更新；標題變動時資料夾會改名）。
    - 產出：`meta.json`、`transcript.md`（繁體）、`transcript.raw.md`（轉換前）、`frames/`、`frames.json`、`summary.md`（待補範本）、`transcript.zh.md`（外語影片才由 Claude 補寫）、`supplement.md`（選用：影片未呈現的補充資料）、`sop.md`（選用：教學影片的操作 SOP，見 4d）、`<stem>_report.md`、`<stem>_report.docx`，有 SOP 時另有 `<影片標題>_操作SOP.docx／.md` 與 `kb/`。`<stem>` = `<日期>_<平台>_<標題前20字>__<ID>`。
    - 語言判斷順序：Whisper 回報的語言（Whisper 轉錄時）→ 否則（平台字幕、強制 `--lang`）以字數／字元比例判斷（此時 `en` 代表拉丁字母的非中文，西班牙文等也會標成 `en`）→ 中文轉繁體（OpenCC）／非中文留給步驟 4b 中譯。
    - `--keep-media` 才保留 `media/<stem>_video.<ext>`；影片只存本機（gitignore）。
@@ -66,7 +66,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
      - 補漏、接縫處插入的句子；Groq 重複兩次的整句；片尾幻覺（「多謝您的觀看，下次見！」）。
      - 一字之差的同音字（悔／毀、鑽／專、意念／憶念）與異體字不一致（唸／念，統一成一種）。
      第二輪改完，在 PDF 用 `get_text()` 搜尋第一、二輪改過的錯字，確認一個都不剩。使用者回報漏網的錯字時，修好後再做一次完整的第二輪，不要只改被指出的那一處。
-   - **去語助詞（講座／講經預設自動）**：`meta.json.clean_fillers` 為 `auto` 時，只要是講座類——載入 `pure-land` 詞典，或 `meta.json.video_type` 為 `lecture`——腳本在詞典替換後、寫入 `transcript.md` 前，自動去掉沒意義的「呢」「啊」與句尾的「啦／嘛／喔／哦／囉」（`scripts/clean_fillers.py`；只動逐字稿行，`transcript.raw.md` 保留原話；「嘛呢叭咪吽」「呢喃」「啊彌」等保留，句中的「嘛」不動；只處理偵測為中文的逐字稿）。`--clean-fillers` 對任何中文影片強制去除、`--keep-fillers` 保留（記在 `meta.json.clean_fillers`，重跑沿用）。重跑歸檔會自動再做，不必手動；已歸檔的舊稿可手動跑 `python3 scripts/clean_fillers.py watch-output/<資料夾>`（可重複執行）。語助詞是影片原話，在 `summary.md` 註明有沒有去除。
+   - **去語助詞（講座／講經預設自動）**：`meta.json.clean_fillers` 為 `auto` 時，只要是講座類——載入 `pure-land` 詞典，或 `meta.json.video_type` 為 `lecture`——腳本在詞典替換後、寫入 `transcript.md` 前，自動去掉沒意義的「呢」「啊」與句尾的「啦／嘛／喔／哦／囉」（`scripts/clean_fillers.py`；只動逐字稿行，`transcript.raw.md` 保留原話；「嘛呢叭咪吽」「呢喃」「啊彌」等保留，句中的「嘛」不動；只處理偵測為中文的逐字稿）。`--clean-fillers` 對任何中文影片強制去除、`--keep-fillers` 保留（記在 `meta.json.clean_fillers`，重跑沿用）。重跑歸檔會自動再做，不必手動；已歸檔的舊稿可手動跑 `python3 scripts/clean_fillers.py watch-output/<領域>/<資料夾>`（可重複執行）。語助詞是影片原話，在 `summary.md` 註明有沒有去除。
    - **不要手改 `transcript.md` 以外的原始轉錄**；`transcript.raw.md` 是轉換前原文，保持不動。
    - **重跑會覆蓋 `transcript.md`**（重新轉錄，手改全部消失；`slides`、`keywords`、`known_asr_errors`、`summary.md` 會保留）。所以：穩定的校正先寫進詞典（見步驟 4）再重跑，讓它自動套用；只對這支影片成立的修正，重跑後要再手改一次 `transcript.md`，並用 `known_asr_errors` 記錄。
 
@@ -117,7 +117,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
      - **產出**（`build_report.py`）：主報告在「摘要」之後多一節「操作 SOP」；另輸出 `<影片標題>_操作SOP.docx／.md`（只有 SOP 與截圖）；以及 `kb/`（`<影片標題>_操作SOP.md`＋`attachments/`）：檔頭有 YAML frontmatter（title／type／source／date／tags），圖片依影片時間命名 `step-MMSS.jpg`、用相對路徑，整個資料夾可直接放進 Obsidian vault 或用 Notion 匯入（Markdown zip），當 AI 知識庫素材。
      - 規模參考：ComfyUI 影片（15 分鐘、7 章）約 14 頁、19 張圖，這個規模可以接受。
 
-5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
+5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
    - 出現 `PermissionError` 寫不進 `*_report.docx`，代表使用者正在 Word 開著它（資料夾裡會有 `~$` 開頭的鎖定檔）：請使用者關掉 Word 再重建，不要強制結束 Word。`~$` 鎖定檔不要 commit。
    - Windows 轉 PDF：`soffice` 不在 PATH 時用 `"C:/Program Files/LibreOffice/program/soffice.com" --headless --convert-to pdf --outdir <暫存區> <docx>`。
 

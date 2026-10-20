@@ -669,5 +669,24 @@ class WhisperHints(unittest.TestCase):
         self.assertEqual(len(warnings), 1)
 
 
+class Category(unittest.TestCase):
+    def test_precedence_arg_prev_domain_default(self):
+        self.assertEqual(wa.pick_category("理財", "AI", ["pure-land"]), "理財")
+        self.assertEqual(wa.pick_category("", "AI", ["pure-land"]), "AI")
+        self.assertEqual(wa.pick_category("", "", ["x", "pure-land"]), "佛學")
+        self.assertEqual(wa.pick_category("", "", []), wa.DEFAULT_CATEGORY)
+
+    def test_safe_category_is_one_path_segment(self):
+        self.assertEqual(wa.safe_category("../a/b"), "a-b")
+        self.assertEqual(wa.safe_category("  "), wa.DEFAULT_CATEGORY)
+
+    def test_find_dirs_nested_and_legacy(self):
+        with tempfile.TemporaryDirectory() as t, mock.patch.object(wa, "OUT_ROOT", Path(t)):
+            (Path(t) / "AI" / "2026-01-01_X_a__v1").mkdir(parents=True)
+            (Path(t) / "2026-01-02_X_b__v2").mkdir()
+            self.assertEqual([p.name for p in wa.find_dirs("v1")], ["2026-01-01_X_a__v1"])
+            self.assertEqual([p.name for p in wa.find_dirs("v2")], ["2026-01-02_X_b__v2"])
+
+
 if __name__ == "__main__":
     unittest.main()

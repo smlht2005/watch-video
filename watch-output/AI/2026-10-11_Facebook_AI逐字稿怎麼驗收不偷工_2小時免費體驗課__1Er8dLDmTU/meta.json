@@ -1,0 +1,116 @@
+{
+  "url": "https://www.facebook.com/share/v/1Er8dLDmTU/",
+  "platform": "Facebook",
+  "video_id": "1Er8dLDmTU",
+  "title": "AI逐字稿怎麼驗收不偷工_2小時免費體驗課",
+  "title_raw": "AI 幫你整理好的逐字稿都是對的嗎？｜2小時免費體驗課",
+  "title_override": "AI逐字稿怎麼驗收不偷工_2小時免費體驗課",
+  "whisper_hints": {
+    "language": "zh",
+    "prompt": "以下是繁體中文的逐字稿，含標點符號。技能包、逐字稿、知識庫、Juicy、MD檔"
+  },
+  "glossaries": [],
+  "glossary_applied": {
+    "驗收、列帶": 1,
+    "這個教稿": 1,
+    "後面教稿": 1
+  },
+  "source_hashtags": [],
+  "uploader": "李佳達",
+  "duration": "01:26 (86.4s)",
+  "detail": "balanced",
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "教稿",
+      "expected": "逐字稿"
+    },
+    {
+      "time": "01:14",
+      "heard": "列帶",
+      "expected": "迭代"
+    },
+    {
+      "time": "01:20",
+      "heard": "英檔",
+      "expected": "音檔（推測）"
+    }
+  ],
+  "keywords": [
+    "AI逐字稿",
+    "逐字保留",
+    "分段處理",
+    "雙指標檢查",
+    "行數字數",
+    "不覆寫原檔",
+    "技能包",
+    "迭代優化",
+    "知識庫",
+    "MD檔"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "AI 交出的逐字稿，你怎麼知道它沒偷工？",
+      "note": "提出問題：逐字稿要做成知識庫，每個字都重要，如何確認 AI 沒有偷工減料。",
+      "keywords": [
+        "偷工減料",
+        "知識庫"
+      ]
+    },
+    {
+      "start": "00:06",
+      "frame": "frame_0019.jpg",
+      "title": "別信「看起來做完了」",
+      "note": "四道關卡：逐字保留、分段處理、雙指標自我檢查、不覆寫原檔；轉成 MD 檔時要盡量保留原文，長音檔要分段、行數與字數都要達標。",
+      "keywords": [
+        "逐字保留",
+        "分段處理",
+        "雙指標",
+        "不覆寫原檔"
+      ]
+    },
+    {
+      "start": "00:52",
+      "frame": "frame_0038.jpg",
+      "title": "第一版，就要完美嗎？",
+      "note": "技能包不必一次到位，是「永遠在改的進行式」：發現問題就修改，滿意後定稿成下一版。",
+      "keywords": [
+        "技能包",
+        "迭代"
+      ]
+    },
+    {
+      "start": "01:09",
+      "frame": "frame_0049.jpg",
+      "title": "先求能用，再求完美",
+      "note": "講者的技能包不斷最佳化，已做到約 20 版。",
+      "keywords": [
+        "最佳化"
+      ]
+    },
+    {
+      "start": "01:12",
+      "frame": "frame_0052.jpg",
+      "title": "帶走：先問對問題，再分工・驗收・迭代",
+      "note": "流程為先問對問題 → 分工 → 驗收 → 迭代；挑自己的一段音檔，用同一招跑一次。",
+      "keywords": [
+        "問對問題",
+        "分工驗收迭代"
+      ]
+    },
+    {
+      "start": "01:24",
+      "frame": "frame_0059.jpg",
+      "title": "結尾：報名免費體驗課",
+      "note": "課程宣傳結尾卡，無語音。"
+    }
+  ],
+  "category": "AI"
+}
