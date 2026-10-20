@@ -1,0 +1,86 @@
+{
+  "url": "https://www.instagram.com/reel/DeUFrNTDHFs/?psln=YnplYzVxcmp3ajYx",
+  "platform": "Instagram",
+  "video_id": "DeUFrNTDHFs",
+  "title": "拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」",
+  "title_raw": "Video by max_lu",
+  "title_override": "拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」",
+  "category": "身心生活",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "Max Lu",
+  "duration": "01:50 (109.8s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-20",
+  "last_updated": "2026-10-20",
+  "known_asr_errors": [
+    {
+      "time": "01:32",
+      "heard": "Jim Lohr",
+      "expected": "Jim Loehr（畫面字幕 01:33 為 Jim Loehr；已在 transcript.md 修正）"
+    }
+  ],
+  "keywords": [
+    "拖延",
+    "動力",
+    "行動",
+    "5 分鐘起飛",
+    "5 秒法則",
+    "Mel Robbins",
+    "Tal Ben-Shahar",
+    "自律",
+    "Big Think"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0004.jpg",
+      "title": "動力不在行動之前，而在行動之後",
+      "note": "拖延的人以為要先有動力才能行動；不拖延的人相反，先行動，動力隨後而來。",
+      "keywords": [
+        "拖延",
+        "動力",
+        "行動"
+      ]
+    },
+    {
+      "start": "00:33",
+      "frame": "frame_0008.jpg",
+      "title": "5 分鐘起飛策略",
+      "note": "研究者常建議的解藥：先做一小段（哪怕只有幾分鐘）就產生動能；講者自己不想寫作的日子也這麼做。",
+      "keywords": [
+        "5 分鐘起飛",
+        "動能"
+      ]
+    },
+    {
+      "start": "01:12",
+      "frame": "frame_0012.jpg",
+      "title": "5 秒法則與漸進式改變",
+      "note": "Mel Robbins 的 5 秒法則：從五倒數到一就行動；引用 Jim Loehr 與 Tony Schwartz：漸進式改變勝過野心勃勃的失敗。",
+      "keywords": [
+        "5 秒法則",
+        "Mel Robbins",
+        "漸進式改變"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
