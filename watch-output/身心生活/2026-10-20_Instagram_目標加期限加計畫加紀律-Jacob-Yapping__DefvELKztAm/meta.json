@@ -1,0 +1,62 @@
+{
+  "url": "https://www.instagram.com/reel/DefvELKztAm/?cplk=MThsOXZ5bzluMmkwdA==",
+  "platform": "Instagram",
+  "video_id": "DefvELKztAm",
+  "title": "目標加期限加計畫加紀律（Jacob Yapping）",
+  "title_raw": "Video by jacob.yapping",
+  "title_override": "目標加期限加計畫加紀律（Jacob Yapping）",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "Jacob Yapping",
+  "duration": "00:31 (31.1s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-20",
+  "last_updated": "2026-10-20",
+  "known_asr_errors": [
+    {
+      "time": "00:30",
+      "heard": "you",
+      "expected": "片尾黑底字卡「You will make it」，Whisper 誤轉為「you」（已改為畫面字幕）"
+    }
+  ],
+  "keywords": [
+    "目標",
+    "期限",
+    "計畫",
+    "紀律",
+    "策略",
+    "自我激勵",
+    "講者主張"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0030.jpg",
+      "title": "目標→期限→計畫→紀律",
+      "note": "講者以遞進公式說明：只有目標是夢想；加期限成為 objective；加計畫成為 strategy；再加紀律才會成功（講者主張）。",
+      "keywords": [
+        "目標",
+        "紀律"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "category": "身心生活"
+}
