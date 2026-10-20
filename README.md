@@ -40,7 +40,7 @@ flowchart LR
     B1 --> B2[下載 + 截圖]
     B2 --> B3[平台字幕或 Whisper 轉錄<br/>有 GROQ_API_KEY 用 Groq，--local 用本地 WhisperX<br/>自動偵測語言 / 詞典提示詞（僅 Groq）]
     B3 --> B4[偵測語言 detected_language<br/>中文：簡轉繁 OpenCC + 全形標點 + 詞典替換<br/>ja / ko / other 跳過簡轉繁]
-    B4 --> C[(watch-output/資料夾)]
+    B4 --> C[(watch-output/領域/資料夾)]
     C --> D[Claude 校稿與補內容<br/>summary / keywords / 校正<br/>非中文：寫 transcript.zh.md 繁中中譯]
     S[supplement.md<br/>影片未呈現的補充資料] -.-> E
     D --> E[build_report.py]
