@@ -35,6 +35,18 @@
 - 詞典 `claude-code` 假設講者在談 Claude，講雲端的影片不要載入；佛學講座用 `pure-land`。
 - Word 預覽缺字型會出現方框（僅預覽問題）；尚未在真正的 Word 逐份驗證。
 
+## Agent skills
+
+（`to-spec`／`to-tickets`／`implement` 等 mattpocock 技能的設定，由 `/setup-matt-pocock-skills` 產生；已設定好，新 session 不必重跑。）
+
+### Issue tracker
+
+工作項目以本機 markdown 存在 `.scratch/<feature>/`（spec.md、issues/NN-*.md），隨 repo commit。See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+single-context：根目錄 `GLOSSARY.md` + `docs/adr/`（需要時才建立）。See `docs/agents/domain.md`.
+
 ## Git
 
 - 在指定的 `claude/...` 分支開發，完成後 commit 並 push；不主動開 PR，合併後的分支不重用。
