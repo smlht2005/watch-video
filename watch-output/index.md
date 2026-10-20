@@ -1,29 +1,56 @@
 # watch-output 索引
 
-| 日期 | 領域 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
-|---|---|---|---|---|---|---|
-| 2026-10-11 | AI | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
-| 2026-10-11 | AI | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
-| 2026-10-11 | AI | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
-| 2026-10-11 | AI | TikTok | 中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了 | 05:29 (329.3s) | whisper (groq) | [開啟](./AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237/) |
-| 2026-10-11 | AI | X | AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司... | 02:40 (160.2s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa__2109141804620619953/) |
-| 2026-10-11 | AI | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
-| 2026-10-12 | AI | GoogleDrive | MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成 | 09:17 (557.4s) | whisper (groq) | [開啟](./AI/2026-10-12_GoogleDrive_MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成__1EIhyh60imHgwatjkElA-8di38oYtiv0T/) |
-| 2026-10-12 | AI | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211/) |
-| 2026-10-13 | AI | Instagram | Video by good_job_ai | 00:56 (56.4s) | whisper (groq) | [開啟](./AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR/) |
-| 2026-10-13 | AI | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
-| 2026-10-14 | AI | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos/) |
-| 2026-10-19 | AI | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./AI/2026-10-19_Facebook_學了10遍還不會-可能從第1步就錯了__1461324902567196/) |
-| 2026-10-12 | 佛學 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
-| 2026-10-12 | 佛學 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
-| 2026-10-13 | 佛學 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./佛學/2026-10-13_YouTube_會性法師-大佛頂首楞嚴經-第103集__kvsrMirvdDQ/) |
-| 2026-10-17 | 佛學 | TikTok | 為什麼普通人不能隨便念金光咒？你本就自帶光芒，別向外討認可 | 06:48 (407.5s) | whisper (groq) | [開啟](./佛學/2026-10-17_TikTok_為什麼普通人不能隨便念金光咒-你本就自帶光芒-別向外討認可__7690189236619775253/) |
-| 2026-10-11 | 商業理財 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
-| 2026-10-13 | 商業理財 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
-| 2026-10-13 | 身心生活 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
-| 2026-10-18 | 身心生活 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/2026-10-18_TikTok_負債兩千萬到心想事成-完成式話術與謝謝__7696050866951867655/) |
-| 2026-10-19 | 身心生活 | Facebook | 斷捨離2.0：重新定義什麼叫必要 | 08:08 (488.1s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_斷捨離2-0-重新定義什麼叫必要__1KHcSPuXRR/) |
-| 2026-10-19 | 身心生活 | Facebook | 養生功法 呼吸五步法 | 07:56 (475.7s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_養生功法-呼吸五步法__1DDHANhGtp/) |
-| 2026-10-20 | 身心生活 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
-| 2026-10-11 | 雲端 | Drive | videoplayback (2).mp4 | 07:55 (475.2s) | whisper (groq) | [開啟](./雲端/2026-10-11_Drive_videoplayback-2-mp4__view/) |
-| 2026-10-11 | 電子 | Facebook | 想要學好電路板一定搞透電流電壓電阻 | 05:29 (329.2s) | whisper (groq) | [開啟](./電子/2026-10-11_Facebook_想要學好電路板一定搞透電流電壓電阻__1DsGxovjKk/) |
+## AI（12）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-19 | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./AI/2026-10-19_Facebook_學了10遍還不會-可能從第1步就錯了__1461324902567196/) |
+| 2026-10-14 | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos/) |
+| 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
+| 2026-10-13 | Instagram | Video by good_job_ai | 00:56 (56.4s) | whisper (groq) | [開啟](./AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR/) |
+| 2026-10-12 | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211/) |
+| 2026-10-12 | GoogleDrive | MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成 | 09:17 (557.4s) | whisper (groq) | [開啟](./AI/2026-10-12_GoogleDrive_MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成__1EIhyh60imHgwatjkElA-8di38oYtiv0T/) |
+| 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
+| 2026-10-11 | X | AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司... | 02:40 (160.2s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa__2109141804620619953/) |
+| 2026-10-11 | TikTok | 中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了 | 05:29 (329.3s) | whisper (groq) | [開啟](./AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237/) |
+| 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
+| 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
+| 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
+
+## 佛學（4）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-17 | TikTok | 為什麼普通人不能隨便念金光咒？你本就自帶光芒，別向外討認可 | 06:48 (407.5s) | whisper (groq) | [開啟](./佛學/2026-10-17_TikTok_為什麼普通人不能隨便念金光咒-你本就自帶光芒-別向外討認可__7690189236619775253/) |
+| 2026-10-13 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./佛學/2026-10-13_YouTube_會性法師-大佛頂首楞嚴經-第103集__kvsrMirvdDQ/) |
+| 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
+| 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
+
+## 商業理財（2）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
+| 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
+
+## 身心生活（5）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
+| 2026-10-19 | Facebook | 養生功法 呼吸五步法 | 07:56 (475.7s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_養生功法-呼吸五步法__1DDHANhGtp/) |
+| 2026-10-19 | Facebook | 斷捨離2.0：重新定義什麼叫必要 | 08:08 (488.1s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_斷捨離2-0-重新定義什麼叫必要__1KHcSPuXRR/) |
+| 2026-10-18 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/2026-10-18_TikTok_負債兩千萬到心想事成-完成式話術與謝謝__7696050866951867655/) |
+| 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
+
+## 電子（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-11 | Facebook | 想要學好電路板一定搞透電流電壓電阻 | 05:29 (329.2s) | whisper (groq) | [開啟](./電子/2026-10-11_Facebook_想要學好電路板一定搞透電流電壓電阻__1DsGxovjKk/) |
+
+## 雲端（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-11 | Drive | videoplayback (2).mp4 | 07:55 (475.2s) | whisper (groq) | [開啟](./雲端/2026-10-11_Drive_videoplayback-2-mp4__view/) |

@@ -1,5 +1,6 @@
 {
   "_說明": "Kubernetes / 容器化領域。用 --glossary kubernetes 載入。",
+  "category": "雲端",
   "terms": [
     "Kubernetes",
     "kubectl",

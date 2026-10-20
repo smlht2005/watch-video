@@ -1,5 +1,6 @@
 {
   "_說明": "AI 大模型、晶片與算力領域。用 --glossary ai-chips 載入。terms 為 Whisper 提示詞；replace 為轉錄後固定替換。",
+  "category": "AI",
   "terms": [
     "DeepSeek V4",
     "CUDA",

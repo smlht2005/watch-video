@@ -1,5 +1,6 @@
 {
   "_說明": "AI 影片生成、本地部署（ComfyUI 等）主題。replace 的 key 用繁體，長度 ≥3 字或帶上下文。",
+  "category": "AI",
   "terms": [
     "ComfyUI",
     "MiniMax H3",
