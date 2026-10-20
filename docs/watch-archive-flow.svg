@@ -14,7 +14,7 @@
 <g font-size="20" fill="#f8fafc">
 <!-- row 1 -->
 <rect x="30" y="130" width="240" height="140" rx="14" fill="#1e3a8a"/><text x="150" y="165" text-anchor="middle" font-weight="bold" font-size="22">0 環境</text><text x="150" y="198" text-anchor="middle" font-size="15">Groq key 或 WhisperX（只報長度）</text><text x="150" y="224" text-anchor="middle" font-size="16">Windows：PYTHONUTF8=1</text><text x="150" y="250" text-anchor="middle" font-size="17">開新 claude/... 分支</text>
-<rect x="320" y="130" width="270" height="140" rx="14" fill="#9a3412"/><text x="455" y="165" text-anchor="middle" font-weight="bold" font-size="22">1 選參數</text><text x="455" y="192" text-anchor="middle" font-size="16">不強制 --lang（自動偵測）</text><text x="455" y="214" text-anchor="middle" font-size="15">--glossary --title --terms --local</text><text x="455" y="236" text-anchor="middle" font-size="14">長錄影：--timestamps／--resolution</text><text x="455" y="258" text-anchor="middle" font-size="15" fill="#fde68a" font-weight="bold">講座／講經：--clean-fillers</text>
+<rect x="320" y="130" width="270" height="140" rx="14" fill="#9a3412"/><text x="455" y="165" text-anchor="middle" font-weight="bold" font-size="22">1 選參數</text><text x="455" y="192" text-anchor="middle" font-size="16">不強制 --lang（自動偵測）</text><text x="455" y="214" text-anchor="middle" font-size="15">--glossary --category --title --terms</text><text x="455" y="236" text-anchor="middle" font-size="14">長錄影：--timestamps／--resolution</text><text x="455" y="258" text-anchor="middle" font-size="15" fill="#fde68a" font-weight="bold">講座／講經：--clean-fillers</text>
 <rect x="640" y="130" width="270" height="140" rx="14" fill="#1e3a8a"/><text x="775" y="165" text-anchor="middle" font-weight="bold" font-size="22">2 歸檔 watch_archive.py</text><text x="775" y="192" text-anchor="middle" font-size="15">下載 → 字幕或 Groq／WhisperX</text><text x="775" y="214" text-anchor="middle" font-size="15">語言判斷 → 中文轉繁體 → 詞典</text><text x="775" y="236" text-anchor="middle" font-size="14" fill="#fde68a" font-weight="bold">語助詞篩選（講座／講經／pure-land）</text><text x="775" y="258" text-anchor="middle" font-size="15">截圖 → 寫檔 → 建報告</text>
 <rect x="960" y="130" width="270" height="140" rx="14" fill="#9a3412"/><text x="1095" y="165" text-anchor="middle" font-weight="bold" font-size="22">3 校稿</text><text x="1095" y="194" text-anchor="middle" font-size="15">先驗收：語言／30 秒缺漏／幻覺</text><text x="1095" y="216" text-anchor="middle" font-size="15">第一輪：對照畫面、投影片、講稿</text><text x="1095" y="238" text-anchor="middle" font-size="15">→ 詞典＋單片校正批次替換</text><text x="1095" y="260" text-anchor="middle" font-size="15">第二輪：替換後從頭通讀全文</text>
 <rect x="1280" y="130" width="290" height="140" rx="14" fill="#9a3412"/><text x="1425" y="165" text-anchor="middle" font-weight="bold" font-size="21">4a 看截圖分投影片或主題</text><text x="1425" y="198" text-anchor="middle" font-size="17">合併零碎畫面 → slides（段落）</text><text x="1425" y="224" text-anchor="middle" font-size="15">每段選乾淨投影片（避開講者交疊）</text><text x="1425" y="250" text-anchor="middle" font-size="15">每段 2–4 分鐘；圖不夠→補 cue 重跑</text>
@@ -29,7 +29,7 @@
 </g>
 <!-- output box -->
 <rect x="670" y="520" width="900" height="180" rx="14" fill="#0b1220" stroke="#334155" stroke-width="2"/>
-<text x="700" y="555" font-size="20" font-weight="bold" fill="#f8fafc">watch-output/&lt;日期&gt;_&lt;平台&gt;_&lt;標題&gt;__&lt;影片ID&gt;/</text>
+<text x="700" y="555" font-size="20" font-weight="bold" fill="#f8fafc">watch-output/&lt;領域&gt;/&lt;日期&gt;_&lt;平台&gt;_&lt;標題&gt;__&lt;影片ID&gt;/</text>
 <g font-size="17" fill="#cbd5e1">
 <text x="700" y="590">meta.json（slides／asr_errors／cue_timestamps 重跑保留；語言每次重新判斷）</text>
 <text x="700" y="618">transcript.md（繁體校正；講座已去語助詞）＋ .raw.md（原話）＋ .zh.md（非中文必做）</text>
@@ -43,7 +43,7 @@
 <text x="55" y="770">• 不印出 API key　• 不強制 --lang，先自動偵測（強制會把外語硬轉）　• 講座／講經自動去語助詞（呢、啊…），raw.md 保留原話；--keep-fillers 可保留</text>
 <text x="55" y="796">• 已知非中文語言 → 一律寫繁中 transcript.zh.md　• 穩定的校正進領域詞典，不確定的進 known_asr_errors　• 校稿兩輪：批次替換後必須逐行重讀</text>
 <text x="55" y="822">• 先合併成投影片／主題段落（每段 2–4 分鐘），長錄影在主題轉換點補 --timestamps 截圖　• 影片沒呈現的資訊放 supplement.md，並更新原本的推測</text>
-<text x="55" y="848">• 同一影片 ID 只一個資料夾，重跑 = 更新　• 失敗回報類別（網路／下載／轉錄／權限）　• 他人影片不入庫　• YouTube 擋下載：Windows 用 Firefox cookies</text>
+<text x="55" y="848">• 同一影片 ID 只一個資料夾（依 --category 分領域），重跑 = 更新　• 失敗回報類別（網路／下載／轉錄／權限）　• 他人影片不入庫　• YouTube 擋下載：Windows 用 Firefox cookies</text>
 <text x="55" y="874">• WhisperX 自動偵測語言不可靠（曾把中文講座翻成日文）　• Groq 長音訊偶爾整段 30 秒漏轉（已自動補漏）、或把提示詞當成逐字稿吐出　• 有原講稿時拿來二次校對</text>
 </g>
 </svg>
