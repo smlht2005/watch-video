@@ -686,7 +686,12 @@ class Category(unittest.TestCase):
             self.pick("理財")
         self.assertEqual(self.pick("ai"), "AI")
         with self.assertRaises(ValueError):
-            self.pick("佛学")
+            self.pick("佛教")
+
+    @unittest.skipIf(wa._S2T is None, "opencc not installed")
+    def test_simplified_category_becomes_traditional(self):
+        self.assertEqual(self.pick("佛学"), "佛學")
+        self.assertEqual(self.pick("未分类"), "未分類")
 
     def test_stale_remembered_category_asks_for_category(self):
         with self.assertRaisesRegex(ValueError, "--category"):
@@ -702,6 +707,11 @@ class Category(unittest.TestCase):
         for f in (wa.ROOT / "glossary" / "domains").glob("*.json"):
             c = __import__("json").loads(f.read_text(encoding="utf-8")).get("category")
             self.assertIn(c, cats, f.name)
+
+    @unittest.skipIf(wa._S2T is None, "opencc not installed")
+    def test_category_names_are_traditional_chinese(self):
+        for c in wa.load_categories():
+            self.assertEqual(wa.to_traditional(c), c, f"category '{c}' must be Traditional Chinese")
 
     def test_index_sections_in_category_order_newest_first(self):
         import json
