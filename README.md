@@ -77,10 +77,10 @@ python3 scripts/build_report.py watch-output/<領域>/<資料夾>   # 編輯 sum
 ### 提高轉錄準確度
 
 - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
-- `--category AI`：歸檔到 `watch-output/<領域>/`（記在 `meta.json.category`，重跑沿用；改值會搬資料夾）。未指定時依 `--glossary` 推測（ai-*／claude-code／neo4j→AI、pure-land／lengyan→佛學、kubernetes→雲端、electronics→電子），再不行為「未分類」。舊的平面資料夾用 `python3 scripts/organize.py [--map map.json]` 一次搬進領域資料夾並重建 `index.md`。
+- `--category AI`：歸檔到 `watch-output/<領域>/`（記在 `meta.json.category`，重跑沿用；改值會搬資料夾）。領域必須在白名單 `glossary/categories.json` 內（目前 `AI`、`佛學`、`商業理財`、`身心生活`、`電子`、`雲端`、`未分類`，也是 `index.md` 的小節順序）；清單外的值直接報錯，只有英文大小寫不同會自動校正（`ai`→`AI`）；`meta.json` 記住的舊值不在白名單時也報錯，請用 `--category` 重新指定。未指定時取第一個 `--glossary` 詞典檔的 `category` 欄位（多個詞典不一致時以第一個為準並印說明），再不行放「未分類」並印 `WARNING`。新增領域：先在 `categories.json` 加值，再視需要在詞典檔填 `category`（單元測試會檢查詞典的值都在白名單內）。舊的平面資料夾用 `python3 scripts/organize.py [--map map.json]` 搬進領域資料夾並重建 `index.md`；`--map` 的值先整批檢查，有錯就一個都不搬。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
-  - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`（淨土宗／佛學講座）、`lengyan`（楞嚴經講經）。新增領域只要新增一個檔案。
+  - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`（淨土宗／佛學講座）、`lengyan`（楞嚴經講經）。新增領域只要新增一個檔案；可加 `"category"` 欄位，讓 `--category` 未指定時自動歸類。
   - 每個檔案有 `terms`（Whisper 提示詞，只放整個詞，總長約 200 字內；選中的領域優先）與 `replace`（轉錄後固定替換，key 用繁體、至少 3 字或帶上下文）。
   - 單支影片才成立的修正，不要放進詞典，改用 `--terms` 或 `meta.json.known_asr_errors`。
   - `WATCH_GLOSSARY_DIR` 可指向別處（例如獨立的詞典 repo），方便跨專案共用。
@@ -92,7 +92,7 @@ python3 scripts/build_report.py watch-output/<領域>/<資料夾>   # 編輯 sum
 
 ```text
 watch-output/
-├── index.md                                   # 所有影片索引（含「領域」欄）
+├── index.md                                   # 所有影片索引：依領域分節（例 `## AI（12）`），節內由新到舊
 └── <領域>/                                    # 粗分類：AI、佛學、商業理財、身心生活、電子、雲端、未分類…
     └── <日期>_<平台>_<標題>__<影片ID>/          # 同一影片 ID 只會有一個資料夾，重跑為更新
         ├── <stem>_report.docx / <stem>_report.md  # 圖文報告（摘要 → 補充資料 → 畫面+逐字稿(+中譯) → 已知轉錄錯誤 → 補充資料連結）
@@ -123,6 +123,7 @@ watch-output/
 | `detected_language`／`language_source`／`forced_lang`／`needs_zh_translation` | 由腳本每次重跑時重新判斷（不保留舊值） |
 | `title_override` | `--title` 指定的標題（重跑沿用） |
 | `glossaries` | `--glossary` 選用的詞典領域（重跑沿用） |
+| `category` | 領域資料夾（`--category` 或推測；須在 `glossary/categories.json` 白名單內；重跑沿用） |
 | `whisper_choice` | `--local`／`--whisper` 選的轉錄方式（`whisperx` 等；空白表示依 key 自動決定；重跑沿用） |
 
 ### 操作 SOP（`sop.md`，電腦工具教學影片）

@@ -474,6 +474,11 @@ def main():
     early_meta = json.loads((early[0] / "meta.json").read_text(encoding="utf-8")) if early and (early[0] / "meta.json").exists() else {}
     domains = [d.strip() for d in args.glossary.split(",") if d.strip()] if args.glossary is not None else early_meta.get("glossaries", [])
     gl_terms, gl_replace = load_glossary(domains)
+    if args.category:  # fail before downloading, not after
+        try:
+            args.category = check_category(args.category, load_categories())
+        except ValueError as e:
+            sys.exit(str(e))
     terms = [t.strip() for t in args.terms.split(",") if t.strip()] + gl_terms
     whisper_choice = args.whisper or ("whisperx" if args.local else early_meta.get("whisper_choice", ""))
     whisper = pick_whisper(args.whisper, args.local, early_meta.get("whisper_choice", ""), has_groq_key())
