@@ -36,28 +36,62 @@ OUT_ROOT = ROOT / "watch-output"
 TITLE_MAX = 40
 NAME_MAX = 120
 DEFAULT_CATEGORY = "未分類"
-# coarse category (the subfolder under watch-output/) inferred from the glossary domain when --category is not given
-CATEGORY_BY_DOMAIN = {
-    "ai-chips": "AI", "ai-video": "AI", "claude-code": "AI", "neo4j": "AI",
-    "kubernetes": "雲端", "electronics": "電子", "pure-land": "佛學", "lengyan": "佛學",
-}
 
 
-def safe_category(name: str) -> str:
-    """One path segment only: no separators, no leading dots."""
-    c = re.sub(r'[\\/:*?"<>|\s]+', "-", (name or "").strip()).strip(".-")
-    return c or DEFAULT_CATEGORY
+def glossary_dir() -> Path:
+    return Path(os.environ.get("WATCH_GLOSSARY_DIR") or ROOT / "glossary")
 
 
-def pick_category(arg: str, prev: str, domains) -> str:
-    if arg:
-        return safe_category(arg)
-    if prev:
-        return prev
+def load_categories():
+    """Allowed categories (= subfolders of watch-output/, also the index.md section order) from glossary/categories.json."""
+    f = glossary_dir() / "categories.json"
+    cats = json.loads(f.read_text(encoding="utf-8")).get("categories", []) if f.exists() else []
+    return cats if DEFAULT_CATEGORY in cats else cats + [DEFAULT_CATEGORY]
+
+
+def check_category(name: str, cats) -> str:
+    """Canonical category from the allowed list; ASCII case differences are fixed, anything else is an error."""
+    name = (name or "").strip()
+    if name in cats:
+        return name
+    folded = [c for c in cats if c.isascii() and c.lower() == name.lower()]
+    if folded:
+        print(f"[watch] category '{name}' -> '{folded[0]}'", file=sys.stderr)
+        return folded[0]
+    raise ValueError(f"category '{name}' is not allowed (available: {', '.join(cats)}; edit glossary/categories.json to add one)")
+
+
+def category_from_domains(domains, cats) -> str:
+    """The first --glossary domain whose JSON has a valid "category" wins; invalid values are skipped with a warning."""
+    found = []
     for d in domains:
-        if d in CATEGORY_BY_DOMAIN:
-            return CATEGORY_BY_DOMAIN[d]
-    return DEFAULT_CATEGORY
+        f = glossary_dir() / "domains" / f"{d}.json"
+        c = json.loads(f.read_text(encoding="utf-8")).get("category", "") if f.exists() else ""
+        if not c:
+            continue
+        if c not in cats:
+            print(f"WARNING: glossary domain '{d}' has category '{c}' which is not in categories.json; ignored.", file=sys.stderr)
+            continue
+        found.append((d, c))
+    if len({c for _, c in found}) > 1:
+        print(f"[watch] glossary domains disagree on category ({', '.join(f'{d}={c}' for d, c in found)}); using '{found[0][1]}' from '{found[0][0]}'", file=sys.stderr)
+    return found[0][1] if found else ""
+
+
+def pick_category(arg: str, prev: str, domains, cats=None) -> str:
+    """--category > remembered meta.json value > first glossary domain's category > 未分類 (with a warning)."""
+    cats = cats or load_categories()
+    if arg:
+        return check_category(arg, cats)
+    if prev:
+        try:
+            return check_category(prev, cats)
+        except ValueError as e:
+            raise ValueError(f"{e}; the remembered category in meta.json is no longer valid, pass --category") from None
+    c = category_from_domains(domains, cats)
+    if not c:
+        print(f"WARNING: category could not be inferred; filed under '{DEFAULT_CATEGORY}'. Pass --category to classify it.", file=sys.stderr)
+    return c or DEFAULT_CATEGORY
 
 
 def find_dirs(vid: str):
@@ -252,7 +286,7 @@ def load_glossary(domains):
 
     Returns (terms, replace). Domain terms come first so the 200-char Whisper prompt favours them.
     """
-    gdir = Path(os.environ.get("WATCH_GLOSSARY_DIR") or ROOT / "glossary")
+    gdir = glossary_dir()
     files = [gdir / "common.json"] + [gdir / "domains" / f"{d}.json" for d in domains]
     for d, f in zip(["common"] + list(domains), files):
         if not f.exists():
@@ -407,7 +441,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
-    ap.add_argument("--category", default="", help="coarse category = subfolder under watch-output/ (e.g. AI, 佛學, 理財); default: remembered, else inferred from --glossary, else 未分類; changing it moves the folder")
+    ap.add_argument("--category", default="", help="category = subfolder under watch-output/, must be listed in glossary/categories.json (AI, 佛學, 商業理財…); default: remembered, else the first --glossary domain's category, else 未分類; changing it moves the folder")
     ap.add_argument("--title", help="override the display title/folder name (remembered in meta.json as title_override)")
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
     ap.add_argument("--lang", default="", help="force Whisper language, e.g. zh. Leave empty (default) so the language is auto-detected and reported; forcing a wrong language yields garbage")
@@ -440,6 +474,11 @@ def main():
     early_meta = json.loads((early[0] / "meta.json").read_text(encoding="utf-8")) if early and (early[0] / "meta.json").exists() else {}
     domains = [d.strip() for d in args.glossary.split(",") if d.strip()] if args.glossary is not None else early_meta.get("glossaries", [])
     gl_terms, gl_replace = load_glossary(domains)
+    if args.category:  # fail before downloading, not after
+        try:
+            args.category = check_category(args.category, load_categories())
+        except ValueError as e:
+            sys.exit(str(e))
     terms = [t.strip() for t in args.terms.split(",") if t.strip()] + gl_terms
     whisper_choice = args.whisper or ("whisperx" if args.local else early_meta.get("whisper_choice", ""))
     whisper = pick_whisper(args.whisper, args.local, early_meta.get("whisper_choice", ""), has_groq_key())
@@ -508,7 +547,10 @@ def main():
     # Reuse an existing folder for the same video ID; otherwise create a new one.
     OUT_ROOT.mkdir(exist_ok=True)
     existing = find_dirs(vid)
-    category = pick_category(args.category, prev0.get("category", ""), domains)
+    try:
+        category = pick_category(args.category, prev0.get("category", ""), domains)
+    except ValueError as e:
+        sys.exit(str(e))
     cat_dir = OUT_ROOT / category
     cat_dir.mkdir(exist_ok=True)
     if existing:
@@ -598,7 +640,7 @@ def main():
 
     build_report.build(dest)
 
-    update_index(dest, meta)
+    update_index()
     print(f"archived -> {dest.relative_to(ROOT)}")
     if forced_language(lang):
         print(f"WARNING: --lang {forced_language(lang)} was forced to Whisper, so a wrong language would NOT be caught; "
@@ -634,19 +676,23 @@ def remap_slide_frames(slides: list, old_frames: list, new_frames: list) -> list
     return out
 
 
-def update_index(dest: Path, meta: dict):
-    idx = OUT_ROOT / "index.md"
-    header = ("# watch-output 索引\n\n"
-              "| 日期 | 領域 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|---|\n")
-    rows = []
-    if idx.exists():
-        rows = [l for l in idx.read_text(encoding="utf-8").splitlines()
-                if l.startswith("| ") and not l.startswith("| 日期") and f"__{meta['video_id']}/" not in l]
-    safe_title = meta["title"].replace("|", "｜")
-    rel = dest.relative_to(OUT_ROOT).as_posix()
-    rows.append(f"| {meta['last_updated']} | {meta.get('category', DEFAULT_CATEGORY)} | {meta['platform']} | {safe_title} | "
-                f"{meta['duration']} | {meta['transcript_source']} | [開啟](./{rel}/) |")
-    idx.write_text(header + "\n".join(sorted(rows, key=lambda r: (r.split(" | ")[1], r.split(" | ")[0]))) + "\n", encoding="utf-8")
+def update_index():
+    """Rebuild index.md from every <category>/<folder>/meta.json: one section per category, newest first."""
+    rows = {}
+    for mp in OUT_ROOT.glob("*/*__*/meta.json"):
+        m = json.loads(mp.read_text(encoding="utf-8"))
+        cat = mp.parent.parent.name
+        link = f"./{cat}/{mp.parent.name}/"
+        rows.setdefault(cat, []).append((m.get("last_updated", ""), mp.parent.name,
+            f"| {m.get('last_updated', '')} | {m.get('platform', '')} | {m.get('title', '').replace('|', '｜')} | "
+            f"{m.get('duration', '')} | {m.get('transcript_source', '')} | [開啟]({link}) |"))
+    cats = load_categories()
+    out = ["# watch-output 索引\n"]
+    for cat in [c for c in cats if c in rows] + sorted(c for c in rows if c not in cats):
+        out.append(f"## {cat}（{len(rows[cat])}）\n\n| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|")
+        out += [r[2] for r in sorted(rows[cat], reverse=True)]
+        out.append("")
+    (OUT_ROOT / "index.md").write_text("\n".join(out), encoding="utf-8")
 
 
 if __name__ == "__main__":

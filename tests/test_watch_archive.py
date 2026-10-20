@@ -670,15 +670,54 @@ class WhisperHints(unittest.TestCase):
 
 
 class Category(unittest.TestCase):
-    def test_precedence_arg_prev_domain_default(self):
-        self.assertEqual(wa.pick_category("理財", "AI", ["pure-land"]), "理財")
-        self.assertEqual(wa.pick_category("", "AI", ["pure-land"]), "AI")
-        self.assertEqual(wa.pick_category("", "", ["x", "pure-land"]), "佛學")
-        self.assertEqual(wa.pick_category("", "", []), wa.DEFAULT_CATEGORY)
+    CATS = ["AI", "佛學", "未分類"]
 
-    def test_safe_category_is_one_path_segment(self):
-        self.assertEqual(wa.safe_category("../a/b"), "a-b")
-        self.assertEqual(wa.safe_category("  "), wa.DEFAULT_CATEGORY)
+    def pick(self, arg="", prev="", domains=()):
+        return wa.pick_category(arg, prev, list(domains), self.CATS)
+
+    def test_precedence_arg_prev_domain_default(self):
+        self.assertEqual(self.pick("佛學", "AI", ["ai-chips"]), "佛學")
+        self.assertEqual(self.pick("", "AI", ["pure-land"]), "AI")
+        self.assertEqual(self.pick("", "", ["x", "pure-land"]), "佛學")
+        self.assertEqual(self.pick(), wa.DEFAULT_CATEGORY)
+
+    def test_unknown_category_is_error_but_ascii_case_is_fixed(self):
+        with self.assertRaises(ValueError):
+            self.pick("理財")
+        self.assertEqual(self.pick("ai"), "AI")
+        with self.assertRaises(ValueError):
+            self.pick("佛学")
+
+    def test_stale_remembered_category_asks_for_category(self):
+        with self.assertRaisesRegex(ValueError, "--category"):
+            self.pick("", "舊領域")
+
+    def test_first_glossary_domain_wins_on_disagreement(self):
+        self.assertEqual(self.pick("", "", ["pure-land", "ai-chips"]), "佛學")
+        self.assertEqual(self.pick("", "", ["ai-chips", "pure-land"]), "AI")
+
+    def test_every_glossary_domain_category_is_allowed(self):
+        cats = wa.load_categories()
+        self.assertEqual(cats[-1], wa.DEFAULT_CATEGORY)
+        for f in (wa.ROOT / "glossary" / "domains").glob("*.json"):
+            c = __import__("json").loads(f.read_text(encoding="utf-8")).get("category")
+            self.assertIn(c, cats, f.name)
+
+    def test_index_sections_in_category_order_newest_first(self):
+        import json
+        with tempfile.TemporaryDirectory() as t, mock.patch.object(wa, "OUT_ROOT", Path(t)):
+            for cat, day, vid in [("佛學", "2026-01-01", "a"), ("AI", "2026-01-01", "b"), ("AI", "2026-02-01", "c")]:
+                d = Path(t) / cat / f"{day}_X_t__{vid}"
+                d.mkdir(parents=True)
+                (d / "meta.json").write_text(json.dumps({"last_updated": day, "platform": "X", "title": vid, "duration": "0", "transcript_source": "s"}), encoding="utf-8")
+            wa.update_index()
+            idx = (Path(t) / "index.md").read_text(encoding="utf-8")
+        self.assertLess(idx.index("## AI（2）"), idx.index("## 佛學（1）"))
+        self.assertLess(idx.index("| c |"), idx.index("| b |"))
+        self.assertNotIn("未分類", idx)
+
+    def test_safe_category_removed(self):
+        self.assertFalse(hasattr(wa, "safe_category"))
 
     def test_find_dirs_nested_and_legacy(self):
         with tempfile.TemporaryDirectory() as t, mock.patch.object(wa, "OUT_ROOT", Path(t)):
