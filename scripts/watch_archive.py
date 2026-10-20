@@ -50,7 +50,7 @@ def load_categories():
 
 
 def check_category(name: str, cats) -> str:
-    """Canonical category from the allowed list; ASCII case differences are fixed, anything else is an error."""
+    """Canonical category from the allowed list; ASCII case and Simplified Chinese (佛学 -> 佛學) are fixed, anything else is an error."""
     name = (name or "").strip()
     if name in cats:
         return name
@@ -58,6 +58,10 @@ def check_category(name: str, cats) -> str:
     if folded:
         print(f"[watch] category '{name}' -> '{folded[0]}'", file=sys.stderr)
         return folded[0]
+    trad = to_traditional(name)
+    if trad != name and trad in cats:
+        print(f"[watch] category '{name}' -> '{trad}' (Traditional Chinese)", file=sys.stderr)
+        return trad
     raise ValueError(f"category '{name}' is not allowed (available: {', '.join(cats)}; edit glossary/categories.json to add one)")
 
 
