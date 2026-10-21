@@ -654,9 +654,9 @@ def main():
     elif detected_language == "unknown":
         print("language: unknown（逐字稿太短或缺失，請自行判斷是否需要中譯）")
     elif detected_language == "other":
-        print("language: other（混雜或無法判斷）：已跳過簡轉繁；請讀逐字稿確認，中文請手動轉繁體，非中文請依 SKILL 步驟 4b 寫 transcript.zh.md")
+        print("language: other（混雜或無法判斷）：已跳過簡轉繁；請讀逐字稿確認，中文請手動轉繁體，非中文請依 references/content.md 的 4b 寫 transcript.zh.md")
     else:
-        print(f"language: {detected_language} [{language_source}] -> 非中文影片：請依 SKILL 步驟 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
+        print(f"language: {detected_language} [{language_source}] -> 非中文影片：請依 references/content.md 的 4b 寫 transcript.zh.md（繁體中文中譯，時間戳沿用原文）")
 
 
 def remap_slide_frames(slides: list, old_frames: list, new_frames: list) -> list:

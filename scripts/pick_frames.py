@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pick one key frame per slide so each report section shows its point (SKILL step 4a).
+"""Pick one key frame per slide so each report section shows its point (references/content.md 4a).
 
 Scene-change frames often land mid-animation or on a transition (half-drawn slides, blank cards). This samples the
 video once per second, scores every second inside each slide's time window (detail = how much is on screen,

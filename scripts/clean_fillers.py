@@ -5,7 +5,7 @@ Speech-style lectures are full of "你看啊"、"這個呢" which only make the 
 output is not touched (transcript.raw.md stays as is); only the "[mm:ss] text" lines inside the fenced block of
 transcript.md are cleaned, so headings, notes and everything else are left alone. The step is idempotent.
 
-A rerun of watch_archive.py rewrites transcript.md, so run this again after proofreading (SKILL step 3).
+A rerun of watch_archive.py rewrites transcript.md, so run this again after proofreading (references/proofread.md).
 
 Usage: python3 scripts/clean_fillers.py watch-output/<folder> [<folder> ...]
 """
