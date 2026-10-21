@@ -8,6 +8,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import build_report as br  # noqa: E402
+import review_links as rl  # noqa: E402
 import watch_archive as wa  # noqa: E402
 
 
@@ -735,6 +736,18 @@ class Category(unittest.TestCase):
             (Path(t) / "2026-01-02_X_b__v2").mkdir()
             self.assertEqual([p.name for p in wa.find_dirs("v1")], ["2026-01-01_X_a__v1"])
             self.assertEqual([p.name for p in wa.find_dirs("v2")], ["2026-01-02_X_b__v2"])
+
+
+class ReviewLinks(unittest.TestCase):
+    def test_repo_slug_from_common_remotes(self):
+        for url in ("https://github.com/o/r.git", "git@github.com:o/r.git", "http://local_proxy@127.0.0.1:1/git/o/r"):
+            self.assertEqual(rl.repo_slug(url), "o/r")
+
+    def test_links_are_percent_encoded_and_point_at_branch(self):
+        links = dict(rl.build_links("o/r", "claude/x", "watch-output/AI/a b", ["summary.md"]))
+        self.assertEqual(links["資料夾"], "https://github.com/o/r/tree/claude/x/watch-output/AI/a%20b")
+        self.assertEqual(links["summary.md"], "https://github.com/o/r/blob/claude/x/watch-output/AI/a%20b/summary.md")
+        self.assertTrue(links["與 main 的差異（開 PR 前看這個）"].endswith("/compare/main...claude/x"))
 
 
 if __name__ == "__main__":

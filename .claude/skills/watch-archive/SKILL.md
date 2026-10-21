@@ -24,7 +24,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 ```text
 網址 ─▶ 0 環境 ─▶ 1 選參數(不強制 --lang；長錄影加 --timestamps/--resolution；本地轉錄加 --local；講座／講經加 --clean-fillers) ─▶ 2 歸檔(下載→平台字幕或 Groq／WhisperX 轉錄→偵測語言→中文轉繁體→詞典校正→(講座／講經)去語助詞→截圖→報告)
      ─▶ 3 校稿(先驗收：語言錯／重複幻覺／30 秒漏轉（已自動補漏）／提示詞外洩→保存舊稿後回到 2 重跑、兩次互補；第一輪批次替換→第二輪逐行重讀全文) ─▶ 4a 看截圖分投影片或主題(slides，每段 2–4 分鐘；截圖不足→補 cue 回到 2 重跑；講者交疊→改挑乾淨投影片)
-     ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md) ─▶ 4c 補充資料(選用 supplement.md；有原講稿→二次校對) ─▶ 4d 電腦工具教學→操作 SOP(選用 sop.md) ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交
+     ─▶ 4b 補內容(摘要/關鍵字/校正；非中文→transcript.zh.md) ─▶ 4c 補充資料(選用 supplement.md；有原講稿→二次校對) ─▶ 4d 電腦工具教學→操作 SOP(選用 sop.md) ─▶ 5 重建報告 ─▶ 5b 目視檢查 ─▶ 6 交付 ─▶ 7 提交＋給確認連結 ─▶ 使用者確認 ─▶ 8 PR＋merge
 ```
 
 藍＝腳本自動、橘＝Claude 判斷、綠＝交付；黃色虛線是兩條重跑回圈：「截圖不足時補 cue 重跑」（4a→2）與「語言錯／整段漏轉時重跑」（3→2）；圖源 `docs/watch-archive-flow.svg`。改圖後重新產生 PNG：
@@ -134,7 +134,9 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 6. **交付**：用 SendUserFile 傳 `*_report.docx`（有 SOP 時一併傳 `*_操作SOP.docx`，並提醒 `kb/` 可放進 Obsidian／Notion）；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄、本地 WhisperX 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
 
-7. **提交**：在 `claude/...` 分支 commit 並 push。合併方式依使用者指示（PR + Squash and merge，或直接合併）；使用者沒說就先問，不強制 push、不重用已合併分支。
+7. **提交並給確認連結**：在 `claude/...` 分支 commit 並 push（不強制 push、不重用已合併分支），然後跑 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>`，把輸出的連結（資料夾、報告 md／docx、摘要、中譯、與 `main` 的差異）貼給使用者確認。**使用者確認前不開 PR、不 merge**；連結指向分支，未合併也打得開。回覆同時列出需要使用者確認的判斷（領域是否合適、標題、標「推測」的校正）。
+
+8. **確認後開 PR 並 merge**：使用者確認（或指出要修改的地方，改完再重給連結）後，才開 PR；合併方式依使用者指示（PR + Squash and merge，或直接合併），使用者沒說就先問。
 
 ## 注意
 

@@ -19,6 +19,7 @@
 - 講座／講經（口語演講）：歸檔時加 `--clean-fillers`（`--glossary pure-land` 自動開啟，`meta.json.video_type: "lecture"` 重跑也會開），自動去除逐字稿的「呢」「啊」等語助詞；`--keep-fillers` 保留，`transcript.raw.md` 保留原話；見 SKILL 步驟 3。
 - 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 SKILL 4d。
 - 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
+- 歸檔完成並 push 到分支後，用 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 產生連結給使用者確認；使用者確認前不開 PR、不 merge。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
 - 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／佛學／商業理財／身心生活／電子／雲端／未分類）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
