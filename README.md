@@ -95,13 +95,14 @@ watch-output/
 ├── index.md                                   # 所有影片索引：依領域分節（例 `## AI（12）`），節內由新到舊
 └── <領域>/                                    # 粗分類：AI（含子領域 claude-code）、佛學、商業理財、身心生活、電子、雲端、未分類…
     └── <日期>_<平台>_<標題>__<影片ID>/          # 同一影片 ID 只會有一個資料夾，重跑為更新
-        ├── <stem>_report.docx / <stem>_report.md  # 圖文報告（摘要 → 補充資料 → 畫面+逐字稿(+中譯) → 已知轉錄錯誤 → 補充資料連結）
+        ├── <stem>_report.docx / <stem>_report.md  # 圖文報告（摘要 → 補充資料 → 思維導圖 → 畫面+逐字稿(+中譯) → 已知轉錄錯誤 → 補充資料連結）
         ├── meta.json                              # 網址、標題、上傳者、轉錄來源、關鍵字、已知轉錄錯誤
         ├── transcript.md                          # 逐字稿（預設轉為繁體中文，時間戳不變）
         ├── transcript.raw.md                      # 轉繁體前的原始轉錄（僅在內容有變動時產生）
         ├── transcript.zh.md                       # 非中文影片的繁體中文中譯（Claude 補寫，重跑保留）
         ├── summary.md                             # 摘要（時間戳重點 + 名詞/縮寫說明）
         ├── supplement.md                          # 選用：影片未呈現的補充資料（重跑保留，報告自動納入）
+        ├── mindmap.md / mindmap.png               # 思維導圖：Claude 手寫的縮排大綱（重跑保留）→ build_report 畫成 PNG；沒有時由 slides 自動產生
         ├── sop.md                                 # 選用：電腦工具教學影片的操作 SOP（Claude 手寫，重跑保留）
         ├── <影片標題>_操作SOP.docx / .md          # 只有 SOP 與截圖的版本（有 sop.md 時產生）
         ├── kb/                                    # 知識庫包：<影片標題>_操作SOP.md（YAML frontmatter）＋ attachments/ 圖片，可放進 Obsidian／Notion
@@ -140,6 +141,10 @@ watch-output/
 影片沒呈現、或畫面一閃而過而遺漏的資訊（被截斷的畫面文字、貼文說明欄／留言回傳的完整內容、連結、更正），另存成同資料夾的 `supplement.md`（獨立檔，重跑不覆蓋）。`build_report.py` 會把它放在報告「摘要」之後，並在報告最後加「補充資料連結」。
 
 寫法重點（完整範本見 `.claude/skills/watch-archive/references/supplement-4c.md`）：一筆補充一節（S1、S2…）並標類型；來源要完整（誰提供、位置、取得日期、方式）；**原文（逐字）** 與 **Claude 的對照分析** 分開；用語分級——補充直接寫明／與影片一致／據此推定；未查證的主張、數字、版本號進備註。
+
+### 思維導圖（`mindmap.md` → `mindmap.png`）
+
+`build_report.py` 把 `mindmap.md`（縮排條列：第一個頂層項目是中心，下一層是主分支，再下一層是子節點，最多畫 3 層）用 PIL 畫成橫向樹狀圖 `mindmap.png`，放在報告「圖文對照」之前，並連結原圖與大綱檔。沒有手寫的 `mindmap.md` 時，從 `meta.json.slides` 自動產生（中心＝標題、主分支＝各段標題、子節點＝各段 `keywords`），檔案第一行有 `<!-- auto: … -->` 標記，每次重建都會重產；刪掉這行就視為手寫、不再覆蓋。中文字型依序找微軟正黑體、Noto Sans CJK（取繁中字面）、文泉驛（`pick_frames.py` 的縮圖表共用同一套）。docx 裡太高的導圖會在空白列切成多張，不會縮到看不清；報告中只有同資料夾真的存在的檔案連結才會變成可點的相對連結。寫法見 `.claude/skills/watch-archive/references/content.md` 4b。
 
 ### 測試
 

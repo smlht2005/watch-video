@@ -38,7 +38,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 2. **歸檔**：`python3 scripts/watch_archive.py "<URL>" [旗標]`；重跑會清空 `frames/` 與覆蓋 `transcript.md`。
 3. **校稿**：先驗收（語言錯、重複幻覺、整段漏轉、提示詞外洩、片頭尾幻覺），要重跑先保存舊稿；再兩輪校稿，**第二輪必做：用 Read 從頭到尾逐行重讀**。
 4. **補內容**：
-   - 4a／4b：寫 `slides`（每段 2–4 分鐘、不超過約 5 分鐘，每段一張對到重點的截圖）、`summary.md`、`meta.json`；截圖用 `pick_frames.py sheet` 逐秒挑、**自己看圖確認**再 `apply`；外語影片寫 `transcript.zh.md`。
+   - 4a／4b：寫 `slides`（每段 2–4 分鐘、不超過約 5 分鐘，每段一張對到重點的截圖；**影片明說步驟時改為一步驟一段一張圖一段說明**，見 `.claude/skills/watch-archive/references/content.md` 4a）、`summary.md`、`meta.json`；截圖用 `pick_frames.py sheet` 逐秒挑、**自己看圖確認**再 `apply`；外語影片寫 `transcript.zh.md`；手寫 `mindmap.md`（思維導圖，放在圖文對照之前）。
    - 4c：畫面有、講者沒唸的原文，逐字抄進 `supplement.md`；影片數字與主張一律標「講者主張，未查證」。
    - 4d：電腦工具教學影片另寫 `sop.md`。
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；docx 轉 PDF 目視檢查（中文、截圖、頁數）。

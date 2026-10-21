@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 from urllib.parse import quote
 
-REVIEW_FILES = ("summary.md", "transcript.zh.md", "supplement.md", "sop.md")
+REVIEW_FILES = ("summary.md", "transcript.zh.md", "supplement.md", "sop.md", "mindmap.md", "mindmap.png")
 
 
 def repo_slug(remote_url: str) -> str:

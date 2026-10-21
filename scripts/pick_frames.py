@@ -22,22 +22,18 @@ import sys
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageStat
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageStat
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import mindmap  # noqa: E402
 from build_report import to_sec  # noqa: E402
 
 THUMB_W = 216
-CJK_FONTS = ("/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc", "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
-             "C:/Windows/Fonts/msjh.ttc")
 
 
 def label_font(size=16):
-    """A CJK-capable font so slide titles are readable on the sheet; PIL's default font turns 中文 into boxes."""
-    for f in CJK_FONTS:
-        if Path(f).exists():
-            return ImageFont.truetype(f, size)
-    return ImageFont.load_default()
+    """A CJK-capable font so slide titles are readable on the sheet (same font search as the mind map)."""
+    return mindmap.cjk_font(size)
 
 
 def windows(starts, duration):
