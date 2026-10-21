@@ -8,6 +8,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import build_report as br  # noqa: E402
+import pick_frames as pf  # noqa: E402
 import review_links as rl  # noqa: E402
 import watch_archive as wa  # noqa: E402
 
@@ -748,6 +749,33 @@ class ReviewLinks(unittest.TestCase):
         self.assertEqual(links["資料夾"], "https://github.com/o/r/tree/claude/x/watch-output/AI/a%20b")
         self.assertEqual(links["summary.md"], "https://github.com/o/r/blob/claude/x/watch-output/AI/a%20b/summary.md")
         self.assertTrue(links["與 main 的差異（開 PR 前看這個）"].endswith("/compare/main...claude/x"))
+
+
+class PickFrames(unittest.TestCase):
+    def test_windows_run_from_each_start_to_the_next(self):
+        self.assertEqual(pf.windows(["00:00", "00:11", "01:05"], 80), [(0, 11), (11, 65), (65, 81)])
+
+    def test_best_skips_boundary_seconds_when_window_is_long(self):
+        score = [9, 9, 1, 5, 1, 1, 1, 9]  # seconds 0-1 still show the previous slide, 7 is the next transition
+        self.assertEqual(pf.best_in_window(score, 0, 8), 3)
+
+    def test_best_uses_whole_short_window_and_prefers_later_tie(self):
+        self.assertEqual(pf.best_in_window([2, 5, 5], 0, 3), 2)
+
+    def test_register_slides_points_meta_and_frames_at_slide_files(self):
+        import json
+        with tempfile.TemporaryDirectory() as t:
+            d = Path(t)
+            (d / "meta.json").write_text(json.dumps({"slides": [{"start": "00:00"}, {"start": "00:20"}]}), encoding="utf-8")
+            (d / "frames.json").write_text(json.dumps([{"file": "frame_0001.jpg", "t": "00:00", "reason": "x"},
+                                                       {"file": "slide_09.jpg", "t": "00:09", "reason": "clean-slide"}]), encoding="utf-8")
+            pf.register_slides(d, [3, 31])
+            meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+            frames = json.loads((d / "frames.json").read_text(encoding="utf-8"))
+        self.assertEqual([s["frame"] for s in meta["slides"]], ["slide_01.jpg", "slide_02.jpg"])
+        self.assertEqual([(f["file"], f["t"]) for f in frames if f["reason"] == "clean-slide"],
+                         [("slide_01.jpg", "00:03"), ("slide_02.jpg", "00:31")])
+        self.assertIn("frame_0001.jpg", [f["file"] for f in frames])
 
 
 if __name__ == "__main__":
