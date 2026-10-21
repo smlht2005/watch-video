@@ -77,7 +77,7 @@ python3 scripts/build_report.py watch-output/<領域>/<資料夾>   # 編輯 sum
 ### 提高轉錄準確度
 
 - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
-- `--category AI`：歸檔到 `watch-output/<領域>/`（記在 `meta.json.category`，重跑沿用；改值會搬資料夾）。領域必須在白名單 `glossary/categories.json` 內（目前 `AI`、`佛學`、`商業理財`、`身心生活`、`電子`、`雲端`、`未分類`，也是 `index.md` 的小節順序）；清單外的值直接報錯，只有英文大小寫不同或寫成簡體時會自動校正（`ai`→`AI`、`佛学`→`佛學`）；領域名稱一律用繁體中文（單元測試檢查白名單）；`meta.json` 記住的舊值不在白名單時也報錯，請用 `--category` 重新指定。未指定時取第一個 `--glossary` 詞典檔的 `category` 欄位（多個詞典不一致時以第一個為準並印說明），再不行放「未分類」並印 `WARNING`。新增領域：先在 `categories.json` 加值，再視需要在詞典檔填 `category`（單元測試會檢查詞典的值都在白名單內）。舊的平面資料夾用 `python3 scripts/organize.py [--map map.json]` 搬進領域資料夾並重建 `index.md`；`--map` 的值先整批檢查，有錯就一個都不搬。
+- `--category AI`：歸檔到 `watch-output/<領域>/`（記在 `meta.json.category`，重跑沿用；改值會搬資料夾）。領域必須在白名單 `glossary/categories.json` 內（目前 `AI`、`AI/claude-code`（AI 底下的子領域，資料夾 `watch-output/AI/claude-code/`，放以 Claude Code 為主角的影片；已有專屬詞典且是學習主題的子領域可提前開，不必等 5 支）、`佛學`、`商業理財`、`身心生活`、`電子`、`雲端`、`未分類`，也是 `index.md` 的小節順序）；清單外的值直接報錯，只有英文大小寫不同或寫成簡體時會自動校正（`ai`→`AI`、`佛学`→`佛學`）；領域名稱一律用繁體中文（單元測試檢查白名單）；`meta.json` 記住的舊值不在白名單時也報錯，請用 `--category` 重新指定。未指定時取第一個 `--glossary` 詞典檔的 `category` 欄位（多個詞典不一致時以第一個為準並印說明），再不行放「未分類」並印 `WARNING`。新增領域：先在 `categories.json` 加值，再視需要在詞典檔填 `category`（單元測試會檢查詞典的值都在白名單內）。舊的平面資料夾用 `python3 scripts/organize.py [--map map.json]` 搬進領域資料夾並重建 `index.md`；`--map` 的值先整批檢查，有錯就一個都不搬。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
   - `glossary/domains/<領域>.json`：領域詞典，目前有 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`（淨土宗／佛學講座）、`lengyan`（楞嚴經講經）。新增領域只要新增一個檔案；可加 `"category"` 欄位，讓 `--category` 未指定時自動歸類。
@@ -93,7 +93,7 @@ python3 scripts/build_report.py watch-output/<領域>/<資料夾>   # 編輯 sum
 ```text
 watch-output/
 ├── index.md                                   # 所有影片索引：依領域分節（例 `## AI（12）`），節內由新到舊
-└── <領域>/                                    # 粗分類：AI、佛學、商業理財、身心生活、電子、雲端、未分類…
+└── <領域>/                                    # 粗分類：AI（含子領域 claude-code）、佛學、商業理財、身心生活、電子、雲端、未分類…
     └── <日期>_<平台>_<標題>__<影片ID>/          # 同一影片 ID 只會有一個資料夾，重跑為更新
         ├── <stem>_report.docx / <stem>_report.md  # 圖文報告（摘要 → 補充資料 → 畫面+逐字稿(+中譯) → 已知轉錄錯誤 → 補充資料連結）
         ├── meta.json                              # 網址、標題、上傳者、轉錄來源、關鍵字、已知轉錄錯誤

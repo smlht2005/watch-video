@@ -25,7 +25,7 @@ def main():
     cats = wa.load_categories()
 
     plan, errors = [], []
-    folders = [p for p in wa.OUT_ROOT.glob("*__*") if p.is_dir()] + [p for p in wa.OUT_ROOT.glob("*/*__*") if p.is_dir()]
+    folders = [p for p in wa.OUT_ROOT.glob("*__*") if p.is_dir()] + [p for p in wa.OUT_ROOT.glob("*/*__*") if p.is_dir()] + [p for p in wa.OUT_ROOT.glob("*/*/*__*") if p.is_dir()]
     for d in sorted(folders):
         mp = d / "meta.json"
         if not mp.exists():
@@ -45,7 +45,7 @@ def main():
         meta["category"] = cat
         target = wa.OUT_ROOT / cat / d.name
         if target != d:
-            target.parent.mkdir(exist_ok=True)
+            target.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(str(d), str(target))
         (target / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     wa.update_index()

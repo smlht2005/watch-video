@@ -99,8 +99,8 @@ def pick_category(arg: str, prev: str, domains, cats=None) -> str:
 
 
 def find_dirs(vid: str):
-    """Existing archive folder(s) for a video ID: <category>/<folder>, or a legacy flat <folder>."""
-    return sorted(OUT_ROOT.glob(f"*/*__{vid}")) + sorted(p for p in OUT_ROOT.glob(f"*__{vid}") if p.is_dir())
+    """Existing archive folder(s) for a video ID: <category>/<folder> (category may be nested, e.g. AI/claude-code), or a legacy flat <folder>."""
+    return sorted(OUT_ROOT.glob(f"*/*__{vid}")) + sorted(OUT_ROOT.glob(f"*/*/*__{vid}")) + sorted(p for p in OUT_ROOT.glob(f"*__{vid}") if p.is_dir())
 
 
 def resolve_redirect(url: str) -> str:
@@ -445,7 +445,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
-    ap.add_argument("--category", default="", help="category = subfolder under watch-output/, must be listed in glossary/categories.json (AI, 佛學, 商業理財…); default: remembered, else the first --glossary domain's category, else 未分類; changing it moves the folder")
+    ap.add_argument("--category", default="", help="category = subfolder under watch-output/, must be listed in glossary/categories.json (AI, AI/claude-code, 佛學, 商業理財…); default: remembered, else the first --glossary domain's category, else 未分類; changing it moves the folder")
     ap.add_argument("--title", help="override the display title/folder name (remembered in meta.json as title_override)")
     ap.add_argument("--glossary", default=None, help="comma-separated glossary domains, e.g. ai-chips,electronics (common is always loaded)")
     ap.add_argument("--lang", default="", help="force Whisper language, e.g. zh. Leave empty (default) so the language is auto-detected and reported; forcing a wrong language yields garbage")
@@ -556,7 +556,7 @@ def main():
     except ValueError as e:
         sys.exit(str(e))
     cat_dir = OUT_ROOT / category
-    cat_dir.mkdir(exist_ok=True)
+    cat_dir.mkdir(parents=True, exist_ok=True)
     if existing:
         # keep the original date prefix but follow title changes (e.g. Simplified -> Traditional) and category changes
         dest = existing[0]
@@ -683,9 +683,9 @@ def remap_slide_frames(slides: list, old_frames: list, new_frames: list) -> list
 def update_index():
     """Rebuild index.md from every <category>/<folder>/meta.json: one section per category, newest first."""
     rows = {}
-    for mp in OUT_ROOT.glob("*/*__*/meta.json"):
+    for mp in [*OUT_ROOT.glob("*/*__*/meta.json"), *OUT_ROOT.glob("*/*/*__*/meta.json")]:
         m = json.loads(mp.read_text(encoding="utf-8"))
-        cat = mp.parent.parent.name
+        cat = mp.parent.parent.relative_to(OUT_ROOT).as_posix()
         link = f"./{cat}/{mp.parent.name}/"
         rows.setdefault(cat, []).append((m.get("last_updated", ""), mp.parent.name,
             f"| {m.get('last_updated', '')} | {m.get('platform', '')} | {m.get('title', '').replace('|', '｜')} | "
@@ -693,7 +693,7 @@ def update_index():
     cats = load_categories()
     out = ["# watch-output 索引\n"]
     for cat in [c for c in cats if c in rows] + sorted(c for c in rows if c not in cats):
-        out.append(f"## {cat}（{len(rows[cat])}）\n\n| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|")
+        out.append(f"## {cat.replace('/', '／')}（{len(rows[cat])}）\n\n| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |\n|---|---|---|---|---|---|")
         out += [r[2] for r in sorted(rows[cat], reverse=True)]
         out.append("")
     (OUT_ROOT / "index.md").write_text("\n".join(out), encoding="utf-8")

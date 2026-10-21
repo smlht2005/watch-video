@@ -1,6 +1,6 @@
 {
   "_說明": "Claude / Claude Code 領域。用 --glossary claude-code 載入。Whisper 常把 Claude 聽成 Cloud。注意：`Cloud Code`、`cloud code`、`Cloud 可以` 等替換假設講者在談 Claude；若影片真的在講雲端（Google Cloud 等）請勿載入本詞典。",
-  "category": "AI",
+  "category": "AI/claude-code",
   "terms": [
     "Claude",
     "Claude Code",

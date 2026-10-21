@@ -1,7 +1,8 @@
 {
-  "_說明": "watch-output 的領域白名單：同時是 --category 允許的值、資料夾名稱與 index.md 小節順序。詞典檔的 category 欄位必須是這裡的值；未分類固定放最後。新增領域的規則：同時符合 (a) 至少 5 支影片屬於同一個新主題、(b) 放在現有領域裡找不到合適位置，才新增；沒達標前，主題只用 meta.json 的 keywords 標記（例：自律 → 身心生活＋關鍵字「自律」）。",
+  "_說明": "watch-output 的領域白名單：同時是 --category 允許的值、資料夾路徑與 index.md 小節順序。詞典檔的 category 欄位必須是這裡的值；未分類固定放最後。新增頂層領域的規則：同時符合 (a) 至少 5 支影片屬於同一個新主題、(b) 放在現有領域裡找不到合適位置，才新增；沒達標前，主題只用 meta.json 的 keywords 標記（例：自律 → 身心生活＋關鍵字「自律」）。巢狀子領域寫成「父領域/子領域」（例：AI/claude-code，資料夾 watch-output/AI/claude-code/，index.md 小節顯示為「AI／claude-code」），只限一層；例外：已有專屬詞典、且是使用者學習主題的子領域可提前開，不必等 5 支。子領域名稱沿用詞典名（claude-code）。",
   "categories": [
     "AI",
+    "AI/claude-code",
     "佛學",
     "商業理財",
     "身心生活",

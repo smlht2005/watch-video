@@ -731,6 +731,23 @@ class Category(unittest.TestCase):
     def test_safe_category_removed(self):
         self.assertFalse(hasattr(wa, "safe_category"))
 
+    def test_nested_category_allowed_and_indexed_after_parent(self):
+        import json
+        cats = ["AI", "AI/claude-code", "佛學", "未分類"]
+        self.assertEqual(wa.pick_category("AI/claude-code", "", [], cats), "AI/claude-code")
+        self.assertEqual(wa.pick_category("ai/CLAUDE-CODE", "", [], cats), "AI/claude-code")
+        self.assertEqual(wa.pick_category("", "", ["claude-code"], wa.load_categories()), "AI/claude-code")
+        with tempfile.TemporaryDirectory() as t, mock.patch.object(wa, "OUT_ROOT", Path(t)):
+            for cat, vid in [("AI", "a"), ("AI/claude-code", "b")]:
+                d = Path(t) / cat / f"2026-01-01_X_t__{vid}"
+                d.mkdir(parents=True)
+                (d / "meta.json").write_text(json.dumps({"last_updated": "2026-01-01", "platform": "X", "title": vid, "duration": "0", "transcript_source": "s"}), encoding="utf-8")
+            self.assertEqual([p.parent.name for p in wa.find_dirs("b")], ["claude-code"])
+            wa.update_index()
+            idx = (Path(t) / "index.md").read_text(encoding="utf-8")
+        self.assertLess(idx.index("## AI（1）"), idx.index("## AI／claude-code（1）"))
+        self.assertIn("(./AI/claude-code/2026-01-01_X_t__b/)", idx)
+
     def test_find_dirs_nested_and_legacy(self):
         with tempfile.TemporaryDirectory() as t, mock.patch.object(wa, "OUT_ROOT", Path(t)):
             (Path(t) / "AI" / "2026-01-01_X_a__v1").mkdir(parents=True)

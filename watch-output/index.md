@@ -1,23 +1,28 @@
 # watch-output 索引
 
-## AI（14）
+## AI（11）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
 | 2026-10-21 | Instagram | 新模型來了，你的提示詞有一半該刪了：7 個改法 | 02:52 (171.6s) | whisper (groq) | [開啟](./AI/2026-10-21_Instagram_新模型來了-你的提示詞有一半該刪了-7-個改法__DejZRx-gtMG/) |
-| 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
 | 2026-10-19 | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./AI/2026-10-19_Facebook_學了10遍還不會-可能從第1步就錯了__1461324902567196/) |
 | 2026-10-14 | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos/) |
 | 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
 | 2026-10-13 | Instagram | Video by good_job_ai | 00:56 (56.4s) | whisper (groq) | [開啟](./AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR/) |
 | 2026-10-12 | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211/) |
 | 2026-10-12 | GoogleDrive | MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成 | 09:17 (557.4s) | whisper (groq) | [開啟](./AI/2026-10-12_GoogleDrive_MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成__1EIhyh60imHgwatjkElA-8di38oYtiv0T/) |
-| 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
 | 2026-10-11 | X | AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司... | 02:40 (160.2s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa__2109141804620619953/) |
 | 2026-10-11 | TikTok | 中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了 | 05:29 (329.3s) | whisper (groq) | [開啟](./AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237/) |
-| 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
 | 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
 | 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
+
+## AI／claude-code（3）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
+| 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
+| 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
 
 ## 佛學（4）
 
