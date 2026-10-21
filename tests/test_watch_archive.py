@@ -9,6 +9,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import build_report as br  # noqa: E402
+import mindmap  # noqa: E402
 import pick_frames as pf  # noqa: E402
 import review_links as rl  # noqa: E402
 import watch_archive as wa  # noqa: E402
@@ -764,36 +765,87 @@ class MindMap(unittest.TestCase):
     def make(self, slides=None, mindmap_md=None):
         import json
         from PIL import Image
-        d = Path(tempfile.mkdtemp()) / "2026-10-21_Web_測試__abc"
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        d = Path(tmp.name) / "2026-10-21_Web_測試__abc"
         (d / "frames").mkdir(parents=True)
         Image.new("RGB", (320, 180), (200, 200, 200)).save(d / "frames" / "cue_0001.jpg")
         meta = {"url": "https://example.com/v", "platform": "Web", "title": "測試影片", "duration": "01:00 (60s)",
                 "slides": slides if slides is not None else self.SLIDES}
         (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
-        (d / "summary.md").write_text("# 摘要\n\n內容\n", encoding="utf-8")
+        (d / "summary.md").write_text("# 摘要\n\n內容 [官網](www.example.com) [版本](v1.2)\n", encoding="utf-8")
         (d / "transcript.md").write_text("```\n[00:01] 你好\n[00:31] 第一步\n```\n", encoding="utf-8")
         (d / "frames.json").write_text(json.dumps([{"file": "cue_0001.jpg", "t": "00:00"}]), encoding="utf-8")
         if mindmap_md is not None:
             (d / "mindmap.md").write_text(mindmap_md, encoding="utf-8")
         return d
 
-    def test_parse_outline_single_root_and_several_tops(self):
-        mm = sys.modules.get("mindmap") or __import__("mindmap")
-        self.assertEqual(mm.parse_outline("# t\n- 中心\n  - 分支\n    - 葉\n"), ("中心", [("分支", [("葉", [])])]))
-        self.assertEqual(mm.parse_outline("- a\n- b\n", "標題"), ("標題", [("a", []), ("b", [])]))
-        self.assertIsNone(mm.parse_outline("沒有條列"))
+    def boxes(self, tree):
+        from PIL import Image, ImageDraw
+        probe = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+        return mindmap.layout(tree, lambda s, f: probe.textlength(s, font=f))
 
-    def test_auto_from_slides_then_regenerated_but_hand_written_kept(self):
+    def test_parse_outline_single_root_several_tops_and_numbered_items(self):
+        self.assertEqual(mindmap.parse_outline("# t\n- 中心\n  - 分支\n    - 葉\n"), ("中心", [("分支", [("葉", [])])]))
+        self.assertEqual(mindmap.parse_outline("- a\n- b\n", "標題"), ("標題", [("a", []), ("b", [])]))
+        self.assertEqual(mindmap.parse_outline("1. a\n   • b\n"), ("a", [("b", [])]))
+        self.assertIsNone(mindmap.parse_outline("沒有條列"))
+
+    def test_tall_centre_and_two_line_branches_neither_clipped_nor_overlapping(self):
+        tree = ("很長的影片標題" * 7, [("短", []), ("兩行的分支標題" * 3, [("葉", [])]), ("第三", [("x", []), ("y", [])])])
+        nodes, (w, h) = self.boxes(tree)
+        for n in nodes:
+            self.assertGreaterEqual(n["y"], 0)
+            self.assertLessEqual(n["y"] + n["h"], h)
+            self.assertLessEqual(n["x"] + n["w"], w)
+        for depth in (1, 2):
+            col = sorted((n for n in nodes if n["d"] == depth), key=lambda n: n["y"])
+            for a, b in zip(col, col[1:]):
+                self.assertLessEqual(a["y"] + a["h"], b["y"], f"depth {depth} boxes overlap")
+
+    def test_latin_words_are_not_split(self):
+        from PIL import Image, ImageDraw
+        probe = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+        lines = mindmap.wrap("Claude Code hooks setup guide", 200, mindmap.cjk_font(22),
+                             lambda s, f: probe.textlength(s, font=f))
+        self.assertGreater(len(lines), 1)
+        for word in ("Claude", "Code", "hooks", "setup", "guide"):
+            self.assertTrue(any(word in l for l in lines), word)
+
+    def test_auto_map_is_capped_and_survives_bad_slide_values(self):
+        slides = [{"start": f"{i:02d}:00", "title": f"第{i}段的標題非常非常長而且超過十五個字", "keywords": None if i % 2 else
+                   ["k1", 2026, None, "k3", "k4"]} for i in range(25)]
+        slides.append({"start": "30:00", "title": None, "keywords": "不是清單"})
+        tree = mindmap.from_slides({"title": "標題", "slides": slides})
+        self.assertLessEqual(len(tree[1]), mindmap.MAX_BRANCHES)
+        for b in tree[1]:
+            self.assertLessEqual(len(b[0]), mindmap.MAX_CHARS)
+            self.assertLessEqual(len(b[1]), mindmap.MAX_LEAVES)
+            for leaf in b[1]:
+                self.assertLessEqual(len(leaf[0]), mindmap.MAX_CHARS)
+        tree = mindmap.from_slides({"title": "t", "slides": [{"start": "00:00", "title": None, "keywords": [None, 7]}]})
+        self.assertEqual(tree, ("t", [("00:00", [("7", [])])]))
+
+    def test_auto_regenerated_hand_written_kept_and_marker_matched_by_token(self):
         d = self.make()
         br.build(d)
         auto = (d / "mindmap.md").read_text(encoding="utf-8")
-        self.assertTrue(auto.startswith(__import__("mindmap").AUTO_MARK))
+        self.assertTrue(auto.startswith(mindmap.AUTO_TOKEN))
         self.assertIn("  - 開場", auto)
         self.assertIn("    - 甲", auto)
         self.assertTrue((d / "mindmap.png").exists())
+        (d / "mindmap.md").write_text("<!-- auto: 舊版措辭 -->\n- 舊\n", encoding="utf-8")
+        br.build(d)
+        self.assertIn("  - 開場", (d / "mindmap.md").read_text(encoding="utf-8"))  # old wording still regenerated
         (d / "mindmap.md").write_text("- 自己寫的中心\n  - 分支\n", encoding="utf-8")
         br.build(d)
         self.assertEqual((d / "mindmap.md").read_text(encoding="utf-8"), "- 自己寫的中心\n  - 分支\n")
+
+    def test_hand_written_file_without_items_falls_back_to_slides_and_is_kept(self):
+        d = self.make(mindmap_md="# 思維導圖\n\n只有文字\n")
+        md = br.build(d)[0].read_text(encoding="utf-8")
+        self.assertIn("## 思維導圖", md)
+        self.assertEqual((d / "mindmap.md").read_text(encoding="utf-8"), "# 思維導圖\n\n只有文字\n")
 
     def test_section_before_frames_section_with_links(self):
         d = self.make()
@@ -803,7 +855,7 @@ class MindMap(unittest.TestCase):
         self.assertIn("![思維導圖](mindmap.png)", md)
         self.assertIn("[mindmap.md](mindmap.md)", md.split("## 補充資料連結")[1])
 
-    def test_docx_links_to_local_files_and_shows_map(self):
+    def test_docx_links_only_real_local_files_and_shows_map(self):
         from docx import Document
         d = self.make()
         outs = br.build(d)
@@ -811,7 +863,46 @@ class MindMap(unittest.TestCase):
         targets = {r.target_ref for r in doc.part.rels.values() if r.reltype.endswith("/hyperlink")}
         self.assertIn("mindmap.png", targets)
         self.assertIn("mindmap.md", targets)
+        self.assertNotIn("www.example.com", targets)  # a bare domain is not a file next to the report
+        self.assertNotIn("v1.2", targets)
         self.assertEqual(len(doc.inline_shapes), 3)  # mind map + one frame per slide
+
+    def test_slightly_tall_map_stays_on_one_page(self):
+        from docx import Document
+        from PIL import Image
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        d = Path(tmp.name)
+        Image.new("RGB", (987, 1534), "white").save(d / "mindmap.png")  # 24.9 cm tall at 16 cm wide
+        br.md_to_docx(d, "![m](mindmap.png)\n", d / "o.docx", diagrams={"mindmap.png"})
+        shapes = Document(str(d / "o.docx")).inline_shapes
+        self.assertEqual(len(shapes), 1)
+        self.assertLessEqual(shapes[0].height.cm, 22.01)
+
+    def test_tall_map_is_split_into_readable_pieces(self):
+        from docx import Document
+        from PIL import Image
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        d = Path(tmp.name)
+        im = Image.new("RGB", (900, 4000), "white")
+        for y in range(0, 4000, 40):
+            im.paste((0, 0, 0), (10, y, 300, y + 20))
+        im.save(d / "mindmap.png")
+        br.md_to_docx(d, "![m](mindmap.png)\n", d / "o.docx", diagrams={"mindmap.png"})
+        shapes = Document(str(d / "o.docx")).inline_shapes
+        self.assertGreater(len(shapes), 1)
+        for s in shapes:
+            self.assertLessEqual(s.height.cm, 22.01)
+            self.assertGreaterEqual(s.width.cm, 14.9)  # 900px at >= 60px/cm: not shrunk
+
+    def test_map_failure_does_not_stop_the_report(self):
+        d = self.make()
+        with mock.patch.object(mindmap, "render", side_effect=OSError("bad font")):
+            outs = br.build(d)
+        md = outs[0].read_text(encoding="utf-8")
+        self.assertNotIn("## 思維導圖", md)
+        self.assertIn("## 圖文對照", md)
 
     def test_no_slides_and_no_outline_means_no_map(self):
         d = self.make(slides=[])

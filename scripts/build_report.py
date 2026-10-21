@@ -228,7 +228,7 @@ def sop_lines(dest: Path, frames: list):
     return include_lines(dest / "sop.md", "操作 SOP（依影片整理，照著做）", frames)
 
 
-def build_md(dest: Path, meta, summary, segs, frames) -> str:
+def build_md(dest: Path, meta, summary, segs, frames, map_png=None) -> str:
     L = [f"# {meta['title']}", ""]
     L += [f"- 來源：{meta['url']}",
           f"- 平台 / 上傳者：{meta['platform']} / {meta.get('uploader', '')}",
@@ -243,7 +243,7 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L += sop_lines(dest, frames)
     sup = supplement_lines(dest)
     L += sup
-    has_map = (dest / "mindmap.png").exists()
+    has_map = bool(map_png)
     if has_map:
         L += ["## 思維導圖", "", "![思維導圖](mindmap.png)", "",
               "- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）", ""]
@@ -345,7 +345,6 @@ def set_font(run, size=None, bold=None, mono=False):
 
 
 URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+")
-LOCAL_FILE_RE = re.compile(r"[\w-][\w./-]*\.\w+")  # a file next to the report, e.g. supplement.md, mindmap.png
 
 
 def add_hyperlink(par, url, size, label=None):
@@ -369,13 +368,15 @@ def add_hyperlink(par, url, size, label=None):
     par._p.append(link)
 
 
-def add_inline(par, text, size=10.5):
+def add_inline(par, text, size=10.5, local=frozenset()):
+    """**bold**, `code`, URLs and [label](target) links; a target named in `local` (a file next to the docx, e.g.
+    mindmap.md) becomes a relative hyperlink, any other non-URL target stays plain text."""
     for tok in re.split(r"(\[[^\]]+\]\((?:[^()\s]|\([^()\s]*\))+\)|\*\*[^*]+\*\*|`[^`]+`|https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+)", text):
         if not tok:
             continue
         if (lm := re.fullmatch(r"\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)", tok)):
             label, target = lm.groups()
-            if URL_RE.fullmatch(target) or LOCAL_FILE_RE.fullmatch(target):  # relative: opens next to the docx
+            if URL_RE.fullmatch(target) or target in local:  # a local file opens next to the docx
                 add_hyperlink(par, target, size, label)
             else:
                 set_font(par.add_run(label), size, mono=True)
@@ -419,7 +420,36 @@ def crop_dark_borders(im, threshold=16, min_trim=0.05):
     return im.crop((left, top, right, bottom)) if (left, top, right, bottom) != (0, 0, w, h) else im
 
 
-def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
+def add_diagram(doc, pil, max_w_cm=16, page_h_cm=22, min_px_per_cm=60, max_shrink=1.4):
+    """A text-heavy diagram (PNG, no JPEG ringing): full text width without upscaling past min_px_per_cm. A map at most
+    max_shrink times a page tall is shrunk onto one page; a taller one is cut into page-high pieces at blank rows
+    instead of being shrunk until its text is unreadable."""
+    import io
+    w, h = pil.size
+    width_cm = min(max_w_cm, w / min_px_per_cm)
+    if h * width_cm / w <= page_h_cm * max_shrink:
+        width_cm = min(width_cm, page_h_cm * w / h)
+    step = int(page_h_cm * w / width_cm)
+    gray = pil.convert("L")
+    top = 0
+    while top < h:
+        cut = min(h, top + step)
+        if cut < h:  # move the cut up to a blank row so no text line is split
+            for y in range(cut, max(top + step // 2, top + 1), -1):
+                if gray.crop((0, y, w, y + 1)).getextrema()[0] >= 250:
+                    cut = y
+                    break
+        buf = io.BytesIO()
+        pil.crop((0, top, w, cut)).save(buf, "PNG")
+        buf.seek(0)
+        doc.add_picture(buf, width=Cm(width_cm))
+        doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+        top = cut
+
+
+def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9, diagrams=frozenset(), local=frozenset()):
+    """diagrams: image paths (as written in the markdown) laid out by add_diagram; local: link targets that are files
+    next to the docx and become relative hyperlinks."""
     doc = Document()
     sec = doc.sections[0]
     sec.left_margin = sec.right_margin = Cm(2)
@@ -460,7 +490,7 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
                     cell = t.cell(r, c)
                     cell.text = ""
                     par = cell.paragraphs[0]
-                    add_inline(par, row[c] if c < len(row) else "", 9.5)
+                    add_inline(par, row[c] if c < len(row) else "", 9.5, local)
                     if r == 0:
                         for run in par.runs:
                             run.bold = True
@@ -474,21 +504,23 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
             if img.exists():
                 from PIL import Image
                 import io
+                if im.group(1) in diagrams:
+                    add_diagram(doc, Image.open(img).convert("RGB"))
+                    i += 1
+                    continue
                 pil = crop_dark_borders(Image.open(img).convert("RGB"))
                 w, h = pil.size
                 # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to max_img_h cm tall, 16 cm wide
                 width_cm = min(12, 7 * w / h) if h > w else min(16, max_img_h * w / h)
-                if img.name == "mindmap.png":  # a tall tree: full text width, up to most of a page
-                    width_cm = min(16, 22 * w / h)
                 buf = io.BytesIO()  # re-encode: some ffmpeg JPEGs lack a JFIF header that python-docx requires
                 pil.save(buf, "JPEG", quality=90)
                 buf.seek(0)
                 doc.add_picture(buf, width=Cm(width_cm))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
         elif line.lstrip().startswith("- "):  # also indented sub-items under a numbered step
-            add_inline(doc.add_paragraph(style="List Bullet"), line.lstrip()[2:])
+            add_inline(doc.add_paragraph(style="List Bullet"), line.lstrip()[2:], local=local)
         elif line.strip():
-            add_inline(doc.add_paragraph(), line.strip())
+            add_inline(doc.add_paragraph(), line.strip(), local=local)
         i += 1
     if kw:
         doc.core_properties.keywords = ", ".join(kw)
@@ -497,20 +529,25 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
 
 def build(dest: Path):
     meta, summary, segs, frames = load(dest)
-    mindmap.ensure(dest, meta)
-    md = build_md(dest, meta, summary, segs, frames)
+    try:  # the map is optional: a font or drawing failure must not cost the whole report
+        map_png = mindmap.ensure(dest, meta)
+    except Exception as e:  # noqa: BLE001
+        print(f"WARNING: mind map skipped ({type(e).__name__}: {e})", file=sys.stderr)
+        map_png = None
+    md = build_md(dest, meta, summary, segs, frames, map_png)
     stem = file_stem(dest)
     for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*"), *dest.glob("*_操作SOP.*")):  # drop stale / legacy names
         (old if isinstance(old, Path) else dest / old).unlink(missing_ok=True)  # glob() already includes dest
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
-    md_to_docx(dest, md, out_docx, meta.get("keywords"))
+    local = frozenset(p.name for p in dest.iterdir() if p.is_file())
+    md_to_docx(dest, md, out_docx, meta.get("keywords"), diagrams=frozenset({"mindmap.png"}), local=local)
     outs = [out_md, out_docx]
     standalone = sop_md(dest, meta, frames)
     if standalone:
         s_md, s_docx = dest / f"{sop_name(meta)}.md", dest / f"{sop_name(meta)}.docx"
         s_md.write_text(standalone, encoding="utf-8")
-        md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5)  # many step shots: keep them compact
+        md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5, local=local)  # many step shots: keep them compact
         outs += [s_md, s_docx]
     build_kb(dest, meta, frames)  # also clears a stale kb/ when there is no SOP
     return tuple(outs)

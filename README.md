@@ -144,7 +144,7 @@ watch-output/
 
 ### 思維導圖（`mindmap.md` → `mindmap.png`）
 
-`build_report.py` 把 `mindmap.md`（縮排條列：第一個頂層項目是中心，下一層是主分支，再下一層是子節點，最多畫 3 層）用 PIL 畫成橫向樹狀圖 `mindmap.png`，放在報告「圖文對照」之前，並連結原圖與大綱檔。沒有手寫的 `mindmap.md` 時，從 `meta.json.slides` 自動產生（中心＝標題、主分支＝各段標題、子節點＝各段 `keywords`），檔案第一行有 `<!-- auto: … -->` 標記，每次重建都會重產；刪掉這行就視為手寫、不再覆蓋。中文字型依序找微軟正黑體、Noto Sans CJK、文泉驛。寫法見 `.claude/skills/watch-archive/references/content.md` 4b。
+`build_report.py` 把 `mindmap.md`（縮排條列：第一個頂層項目是中心，下一層是主分支，再下一層是子節點，最多畫 3 層）用 PIL 畫成橫向樹狀圖 `mindmap.png`，放在報告「圖文對照」之前，並連結原圖與大綱檔。沒有手寫的 `mindmap.md` 時，從 `meta.json.slides` 自動產生（中心＝標題、主分支＝各段標題、子節點＝各段 `keywords`），檔案第一行有 `<!-- auto: … -->` 標記，每次重建都會重產；刪掉這行就視為手寫、不再覆蓋。中文字型依序找微軟正黑體、Noto Sans CJK（取繁中字面）、文泉驛（`pick_frames.py` 的縮圖表共用同一套）。docx 裡太高的導圖會在空白列切成多張，不會縮到看不清；報告中只有同資料夾真的存在的檔案連結才會變成可點的相對連結。寫法見 `.claude/skills/watch-archive/references/content.md` 4b。
 
 ### 測試
 
