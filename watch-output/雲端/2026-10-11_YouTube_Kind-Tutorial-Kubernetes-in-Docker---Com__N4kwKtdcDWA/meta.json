@@ -1,0 +1,65 @@
+{
+  "url": "https://youtu.be/N4kwKtdcDWA?si=E8oJT3J51MsNc3pB",
+  "platform": "YouTube",
+  "video_id": "N4kwKtdcDWA",
+  "title": "Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters",
+  "title_raw": "Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters",
+  "title_override": "",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "CodeLucky",
+  "duration": "07:55 (475.0s)",
+  "detail": "balanced",
+  "transcript_source": "captions (en, automatic, original)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-11",
+  "last_updated": "2026-10-11",
+  "known_asr_errors": [
+    {
+      "time": "01:13",
+      "heard": "Cubectal",
+      "expected": "kubectl"
+    },
+    {
+      "time": "02:16",
+      "heard": "Chocolaty",
+      "expected": "Chocolatey"
+    },
+    {
+      "time": "03:22",
+      "heard": "YL format",
+      "expected": "YAML format"
+    },
+    {
+      "time": "01:13",
+      "heard": "Version 20.10 10",
+      "expected": "Docker 20.10（推測）"
+    },
+    {
+      "time": "05:08",
+      "heard": "cubic config",
+      "expected": "kubeconfig"
+    }
+  ],
+  "keywords": [
+    "KIND",
+    "Kubernetes in Docker",
+    "Kubernetes",
+    "Docker",
+    "kubectl",
+    "多節點叢集",
+    "連接埠對應",
+    "kube context",
+    "CI",
+    "本地開發"
+  ],
+  "section_keywords": {},
+  "slides": [],
+  "no_frames_reason": "YouTube bot detection (403/429); no cookies available",
+  "category": "雲端"
+}
