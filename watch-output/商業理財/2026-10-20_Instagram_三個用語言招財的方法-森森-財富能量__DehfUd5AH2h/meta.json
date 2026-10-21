@@ -1,0 +1,94 @@
+{
+  "url": "https://www.instagram.com/reel/DehfUd5AH2h/?xtok=Z2xxemxidXE5cmZu",
+  "platform": "Instagram",
+  "video_id": "DehfUd5AH2h",
+  "title": "三個用語言招財的方法（森森｜財富能量）",
+  "title_raw": "Video by oscar_347347",
+  "title_override": "三個用語言招財的方法（森森｜財富能量）",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "森森｜財富能量",
+  "duration": "01:54 (114.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-20",
+  "last_updated": "2026-10-20",
+  "known_asr_errors": [],
+  "keywords": [
+    "潛意識",
+    "招財",
+    "很挑戰",
+    "我允許",
+    "超幸運",
+    "感恩日記",
+    "語言暗示",
+    "講者主張"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：三個用語言招財的方法",
+      "note": "畫面字卡「用語言就能招財／3 個超神奇方法」；講者主張很多有錢人都偷偷用語言調整潛意識（講者主張，未查證）。",
+      "keywords": [
+        "潛意識",
+        "語言"
+      ]
+    },
+    {
+      "start": "00:09",
+      "frame": "slide_02.jpg",
+      "title": "第一招：不說「很難」，說「很挑戰」",
+      "note": "講者主張「很難」暗示做不到、不想做；「很挑戰」暗示有機會突破、自己具備能力，成功與賺錢機率會提升（講者主張，未查證）。",
+      "keywords": [
+        "很挑戰"
+      ]
+    },
+    {
+      "start": "00:30",
+      "frame": "slide_03.jpg",
+      "title": "第二招：用「我允許」開頭",
+      "note": "想要有錢但潛意識害怕或覺得賺錢很累時，寫感恩日記或冥想默唸「我允許自己有錢，同時可以是輕鬆的」，讓潛意識接受原本以為不能同時發生的事（講者主張，未查證）。",
+      "keywords": [
+        "我允許",
+        "感恩日記"
+      ]
+    },
+    {
+      "start": "01:09",
+      "frame": "slide_04.jpg",
+      "title": "第三招：常常說「超幸運」",
+      "note": "常講很幸運、很感恩、很開心，講者主張身體會在眾多選擇中挑你常說的選項，舉例找停車位、撿到錢、拿到優惠、房間升等（講者主張，未查證）。",
+      "keywords": [
+        "超幸運"
+      ]
+    },
+    {
+      "start": "01:46",
+      "frame": "slide_05.jpg",
+      "title": "結尾：分享與留言",
+      "note": "講者請觀眾分享給身邊常常很幸運的朋友；畫面另有「留言『幸運』」與片尾字卡「留言你的生日／每週二晚上 8 點 直播解盤」（講者沒唸出，見補充資料 S1）。",
+      "keywords": [
+        "留言"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "category": "商業理財"
+}

@@ -298,5 +298,30 @@
     "file": "frame_0060.jpg",
     "t": "01:53",
     "reason": "uniform"
+  },
+  {
+    "file": "slide_01.jpg",
+    "t": "00:02",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_02.jpg",
+    "t": "00:12",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "00:56",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "01:13",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_05.jpg",
+    "t": "01:49",
+    "reason": "clean-slide"
   }
 ]
