@@ -2,7 +2,7 @@
   "url": "https://www.instagram.com/reel/DddPhkuxDUo/?utm_source=ig_web_copy_link&cplk=NTc4MTIwNjQ2YQ==",
   "platform": "Instagram",
   "video_id": "DddPhkuxDUo",
-  "title": "兩週衝上7000顆星的做APP神器 M3E Canvas",
+  "title": "Video by jarrenpoh",
   "title_raw": "Video by jarrenpoh",
   "title_override": "",
   "category": "AI/claude-code",
@@ -19,11 +19,10 @@
     "claude-code"
   ],
   "glossary_applied": {
-    "遊覽器": "瀏覽器",
-    "浴纜器": "瀏覽器",
-    "授權MAT": "授權 MIT",
-    "TrendShift": "Trendshift",
-    "賬號": "帳號"
+    "TrendShift": 1,
+    "授權MAT": 1,
+    "遊覽器": 1,
+    "浴纜器": 1
   },
   "source_hashtags": [],
   "uploader": "傅子傑",
@@ -116,5 +115,5 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "no"
+  "sop_mode": "auto"
 }

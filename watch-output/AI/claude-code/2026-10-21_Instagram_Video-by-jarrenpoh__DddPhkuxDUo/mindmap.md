@@ -1,0 +1,16 @@
+- M3E Canvas：畫 UI 轉 prompt
+  - 開場：痛點
+    - 上線兩週逾 7000 星（講者主張）
+    - Vibe Coding 靠文字描述
+    - 改用視覺、更精準
+  - 拖拉畫面並連線
+    - 瀏覽器內拖拉元件
+    - Material 3 Expressive 真元件
+    - 畫面連線自動畫流程箭頭
+  - 一鍵轉 prompt
+    - 貼進 Claude Code／Codex
+    - AI 照設計做、不用猜
+  - 免費開源
+    - 免費、MIT、免安裝（講者主張）
+    - 存瀏覽器、免註冊（講者主張）
+    - Trendshift 當日第一（講者主張）

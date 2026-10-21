@@ -1,4 +1,4 @@
-# 兩週衝上7000顆星的做APP神器 M3E Canvas
+# Video by jarrenpoh
 
 - 來源：https://www.instagram.com/reel/DddPhkuxDUo/?utm_source=ig_web_copy_link&cplk=NTc4MTIwNjQ2YQ==
 - 平台 / 上傳者：Instagram / 傅子傑
@@ -40,6 +40,12 @@
 - 講者語助詞未去除（非講座類）。
 - 影片未呈現專案網址與 repo 名稱，需另查；見使用者確認事項。
 
+## 思維導圖
+
+![思維導圖](mindmap.png)
+
+- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
+
 ## 圖文對照（畫面 + 逐字稿）
 
 ### 投影片 1：開場：M3E Canvas 與 Vibe Coding 的痛點（00:00–00:16）
@@ -79,3 +85,7 @@
 | 00:16 | 遊覽器 | 瀏覽器 |
 | 00:49 | 浴纜器 | 瀏覽器 |
 | 00:43 | 授權MAT | 授權 MIT（推測，依常見開源授權） |
+
+## 補充資料連結
+
+- 思維導圖：[mindmap.png](mindmap.png)、文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
