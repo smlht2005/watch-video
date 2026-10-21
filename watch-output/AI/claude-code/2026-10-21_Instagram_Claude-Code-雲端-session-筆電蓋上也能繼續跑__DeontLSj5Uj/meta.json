@@ -1,0 +1,107 @@
+{
+  "url": "https://www.instagram.com/reel/DeontLSj5Uj/?cplk=MTFkZDN3c3dtY2tmaQ==",
+  "platform": "Instagram",
+  "video_id": "DeontLSj5Uj",
+  "title": "Claude Code 雲端 session：筆電蓋上也能繼續跑",
+  "title_raw": "Video by ai.lanrenbao",
+  "title_override": "Claude Code 雲端 session：筆電蓋上也能繼續跑",
+  "category": "AI/claude-code",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {
+    "CLAUDE Code": 2,
+    "中端機": 2
+  },
+  "source_hashtags": [],
+  "uploader": "AI懶人報",
+  "duration": "00:47 (47.1s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-21",
+  "last_updated": "2026-10-21",
+  "known_asr_errors": [
+    {
+      "time": "00:25",
+      "heard": "中端機打CLAUDE、CLAUDE也行",
+      "expected": "終端機打 claude --cloud 也行（依畫面字幕）"
+    },
+    {
+      "time": "00:34",
+      "heard": "中端機打CLAUDE://teleport",
+      "expected": "終端機打 claude --teleport（依畫面字幕）"
+    },
+    {
+      "time": "00:29",
+      "heard": "DIF",
+      "expected": "diff（依畫面字幕）"
+    },
+    {
+      "time": "00:41",
+      "heard": "互不幹擾哦",
+      "expected": "互不干擾（推測：語氣詞／用字）"
+    }
+  ],
+  "keywords": [
+    "Claude Code",
+    "雲端 session",
+    "Remote Control",
+    "claude --cloud",
+    "claude --teleport",
+    "GitHub",
+    "Create PR",
+    "diff",
+    "多 session 平行"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "本機 vs 雲端 session",
+      "note": "本機 Claude Code 電腦睡著就停、手機遙控也要電腦開著；雲端 session 把 GitHub 專案複製到雲端虛擬機器，開自己的 branch 做事，可下班前丟大重構、隔天看結果。",
+      "keywords": [
+        "Remote Control",
+        "雲端虛擬機器",
+        "branch"
+      ]
+    },
+    {
+      "start": "00:20",
+      "frame": "slide_02.jpg",
+      "title": "開啟方式、接 GitHub、手機審查",
+      "note": "網頁、手機 App、桌面 App 都能開，終端機用 claude --cloud；第一次先接 GitHub；完成後在手機看 diff、程式碼旁留言讓它改，沒問題按 Create PR。",
+      "keywords": [
+        "claude --cloud",
+        "GitHub",
+        "diff",
+        "Create PR"
+      ]
+    },
+    {
+      "start": "00:34",
+      "frame": "slide_03.jpg",
+      "title": "teleport 拉回電腦與多 session 並行",
+      "note": "終端機打 claude --teleport 把對話與 branch 一起拉回本機；可同時開多個雲端 session，各有自己的 branch、互不干擾。",
+      "keywords": [
+        "claude --teleport",
+        "多 session"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "off"
+}
