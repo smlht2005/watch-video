@@ -34,15 +34,17 @@
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
 | 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
 
-## 身心生活（6）
+## 身心生活（8）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
 | 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
 | 2026-10-20 | Instagram | 拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」 | 01:50 (109.8s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛__DeUFrNTDHFs/) |
+| 2026-10-20 | Instagram | 三個用語言招財的方法（森森｜財富能量） | 01:54 (114.5s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_三個用語言招財的方法-森森-財富能量__DehfUd5AH2h/) |
 | 2026-10-19 | Facebook | 養生功法 呼吸五步法 | 07:56 (475.7s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_養生功法-呼吸五步法__1DDHANhGtp/) |
 | 2026-10-19 | Facebook | 斷捨離2.0：重新定義什麼叫必要 | 08:08 (488.1s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_斷捨離2-0-重新定義什麼叫必要__1KHcSPuXRR/) |
 | 2026-10-18 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/2026-10-18_TikTok_負債兩千萬到心想事成-完成式話術與謝謝__7696050866951867655/) |
+| 2026-10-17 | TikTok | 22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權 | 01:26 (85.5s) | whisper (groq) | [開啟](./身心生活/2026-10-17_TikTok_22歲谷愛凌大腦強大的秘密-頂級強者都在練的-元認知-思維-教你拿回人生掌控權__7697214960836873479/) |
 | 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
 
 ## 電子（1）
@@ -51,8 +53,9 @@
 |---|---|---|---|---|---|
 | 2026-10-11 | Facebook | 想要學好電路板一定搞透電流電壓電阻 | 05:29 (329.2s) | whisper (groq) | [開啟](./電子/2026-10-11_Facebook_想要學好電路板一定搞透電流電壓電阻__1DsGxovjKk/) |
 
-## 雲端（1）
+## 雲端（2）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-10-11 | YouTube | Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters | 07:55 (475.0s) | captions (en, automatic, original) | [開啟](./雲端/2026-10-11_YouTube_Kind-Tutorial-Kubernetes-in-Docker---Com__N4kwKtdcDWA/) |
 | 2026-10-11 | Drive | videoplayback (2).mp4 | 07:55 (475.2s) | whisper (groq) | [開啟](./雲端/2026-10-11_Drive_videoplayback-2-mp4__view/) |

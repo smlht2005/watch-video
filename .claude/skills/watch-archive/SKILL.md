@@ -164,5 +164,6 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 - 簡轉繁採台灣用字，技術詞會被換成台灣詞（算子→運算元、優化→最佳化）；OpenCC 對「里／裡」等一對多字有漏轉，由 `glossary/common.json` 兜底。
 - Groq 轉錄有誤聽很正常；提示詞只提高機率，詞典才是確定的修正。
 - 宗教／佛學講座：有 `glossary/domains/pure-land.json`（淨土宗、台中蓮社、雪公講稿常見專名）。只對單支影片成立的誤聽（例如「欣、厭」被聽成「心、願」，「心」字到處都有，放進詞典會誤傷）記在 `known_asr_errors`，不要放進詞典。
+- YouTube 在雲端常回 403／429「Sign in to confirm you're not a bot」：提供 cookies.txt，`WATCH_COOKIES_FILE=<檔>`，或把 cookies.txt 全文放進環境 secret `WATCH_COOKIES_CONTENT`（下載時寫成 0600 暫存檔、結束即刪）；本機可用 `WATCH_COOKIES_FROM_BROWSER=firefox`。建議用專用小帳號匯出，絕不 commit 或印出 cookies。沒有 deno 但有 node 時，下載自動加 `--js-runtimes node`。
 - 失敗時回報錯誤類別與原因（網路／下載／轉錄／權限），不要印出 key。
 - 版權：來源是他人影片；repo 設為 private 時僅供個人參考，改 public 或分享前不要附影片。

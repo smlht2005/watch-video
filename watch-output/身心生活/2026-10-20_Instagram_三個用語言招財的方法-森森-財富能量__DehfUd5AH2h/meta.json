@@ -1,0 +1,57 @@
+{
+  "url": "https://www.instagram.com/reel/DehfUd5AH2h/?xtok=Z2xxemxidXE5cmZu",
+  "platform": "Instagram",
+  "video_id": "DehfUd5AH2h",
+  "title": "三個用語言招財的方法（森森｜財富能量）",
+  "title_raw": "Video by oscar_347347",
+  "title_override": "三個用語言招財的方法（森森｜財富能量）",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "森森｜財富能量",
+  "duration": "01:54 (114.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-20",
+  "last_updated": "2026-10-20",
+  "known_asr_errors": [],
+  "keywords": [
+    "潛意識",
+    "招財",
+    "很挑戰",
+    "我允許",
+    "超幸運",
+    "感恩日記",
+    "語言暗示",
+    "講者主張"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "三個用語言招財的方法",
+      "note": "講者主張：①不說「很難」改說「很挑戰」；②用「我允許」開頭（我允許自己有錢，同時是輕鬆的）；③常說「超幸運」（講者主張，未查證）。",
+      "keywords": [
+        "潛意識",
+        "語言"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "category": "身心生活"
+}
