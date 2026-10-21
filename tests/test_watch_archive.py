@@ -757,6 +757,70 @@ class Category(unittest.TestCase):
             self.assertEqual([p.name for p in wa.find_dirs("v2")], ["2026-01-02_X_b__v2"])
 
 
+class MindMap(unittest.TestCase):
+    SLIDES = [{"start": "00:00", "frame": "cue_0001.jpg", "title": "開場", "keywords": ["甲", "乙"]},
+              {"start": "00:30", "frame": "cue_0001.jpg", "title": "第一步", "keywords": []}]
+
+    def make(self, slides=None, mindmap_md=None):
+        import json
+        from PIL import Image
+        d = Path(tempfile.mkdtemp()) / "2026-10-21_Web_測試__abc"
+        (d / "frames").mkdir(parents=True)
+        Image.new("RGB", (320, 180), (200, 200, 200)).save(d / "frames" / "cue_0001.jpg")
+        meta = {"url": "https://example.com/v", "platform": "Web", "title": "測試影片", "duration": "01:00 (60s)",
+                "slides": slides if slides is not None else self.SLIDES}
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        (d / "summary.md").write_text("# 摘要\n\n內容\n", encoding="utf-8")
+        (d / "transcript.md").write_text("```\n[00:01] 你好\n[00:31] 第一步\n```\n", encoding="utf-8")
+        (d / "frames.json").write_text(json.dumps([{"file": "cue_0001.jpg", "t": "00:00"}]), encoding="utf-8")
+        if mindmap_md is not None:
+            (d / "mindmap.md").write_text(mindmap_md, encoding="utf-8")
+        return d
+
+    def test_parse_outline_single_root_and_several_tops(self):
+        mm = sys.modules.get("mindmap") or __import__("mindmap")
+        self.assertEqual(mm.parse_outline("# t\n- 中心\n  - 分支\n    - 葉\n"), ("中心", [("分支", [("葉", [])])]))
+        self.assertEqual(mm.parse_outline("- a\n- b\n", "標題"), ("標題", [("a", []), ("b", [])]))
+        self.assertIsNone(mm.parse_outline("沒有條列"))
+
+    def test_auto_from_slides_then_regenerated_but_hand_written_kept(self):
+        d = self.make()
+        br.build(d)
+        auto = (d / "mindmap.md").read_text(encoding="utf-8")
+        self.assertTrue(auto.startswith(__import__("mindmap").AUTO_MARK))
+        self.assertIn("  - 開場", auto)
+        self.assertIn("    - 甲", auto)
+        self.assertTrue((d / "mindmap.png").exists())
+        (d / "mindmap.md").write_text("- 自己寫的中心\n  - 分支\n", encoding="utf-8")
+        br.build(d)
+        self.assertEqual((d / "mindmap.md").read_text(encoding="utf-8"), "- 自己寫的中心\n  - 分支\n")
+
+    def test_section_before_frames_section_with_links(self):
+        d = self.make()
+        md = br.build(d)[0].read_text(encoding="utf-8")
+        self.assertLess(md.index("## 摘要與名詞說明"), md.index("## 思維導圖"))
+        self.assertLess(md.index("## 思維導圖"), md.index("## 圖文對照"))
+        self.assertIn("![思維導圖](mindmap.png)", md)
+        self.assertIn("[mindmap.md](mindmap.md)", md.split("## 補充資料連結")[1])
+
+    def test_docx_links_to_local_files_and_shows_map(self):
+        from docx import Document
+        d = self.make()
+        outs = br.build(d)
+        doc = Document(str(outs[1]))
+        targets = {r.target_ref for r in doc.part.rels.values() if r.reltype.endswith("/hyperlink")}
+        self.assertIn("mindmap.png", targets)
+        self.assertIn("mindmap.md", targets)
+        self.assertEqual(len(doc.inline_shapes), 3)  # mind map + one frame per slide
+
+    def test_no_slides_and_no_outline_means_no_map(self):
+        d = self.make(slides=[])
+        md = br.build(d)[0].read_text(encoding="utf-8")
+        self.assertNotIn("思維導圖", md)
+        self.assertFalse((d / "mindmap.png").exists())
+        self.assertFalse((d / "mindmap.md").exists())
+
+
 class ReviewLinks(unittest.TestCase):
     def test_repo_slug_from_common_remotes(self):
         for url in ("https://github.com/o/r.git", "git@github.com:o/r.git", "http://local_proxy@127.0.0.1:1/git/o/r"):

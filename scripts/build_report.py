@@ -5,8 +5,10 @@ Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg,
          transcript.zh.md (optional: Traditional Chinese translation of a foreign-language transcript,
          same "[mm:ss] text" lines; shown under the original text of each section),
          supplement.md (optional, hand-written, never overwritten by watch_archive: information the video
-         does not show, e.g. the full text of a screen capture that was cut off, post captions, links)
-Writes : <stem>_report.md   (frames interleaved with the transcript)
+         does not show, e.g. the full text of a screen capture that was cut off, post captions, links),
+         mindmap.md (optional, hand-written outline; generated from meta.json slides when missing, see mindmap.py)
+Writes : mindmap.png         (mind map drawn from mindmap.md; shown before the frame-by-frame section)
+         <stem>_report.md   (frames interleaved with the transcript)
          <stem>_report.docx (same content as a Word document)
 
 Usage: python3 scripts/build_report.py watch-output/<folder>
@@ -21,6 +23,8 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
+
+import mindmap
 
 CJK_FONT = "Microsoft JhengHei"
 SEG_RE = re.compile(r"^\[(\d+:\d+(?::\d+)?)\]\s*(.*)$")
@@ -239,6 +243,10 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         L += sop_lines(dest, frames)
     sup = supplement_lines(dest)
     L += sup
+    has_map = (dest / "mindmap.png").exists()
+    if has_map:
+        L += ["## 思維導圖", "", "![思維導圖](mindmap.png)", "",
+              "- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）", ""]
     L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
     if meta.get("slides"):
         L += slide_blocks(meta, segs)
@@ -249,9 +257,13 @@ def build_md(dest: Path, meta, summary, segs, frames) -> str:
         for e in meta["known_asr_errors"]:
             L.append(f"| {e['time']} | {e['heard']} | {e['expected']} |")
         L.append("")
+    links = []
     if sup:
-        L += ["## 補充資料連結", "",
-              "- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）", ""]
+        links.append("- 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）")
+    if has_map:
+        links.append("- 思維導圖：[mindmap.png](mindmap.png)、文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）")
+    if links:
+        L += ["## 補充資料連結", ""] + links + [""]
     return "\n".join(L)
 
 
@@ -333,6 +345,7 @@ def set_font(run, size=None, bold=None, mono=False):
 
 
 URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&'*+,;=%-]+")
+LOCAL_FILE_RE = re.compile(r"[\w-][\w./-]*\.\w+")  # a file next to the report, e.g. supplement.md, mindmap.png
 
 
 def add_hyperlink(par, url, size, label=None):
@@ -362,7 +375,7 @@ def add_inline(par, text, size=10.5):
             continue
         if (lm := re.fullmatch(r"\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)", tok)):
             label, target = lm.groups()
-            if URL_RE.fullmatch(target):
+            if URL_RE.fullmatch(target) or LOCAL_FILE_RE.fullmatch(target):  # relative: opens next to the docx
                 add_hyperlink(par, target, size, label)
             else:
                 set_font(par.add_run(label), size, mono=True)
@@ -465,6 +478,8 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
                 w, h = pil.size
                 # portrait (vertical) videos: cap height at 7 cm; landscape/screen recordings: up to max_img_h cm tall, 16 cm wide
                 width_cm = min(12, 7 * w / h) if h > w else min(16, max_img_h * w / h)
+                if img.name == "mindmap.png":  # a tall tree: full text width, up to most of a page
+                    width_cm = min(16, 22 * w / h)
                 buf = io.BytesIO()  # re-encode: some ffmpeg JPEGs lack a JFIF header that python-docx requires
                 pil.save(buf, "JPEG", quality=90)
                 buf.seek(0)
@@ -482,6 +497,7 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9):
 
 def build(dest: Path):
     meta, summary, segs, frames = load(dest)
+    mindmap.ensure(dest, meta)
     md = build_md(dest, meta, summary, segs, frames)
     stem = file_stem(dest)
     for old in ("report.md", "report.docx", *dest.glob("*_report.*"), *dest.glob("*_sop.*"), *dest.glob("*_操作SOP.*")):  # drop stale / legacy names
