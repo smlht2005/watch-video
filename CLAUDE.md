@@ -23,7 +23,7 @@
 - 歸檔完成並 push 到分支後，用 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 產生連結給使用者確認；使用者確認前不開 PR、不 merge。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
-- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／佛學／商業理財／身心生活／電子／雲端／未分類）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
+- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／佛學／商業理財／身心生活／電子／雲端／未分類；`AI/claude-code` 是 AI 底下的子領域，資料夾 `watch-output/AI/claude-code/`，放以 Claude Code 為主角的影片，`--glossary claude-code` 會自動歸入）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
 
 ## 已知限制（細節見 README「限制與風險」）
 

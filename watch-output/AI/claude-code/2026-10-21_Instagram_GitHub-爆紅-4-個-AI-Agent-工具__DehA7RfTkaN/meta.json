@@ -1,0 +1,128 @@
+{
+  "url": "https://www.instagram.com/reel/DehA7RfTkaN/?srtk=bGJuYWRsOXZiMWFl",
+  "platform": "Instagram",
+  "video_id": "DehA7RfTkaN",
+  "title": "GitHub 爆紅 4 個 AI Agent 工具",
+  "title_raw": "Video by iamlily.genai",
+  "title_override": "GitHub 爆紅 4 個 AI Agent 工具",
+  "category": "AI/claude-code",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "GitHub、Graft、Trail-code、Agency Agents、Codebase Memory MCP、OpenMontage、Claude Code、Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "ChiaChia,Lin",
+  "duration": "00:47 (47.4s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-21",
+  "last_updated": "2026-10-21",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "Dhub上包紅的",
+      "expected": "GitHub 上爆紅的（畫面 00:01 標題直接寫明）"
+    },
+    {
+      "time": "00:17",
+      "heard": "就直接直派給他",
+      "expected": "就直接指派給他（畫面 00:19 字幕直接寫明）"
+    },
+    {
+      "time": "00:38",
+      "heard": "留言to us",
+      "expected": "留言 TOOLS（畫面 00:39 起的按鈕直接寫明）"
+    }
+  ],
+  "keywords": [
+    "GitHub",
+    "AI Agent",
+    "Graft",
+    "Trail-code",
+    "Agency Agents",
+    "Codebase Memory MCP",
+    "OpenMontage",
+    "Claude Code"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "Graft",
+      "Trail-code"
+    ],
+    "00:12": [
+      "Agency Agents"
+    ],
+    "00:19": [
+      "Codebase Memory MCP"
+    ],
+    "00:27": [
+      "OpenMontage"
+    ],
+    "00:35": [
+      "留言 TOOLS"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場與第 1 個工具：Graft（現名 Trail-code）",
+      "note": "GitHub 上爆紅的 4 個 AI Agent 工具；Graft 改名 Trail-code，把 AI 自動化資料夾整理成地圖，官方測試省 6 成時間",
+      "keywords": [
+        "Graft",
+        "Trail-code"
+      ]
+    },
+    {
+      "start": "00:12",
+      "frame": "slide_02.jpg",
+      "title": "第 2 個工具：Agency Agents",
+      "note": "十幾個部門、近 300 個 AI 員工，依工作直接指派",
+      "keywords": [
+        "Agency Agents"
+      ]
+    },
+    {
+      "start": "00:19",
+      "frame": "slide_03.jpg",
+      "title": "第 3 個工具：Codebase Memory MCP",
+      "note": "記住整個程式碼庫，只改一處不會動到無關部分",
+      "keywords": [
+        "Codebase Memory MCP"
+      ]
+    },
+    {
+      "start": "00:27",
+      "frame": "slide_04.jpg",
+      "title": "第 4 個工具：OpenMontage",
+      "note": "把 Claude Code 變成影片製作團隊，丟主題即自動產出腳本、圖片",
+      "keywords": [
+        "OpenMontage"
+      ]
+    },
+    {
+      "start": "00:35",
+      "frame": "slide_05.jpg",
+      "title": "結尾：留言領資料與免費分享會",
+      "note": "留言 TOOLS 領整理資料；導流到講者的兩天免費分享會",
+      "keywords": [
+        "留言 TOOLS"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
