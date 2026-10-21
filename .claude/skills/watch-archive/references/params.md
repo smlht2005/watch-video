@@ -1,6 +1,6 @@
 # 呼叫參數、領域判斷與步驟 1 選參數
 
-> 步驟編號沿用舊版 SKILL.md。領域判斷（`AI/claude-code`、新增領域門檻）與 `watch_archive.py` 旗標選擇。
+> 領域判斷（`AI/claude-code`、新增領域門檻）與 `watch_archive.py` 旗標選擇。
 
 - **第一個參數**：影片網址（必填）。
 - **第二個參數（選填）**：先對照白名單 `glossary/categories.json`（目前 AI／AI/claude-code／佛學／商業理財／身心生活／電子／雲端／未分類；寫簡體會自動轉繁體，英文只差大小寫會校正）：
@@ -13,12 +13,14 @@
 
 ## 步驟 1：選參數
 
+**沒有把握就用預設**，以下各項只在條件符合時才加：
+
    - **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會讓任何語言都被硬轉成該語言（英文影片加 `--lang zh` 會得到不通順的中文，且無法事後偵測）。只有使用者明確指定、或已確認整支影片是同一種語言且自動偵測不準時才加；腳本會對強制語言印警告。
    - 語言優先採用 **Whisper 回報的語言**（報告表頭 `Whisper language`）；平台字幕來源與強制 `--lang` 時才從輸出文字判斷。寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`；每次重跑重新判斷）、`language_source`、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false），並在結尾印出 `language: …`。中文夾雜英文術語仍會判為 `zh`；`other`（混雜）與 `unknown`（逐字稿太短）要自己讀逐字稿確認：`other` 為避免改壞日韓文，**不會做簡轉繁**（`ja`／`ko` 同樣不轉），確定是中文時請手動轉繁體；`unknown` 仍照常轉換。平台有字幕時直接採用字幕，語言以字幕為準。
    - **轉錄方式**：預設不加。有 Groq key 時用 Groq；使用者要求本地轉錄（不上傳音訊）時加 `--local`（本地 WhisperX，雲端不可用）；要指定其他後端用 `--whisper groq|openai|whisperx`（不可與 `--local` 同時用）。選擇會記在 `meta.json.whisper_choice`，重跑自動沿用（用過 `--local` 的影片重跑不會改上傳 Groq；要改回加 `--whisper groq`）。影片有平台字幕時不轉錄，這個參數不影響結果。
-   - **WhisperX 不支援提示詞**：`--glossary`／`--terms` 的術語提示不會送給 WhisperX（腳本會印警告），詞典只在轉錄後做固定替換，所以本地轉錄的專有名詞錯誤會比較多，步驟 4 校稿要多留意。`--lang` 只接受兩個小寫字母（例如 `zh`）。
+   - **WhisperX 不支援提示詞**：`--glossary`／`--terms` 的術語提示不會送給 WhisperX（腳本會印警告），詞典只在轉錄後做固定替換，所以本地轉錄的專有名詞錯誤會比較多，步驟 3 校稿（`.claude/skills/watch-archive/references/proofread.md`）要多留意。`--lang` 只接受兩個小寫字母（例如 `zh`）。
    - **領域（`--category`）**：網址後第二個參數對得上白名單就照用；對不上則當主題關鍵字（見上方「呼叫參數」）；沒指定時依詞典推測，沒把握就建議 `/grill-me`。
-   - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`、`lengyan`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
+   - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`、`lengyan`；`common` 一律載入）。找不到合適領域就不加，並在 `.claude/skills/watch-archive/references/content.md` 的「校正去哪裡」考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
    - **講座／講經／演講（口語、有大量「呢」「啊」等語助詞）**：看標題或上傳者判斷是不是講座類影片，是的話歸檔時加 `--clean-fillers`（用 `--glossary pure-land` 的佛學講座會自動開啟，不必加）；之後可在 `meta.json` 寫 `"video_type": "lecture"`，重跑歸檔時 `auto` 模式也會去語助詞。不想去除加 `--keep-fillers`。選擇記在 `meta.json.clean_fillers`（`auto`／`on`／`off`），重跑沿用。

@@ -1,6 +1,6 @@
 # 注意事項與流程圖維護
 
-> 步驟編號沿用舊版 SKILL.md。含流程圖的文字版與重新產生 PNG 的指令。
+> 含流程圖的文字版與重新產生 PNG 的指令。
 
 - TikTok 短網址（vt.tiktok.com）自動解析成真正的影片 ID；Facebook 標題的「views · reactions |」前綴與作者後綴會自動去除，原始標題在 `meta.json.title_raw`。
 - 簡轉繁採台灣用字，技術詞會被換成台灣詞（算子→運算元、優化→最佳化）；OpenCC 對「里／裡」等一對多字有漏轉，由 `glossary/common.json` 兜底。

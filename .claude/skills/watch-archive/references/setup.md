@@ -1,6 +1,6 @@
 # 步驟 0：環境
 
-> 步驟編號沿用舊版 SKILL.md。含 Windows 本機注意事項。
+> 含 Windows 本機注意事項。
 
 0. **環境**：確認 Groq key 是否存在（環境變數 `GROQ_API_KEY` 或 `~/.config/watch/.env`；只報有/沒有與長度）。有就預設用 Groq 轉錄；沒有則依 `setup.py --json` 的 `whisper_backend`（例如本地 WhisperX），兩者都沒有時，無字幕影片會拿不到逐字稿，要先告知使用者。**雲端 session（`CLAUDE_CODE_REMOTE=true`）只能用 Groq**：容器沒有 WhisperX，不要加 `--local`；沒有 key 就先告知使用者到環境 secret 設定 `GROQ_API_KEY`。確認 `pip install python-docx opencc-python-reimplemented`。
    若 `.claude/skills/watch` 尚未設定，先跑 `python3 .claude/skills/watch/scripts/setup.py --engine local --backend groq --detail balanced`（沒有 Groq key 時把 `groq` 換成 `whisperx`）（exit 0；一定要帶 `--engine local`，否則有 `GEMINI_API_KEY` 時會改走 Gemini，不產生截圖與逐字稿）。

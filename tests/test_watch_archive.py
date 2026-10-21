@@ -1,5 +1,6 @@
 """Unit tests for language detection and supplement.md handling. Run: python3 -m unittest discover -s tests -v"""
 import os
+import re
 import sys
 import tempfile
 import unittest
@@ -797,6 +798,51 @@ class PickFrames(unittest.TestCase):
         self.assertEqual([(f["file"], f["t"]) for f in frames if f["reason"] == "clean-slide"],
                          [("slide_01.jpg", "00:03"), ("slide_02.jpg", "00:31")])
         self.assertIn("frame_0001.jpg", [f["file"] for f in frames])
+
+
+class WatchArchiveSkillDocs(unittest.TestCase):
+    """The skill outline stays small enough to survive auto-compact, and every pointer to its reference files resolves."""
+    SKILL_DIR = wa.ROOT / ".claude" / "skills" / "watch-archive"
+    REFS = SKILL_DIR / "references"
+    SKILL_MAX_CHARS = 6000
+
+    def skill_text(self):
+        return (self.SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+
+    def test_outline_table_lists_exactly_the_reference_files(self):
+        listed = {m for line in self.skill_text().splitlines() if line.startswith("|")
+                  for m in re.findall(r"`([\w.-]+\.md)`", line)}
+        self.assertEqual(listed, {p.name for p in self.REFS.glob("*.md")})
+
+    def test_outline_is_under_size_limit(self):
+        self.assertLessEqual(len(self.skill_text()), self.SKILL_MAX_CHARS)
+
+    def test_reference_paths_outside_the_skill_resolve_from_repo_root(self):
+        full = ".claude/skills/watch-archive/references/"
+        for f in [wa.ROOT / "CLAUDE.md", wa.ROOT / "README.md", *sorted((wa.ROOT / "scripts").glob("*.py"))]:
+            for m in re.finditer(r"[A-Za-z0-9_./-]*references/[A-Za-z0-9_.-]+\.md", f.read_text(encoding="utf-8")):
+                path = m.group(0)
+                with self.subTest(file=f.name, path=path):
+                    self.assertTrue(path.startswith(full), "write the full path from the repo root")
+                    self.assertTrue((wa.ROOT / path).is_file())
+
+    def test_skill_files_name_other_reference_files_by_full_path(self):
+        """Only the outline's table may use bare file names; everywhere else a reader starting at the repo root must find the file."""
+        names = "|".join(re.escape(p.name) for p in self.REFS.glob("*.md"))
+        for f in [self.SKILL_DIR / "SKILL.md", *sorted(self.REFS.glob("*.md"))]:
+            for line in f.read_text(encoding="utf-8").splitlines():
+                if f.name == "SKILL.md" and line.startswith("|"):
+                    continue
+                for m in re.finditer(rf"(?<![A-Za-z0-9_./-])({names})", line):
+                    with self.subTest(file=f.name, name=m.group(1)):
+                        self.fail(f"write .claude/skills/watch-archive/references/{m.group(1)}")
+
+    def test_archive_command_templates_do_not_force_a_language(self):
+        for f in sorted(self.REFS.glob("*.md")):
+            for line in f.read_text(encoding="utf-8").splitlines():
+                if "scripts/watch_archive.py" in line:
+                    with self.subTest(file=f.name):
+                        self.assertNotIn("--lang", line, "the archive template must not force --lang (CLAUDE.md hard rule)")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # watch-archive skill 拆檔後的修正
 
-**Status:** ready-for-agent
+**Status:** resolved（已實作，待使用者確認後合併）
 
 ## Problem Statement
 

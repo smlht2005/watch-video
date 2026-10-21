@@ -7,7 +7,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 回覆一律使用繁體中文（zh-TW）。**絕不印出或複述任何 API key**（只可說「有/沒有」與長度）。
 
-**這份檔案只放骨架。每個步驟開工前，先用 Read 讀下表對應的參考檔**：長 session 壓縮後 skill 本文會被截斷，參考檔不會，不要憑記憶做。步驟編號沿用舊版；CLAUDE.md、README、腳本裡的「SKILL 4a／4c／4d／步驟 3」都指參考檔裡同編號的段落。
+**這份檔案只放骨架。每個步驟開工前，先用 Read 讀下表對應的參考檔**：長 session 壓縮後 skill 本文會被截斷，參考檔不會，不要憑記憶做。步驟編號（0–8、4a–4d）在骨架與參考檔一致。
 
 | 步驟 | 參考檔（`.claude/skills/watch-archive/references/`） |
 |---|---|
@@ -23,16 +23,13 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 
 ## 呼叫參數：`/watch-archive <影片網址> [領域或主題]`
 
-- 第一個參數：影片網址（必填）。
-- 第二個參數（選填）對照白名單 `glossary/categories.json`：對得上 → 當領域，傳 `--category`；對不上 → 當主題詞存進 `meta.json.keywords`，**回覆必須講明三件事**：沒對應到任何領域、實際歸到哪個領域與依據、可用的領域值。
-- 沒指定領域：依詞典 `category` 或影片內容判斷並註明是推測；**沒把握不要自行決定，建議先 `/grill-me`**，不要悄悄放「未分類」。
-- 子領域 `AI/claude-code`：只收以 Claude Code 為主角的影片；`--glossary claude-code` 自動歸入。新增領域門檻與細節見 `params.md`。
+第二個參數對得上白名單 `glossary/categories.json` 就當領域（`--category`），對不上就當主題關鍵字；沒把握的領域不要自行決定，建議先 `/grill-me`。完整規則（回覆要講明的三件事、子領域 `AI/claude-code`、新增領域門檻）見 `.claude/skills/watch-archive/references/params.md`。
 
 ## 流程總覽
 
 ![watch-archive 流程鳥瞰圖](../../../docs/watch-archive-flow.png)
 
-藍＝腳本自動、橘＝Claude 判斷、綠＝交付；兩條重跑回圈：截圖不足補 cue（4a→2）、語言錯／整段漏轉（3→2）。文字版見 `notes.md`。
+藍＝腳本自動、橘＝Claude 判斷、綠＝交付；兩條重跑回圈：截圖不足補 cue（4a→2）、語言錯／整段漏轉（3→2）。文字版見 `.claude/skills/watch-archive/references/notes.md`。
 
 ## 步驟要點
 

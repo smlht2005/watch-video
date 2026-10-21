@@ -1,6 +1,6 @@
 # 步驟 5–8：重建、交付、確認連結、PR
 
-> 步驟編號沿用舊版 SKILL.md。使用者確認前不開 PR、不 merge。
+> 使用者確認前不開 PR、不 merge。
 
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；docx 轉 PDF 後目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
    - 出現 `PermissionError` 寫不進 `*_report.docx`，代表使用者正在 Word 開著它（資料夾裡會有 `~$` 開頭的鎖定檔）：請使用者關掉 Word 再重建，不要強制結束 Word。`~$` 鎖定檔不要 commit。
