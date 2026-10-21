@@ -1,11 +1,20 @@
 ---
 name: watch-archive
-description: 看影片並歸檔成圖文報告。使用者給影片網址（Facebook/YouTube/TikTok 等），要求「看影片、摘要、逐字稿、轉 Word、歸檔」時使用。產出 watch-output/<領域>/<資料夾>/ 內的 report.docx、report.md、截圖與 meta.json；逐字稿預設繁體中文，並用詞典校正。
+description: 看影片並歸檔成圖文報告。使用者給影片網址（Facebook/YouTube/TikTok 等），要求「看影片、摘要、逐字稿、轉 Word、歸檔」時使用。網址後可加第二個參數指定領域（如 `/watch-archive <網址> 身心生活`），沒指定時依詞典推測，沒把握建議先 /grill-me。產出 watch-output/<領域>/<資料夾>/ 內的 report.docx、report.md、截圖與 meta.json；逐字稿預設繁體中文，並用詞典校正。
 ---
 
 # watch-archive：影片 → 圖文報告（Word / Markdown）
 
 回覆一律使用繁體中文（zh-TW）。**絕不印出或複述任何 API key**（只可說「有/沒有」與長度）。
+
+## 呼叫參數：`/watch-archive <影片網址> [領域]`
+
+- **第一個參數**：影片網址（必填）。
+- **第二個參數（選填）：領域**，就是 `--category`，決定報告放在 `watch-output/<領域>/`。
+  - **有指定**：直接採用，傳給 `watch_archive.py --category <領域>`，不必再推測。領域只能是 `glossary/categories.json` 白名單的值（目前 AI／佛學／商業理財／身心生活／電子／雲端／未分類；寫簡體會自動轉繁體；英文只差大小寫會校正）。指定的值不在白名單時腳本會在下載前報錯並列出可用值，**不要自己改成別的領域**：照實告訴使用者，並建議用 `/grill-me` 決定是要新增這個領域，還是歸入現有領域。
+  - **沒指定**：先看影片內容與所選詞典（`--glossary`）能否明確判斷領域（詞典檔的 `category` 欄位會自動推測）。能明確判斷就照該領域歸檔，並在回覆註明是推測；**沒把握就不要自行決定，建議使用者先跑 `/grill-me`** 釐清領域，不要悄悄放進「未分類」。
+  - 第二個參數若不是領域，而像是主題或標題提示（例如「自律」），先對照白名單：不在白名單時，比照「不在白名單」處理，建議 `/grill-me`，不要當成標題或領域硬套。
+- 要新增領域、或不確定新影片該歸哪個領域時，用 `/grill-me <要決定的事>`，結論寫進 `glossary/categories.json`（必要時再補詞典檔的 `category`）。
 
 ## 流程總覽
 
@@ -36,6 +45,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 語言優先採用 **Whisper 回報的語言**（報告表頭 `Whisper language`）；平台字幕來源與強制 `--lang` 時才從輸出文字判斷。寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`；每次重跑重新判斷）、`language_source`、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false），並在結尾印出 `language: …`。中文夾雜英文術語仍會判為 `zh`；`other`（混雜）與 `unknown`（逐字稿太短）要自己讀逐字稿確認：`other` 為避免改壞日韓文，**不會做簡轉繁**（`ja`／`ko` 同樣不轉），確定是中文時請手動轉繁體；`unknown` 仍照常轉換。平台有字幕時直接採用字幕，語言以字幕為準。
    - **轉錄方式**：預設不加。有 Groq key 時用 Groq；使用者要求本地轉錄（不上傳音訊）時加 `--local`（本地 WhisperX，雲端不可用）；要指定其他後端用 `--whisper groq|openai|whisperx`（不可與 `--local` 同時用）。選擇會記在 `meta.json.whisper_choice`，重跑自動沿用（用過 `--local` 的影片重跑不會改上傳 Groq；要改回加 `--whisper groq`）。影片有平台字幕時不轉錄，這個參數不影響結果。
    - **WhisperX 不支援提示詞**：`--glossary`／`--terms` 的術語提示不會送給 WhisperX（腳本會印警告），詞典只在轉錄後做固定替換，所以本地轉錄的專有名詞錯誤會比較多，步驟 4 校稿要多留意。`--lang` 只接受兩個小寫字母（例如 `zh`）。
+   - **領域（`--category`）**：使用者在網址後面指定了就照用（見上方「呼叫參數」）；沒指定時依詞典推測，沒把握就建議 `/grill-me`。
    - 依主題 → `--glossary <領域>`，領域在 `glossary/domains/`（目前 `ai-chips`、`ai-video`、`electronics`、`kubernetes`、`claude-code`、`neo4j`、`pure-land`、`lengyan`；`common` 一律載入）。找不到合適領域就不加，並在步驟 4 考慮新增。
    - 標題只有 #標籤或很雜亂 → `--title "描述性標題"`（可用影片開頭標題卡文字）。
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
