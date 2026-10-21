@@ -1,9 +1,10 @@
 # watch-output 索引
 
-## AI（12）
+## AI（13）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-10-21 | Instagram | 新模型來了，你的提示詞有一半該刪了：7 個改法 | 02:52 (171.6s) | whisper (groq) | [開啟](./AI/2026-10-21_Instagram_新模型來了-你的提示詞有一半該刪了-7-個改法__DejZRx-gtMG/) |
 | 2026-10-19 | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./AI/2026-10-19_Facebook_學了10遍還不會-可能從第1步就錯了__1461324902567196/) |
 | 2026-10-14 | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos/) |
 | 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
