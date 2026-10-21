@@ -24,9 +24,12 @@
 - 講者在 01:49 說「這支影片也照這張清單做，五個都沒用」，意指影片的視覺設計刻意避開他所列的 AI 感做法（講者說法，影片未逐項示範）。
 - 主題詞「AI提示詞」（使用者在網址後指定）沒有對應到白名單領域，已存成關鍵字；領域依內容判斷為 AI。
 
+## 補充資料
+- 畫面上的範例提示詞（SYSTEM_PROMPT.md 改寫前後、各招的示範句）已逐字整理在 `supplement.md`（報告「補充資料」一節）。
+
 ## 轉錄校正備註
 - Whisper 把「Sonnet／Haiku」聽成「Sonic／Hiku」、「Claude Code」聽成「Cloud Code」，「該刪了」聽成「改刪了」，已校正；其餘不確定處在 `known_asr_errors` 標「推測」。
-- 00:22 預設 effort 的三組詞依語意整理成「Opus Medium、Sonnet High、Haiku Medium」，屬推測，建議對照原片確認。
+- 00:22 預設 effort 的三組詞整理成「Opus Medium、Sonnet High、Haiku Medium」，已由 00:30 畫面確認（Opus 5.5 medium／Sonnet 5.5 high／Haiku 5.5 medium）。
 - 02:24「他一定會現象」不確定原句，暫改「他一定會想太多」（推測）。
 - 02:48 的「MING PAO CANADA // MING PAO TORONTO」是片尾幻覺，已刪除。
 - 原稿為中文夾英文，未去語助詞（非講座類）。
