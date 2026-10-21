@@ -762,6 +762,10 @@ class PickFrames(unittest.TestCase):
     def test_best_uses_whole_short_window_and_prefers_later_tie(self):
         self.assertEqual(pf.best_in_window([2, 5, 5], 0, 3), 2)
 
+    def test_spoken_lines_only_inside_window(self):
+        tr = "# t\n```\n[00:09] a\n[00:10] b\n[00:19] c\n[00:20] d\n```"
+        self.assertEqual(pf.spoken_lines(tr, 10, 20), ["[00:10] b", "[00:19] c"])
+
     def test_register_slides_points_meta_and_frames_at_slide_files(self):
         import json
         with tempfile.TemporaryDirectory() as t:

@@ -10,6 +10,7 @@ contact sheets so Claude can confirm or override the suggestion by eye. The chos
 Usage:
   python3 scripts/pick_frames.py sheet <folder> --video <file> [--out <dir>]   # contact sheets + suggested seconds
   python3 scripts/pick_frames.py apply <folder> --video <file> --at "00:03,00:31,..."   # one time per slide
+  python3 scripts/pick_frames.py text <folder> --video <file> --out <dir>   # full-res slides + what was said, for supplement.md
 
 The video comes from `watch_archive.py --keep-media` (media/) or a yt-dlp download to the scratchpad; it is never
 committed. A rerun of watch_archive.py wipes frames/, so apply again after a rerun.
@@ -70,6 +71,20 @@ def best_in_window(score, start, end, margin=2):
     return max(rng, key=lambda i: (score[i], i)) if rng else start
 
 
+def spoken_lines(transcript: str, start: int, end: int):
+    """Transcript lines whose [mm:ss] falls in [start, end): what the speaker actually said while a slide was up."""
+    out = []
+    for line in transcript.splitlines():
+        if line.startswith("[") and "]" in line:
+            try:
+                t = to_sec(line[1:line.index("]")])
+            except ValueError:
+                continue
+            if start <= t < end:
+                out.append(line)
+    return out
+
+
 def mmss(sec: int) -> str:
     return f"{sec // 60:02d}:{sec % 60:02d}"
 
@@ -113,7 +128,7 @@ def register_slides(folder: Path, picks):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["sheet", "apply"])
+    ap.add_argument("mode", choices=["sheet", "apply", "text"])
     ap.add_argument("folder")
     ap.add_argument("--video", required=True)
     ap.add_argument("--out", help="where contact sheets go (default: a temp dir)")
@@ -123,6 +138,25 @@ def main():
     slides = json.loads((folder / "meta.json").read_text(encoding="utf-8")).get("slides", [])
     if not slides:
         sys.exit("meta.json has no slides yet: write slides (start/title/note) first, then pick frames")
+
+    if args.mode == "text":
+        # Claude reads these full-resolution frames (small code / prompt text is unreadable at report size) and compares
+        # them with what was said; only what is on screen but NOT spoken goes into supplement.md.
+        out = Path(args.out or tempfile.mkdtemp(prefix="screen_text_"))
+        out.mkdir(parents=True, exist_ok=True)
+        transcript = (folder / "transcript.md").read_text(encoding="utf-8")
+        frames = {f["file"]: f["t"] for f in json.loads((folder / "frames.json").read_text(encoding="utf-8"))}
+        duration = int(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                                       str(video)], capture_output=True, text=True, check=True).stdout.strip().split(".")[0])
+        for i, ((a, b), sl) in enumerate(zip(windows([s["start"] for s in slides], duration), slides), 1):
+            t = frames.get(sl.get("frame", ""), sl["start"])
+            img = out / f"slide_{i:02d}_full.png"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{to_sec(t)}.5", "-i", str(video), "-frames:v", "1",
+                            str(img)], check=True)
+            print(f"## {i:02d} {sl.get('title', '')}  [{mmss(a)}-{mmss(b)}]  screen at {t}: {img}")
+            print("\n".join(spoken_lines(transcript, a, b)) or "(nothing said)")
+            print()
+        return
 
     if args.mode == "apply":
         picks = [to_sec(t.strip()) for t in (args.at or "").split(",") if t.strip()]
