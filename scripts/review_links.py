@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print GitHub links for the user to confirm an archived report before any PR / merge (SKILL step 7).
+"""Print GitHub links for the user to confirm an archived report before any PR / merge (.claude/skills/watch-archive/references/deliver.md, step 7).
 
 The branch must already be pushed. Links point at the branch, so they work before the PR is merged.
 

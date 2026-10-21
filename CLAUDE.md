@@ -1,6 +1,6 @@
 # watch-video
 
-把影片網址轉成圖文報告並歸檔到 `watch-output/`。完整流程見 `.claude/skills/watch-archive/SKILL.md`，說明見 `README.md`。回覆一律使用繁體中文（zh-TW）。
+把影片網址轉成圖文報告並歸檔到 `watch-output/`。完整流程見 `.claude/skills/watch-archive/SKILL.md`（只有骨架；各步驟細節在 `.claude/skills/watch-archive/references/`，開工前先讀對應檔），說明見 `README.md`。回覆一律使用繁體中文（zh-TW）。
 
 ## 硬規則
 
@@ -14,16 +14,16 @@
 - 報告分段：每段 2–4 分鐘、不超過約 5 分鐘，每段都要有一張屬於該段內容的截圖。
 - 長的螢幕錄影／notebook／投影片影片（自動抽圖會跳過緩慢捲動的畫面）：先歸檔一次、讀逐字稿找出各主題開始時間，在每個時間點後約 20–40 秒放 cue（避開標題卡與轉場），以 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024` 重跑；兩值記在 `meta.json`，`slides` 的圖檔會依時間自動對應。重跑後先拼縮圖檢查每張 cue 截圖都有內容。
 - 轉錄完先驗收再校稿：語言對不對、有沒有重複幻覺、有沒有約 30 秒的整段漏轉（`whisper.py` 已自動補漏，看 `[watch] refilled` 訊息）、有沒有提示詞外洩。要重跑時，先保存舊稿以便互補。
-- 報告截圖只放乾淨的畫面：講者與投影片交疊的轉場不要用，改挑投影片全螢幕的畫面（做法見 SKILL 4a）。
-- 每段截圖要對到該段重點：用 `scripts/pick_frames.py sheet` 逐秒產生縮圖表與建議，**自己看圖確認對到 `note`** 再 `apply`；畫面上講者沒唸的提示詞／程式碼／對照表，用 `pick_frames.py text` 取原始解析度截圖與同時段逐字稿比對後，逐字抄進 `supplement.md`（SKILL 4a、4c）。
+- 報告截圖只放乾淨的畫面：講者與投影片交疊的轉場不要用，改挑投影片全螢幕的畫面（做法見 `.claude/skills/watch-archive/references/content.md` 4a）。
+- 每段截圖要對到該段重點：用 `scripts/pick_frames.py sheet` 逐秒產生縮圖表與建議，**自己看圖確認對到 `note`** 再 `apply`；畫面上講者沒唸的提示詞／程式碼／對照表，用 `pick_frames.py text` 取原始解析度截圖與同時段逐字稿比對後，逐字抄進 `supplement.md`（`.claude/skills/watch-archive/references/content.md` 4a、`.claude/skills/watch-archive/references/supplement-4c.md`）。
 - 影片在帶讀某份講稿時，用原講稿做二次校對；原稿沒有的內容是影片主講者的延伸，不能用原稿去改。
-- 講座／講經（口語演講）：歸檔時加 `--clean-fillers`（`--glossary pure-land` 自動開啟，`meta.json.video_type: "lecture"` 重跑也會開），自動去除逐字稿的「呢」「啊」等語助詞；`--keep-fillers` 保留，`transcript.raw.md` 保留原話；見 SKILL 步驟 3。
-- 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 SKILL 4d。
+- 講座／講經（口語演講）：歸檔時加 `--clean-fillers`（`--glossary pure-land` 自動開啟，`meta.json.video_type: "lecture"` 重跑也會開），自動去除逐字稿的「呢」「啊」等語助詞；`--keep-fillers` 保留，`transcript.raw.md` 保留原話；見 `.claude/skills/watch-archive/references/proofread.md`。
+- 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 `.claude/skills/watch-archive/references/sop-4d.md`。
 - 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
 - 歸檔完成並 push 到分支後，用 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 產生連結給使用者確認；使用者確認前不開 PR、不 merge。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
-- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／佛學／商業理財／身心生活／電子／雲端／未分類；`AI/claude-code` 是 AI 底下的子領域，資料夾 `watch-output/AI/claude-code/`，放以 Claude Code 為主角的影片，`--glossary claude-code` 會自動歸入）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
+- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／佛學／商業理財／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
 
 ## 已知限制（細節見 README「限制與風險」）
 

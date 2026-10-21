@@ -72,11 +72,11 @@ python3 scripts/build_report.py watch-output/<領域>/<資料夾>   # 編輯 sum
 - **WhisperX 不支援提示詞**：`--glossary`／`--terms` 的術語提示不會送給 WhisperX，詞典只在轉錄後做固定替換（腳本會印警告，`meta.json.whisper_hints.prompt` 記為空）。`--lang` 會轉成 WhisperX 的語言參數，但只接受兩個小寫字母（例如 `zh`）。
 - 實際用的來源寫在 `meta.json.transcript_source`。
 
-在 Claude Code 說「用 watch-archive 處理 <網址>」，會依 `.claude/skills/watch-archive/SKILL.md` 完成整套流程（選參數 → 歸檔 → 校稿 → 補摘要與關鍵字 → 重建報告 → 傳送 Word 檔 → 提交）。
+在 Claude Code 說「用 watch-archive 處理 <網址>」，會依 `.claude/skills/watch-archive/SKILL.md`（骨架）與 `.claude/skills/watch-archive/references/` 的各步驟細節完成整套流程（選參數 → 歸檔 → 校稿 → 補摘要與關鍵字 → 重建報告 → 傳送 Word 檔 → 提交）。
 
 ### 提高轉錄準確度
 
-- **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 SKILL 步驟 4b 補寫繁體中文中譯 `transcript.zh.md`。
+- **語言：預設不加 `--lang`，讓 Whisper 自動偵測。** 強制 `--lang` 會把任何語言硬轉成該語言（例如英文影片加 `--lang zh` 會得到不通順的中文，且事後無法偵測），腳本會對強制語言印警告。語言優先採用 **Whisper 自己回報的語言**（報告表頭 `Whisper language`）；平台字幕來源沒有這個資訊，才從文字的字元比例判斷。結果寫入 `meta.json.detected_language`（`zh`／`ja`／`ko`／`en`／`es`…／`other`／`unknown`）、`language_source`（`whisper`／`heuristic`／`heuristic (forced --lang)`）、`forced_lang` 與 `needs_zh_translation`（任何已知的非中文語言為 true；`other`／`unknown` 為 false；`ja`／`ko`／`other` 不做簡轉繁）；非中文影片由 Claude 依 `.claude/skills/watch-archive/references/content.md` 的 4b 補寫繁體中文中譯 `transcript.zh.md`。
 - `--category AI`：歸檔到 `watch-output/<領域>/`（記在 `meta.json.category`，重跑沿用；改值會搬資料夾）。領域必須在白名單 `glossary/categories.json` 內（目前 `AI`、`AI/claude-code`（AI 底下的子領域，資料夾 `watch-output/AI/claude-code/`，放以 Claude Code 為主角的影片；已有專屬詞典且是學習主題的子領域可提前開，不必等 5 支）、`佛學`、`商業理財`、`身心生活`、`電子`、`雲端`、`未分類`，也是 `index.md` 的小節順序）；清單外的值直接報錯，只有英文大小寫不同或寫成簡體時會自動校正（`ai`→`AI`、`佛学`→`佛學`）；領域名稱一律用繁體中文（單元測試檢查白名單）；`meta.json` 記住的舊值不在白名單時也報錯，請用 `--category` 重新指定。未指定時取第一個 `--glossary` 詞典檔的 `category` 欄位（多個詞典不一致時以第一個為準並印說明），再不行放「未分類」並印 `WARNING`。新增領域：先在 `categories.json` 加值，再視需要在詞典檔填 `category`（單元測試會檢查詞典的值都在白名單內）。舊的平面資料夾用 `python3 scripts/organize.py [--map map.json]` 搬進領域資料夾並重建 `index.md`；`--map` 的值先整批檢查，有錯就一個都不搬。
 - `--glossary ai-chips,electronics`：載入詞典領域（`common` 一律載入；重跑會記住，存在 `meta.json.glossaries`）。詞典放在 `glossary/`：
   - `glossary/common.json`：任何主題都不會出錯的修正（例如簡轉繁後的「里／裡」）。
@@ -133,13 +133,13 @@ watch-output/
 - **內容**：依任務分章，每章有前置條件、編號步驟（動作＋畫面按鈕原文＋預期結果＋影片時間）、注意事項；有示範錯誤時加排解表。只收可重現的操作；影片沒示範的標「影片未示範」或「推測」，價格與硬體需求標「講者主張，未查證」。
 - **截圖**：寫 `![說明](frame@MM:SS)`，建報告時換成最接近該時間的 `frames/` 截圖，重跑後重新編號也對得上。
 - **產出**：主報告多一節「操作 SOP」；另有 `<影片標題>_操作SOP.docx／.md`；以及 `kb/` 知識庫包（YAML frontmatter＋`attachments/step-MMSS.jpg`，相對路徑）。Obsidian：用「Open folder as vault」開 `kb/` 或複製進 vault；Notion：Import → Markdown & CSV，選 `kb/` 壓成的 zip。重建只會更新自己產生的檔（`*_操作SOP.md`、`attachments/step-*.jpg`），不會動你在 `kb/` 裡新增的筆記、圖片或 `.obsidian/` 設定。
-- 完整寫法見 `.claude/skills/watch-archive/SKILL.md` 步驟 4d。
+- 完整寫法見 `.claude/skills/watch-archive/references/sop-4d.md`。
 
 ### 補充資料（`supplement.md`）
 
 影片沒呈現、或畫面一閃而過而遺漏的資訊（被截斷的畫面文字、貼文說明欄／留言回傳的完整內容、連結、更正），另存成同資料夾的 `supplement.md`（獨立檔，重跑不覆蓋）。`build_report.py` 會把它放在報告「摘要」之後，並在報告最後加「補充資料連結」。
 
-寫法重點（完整範本見 `.claude/skills/watch-archive/SKILL.md` 步驟 4c）：一筆補充一節（S1、S2…）並標類型；來源要完整（誰提供、位置、取得日期、方式）；**原文（逐字）** 與 **Claude 的對照分析** 分開；用語分級——補充直接寫明／與影片一致／據此推定；未查證的主張、數字、版本號進備註。
+寫法重點（完整範本見 `.claude/skills/watch-archive/references/supplement-4c.md`）：一筆補充一節（S1、S2…）並標類型；來源要完整（誰提供、位置、取得日期、方式）；**原文（逐字）** 與 **Claude 的對照分析** 分開；用語分級——補充直接寫明／與影片一致／據此推定；未查證的主張、數字、版本號進備註。
 
 ### 測試
 
