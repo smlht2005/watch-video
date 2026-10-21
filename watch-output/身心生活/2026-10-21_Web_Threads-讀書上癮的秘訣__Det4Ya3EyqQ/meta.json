@@ -1,0 +1,156 @@
+{
+  "url": "https://www.threads.com/share/BAfZMwitD9/",
+  "platform": "Web",
+  "video_id": "Det4Ya3EyqQ",
+  "title": "Threads 讀書上癮的秘訣",
+  "title_raw": "Det4Ya3EyqQ",
+  "title_override": "Threads 讀書上癮的秘訣",
+  "category": "身心生活",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "abingbuleng（Threads）",
+  "duration": "03:10 (189.6s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-21",
+  "last_updated": "2026-10-21",
+  "known_asr_errors": [
+    {
+      "time": "00:13",
+      "heard": "六輪混動記憶法",
+      "expected": "六輪滾動記憶法（依畫面字幕）"
+    },
+    {
+      "time": "00:24",
+      "heard": "馬雲",
+      "expected": "馬原（馬克思主義基本原理，依畫面字幕；課程名稱為推測）"
+    },
+    {
+      "time": "00:33",
+      "heard": "46級",
+      "expected": "四六級（依畫面字幕「四六级完成」）"
+    },
+    {
+      "time": "00:56",
+      "heard": "一定要的事情",
+      "expected": "一定量的事情（依畫面字幕）"
+    },
+    {
+      "time": "01:00",
+      "heard": "心機收的東西",
+      "expected": "新吸收的東西（依畫面字幕）"
+    },
+    {
+      "time": "01:03",
+      "heard": "常識記憶",
+      "expected": "長時記憶（依畫面字幕）"
+    },
+    {
+      "time": "01:06",
+      "heard": "滾車人士背誦法",
+      "expected": "滾車輪式背誦法（依畫面字幕「滚车轮式背诵法」；講者原話可能是「滾輪式」，推測）"
+    },
+    {
+      "time": "01:22",
+      "heard": "戲口詞句",
+      "expected": "細摳詞句（依畫面字幕）"
+    },
+    {
+      "time": "01:39",
+      "heard": "高評點",
+      "expected": "高頻點（依畫面字幕）"
+    },
+    {
+      "time": "01:50",
+      "heard": "儘量熟三",
+      "expected": "盡量熟練（依字幕「尽量熟」，後字推測）"
+    },
+    {
+      "time": "01:52",
+      "heard": "一書講一遍",
+      "expected": "閉書講一遍（依畫面字幕）"
+    },
+    {
+      "time": "02:45",
+      "heard": "公智和上書",
+      "expected": "工具合上書（依畫面字幕「不要再依赖工具合上书」）"
+    },
+    {
+      "time": "02:52",
+      "heard": "看錄音",
+      "expected": "開錄音（依畫面字幕）"
+    },
+    {
+      "time": "00:50",
+      "heard": "普心",
+      "expected": "保留；推測為「普通心理學」的簡稱，畫面無字幕可核對"
+    }
+  ],
+  "keywords": [
+    "讀書記憶",
+    "六輪滾動記憶法",
+    "背書",
+    "艾賓浩斯遺忘曲線",
+    "短時記憶／長時記憶",
+    "費曼式複述",
+    "默寫",
+    "思維導圖",
+    "查缺補漏",
+    "考試"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：六輪滾動記憶法的主張",
+      "note": "講者主張可後天養成過目不忘、背書速度超越同學十倍、三天背完馬原、一週背 2,000 單詞（皆講者主張，未查證）",
+      "keywords": [
+        "六輪滾動記憶法",
+        "考試拼記憶"
+      ]
+    },
+    {
+      "start": "00:48",
+      "frame": "slide_02.jpg",
+      "title": "原理：遺忘曲線與短時→長時記憶",
+      "note": "依艾賓浩斯遺忘曲線，新資訊會擠走舊內容；要轉成長時記憶，需採滾輪式背誦",
+      "keywords": [
+        "艾賓浩斯遺忘曲線",
+        "短時記憶",
+        "長時記憶"
+      ]
+    },
+    {
+      "start": "01:17",
+      "frame": "slide_03.jpg",
+      "title": "六輪流程：翻書講→抓關鍵詞→閉書講→默寫→查缺→完整複述",
+      "note": "六遍為一輪、建議每週循環一遍：一建框架、二填關鍵詞、三閉書講、四默寫、五對照補漏、六完整複述",
+      "keywords": [
+        "六輪",
+        "默寫",
+        "閉書講",
+        "查缺補漏",
+        "完整複述"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "source_post": "https://www.threads.com/@abingbuleng/post/Det4Ya3EyqQ（原貼文；影片為從頁面取得的 mp4，yt-dlp 不支援 Threads）",
+  "category_note": "領域「身心生活」為依內容推測（學習方法）；使用者第二參數『讀書記憶』不在白名單，已存為 keywords"
+}
