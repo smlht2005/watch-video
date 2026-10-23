@@ -4,6 +4,9 @@
 Burned-in subtitles are the ground truth for names, book titles and terms that Whisper mishears, but they are
 written language, not the speaker's words: use the diff to fix wording, never to overwrite whole lines.
 
+Scope: it is slow (about an hour for a 74-minute video), so use it only for sutra lectures (佛經講解／講經) that have
+burned-in subtitles; run `probe` first.
+
 Usage:
   python3 scripts/subtitle_ocr.py probe <video>                       # are there burned-in subtitles at all?
   python3 scripts/subtitle_ocr.py run <video> --out ocr.json [--workers 7] [--every 2] [--start S] [--end S]
