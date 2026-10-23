@@ -21,7 +21,7 @@ SEG_RE = re.compile(r"^\[(\d+:\d+(?::\d+)?)\]\s*(.*)$")
 PROTECT = ["嘛呢叭咪吽", "嘛呢", "呢喃", "毛呢", "呢絨"]
 CLAUSE_END = "，。、？！；：…）」』"
 CJK = r"[㐀-鿿]"
-# a repeat joined by space/comma is a stutter; "一個一個"、"每個每個" style distributive repeats are kept
+# a repeat joined only by a pause space is a stutter; "一個一個"、"每個每個" style distributive repeats are kept
 DISTRIB = "一二三四五六七八九十每各第"
 # stutter with no separator, only for words that are never meant doubled
 ADJ_WORDS = ["那個", "這個", "所以", "就是", "然後", "因為", "如果", "但是", "可是", "我們", "你們", "他們"]
@@ -33,7 +33,7 @@ def merge_stutters(text: str) -> str:
     prev = None
     while prev != text:  # repeat until stable: "A A A" -> "A A" -> "A"
         prev = text
-        text = re.sub(rf"({CJK}{{2,12}}?)[ ，、]+\1", sep_repeat, text)
+        text = re.sub(rf"({CJK}{{2,12}}?)[ 　]+\1", sep_repeat, text)  # comma repeats ("忽，忽就是忽視") may be definitions: stutter_check.py lists them
     for w in ADJ_WORDS:
         text = re.sub(rf"(?:{w}){{2,}}", w, text)
     return text
