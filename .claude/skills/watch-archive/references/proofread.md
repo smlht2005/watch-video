@@ -19,5 +19,6 @@
      - 一字之差的同音字（悔／毀、鑽／專、意念／憶念）與異體字不一致（唸／念，統一成一種）。
      第二輪改完，在 PDF 用 `get_text()` 搜尋第一、二輪改過的錯字，確認一個都不剩。使用者回報漏網的錯字時，修好後再做一次完整的第二輪，不要只改被指出的那一處。
    - **去語助詞（講座／講經預設自動）**：`meta.json.clean_fillers` 為 `auto` 時，只要是講座類——載入 `pure-land` 詞典，或 `meta.json.video_type` 為 `lecture`——腳本在詞典替換後、寫入 `transcript.md` 前，自動去掉沒意義的「呢」「啊」與句尾的「啦／嘛／喔／哦／囉」（`scripts/clean_fillers.py`；只動逐字稿行，`transcript.raw.md` 保留原話；「嘛呢叭咪吽」「呢喃」「啊彌」等保留，句中的「嘛」不動；只處理偵測為中文的逐字稿）。`--clean-fillers` 對任何中文影片強制去除、`--keep-fillers` 保留（記在 `meta.json.clean_fillers`，重跑沿用）。重跑歸檔會自動再做，不必手動；已歸檔的舊稿可手動跑 `python3 scripts/clean_fillers.py watch-output/<領域>/<資料夾>`（可重複執行）。語助詞是影片原話，在 `summary.md` 註明有沒有去除。
+   - **投影片文字交叉比對（寫完 `supplement.md` 後做）**：把畫面上的原文逐字抄進 `supplement.md` 之後，跑 `python3 scripts/slide_text_check.py watch-output/<領域>/<資料夾>`，列出「投影片子句與逐字稿同長度、部分字相同卻不完全相同」的行。引文、經句、人名、術語以投影片為準；講者的口語改寫（「這個叫」對「這叫」）不必改。只是提示、會有雜訊，每處人工判斷；同音異字（如「遍己俱名相」對「辨幾句名相」）它抓不到，要靠它指出的相鄰行再讀。**標為存疑的行，一定先對照投影片再決定保留**（第（三）講 L170 曾因此漏改）。
    - **不要手改 `transcript.md` 以外的原始轉錄**；`transcript.raw.md` 是轉換前原文，保持不動。
    - **重跑會覆蓋 `transcript.md`**（重新轉錄，手改全部消失；`slides`、`keywords`、`known_asr_errors`、`summary.md` 會保留）。所以：穩定的校正先寫進詞典（見 `.claude/skills/watch-archive/references/content.md` 的「校正去哪裡」）再重跑，讓它自動套用；只對這支影片成立的修正，重跑後要再手改一次 `transcript.md`，並用 `known_asr_errors` 記錄。
