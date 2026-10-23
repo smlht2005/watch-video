@@ -955,6 +955,15 @@ class PickFrames(unittest.TestCase):
         self.assertIn("frame_0001.jpg", [f["file"] for f in frames])
 
 
+class PureLandGlossarySafety(unittest.TestCase):
+    """#14: pure-land must not rewrite words that are correct in other Buddhist lectures."""
+
+    def test_correct_usage_in_other_lectures_is_untouched(self):
+        _, replace = wa.load_glossary(["pure-land"])
+        text = "他升到天上，在清淨心坐禪，真實心中守戒"
+        self.assertEqual(wa.apply_glossary(text, replace)[0], text)
+
+
 class WatchArchiveSkillDocs(unittest.TestCase):
     """The skill outline stays small enough to survive auto-compact, and every pointer to its reference files resolves."""
     SKILL_DIR = wa.ROOT / ".claude" / "skills" / "watch-archive"
