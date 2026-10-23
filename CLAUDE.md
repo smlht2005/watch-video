@@ -9,6 +9,7 @@
 - 轉錄後看 `meta.json.detected_language`（`language_source` 說明來源）：任何已知的非中文語言（`en`／`ja`／`ko`／`es`…）一律寫繁體中文中譯 `transcript.zh.md`；`other`（混雜）與 `unknown`（太短或缺失）先讀逐字稿確認，非中文才翻譯。
 - 先看截圖核對逐字稿；穩定的校正進 `glossary/domains/`，只對單支影片成立或不確定的記在 `known_asr_errors`，標明「推測」。
 - 標為存疑的逐字稿行，先對照投影片再決定保留：`supplement.md` 寫好後跑 `python3 scripts/slide_text_check.py watch-output/<領域>/<資料夾>`，列出投影片子句與逐字稿近似但不同的行（引文、經句、人名以投影片為準；只是提示，要人工判斷）；見 `.claude/skills/watch-archive/references/proofread.md`。
+- 講座／講經的口吃與標點：口音讓逐字稿有重複字（「逢人 逢人」）和停頓空格；`clean_fillers.py` 自動合併行內口吃、字間空格改「，」，跨行重複用 `python3 scripts/stutter_check.py watch-output/<領域>/<資料夾>` 列出後人工判斷（刻意強調的保留）；見 `.claude/skills/watch-archive/references/proofread.md`。
 - 校稿分兩輪：第一輪批次替換後，第二輪用 Read 從頭到尾逐行重讀全文（片頭標題、接縫句、相鄰行的同一錯字最常漏），再在 PDF 搜尋改過的錯字確認不剩。
 - 影片沒呈現的資訊（被截斷的畫面文字、貼文／留言內容、連結）放同資料夾的 `supplement.md`（重跑不覆蓋），並更新原本的推測。
 - 影片中的數字與主張一律標「講者主張，未查證」，不當成事實。
