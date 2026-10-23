@@ -26,16 +26,18 @@ OCR 字幕**不能取代** Groq 轉錄，但拿來當**專有名詞的標準答�
 - 字幕不是原話，所以不要用字幕整句覆蓋逐字稿；只取差異處的用字，保留口語。
 - OCR 輸出有簡繁／同音雜訊，每處差異要人工判斷，不能全自動套用。
 
-## 做法（這次手工流程）
+## 做法（`scripts/subtitle_ocr.py`）
 
-環境：Windows，OCR 用 [RapidOCR](https://github.com/RapidAI/RapidOCR)（`rapidocr-onnxruntime`）裝在獨立 venv，不動系統 Python。
+環境：Windows，OCR 用 [RapidOCR](https://github.com/RapidAI/RapidOCR)（`rapidocr-onnxruntime`）裝在獨立 venv，不動系統 Python；`probe`／`run` 用該 venv 的 python，`compare` 只需 opencc，用一般 python。
 
-1. 下載影片（`yt-dlp -f 136` 之類的 720p 視訊即可，不入庫）。
-2. 切出字幕列：`ffmpeg -i video.mp4 -vf "fps=0.5,crop=iw*0.82:ih*0.18:0:ih*0.8" sub/s_%05d.png`（每 2 秒一張；crop 範圍依字幕位置調整，這支字幕在畫面下方，右側有直排標題要避開）。
-3. 逐張 OCR，存成 `{秒數: 文字}` 的 JSON；CPU 吃重時可分成多個程序各跑一段。
-4. 比對：把相鄰相似的 OCR 結果合併成字幕事件；逐字稿每一行（`[mm:ss] 文字`）找時間窗內的字幕，用 `difflib.SequenceMatcher` 算逐字稿字元被字幕涵蓋的比例；比例低於約 0.85 的列出來，人工逐段讀。
+1. 下載影片（`yt-dlp -f 136` 之類的 720p 視訊即可，放暫存區、不入庫）。
+2. `python scripts/subtitle_ocr.py probe <video>`：抽 12 張畫面 OCR，過半有字就判定有燒入字幕，順便印出每張讀到的字；字幕位置不同時用 `--crop W:H:X:Y` 調整（預設是畫面下方 18%、左側 82%，避開右側直排標題）。
+3. `python scripts/subtitle_ocr.py run <video> --out ocr.json --workers 7`：每 `--every` 秒（預設 2）切一張字幕列，**畫面沒變的不 OCR**（約省 40%），其餘多程序平行；可用 `--start`／`--end` 只跑一段。輸出 `{秒數: 文字}`。
+4. `python scripts/subtitle_ocr.py compare <資料夾> --ocr ocr.json [--thr 0.85]`：字幕先簡轉繁，相鄰相似的合併成事件，逐字稿每行用 `difflib` 算被字幕涵蓋的比例，低於門檻的列出「逐字稿／字幕／比例」，人工逐段讀。
 5. 人工判斷差異，整理成替換表（含上下文，避免誤傷）批次套用到 `transcript.md`，每段改完就 commit。
 6. 摘要、投影片說明與 `meta.json` 裡出現的錯誤名稱要一併更新；`known_asr_errors` 記錄「字幕確認」與仍不確定的處理。
+
+實測（楞嚴經第103集 03:00–08:00，150 張字幕列）：`run` 實際只 OCR 85 張，6 個程序約 4 分鐘；`compare` 在門檻 0.7 標出 8 行，都是 OCR 同音雜訊或時間對不齊。
 
 ## 注意事項
 
@@ -44,9 +46,8 @@ OCR 字幕**不能取代** Groq 轉錄，但拿來當**專有名詞的標準答�
 - 暫存檔（`sub/` 圖片、OCR JSON、venv）放暫存區，不要進 repo；影片檔不入庫。
 - Bash 的 `rm` 展開變數會被安全檢查擋，清暫存時改用字面路徑或 `"${VAR:?}"` 寫法。
 
-## 可以改進的方向（尚未實作）
+## 可以改進的方向
 
-- 做成 `scripts/subtitle_ocr.py`：先用少量取樣判斷有沒有燒入字幕，有才跑。
-- 只對字幕變化的畫面做 OCR，並預設多程序平行。
-- 直接輸出「逐字稿 vs 字幕」差異清單，作為校稿的第二輪輸入。
+- 已完成（`scripts/subtitle_ocr.py`）：判斷有無燒入字幕（`probe`）、只對變化的畫面 OCR 並多程序平行（`run`）、輸出逐字稿 vs 字幕差異清單（`compare`）。
+- 尚未做：`watch_archive.py` 歸檔時自動 `probe` 並提示；OCR 引擎自動安裝。
 - 沒有字幕的影片：退回「Groq 兩次轉錄互補」；補漏遇 429 時，單獨重送缺漏段（見 `whisper.py` 的補漏流程與 issue #12／#13）。
