@@ -36,7 +36,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
 0. **環境**：確認 Groq key 有／沒有（只報長度）；**雲端 session 只能用 Groq，不加 `--local`**；從最新 `main` 開新 `claude/...` 分支，不重用已合併的分支。
 1. **選參數**：**預設不加 `--lang`**（讓 Whisper 自動偵測）；有 Groq key 預設 Groq；`--category`、`--glossary`、`--title`、`--terms`；講座／講經加 `--clean-fillers`；教學影片的 SOP 用 `--sop`／`--no-sop`；長螢幕錄影加 `--timestamps "MM:SS,…" --resolution 1024`。
 2. **歸檔**：`python3 scripts/watch_archive.py "<URL>" [旗標]`；重跑會清空 `frames/` 與覆蓋 `transcript.md`。
-3. **校稿**：先驗收（語言錯、重複幻覺、整段漏轉、提示詞外洩、片頭尾幻覺），要重跑先保存舊稿；再兩輪校稿，**第二輪必做：用 Read 從頭到尾逐行重讀**。
+3. **校稿**：先驗收（語言錯、重複幻覺、整段漏轉、提示詞外洩、片頭尾幻覺），要重跑先保存舊稿；再兩輪校稿，**第二輪必做：用 Read 從頭到尾逐行重讀**。**佛經講解／講經座且畫面有燒入字幕**才加做字幕 OCR 比對（費時，其他影片不用；`scripts/subtitle_ocr.py`，見 `.claude/skills/watch-archive/references/proofread.md`）。
 4. **補內容**：
    - 4a／4b：寫 `slides`（每段 2–4 分鐘、不超過約 5 分鐘，每段一張對到重點的截圖；**影片明說步驟時改為一步驟一段一張圖一段說明**，見 `.claude/skills/watch-archive/references/content.md` 4a）、`summary.md`、`meta.json`；截圖用 `pick_frames.py sheet` 逐秒挑、**自己看圖確認**再 `apply`；外語影片寫 `transcript.zh.md`；手寫 `mindmap.md`（思維導圖，放在圖文對照之前）。
    - 4c：畫面有、講者沒唸的原文，逐字抄進 `supplement.md`；影片數字與主張一律標「講者主張，未查證」。
