@@ -11,6 +11,7 @@ Pure stdlib — no `pip install groq` or `pip install openai` needed.
 from __future__ import annotations
 
 import os
+import re
 import io
 import json
 from collections import Counter
@@ -349,19 +350,15 @@ def transcribe_chunks(
 # silently dropping the rest of that window's speech; the same span sent alone transcribes fine.
 GAP_REFILL_SECONDS = 15.0
 REFILL_PIECE_SECONDS = 30.0
-MAX_GAP_REFILLS = 40  # bounds extra API calls on long music / silence
+MAX_GAP_REFILLS = 40  # bounds extra API calls on long music / silence (a failed chunk costs 1, see limit_refills)
+SPARSE_WINDOW_SECONDS = 20.0  # sparse-text scan: windows this long ...
+SPARSE_MIN_CPS = 1.0  # ... with fewer characters per second than this are sent again
+SPARSE_MIN_WINDOW = 5.0  # a leftover window shorter than this at the end is not worth a call
+REFILL_PAD_SECONDS = 2.0  # context sent on each side of a refill span
 
 
-def find_gaps(segments: list[dict], total_seconds: float,
-              min_gap: float = GAP_REFILL_SECONDS) -> list[tuple[float, float]]:
-    """Spans with no segment for at least min_gap seconds, split into pieces of at most 30 s."""
-    edges, cursor = [], 0.0
-    for seg in segments:
-        if seg["start"] - cursor >= min_gap:
-            edges.append((cursor, seg["start"]))
-        cursor = max(cursor, seg["end"])
-    if total_seconds - cursor >= min_gap:
-        edges.append((cursor, total_seconds))
+def _split_pieces(edges: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """Cut each span into pieces of at most REFILL_PIECE_SECONDS."""
     pieces = []
     for start, end in edges:
         while end - start > REFILL_PIECE_SECONDS:
@@ -371,25 +368,157 @@ def find_gaps(segments: list[dict], total_seconds: float,
     return pieces
 
 
-def fill_gaps(segments: Segments, gaps: list[tuple[float, float]], slice_audio, transcribe_one) -> Segments:
-    """Re-transcribe each gap on its own and merge the results back in time order.
+def _merge_spans(spans: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """Sort spans and join the ones that touch or overlap."""
+    out: list[list[float]] = []
+    for start, end in sorted(spans):
+        if out and start <= out[-1][1]:
+            out[-1][1] = max(out[-1][1], end)
+        else:
+            out.append([start, end])
+    return [(a, b) for a, b in out]
 
-    slice_audio(start, duration) returns an audio file for that span; transcribe_one(file) returns its
-    0-based segments. Text that runs past the gap is dropped; a failed refill is logged and skipped.
+
+def _gap_edges(segments: list[dict], total_seconds: float, min_gap: float) -> list[tuple[float, float]]:
+    edges, cursor = [], 0.0
+    for seg in segments:
+        if seg["start"] - cursor >= min_gap:
+            edges.append((cursor, seg["start"]))
+        cursor = max(cursor, seg["end"])
+    if total_seconds - cursor >= min_gap:
+        edges.append((cursor, total_seconds))
+    return edges
+
+
+def find_gaps(segments: list[dict], total_seconds: float,
+              min_gap: float = GAP_REFILL_SECONDS) -> list[tuple[float, float]]:
+    """Spans with no segment for at least min_gap seconds, split into pieces of at most 30 s."""
+    return _split_pieces(_gap_edges(segments, total_seconds, min_gap))
+
+
+def _wording(text: str) -> str:
+    return re.sub(r"[\W_]+", "", text)
+
+
+def is_prompt_leak(text: str, prompt: str) -> bool:
+    """True when a segment is just words of the Whisper prompt (Whisper echoes the prompt on thin audio)."""
+    wording = _wording(text)
+    return len(wording) >= 3 and wording in _wording(prompt)
+
+
+def find_sparse_spans(segments: list[dict], total_seconds: float, prompt: str = "",
+                      window: float = SPARSE_WINDOW_SECONDS,
+                      min_cps: float = SPARSE_MIN_CPS) -> list[tuple[float, float]]:
+    """Windows that hold speech-sized time but almost no text: a long segment that kept only a heading,
+    or one that is only prompt words. find_gaps cannot see these because the timeline has no hole."""
+    spans, start = [], 0.0
+    while total_seconds - start >= SPARSE_MIN_WINDOW:
+        end = min(start + window, total_seconds)
+        chars = 0.0
+        for seg in segments:
+            if seg["end"] <= start or seg["start"] >= end or (prompt and is_prompt_leak(seg["text"], prompt)):
+                continue
+            share = (min(seg["end"], end) - max(seg["start"], start)) / max(seg["end"] - seg["start"], 0.01)
+            chars += len(_wording(seg["text"])) * share
+        if chars / (end - start) < min_cps:
+            spans.append((start, end))
+        start = end
+    return _merge_spans(spans)
+
+
+def find_refill_spans(segments: list[dict], total_seconds: float, prompt: str = "") -> list[tuple[float, float]]:
+    """Everything worth sending to Whisper again: timeline holes plus sparse windows, in pieces of <= 30 s."""
+    edges = _gap_edges(segments, total_seconds, GAP_REFILL_SECONDS) + find_sparse_spans(segments, total_seconds, prompt)
+    return _split_pieces(_merge_spans(edges))
+
+
+def limit_refills(pieces: list[tuple[float, float]], failed_chunks: list[dict],
+                  budget: int = MAX_GAP_REFILLS) -> list[tuple[float, float]]:
+    """Keep pieces in time order until the budget is spent. A chunk that failed whole shows up as many pieces
+    but costs 1, so one bad upload cannot use up the budget meant for real speech gaps elsewhere."""
+    def chunk_of(piece):
+        for index, gap in enumerate(failed_chunks):
+            if piece[0] >= gap["start"] and (gap["end"] is None or piece[1] <= gap["end"] + 1):
+                return index
+        return None
+
+    kept, spent, charged = [], 0, set()
+    for piece in pieces:
+        chunk = chunk_of(piece)
+        cost = 0 if chunk in charged else 1
+        if spent + cost > budget:
+            continue
+        spent += cost
+        if chunk is not None:
+            charged.add(chunk)
+        kept.append(piece)
+    if len(kept) < len(pieces):
+        print(f"[watch] {len(pieces)} refill spans found; refilling only {len(kept)} (budget {budget})",
+              file=sys.stderr)
+    return kept
+
+
+def _overlap(a0: float, a1: float, b0: float, b1: float) -> float:
+    return max(0.0, min(a1, b1) - max(a0, b0))
+
+
+def _chars_in(segs: list[dict]) -> int:
+    return sum(len(_wording(seg["text"])) for seg in segs)
+
+
+def _subtract(gap: dict, filled: list[tuple[float, float]]) -> list[dict]:
+    """The parts of a missing interval that no successful refill covered."""
+    end = float("inf") if gap["end"] is None else gap["end"]
+    parts, cursor = [], gap["start"]
+    for start, stop in sorted(filled):
+        if stop <= cursor or start >= end:
+            continue
+        if start > cursor:
+            parts.append((cursor, start))
+        cursor = max(cursor, stop)
+    if cursor < end:
+        parts.append((cursor, end))
+    return [{"start": a, "end": None if b == float("inf") else b} for a, b in parts
+            if b == float("inf") or b - a >= 1.0]
+
+
+def fill_gaps(segments: Segments, gaps: list[tuple[float, float]], slice_audio, transcribe_one,
+              pad: float = 0.0) -> Segments:
+    """Re-transcribe each span on its own and merge the results back in time order.
+
+    slice_audio(start, duration) returns an audio file for that span, widened by `pad` seconds on both sides so
+    a word cut at the edge is heard whole; transcribe_one(file) returns its 0-based segments. Only refill
+    segments that start inside the span are kept. Original segments mostly inside the span are replaced, but
+    only when the refill has more text than they did. A failed or empty refill is logged and the span stays
+    missing: segments.gaps is rewritten to the intervals no refill covered.
     """
     if not gaps:
         return segments
     merged = list(segments)
+    filled: list[tuple[float, float]] = []
+    still_empty = 0
     for start, end in gaps:
+        lo = max(0.0, start - pad) if pad else start
         try:
-            refill = transcribe_one(slice_audio(start, end - start))
+            refill = transcribe_one(slice_audio(lo, end + pad - lo))
         except SystemExit as exc:
             print(f"[watch] gap {start:.0f}-{end:.0f}s refill failed — skipping ({exc})", file=sys.stderr)
+            still_empty += 1
             continue
-        merged += [seg for seg in shift_segments(refill, start) if seg["start"] < end]
+        new = [seg for seg in shift_segments(refill, lo) if start <= seg["start"] < end]
+        inside = [seg for seg in merged
+                  if _overlap(seg["start"], seg["end"], start, end) >= 0.5 * max(seg["end"] - seg["start"], 0.01)]
+        if not new or _chars_in(new) <= _chars_in(inside):
+            if not new and not inside:
+                still_empty += 1
+            continue
+        merged = [seg for seg in merged if not any(seg is old for old in inside)] + new
+        filled.append((start, end))
+    remaining = [part for gap in segments.gaps for part in _subtract(gap, filled)]
     out = Segments(sorted(merged, key=lambda seg: seg["start"]),
-                   gaps=segments.gaps, no_speech=segments.no_speech, language=segments.language)
-    print(f"[watch] refilled {len(gaps)} gap(s): {len(segments)} → {len(out)} segments", file=sys.stderr)
+                   gaps=remaining, no_speech=segments.no_speech, language=segments.language)
+    print(f"[watch] refilled {len(filled)} gap(s), {still_empty} still empty: "
+          f"{len(segments)} → {len(out)} segments", file=sys.stderr)
     return out
 
 
@@ -463,14 +592,14 @@ def transcribe_video(
             raise SystemExit("A split audio chunk exceeds the upload budget; no chunks were uploaded.")
         segments = transcribe_chunks(chunks, transcribe_one)
 
-    gaps = find_gaps(segments, audio_duration(audio_path)) if segments else []
-    if len(gaps) > MAX_GAP_REFILLS:
-        print(f"[watch] {len(gaps)} gaps found; refilling only the first {MAX_GAP_REFILLS}", file=sys.stderr)
-        gaps = gaps[:MAX_GAP_REFILLS]
+    gaps = []
+    if segments:
+        gaps = find_refill_spans(segments, audio_duration(audio_path), os.environ.get("WATCH_WHISPER_PROMPT", ""))
+        gaps = limit_refills(gaps, getattr(segments, "gaps", []))
     if gaps:
         def slice_audio(start: float, duration: float) -> Path:
             return split_audio(audio_path, audio_out.parent / "gaps" / f"{start:.0f}", [(start, duration)])[0][0]
-        segments = fill_gaps(segments, gaps, slice_audio, transcribe_one)
+        segments = fill_gaps(segments, gaps, slice_audio, transcribe_one, pad=REFILL_PAD_SECONDS)
 
     if not segments:
         print("[watch] Whisper detected no speech", file=sys.stderr)
