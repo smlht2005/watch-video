@@ -1,0 +1,75 @@
+{
+  "url": "https://www.facebook.com/reel/1172561908430922",
+  "platform": "Facebook",
+  "video_id": "1172561908430922",
+  "title": "越活越順的人，每天都在用的8個正向暗示！",
+  "title_raw": "83K views · 1.2K reactions | 越活越順的人，每天都在用的8個正向暗示！ #順 #正向 #暗示 #福氣 #shorts | 高能量生活筆記",
+  "title_override": "",
+  "category": "身心生活",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "unknown",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "順",
+    "正向",
+    "暗示",
+    "福氣",
+    "shorts"
+  ],
+  "uploader": "高能量生活筆記",
+  "duration": "00:15 (15.0s)",
+  "detail": "balanced",
+  "cue_timestamps": "00:01,00:03,00:05,00:07,00:09,00:11,00:13,00:14",
+  "resolution": 1024,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-25",
+  "last_updated": "2026-10-25",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "Thank you.",
+      "expected": "（無人聲；Whisper 幻覺，已刪除）"
+    }
+  ],
+  "keywords": [
+    "正向能量",
+    "正向暗示",
+    "自我對話",
+    "晨間習慣",
+    "睡前感恩",
+    "情緒調節",
+    "高能量生活筆記"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "正向暗示",
+      "8個情境"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "cue_0000.jpg",
+      "title": "越活越順的人每天都用的 8 個正向暗示",
+      "note": "靜態資訊卡，無人聲。8 個日常情境各配一句暗示：晨起、出門、卡關、重大決定、心煩、見人成功、疲憊、睡前。全文見補充資料 S1。成效為發文者主張，未查證。",
+      "keywords": [
+        "正向暗示",
+        "自我對話",
+        "晨間習慣",
+        "睡前感恩"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "uniform"
+  },
+  {
+    "file": "cue_0000.jpg",
+    "t": "00:01",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0001.jpg",
+    "t": "00:03",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0002.jpg",
+    "t": "00:05",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0003.jpg",
+    "t": "00:07",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0004.jpg",
+    "t": "00:09",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0005.jpg",
+    "t": "00:11",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0006.jpg",
+    "t": "00:13",
+    "reason": "transcript-cue"
+  },
+  {
+    "file": "cue_0007.jpg",
+    "t": "00:14",
+    "reason": "transcript-cue"
+  }
+]
