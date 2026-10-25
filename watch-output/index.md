@@ -16,10 +16,11 @@
 | 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
 | 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
 
-## AI／claude-code（3）
+## AI／claude-code（4）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo/) |
 | 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
 | 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
 | 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
@@ -42,10 +43,11 @@
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
 | 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
 
-## 身心生活（8）
+## 身心生活（9）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/2026-10-25_Facebook_越活越順的人-每天都在用的8個正向暗示__1172561908430922/) |
 | 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ/) |
 | 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
 | 2026-10-20 | Instagram | 拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」 | 01:50 (109.8s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛__DeUFrNTDHFs/) |

@@ -1,0 +1,119 @@
+{
+  "url": "https://www.instagram.com/reel/DddPhkuxDUo/?utm_source=ig_web_copy_link&cplk=NTc4MTIwNjQ2YQ==",
+  "platform": "Instagram",
+  "video_id": "DddPhkuxDUo",
+  "title": "Video by jarrenpoh",
+  "title_raw": "Video by jarrenpoh",
+  "title_override": "",
+  "category": "AI/claude-code",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {
+    "TrendShift": 1,
+    "授權MAT": 1,
+    "遊覽器": 1,
+    "浴纜器": 1
+  },
+  "source_hashtags": [],
+  "uploader": "傅子傑",
+  "duration": "01:02 (62.1s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-21",
+  "last_updated": "2026-10-21",
+  "known_asr_errors": [
+    {
+      "time": "00:16",
+      "heard": "遊覽器",
+      "expected": "瀏覽器"
+    },
+    {
+      "time": "00:49",
+      "heard": "浴纜器",
+      "expected": "瀏覽器"
+    },
+    {
+      "time": "00:43",
+      "heard": "授權MAT",
+      "expected": "授權 MIT（推測，依常見開源授權）"
+    }
+  ],
+  "keywords": [
+    "M3E Canvas",
+    "Material 3 Expressive",
+    "Vibe Coding",
+    "拖拉設計",
+    "UI 轉 prompt",
+    "Claude Code",
+    "Codex",
+    "開源 MIT",
+    "GitHub"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "M3E Canvas",
+      "Vibe Coding"
+    ],
+    "00:16": [
+      "拖拉設計",
+      "Material 3 Expressive"
+    ],
+    "00:32": [
+      "prompt",
+      "Claude Code",
+      "開源"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0004.jpg",
+      "title": "開場：M3E Canvas 與 Vibe Coding 的痛點",
+      "note": "工具上線兩週、GitHub 逾 7000 顆星（講者主張，未查證）；主題 M3E Canvas，以視覺方式取代純自然語言描述",
+      "keywords": [
+        "M3E Canvas",
+        "Vibe Coding",
+        "GitHub"
+      ]
+    },
+    {
+      "start": "00:16",
+      "frame": "frame_0007.jpg",
+      "title": "瀏覽器拖拉畫面，連線成 App 流程",
+      "note": "拖拉按鈕、導航列、卡片、清單、對話方塊等 Material 3 Expressive 真實元件，畫面連線自動產生流程箭頭",
+      "keywords": [
+        "Material 3 Expressive",
+        "拖拉設計",
+        "流程箭頭"
+      ]
+    },
+    {
+      "start": "00:32",
+      "frame": "frame_0010.jpg",
+      "title": "一鍵轉 prompt 貼給 Claude Code／Codex，免費開源",
+      "note": "設計轉成一段 prompt 貼進 Claude Code 或 Codex；免費、MIT、免安裝、存瀏覽器、免註冊；9/2 上架（講者主張，未查證）",
+      "keywords": [
+        "Claude Code",
+        "Codex",
+        "MIT",
+        "Trendshift"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
