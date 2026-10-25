@@ -1,0 +1,21 @@
+- Git 指令地圖：四地方 19 指令
+  - 四個地方
+    - 工作區：正在改的檔案
+    - 暫存區：下一次提交預覽
+    - 本機／遠端儲存庫
+  - 一 本機循環
+    - init、add、commit
+    - status、log
+  - 二 先看清楚再存檔
+    - diff、diff HEAD
+    - stash／stash pop
+  - 三 跨過網路
+    - push：發布本機歷史
+    - fetch 只下載、pull 整合
+  - 四 多條工作線
+    - branch、checkout、merge
+    - rebase 重播、cherry-pick
+  - 五 還原與追查
+    - reset 往回搬指標
+    - revert 新提交抵銷
+    - bisect 二分找壞提交

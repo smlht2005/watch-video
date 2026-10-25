@@ -69,3 +69,9 @@
 |---|---|---|---|---|---|
 | 2026-10-11 | YouTube | Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters | 07:55 (475.0s) | captions (en, automatic, original) | [開啟](./雲端/2026-10-11_YouTube_Kind-Tutorial-Kubernetes-in-Docker---Com__N4kwKtdcDWA/) |
 | 2026-10-11 | Drive | videoplayback (2).mp4 | 07:55 (475.2s) | whisper (groq) | [開啟](./雲端/2026-10-11_Drive_videoplayback-2-mp4__view/) |
+
+## 未分類（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-25 | Facebook | Git 指令那麼多，其實都只是在「四個地方」之間搬東西：工作區 → 暫存區 → 本機儲存庫 → 遠端儲存庫。 我今天製作這支影片用 5 分鐘，把 19 個常用 Git 指令放進同一張地圖，讓你記住的不是指令清單，而是它們之間的關係。 👍 | 05:35 (335.0s) | whisper (groq) | [開啟](./未分類/2026-10-25_Facebook_Git-指令那麼多-其實都只是在-四個地方-之間搬東西-工作區-→-暫存區-→__1A8y1afS6q/) |
