@@ -50,5 +50,14 @@ class BandChanged(unittest.TestCase):
         self.assertTrue(so.band_changed([0, 0], [255, 255]))
 
 
+class FixMisreads(unittest.TestCase):
+    def test_v4_look_alike_misreads_are_repaired(self):
+        out = so.fix_misreads({"0": "罪生平等", "2": "筱座起", "4": "菩隆摩訶隆"})
+        self.assertEqual(out, {"0": "眾生平等", "2": "從座起", "4": "菩薩摩訶隆"})
+
+    def test_legitimate_words_are_left_alone(self):
+        self.assertEqual(so.fix_misreads({"0": "编織起來"}), {"0": "编織起來"})
+
+
 if __name__ == "__main__":
     unittest.main()
