@@ -8,8 +8,8 @@ Scope: it is slow (about an hour for a 74-minute video), so use it only for sutr
 burned-in subtitles; run `probe` first.
 
 Usage:
-  python3 scripts/subtitle_ocr.py probe <video>                       # are there burned-in subtitles at all?
-  python3 scripts/subtitle_ocr.py run <video> --out ocr.json [--workers 7] [--every 2] [--start S] [--end S]
+  python3 scripts/subtitle_ocr.py probe <video> [--model v5|v4]          # are there burned-in subtitles at all?
+  python3 scripts/subtitle_ocr.py run <video> --out ocr.json [--workers 2] [--every 3] [--model v5|v4] [--start S] [--end S]
   python3 scripts/subtitle_ocr.py compare <folder> --ocr ocr.json [--thr 0.85] [--out diff.txt]
 
 `run` crops the subtitle band (--crop W:H:X:Y, ffmpeg expressions; default = bottom 18% / left 82%, which keeps a
@@ -19,8 +19,13 @@ gitignored); put ocr.json and the frames in the scratchpad.
 
 OCR needs RapidOCR; install it in its own venv so the system Python is untouched:
   python -m venv ocrenv && ocrenv/Scripts/pip install rapidocr-onnxruntime   (Windows; bin/ elsewhere)
-and run `probe`/`run` with that venv's python (`compare` needs only opencc, so the normal python works). Expect some simplified/traditional and homophone noise
-(眾→罪, 異→昊, 慍 dropped): read each difference before applying it.
+and run `probe`/`run` with that venv's python (`compare` needs only opencc, so the normal python works).
+
+Models (--model): `v5` (default) is PP-OCRv5 Chinese recognition, which reads traditional glyphs correctly; the RapidOCR
+default `v4` is simplified-first and misreads traditional subtitles into fixed look-alikes (眾→罪, 從→筱, 遍→编, 竟→竞,
+薩→隆, 祂→弛, 偈→偶) that OpenCC cannot repair. v5 downloads about 84 MB once into ~/.cache/watch/ppocrv5 and runs about
+3x slower than v4 (its recognizer is larger; detection stays on the fast v4 model). With either model, read each
+difference before applying it; `--model v4` output is also passed through FIXED_MISREADS in `compare`.
 """
 import argparse
 import difflib
@@ -36,6 +41,11 @@ DEFAULT_CROP = "iw*0.82:ih*0.18:0:ih*0.8"
 PUNCT = re.compile(r"[\s，。、？！；：「」『』（）《》\"“”…—\-·,.?!:;\[\]()0-9a-zA-Z]")
 CJK = re.compile(r"[一-鿿]")
 LINE = re.compile(r"^\[(\d+):(\d+)(?::(\d+))?\] (.*)$")
+HF_V5 = "https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/chinese/"
+V5_FILES = {"rec.onnx": "rec_model_path", "dict.txt": "rec_keys_path"}
+# v4 misreads traditional glyphs as these look-alikes; applied only to v4 output (v5 does not need it). Only reads that
+# have no legitimate use in sutra lectures: 编 (遍/編) and 竞 (竟/競) are real words too, so they are left for a human.
+FIXED_MISREADS = {"罪生": "眾生", "筱": "從", "弛": "祂", "菩隆": "菩薩"}
 UNCHANGED = 3.0   # mean 0-255 difference of a 48x12 thumbnail below which two band images count as the same
 
 
@@ -110,13 +120,28 @@ def compare(lines, events, thr=0.85, window_pad=1):
     return flagged
 
 
-def load_ocr():
+def v5_paths():
+    """Local paths of the PP-OCRv5 Chinese recognizer and its dictionary, downloaded on first use."""
+    import urllib.request
+    cache = Path.home() / ".cache" / "watch" / "ppocrv5"
+    cache.mkdir(parents=True, exist_ok=True)
+    paths = {}
+    for name, kwarg in V5_FILES.items():
+        dest = cache / name
+        if not dest.exists() or dest.stat().st_size == 0:
+            print(f"downloading PP-OCRv5 {name} ...", file=sys.stderr, flush=True)
+            urllib.request.urlretrieve(HF_V5 + name, dest)
+        paths[kwarg] = str(dest)
+    return paths
+
+
+def load_ocr(model="v5"):
     try:
         from rapidocr_onnxruntime import RapidOCR
     except ImportError:
         sys.exit("rapidocr_onnxruntime is not installed. Make a venv and `pip install rapidocr-onnxruntime`, "
                  "then run this script with that venv's python (see the header of this file).")
-    return RapidOCR()
+    return RapidOCR(**v5_paths()) if model == "v5" else RapidOCR()
 
 
 def read_text(engine, image_path):
@@ -131,10 +156,11 @@ def read_text(engine, image_path):
 _engine = None
 
 
-def _ocr_chunk(paths):
+def _ocr_chunk(job):
     global _engine
+    model, paths = job
     if _engine is None:
-        _engine = load_ocr()
+        _engine = load_ocr(model)
     return [read_text(_engine, p) for p in paths]
 
 
@@ -161,7 +187,7 @@ def cmd_probe(args):
         ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", args.video],
         check=True, capture_output=True, text=True).stdout.strip())
     n = 12
-    engine = load_ocr()
+    engine = load_ocr(args.model)
     hits = []
     with tempfile.TemporaryDirectory() as tmp:
         for k in range(n):
@@ -192,7 +218,7 @@ def cmd_run(args):
         print(f"OCR on {len(todo)} changed images (skipping {len(paths) - len(todo)})", flush=True)
         chunks = [todo[k::args.workers] for k in range(args.workers)]
         with ProcessPoolExecutor(args.workers) as pool:
-            parts = list(pool.map(_ocr_chunk, [[paths[i] for i in c] for c in chunks]))
+            parts = list(pool.map(_ocr_chunk, [(args.model, [paths[i] for i in c]) for c in chunks]))
         text = {}
         for c, texts in zip(chunks, parts):
             text.update(zip(c, texts))
@@ -214,8 +240,19 @@ def to_traditional(ocr):
     return {k: cc.convert(v) for k, v in ocr.items()}
 
 
+def fix_misreads(ocr):
+    """Undo the fixed look-alike misreads of the v4 model (see FIXED_MISREADS)."""
+    out = {}
+    for k, v in ocr.items():
+        for bad, good in FIXED_MISREADS.items():
+            v = v.replace(bad, good)
+        out[k] = v
+    return out
+
+
 def cmd_compare(args):
-    ocr = to_traditional(json.loads(Path(args.ocr).read_text(encoding="utf-8")))
+    ocr = json.loads(Path(args.ocr).read_text(encoding="utf-8"))
+    ocr = to_traditional(fix_misreads(ocr) if args.model == "v4" else ocr)
     lines = parse_transcript((Path(args.folder) / "transcript.md").read_text(encoding="utf-8"))
     lo, hi = args.start or 0, args.end or float("inf")
     lines = [l for l in lines if lo <= l[0] < hi]
@@ -237,6 +274,7 @@ def main(argv=None):
     p = sub.add_parser("probe", help="check whether the video has burned-in subtitles")
     p.add_argument("video")
     p.add_argument("--crop", default=DEFAULT_CROP)
+    p.add_argument("--model", choices=["v5", "v4"], default="v5")
     p.set_defaults(fn=cmd_probe)
     p = sub.add_parser("run", help="OCR the subtitle band into a JSON file")
     p.add_argument("video")
@@ -244,6 +282,7 @@ def main(argv=None):
     p.add_argument("--crop", default=DEFAULT_CROP)
     p.add_argument("--every", type=int, default=2, help="seconds between sampled frames")
     p.add_argument("--workers", type=int, default=4)
+    p.add_argument("--model", choices=["v5", "v4"], default="v5")
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
     p.set_defaults(fn=cmd_run)
@@ -255,6 +294,7 @@ def main(argv=None):
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
     p.add_argument("--out")
+    p.add_argument("--model", choices=["v5", "v4"], default="v5", help="model the ocr.json came from (v4 gets the misread fixes)")
     p.set_defaults(fn=cmd_compare)
     args = ap.parse_args(argv)
     return args.fn(args)
