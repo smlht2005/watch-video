@@ -2,3 +2,6 @@ __pycache__/
 
 # watch-output: media/ (full video) stays local, not committed; the report links to the source URL
 watch-output/**/media/
+
+# watch-output: waitConfirm/ (audio clips + screenshots cut from someone else's video) stays local, not committed
+watch-output/**/waitConfirm/
