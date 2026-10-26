@@ -25,10 +25,11 @@
 | 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
 | 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
 
-## 佛學（5）
+## 佛學（6）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-10-24 | YouTube | 會性法師-大佛頂首楞嚴經-第104集 | 1:12:13 (4333.2s) | whisper (groq) | [開啟](./佛學/2026-10-24_YouTube_會性法師-大佛頂首楞嚴經-第104集__OcQc8e9m-v8/) |
 | 2026-10-23 | YouTube | 淨土安心法門(三) | 50:25 (3025.0s) | whisper (groq) | [開啟](./佛學/2026-10-23_YouTube_淨土安心法門-三__uGeglEasD60/) |
 | 2026-10-17 | TikTok | 為什麼普通人不能隨便念金光咒？你本就自帶光芒，別向外討認可 | 06:48 (407.5s) | whisper (groq) | [開啟](./佛學/2026-10-17_TikTok_為什麼普通人不能隨便念金光咒-你本就自帶光芒-別向外討認可__7690189236619775253/) |
 | 2026-10-13 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./佛學/2026-10-13_YouTube_會性法師-大佛頂首楞嚴經-第103集__kvsrMirvdDQ/) |
