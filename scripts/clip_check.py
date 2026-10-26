@@ -86,7 +86,7 @@ def download(url, start, end, fmt_sel, dest):
 
 SINGLE_TS = re.compile(r"^\d+:\d{2}(?::\d{2})?$")
 BAD_NAME = re.compile(r'[\\/:*?"<>|\s]+')
-BEFORE, AFTER = 5, 25
+BEFORE, AFTER, MERGE_GAP = 5, 25, 30
 
 
 def in_scope(meta):
@@ -119,26 +119,42 @@ def cell(text):
 def render_index(title, rows):
     out = [f"# 待確認音檔：{title}", "",
            "點 ▶ 重聽，聽完告訴 Claude 結果；片段從「時間點前 5 秒」開始。", "",
-           "| # | 時間點 | 逐字稿該行 | 逐字稿寫法 | 目前寫法／候選 | 重聽 | 截圖 |", "|---|---|---|---|---|---|---|"]
+           "| # | 時間點 | 逐字稿該行 | 逐字稿寫法 | 目前寫法／候選 | 重聽 | 片段內位置 | 截圖 |", "|---|---|---|---|---|---|---|---|"]
     for r in rows:
         out.append(f"| {r['n']} | {fmt(r['at'])} | {cell(r['line'])} | {cell(r['heard'])} | {cell(r['expected'])} "
-                   f"| [▶ 重聽](./{r['name']}.mp3) | [截圖](./{r['name']}.jpg) |")
+                   f"| [▶ 重聽](./{r['audio']}.mp3) | 第 {r['offset']} 秒 | [截圖](./{r['name']}.jpg) |")
     return "\n".join(out) + "\n"
 
 
-def cut_clip(url, at, before, after, mp3, jpg):
-    """Default cutter: audio window -> mp3, one 720p screenshot at `at` -> jpg."""
-    start, end = window(at, before, after)
+def group_rows(rows):
+    """Split time-sorted rows into groups; a row within MERGE_GAP seconds of the previous one joins its group (chained)."""
+    groups = []
+    for r in rows:
+        if groups and r["at"] - groups[-1][-1]["at"] <= MERGE_GAP:
+            groups[-1].append(r)
+        else:
+            groups.append([r])
+    return groups
+
+
+def cut_audio(url, start, end, mp3):
+    """Default audio cutter: video window start-end (seconds) -> mono mp3."""
     with tempfile.TemporaryDirectory() as tmp:
         raw = download(url, start, end, "ba", Path(tmp) / "a")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-ac", "1", "-b:a", "96k", str(mp3)], check=True)
-        fs, fe = max(0, at - 1), at + 2
-        vid = download(url, fs, fe, "bv*[height<=720]", Path(tmp) / "v")
+
+
+def cut_frame(url, at, jpg):
+    """Default screenshot cutter: one 720p frame at `at` seconds -> jpg."""
+    fs = max(0, at - 1)
+    with tempfile.TemporaryDirectory() as tmp:
+        vid = download(url, fs, at + 2, "bv*[height<=720]", Path(tmp) / "v")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(at - fs), "-i", str(vid), "-frames:v", "1", str(jpg)],
                        check=True)
 
 
-def wait_confirm(folder, cut=cut_clip, warn=lambda m: print(f"WARNING: {m}", file=sys.stderr)):
+def wait_confirm(folder, cut_audio=cut_audio, cut_frame=cut_frame,
+                 warn=lambda m: print(f"WARNING: {m}", file=sys.stderr)):
     """Cut waitConfirm/ clips for the suspected entries of a watch-output folder; returns the rows written."""
     folder = Path(folder)
     meta = json.loads((folder / "meta.json").read_text(encoding="utf-8"))
@@ -170,8 +186,13 @@ def wait_confirm(folder, cut=cut_clip, warn=lambda m: print(f"WARNING: {m}", fil
         return []
     out = folder / "waitConfirm"
     out.mkdir(exist_ok=True)
-    for r in rows:
-        cut(meta["url"], r["at"], BEFORE, AFTER, out / f"{r['name']}.mp3", out / f"{r['name']}.jpg")
+    for group in group_rows(rows):
+        start = window(group[0]["at"], BEFORE, AFTER)[0]
+        end = group[-1]["at"] + AFTER
+        cut_audio(meta["url"], start, end, out / f"{group[0]['name']}.mp3")
+        for r in group:
+            r["audio"], r["offset"] = group[0]["name"], r["at"] - start
+            cut_frame(meta["url"], r["at"], out / f"{r['name']}.jpg")
     (out / "index.md").write_text(render_index(meta.get("title", folder.name), rows), encoding="utf-8")
     return rows
 
