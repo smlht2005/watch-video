@@ -25,6 +25,7 @@ import tempfile
 from pathlib import Path
 
 LINE = re.compile(r"^\[(\d+):(\d+)(?::(\d+))?\] (.*)$")
+WATCH_SCRIPTS = Path(__file__).resolve().parent.parent / ".claude" / "skills" / "watch" / "scripts"
 OUT_ROOT = Path.home() / ".cache" / "watch" / "clips"
 
 
@@ -74,13 +75,49 @@ def resolve(source):
     return source, ""
 
 
+def auth_args():
+    """yt-dlp cookie / JS-runtime args, the same as the main pipeline (WATCH_COOKIES_* from env or ~/.config/watch/.env)."""
+    sys.path.insert(0, str(WATCH_SCRIPTS))
+    try:
+        import config
+        import download as watch_download
+        cfg = config.get_config()
+        return watch_download.auth_args(cfg["cookies_file"] or None, cfg["cookies_from_browser"] or None)
+    except (ImportError, config.ConfigError):
+        return []
+    finally:
+        sys.path.remove(str(WATCH_SCRIPTS))
+
+
+class CutError(Exception):
+    """A clip could not be downloaded or cut; the message says why and what to do."""
+
+
+BLOCKED = re.compile(r"429|too many requests|sign in|confirm you.re not a bot|cookies", re.I)
+
+
+def explain_failure(stderr):
+    """User-facing reason for a failed yt-dlp run (YouTube blocking gets the cookies hint)."""
+    last = (stderr or "").strip().splitlines()[-1:] or ["yt-dlp failed"]
+    if BLOCKED.search(stderr or ""):
+        firefox_note = "（Windows 上 Chrome／Edge 的 App-Bound 加密 yt-dlp 解不開，只能用 Firefox）" if sys.platform == "win32" else ""
+        return (f"YouTube 擋下載（429／要求登入）：{last[0]}。給 yt-dlp 登入後的 cookies 再重跑，三選一："
+                f"WATCH_COOKIES_FROM_BROWSER=firefox{firefox_note}、WATCH_COOKIES_FILE=<cookies.txt 路徑>、"
+                f"WATCH_COOKIES_CONTENT=<cookies.txt 全文>（可放在環境變數或 ~/.config/watch/.env）")
+    return f"yt-dlp 失敗：{last[0]}"
+
+
 def download(url, start, end, fmt_sel, dest):
     cmd = ["yt-dlp", "-q", "--no-warnings", "-f", fmt_sel, "--download-sections", f"*{start}-{end}",
            "--force-keyframes-at-cuts", "-o", str(dest) + ".%(ext)s", url]
-    subprocess.run(cmd, check=True, env={**os.environ, "PYTHONUTF8": "1"})
+    cmd[1:1] = auth_args()
+    run = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                         env={**os.environ, "PYTHONUTF8": "1"})
+    if run.returncode:
+        raise CutError(explain_failure(run.stderr))
     found = sorted(dest.parent.glob(dest.name + ".*"))
     if not found:
-        sys.exit("yt-dlp downloaded nothing (blocked, private or live without DVR?)")
+        raise CutError("yt-dlp 沒下載到任何東西（被擋、私人影片，或直播沒有 DVR？）")
     return found[0]
 
 
@@ -116,13 +153,18 @@ def cell(text):
     return str(text).replace("|", "\\|").replace("\n", " ")
 
 
+def link(label, name, ext, ok):
+    return f"[{label}](./{name}.{ext})" if ok else "（下載失敗）"
+
+
 def render_index(title, rows):
     out = [f"# 待確認音檔：{title}", "",
            "點 ▶ 重聽，聽完告訴 Claude 結果；片段從「時間點前 5 秒」開始。", "",
            "| # | 時間點 | 逐字稿該行 | 逐字稿寫法 | 目前寫法／候選 | 重聽 | 片段內位置 | 截圖 |", "|---|---|---|---|---|---|---|---|"]
     for r in rows:
         out.append(f"| {r['n']} | {fmt(r['at'])} | {cell(r['line'])} | {cell(r['heard'])} | {cell(r['expected'])} "
-                   f"| [▶ 重聽](./{r['audio']}.mp3) | 第 {r['offset']} 秒 | [截圖](./{r['name']}.jpg) |")
+                   f"| {link('▶ 重聽', r['audio'], 'mp3', r['audio_ok'])} | 第 {r['offset']} 秒 "
+                   f"| {link('截圖', r['name'], 'jpg', r['frame_ok'])} |")
     return "\n".join(out) + "\n"
 
 
@@ -151,6 +193,16 @@ def cut_frame(url, at, jpg):
         vid = download(url, fs, at + 2, "bv*[height<=720]", Path(tmp) / "v")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(at - fs), "-i", str(vid), "-frames:v", "1", str(jpg)],
                        check=True)
+
+
+def attempt(fn, *args, warn, what):
+    """Run one cutter; on CutError warn and return False so the other entries still go on."""
+    try:
+        fn(*args)
+        return True
+    except CutError as e:
+        warn(f"{what} failed: {e}")
+        return False
 
 
 def wait_confirm(folder, cut_audio=cut_audio, cut_frame=cut_frame,
@@ -189,10 +241,13 @@ def wait_confirm(folder, cut_audio=cut_audio, cut_frame=cut_frame,
     for group in group_rows(rows):
         start = window(group[0]["at"], BEFORE, AFTER)[0]
         end = group[-1]["at"] + AFTER
-        cut_audio(meta["url"], start, end, out / f"{group[0]['name']}.mp3")
+        audio_ok = attempt(cut_audio, meta["url"], start, end, out / f"{group[0]['name']}.mp3", warn=warn,
+                           what=f"audio {fmt(start)}-{fmt(end)}")
         for r in group:
             r["audio"], r["offset"] = group[0]["name"], r["at"] - start
-            cut_frame(meta["url"], r["at"], out / f"{r['name']}.jpg")
+            r["audio_ok"] = audio_ok
+            r["frame_ok"] = attempt(cut_frame, meta["url"], r["at"], out / f"{r['name']}.jpg", warn=warn,
+                                    what=f"screenshot {fmt(r['at'])}")
     (out / "index.md").write_text(render_index(meta.get("title", folder.name), rows), encoding="utf-8")
     return rows
 
@@ -247,4 +302,7 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except CutError as e:
+        sys.exit(f"ERROR: {e}")

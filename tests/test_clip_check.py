@@ -81,6 +81,40 @@ class WaitConfirm(unittest.TestCase):
         self.assertEqual([r["offset"] for r in rows], [5, 29, 44, 5])
         self.assertIn("[▶ 重聽](./01_01-41_一.mp3) | 第 44 秒", index)
 
+    def test_failed_download_is_reported_and_other_entries_still_cut(self):
+        warns = []
+
+        def audio(url, start, end, mp3):
+            if start == 96:
+                raise cc.CutError("YouTube 擋下載")
+            mp3.write_bytes(b"")
+
+        def frame(url, at, jpg):
+            jpg.write_bytes(b"")
+
+        errors = [{"time": "01:41", "heard": "一", "expected": "x", "status": "suspected"},
+                  {"time": "10:00", "heard": "難清", "expected": "難侵", "status": "suspected"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            d = make_folder(tmp, errors)
+            rows = cc.wait_confirm(d, cut_audio=audio, cut_frame=frame, warn=warns.append)
+            index = (d / "waitConfirm" / "index.md").read_text(encoding="utf-8")
+            files = sorted(p.name for p in (d / "waitConfirm").iterdir())
+        self.assertEqual(len(rows), 2)
+        self.assertTrue(any("audio 01:36-02:06 failed: YouTube 擋下載" in w for w in warns))
+        self.assertNotIn("01_01-41_一.mp3", index)
+        self.assertIn("（下載失敗）", index)
+        self.assertIn("[▶ 重聽](./02_10-00_難清.mp3)", index)
+        self.assertIn("02_10-00_難清.mp3", files)
+        self.assertNotIn("01_01-41_一.mp3", files)
+
+    def test_blocked_youtube_message_has_cookies_hint(self):
+        msg = cc.explain_failure("ERROR: Sign in to confirm you're not a bot")
+        self.assertIn("WATCH_COOKIES_FROM_BROWSER", msg)
+        self.assertIn("WATCH_COOKIES_FILE", msg)
+        self.assertIn("WATCH_COOKIES_CONTENT", msg)
+        self.assertIn("YouTube 擋下載", msg)
+        self.assertNotIn("擋下載", cc.explain_failure("ERROR: Video unavailable"))
+
     def test_time_without_transcript_line_is_skipped_with_warning(self):
         errors = [{"time": "05:00", "heard": "沒有", "expected": "x", "status": "suspected"},
                   {"time": "10:00", "heard": "難清", "expected": "難侵", "status": "suspected"}]
