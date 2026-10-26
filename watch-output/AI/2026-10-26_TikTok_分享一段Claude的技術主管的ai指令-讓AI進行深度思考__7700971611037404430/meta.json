@@ -1,0 +1,171 @@
+{
+  "url": "https://vt.tiktok.com/ZSg4LWWb1/",
+  "platform": "TikTok",
+  "video_id": "7700971611037404430",
+  "title": "分享一段Claude的技術主管的ai指令，讓AI進行深度思考",
+  "title_raw": "分享一段Claude的技术主管的ai指令，让AI进行深度思考 #ai #claude #科技 #提示词 #ai指令",
+  "title_override": "",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "ai",
+    "claude",
+    "科技",
+    "提示词",
+    "ai指令"
+  ],
+  "uploader": "yangzhujun1",
+  "duration": "02:44 (164.4s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-26",
+  "last_updated": "2026-10-26",
+  "known_asr_errors": [
+    {
+      "time": "00:08",
+      "heard": "Cloud的技術主管Felix（另 00:19）",
+      "expected": "Claude（畫面推文為 Claude 專案工程主管 Felix Rieseberg）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:11",
+      "heard": "帖子詞",
+      "expected": "提示詞（畫面字幕「提示词」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:32",
+      "heard": "70詞",
+      "expected": "提示詞（02:37 字幕「提示词」；另 02:32 同）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:41",
+      "heard": "混溝",
+      "expected": "鴻溝（字幕「最大鸿沟」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:46",
+      "heard": "在網上追問一層",
+      "expected": "往上追問一層（字幕「再往上追问一层」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:37",
+      "heard": "挑測",
+      "expected": "挑刺（字幕「专门挑刺的反方红队」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:53",
+      "heard": "請呼叫",
+      "expected": "請調用（字幕「请调用做空者」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:51",
+      "heard": "基督彙報",
+      "expected": "季度彙報（推測；字幕該句只到「拿我们最常见的」，後文「下一季度」呼應）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:33",
+      "heard": "皈依模型",
+      "expected": "回歸模型（推測；資料分析師常用方法）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:40",
+      "heard": "作風機構",
+      "expected": "做空機構（推測；與 01:53「做空者」呼應）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:13",
+      "heard": "湯姆凱利和強奈森·利特曼",
+      "expected": "湯姆·凱利與強納森·利特曼（書封 Tom Kelley, The Art of Innovation）",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "ai提示詞",
+    "Claude",
+    "Felix Rieseberg",
+    "速度高度範圍深度",
+    "四維提示詞",
+    "深度思考",
+    "跨界借法",
+    "創新的藝術"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "title": "開場：直接要答案反而最低效",
+      "note": "講者（竹子）指出直接叫 AI 給答案可能是最低效的用法，真正會用的人是把任務做得更深而不是更多。她引用 Claude 技術主管 Felix 分享的用法，並預告結尾有一段可直接複製的提示詞。",
+      "keywords": [
+        "Felix",
+        "提示詞"
+      ],
+      "frame": "slide_01.jpg"
+    },
+    {
+      "start": "00:19",
+      "title": "四個維度與「速度」陷阱",
+      "note": "Claude 內部口號是「要雄心勃勃地使用人工智慧」，Felix 認為要考慮速度、高度、深度、範圍四個維度。多數人只停在第一層「速度」（寫文章、寫程式更快），講者稱這只開發了 AI 大腦不到 1%（講者主張，未查證）；其餘三個維度才是高手與新手的鴻溝。",
+      "keywords": [
+        "速度",
+        "四個維度"
+      ],
+      "frame": "slide_02.jpg"
+    },
+    {
+      "start": "00:45",
+      "title": "第一維度：高度——把名詞換成動詞",
+      "note": "高度是讓 AI 往上追問一層：我做這件事到底是為了什麼。以季度彙報為例，不要說「根據資料做一個 PPT」，而要說「在 30 分鐘內幫管理層看清因果關係，決定下一季度的錢和人投在哪裡」。講者說這是《創新的藝術》提過的老技巧，舊的方法論都能和 AI 結合。",
+      "keywords": [
+        "高度",
+        "名詞換動詞"
+      ],
+      "frame": "slide_03.jpg"
+    },
+    {
+      "start": "01:22",
+      "title": "第二維度：範圍——跨界借方法，別角色扮演",
+      "note": "範圍是把其他專業的好方法跨界借來，讓彙報無懈可擊：資料分析師的回歸模型、調查記者挖故事的手法、頂尖編輯的表達結構、專挑毛病的反方紅隊，以及做空機構與法務會計的審查眼光。Felix 特別提醒（講者稱 90% 的人會踩，未查證）：不要叫 AI 角色扮演、模仿口氣，而是直接要求它調用該專業的具體研究方法。",
+      "keywords": [
+        "範圍",
+        "紅隊",
+        "別角色扮演"
+      ],
+      "frame": "slide_04.jpg"
+    },
+    {
+      "start": "01:59",
+      "title": "第三維度：深度——可複製的提示詞",
+      "note": "深度是照頂尖高手的方法把問題做紮實。提示詞要求「更深入而不是更大的版本」，並在重寫題目前先回答四件事：頂尖專家會做哪些我沒要求的事、會從哪些最原始的素材入手、會用哪些具體方法與工具、除了你我之外還有什麼能證明結果正確。講者總結：高度定目標、範圍解方法、深度做紮實；結尾邀請留言領取完整教程（約 10 秒，併入本段）。",
+      "keywords": [
+        "深度",
+        "提示詞"
+      ],
+      "frame": "slide_05.jpg"
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
