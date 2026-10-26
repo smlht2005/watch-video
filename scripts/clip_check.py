@@ -4,6 +4,10 @@
 Usage:
   python3 scripts/clip_check.py <folder|URL> --at MM:SS [--before 5] [--after 30] [--frame] [--open] [--out DIR]
   python3 scripts/clip_check.py watch-output/佛學/<資料夾> --at 01:41 --frame --open
+  python3 scripts/clip_check.py watch-output/佛學/<資料夾> --wait-confirm
+
+--wait-confirm (lecture / 佛學 folders only): for every known_asr_errors entry with status "suspected" and a single
+MM:SS time, cut one audio clip + one screenshot into <資料夾>/waitConfirm/ and write an index.md to click and re-listen.
 
 <folder> is a watch-output folder: the URL comes from its meta.json and the transcript lines in the window are
 printed with their offset inside the clip (clip time = video time - window start), so you know where to listen.
@@ -80,17 +84,119 @@ def download(url, start, end, fmt_sel, dest):
     return found[0]
 
 
+SINGLE_TS = re.compile(r"^\d+:\d{2}(?::\d{2})?$")
+BAD_NAME = re.compile(r'[\\/:*?"<>|\s]+')
+BEFORE, AFTER = 5, 25
+
+
+def in_scope(meta):
+    return meta.get("video_type") == "lecture" or meta.get("category") == "佛學"
+
+
+def pick_suspected(errors):
+    """([(seconds, entry)] sorted by time, [warning]) for status == suspected entries with one MM:SS time."""
+    picked, warnings = [], []
+    for e in errors:
+        if e.get("status") != "suspected":
+            continue
+        t = str(e.get("time", "")).strip()
+        if not SINGLE_TS.match(t):
+            warnings.append(f"skip '{e.get('heard', '')}': time '{t}' is not a single MM:SS")
+            continue
+        picked.append((parse_ts(t), e))
+    return sorted(picked, key=lambda x: x[0]), warnings
+
+
+def clip_name(n, at, heard):
+    word = BAD_NAME.sub("", heard.split("／")[0])[:12] or "clip"
+    return f"{n:02d}_{fmt(at).replace(':', '-')}_{word}"
+
+
+def cell(text):
+    return str(text).replace("|", "\\|").replace("\n", " ")
+
+
+def render_index(title, rows):
+    out = [f"# 待確認音檔：{title}", "",
+           "點 ▶ 重聽，聽完告訴 Claude 結果；片段從「時間點前 5 秒」開始。", "",
+           "| # | 時間點 | 逐字稿該行 | 逐字稿寫法 | 目前寫法／候選 | 重聽 | 截圖 |", "|---|---|---|---|---|---|---|"]
+    for r in rows:
+        out.append(f"| {r['n']} | {fmt(r['at'])} | {cell(r['line'])} | {cell(r['heard'])} | {cell(r['expected'])} "
+                   f"| [▶ 重聽](./{r['name']}.mp3) | [截圖](./{r['name']}.jpg) |")
+    return "\n".join(out) + "\n"
+
+
+def cut_clip(url, at, before, after, mp3, jpg):
+    """Default cutter: audio window -> mp3, one 720p screenshot at `at` -> jpg."""
+    start, end = window(at, before, after)
+    with tempfile.TemporaryDirectory() as tmp:
+        raw = download(url, start, end, "ba", Path(tmp) / "a")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-ac", "1", "-b:a", "96k", str(mp3)], check=True)
+        fs, fe = max(0, at - 1), at + 2
+        vid = download(url, fs, fe, "bv*[height<=720]", Path(tmp) / "v")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(at - fs), "-i", str(vid), "-frames:v", "1", str(jpg)],
+                       check=True)
+
+
+def wait_confirm(folder, cut=cut_clip, warn=lambda m: print(f"WARNING: {m}", file=sys.stderr)):
+    """Cut waitConfirm/ clips for the suspected entries of a watch-output folder; returns the rows written."""
+    folder = Path(folder)
+    meta = json.loads((folder / "meta.json").read_text(encoding="utf-8"))
+    if not in_scope(meta):
+        warn("not a lecture / 佛學 folder; waitConfirm skipped")
+        return []
+    tr = folder / "transcript.md"
+    transcript = tr.read_text(encoding="utf-8") if tr.exists() else ""
+    picked, warnings = pick_suspected(meta.get("known_asr_errors", []))
+    for w in warnings:
+        warn(w)
+    rows = []
+    for at, e in picked:
+        start, end = window(at, BEFORE, AFTER)
+        near = lines_in_window(transcript, start, end)
+        if not near:
+            warn(f"skip '{e.get('heard', '')}': no transcript line within {fmt(start)}-{fmt(end)}")
+            continue
+        heard = str(e.get("heard", ""))
+        keys = [k for k in heard.split("／") if k]
+        line = next((b for _, _, b in near if any(k in b for k in keys)), None)
+        if line is None:
+            line = min(near, key=lambda x: abs(x[0] - at))[2]
+        n = len(rows) + 1
+        rows.append({"n": n, "at": at, "name": clip_name(n, at, heard), "line": line,
+                     "heard": heard, "expected": str(e.get("expected", ""))})
+    if not rows:
+        warn("no suspected entry to cut")
+        return []
+    out = folder / "waitConfirm"
+    out.mkdir(exist_ok=True)
+    for r in rows:
+        cut(meta["url"], r["at"], BEFORE, AFTER, out / f"{r['name']}.mp3", out / f"{r['name']}.jpg")
+    (out / "index.md").write_text(render_index(meta.get("title", folder.name), rows), encoding="utf-8")
+    return rows
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("source", help="watch-output folder or video URL")
-    ap.add_argument("--at", required=True, help="the doubtful moment, MM:SS or H:MM:SS")
+    ap.add_argument("--at", help="the doubtful moment, MM:SS or H:MM:SS")
     ap.add_argument("--before", type=int, default=5, help="seconds before --at (default 5)")
     ap.add_argument("--after", type=int, default=30, help="seconds after --at (default 30)")
     ap.add_argument("--frame", action="store_true", help="also save screenshots")
     ap.add_argument("--step", type=int, default=5, help="seconds between screenshots (default 5)")
     ap.add_argument("--open", action="store_true", help="open the audio in the default player")
     ap.add_argument("--out", help="output folder (default ~/.cache/watch/clips/<start>-<end>)")
+    ap.add_argument("--wait-confirm", action="store_true", help="cut waitConfirm/ clips for suspected entries (folder only)")
     args = ap.parse_args(argv)
+
+    if args.wait_confirm:
+        if not Path(args.source).is_dir():
+            ap.error("--wait-confirm needs a watch-output folder")
+        rows = wait_confirm(args.source)
+        print(f"waitConfirm: {len(rows)} clip(s) -> {Path(args.source) / 'waitConfirm' / 'index.md'}")
+        return 0
+    if not args.at:
+        ap.error("--at is required (unless --wait-confirm)")
 
     url, transcript = resolve(args.source)
     start, end = window(parse_ts(args.at), args.before, args.after)
