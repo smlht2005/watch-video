@@ -71,50 +71,75 @@ def resolve(source):
     if p.is_dir():
         meta = json.loads((p / "meta.json").read_text(encoding="utf-8"))
         tr = p / "transcript.md"
-        return meta["url"], tr.read_text(encoding="utf-8") if tr.exists() else ""
+        return source_url(meta), tr.read_text(encoding="utf-8") if tr.exists() else ""
     return source, ""
 
 
-def auth_args():
-    """yt-dlp cookie / JS-runtime args, the same as the main pipeline (WATCH_COOKIES_* from env or ~/.config/watch/.env)."""
-    sys.path.insert(0, str(WATCH_SCRIPTS))
-    try:
-        import config
-        import download as watch_download
-        cfg = config.get_config()
-        return watch_download.auth_args(cfg["cookies_file"] or None, cfg["cookies_from_browser"] or None)
-    except (ImportError, config.ConfigError):
-        return []
-    finally:
-        sys.path.remove(str(WATCH_SCRIPTS))
+def source_url(meta):
+    """meta.json's url, or a CutError that says what is missing (local-file archives have none)."""
+    url = meta.get("url")
+    if not url:
+        raise CutError("meta.json 沒有 url（本機影片歸檔？），沒有來源網址可下載")
+    return url
 
 
 class CutError(Exception):
     """A clip could not be downloaded or cut; the message says why and what to do."""
 
 
+def auth_args():
+    """yt-dlp cookie / JS-runtime args, the same as the main pipeline (WATCH_COOKIES_* from env or ~/.config/watch/.env)."""
+    sys.path.insert(0, str(WATCH_SCRIPTS))
+    try:
+        try:
+            import config
+            import download as watch_download
+        except ImportError:
+            return []
+        try:
+            cfg = config.get_config()
+        except config.ConfigError:
+            return []
+        return watch_download.auth_args(cfg["cookies_file"] or None, cfg["cookies_from_browser"] or None)
+    finally:
+        sys.path.remove(str(WATCH_SCRIPTS))
+
+
+def run_tool(cmd):
+    """Run yt-dlp / ffmpeg; a missing executable or non-zero exit becomes a CutError instead of a traceback."""
+    try:
+        run = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                             env={**os.environ, "PYTHONUTF8": "1"})
+    except FileNotFoundError:
+        raise CutError(f"找不到 {cmd[0]}，請先安裝並加入 PATH") from None
+    if run.returncode:
+        raise CutError(explain_failure(run.stderr, cmd[0]))
+    return run
+
+
 BLOCKED = re.compile(r"429|too many requests|sign in|confirm you.re not a bot|cookies", re.I)
 
 
-def explain_failure(stderr):
-    """User-facing reason for a failed yt-dlp run (YouTube blocking gets the cookies hint)."""
-    last = (stderr or "").strip().splitlines()[-1:] or ["yt-dlp failed"]
-    if BLOCKED.search(stderr or ""):
+def explain_failure(stderr, tool="yt-dlp"):
+    """User-facing reason for a failed yt-dlp / ffmpeg run (YouTube blocking gets the cookies hint)."""
+    last = (stderr or "").strip().splitlines()[-1:] or [f"{tool} failed"]
+    if tool == "yt-dlp" and BLOCKED.search(stderr or ""):
         firefox_note = "（Windows 上 Chrome／Edge 的 App-Bound 加密 yt-dlp 解不開，只能用 Firefox）" if sys.platform == "win32" else ""
         return (f"YouTube 擋下載（429／要求登入）：{last[0]}。給 yt-dlp 登入後的 cookies 再重跑，三選一："
                 f"WATCH_COOKIES_FROM_BROWSER=firefox{firefox_note}、WATCH_COOKIES_FILE=<cookies.txt 路徑>、"
                 f"WATCH_COOKIES_CONTENT=<cookies.txt 全文>（可放在環境變數或 ~/.config/watch/.env）")
-    return f"yt-dlp 失敗：{last[0]}"
+    return f"{tool} 失敗：{last[0]}"
+
+
+# video-only stream first; sources that only offer one muxed stream (Facebook, Google Drive) fall back to it
+VIDEO_FMT = "bv*[height<=720]/b[height<=720]"
 
 
 def download(url, start, end, fmt_sel, dest):
     cmd = ["yt-dlp", "-q", "--no-warnings", "-f", fmt_sel, "--download-sections", f"*{start}-{end}",
            "--force-keyframes-at-cuts", "-o", str(dest) + ".%(ext)s", url]
     cmd[1:1] = auth_args()
-    run = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                         env={**os.environ, "PYTHONUTF8": "1"})
-    if run.returncode:
-        raise CutError(explain_failure(run.stderr))
+    run_tool(cmd)
     found = sorted(dest.parent.glob(dest.name + ".*"))
     if not found:
         raise CutError("yt-dlp 沒下載到任何東西（被擋、私人影片，或直播沒有 DVR？）")
@@ -122,8 +147,8 @@ def download(url, start, end, fmt_sel, dest):
 
 
 SINGLE_TS = re.compile(r"^\d+:\d{2}(?::\d{2})?$")
-BAD_NAME = re.compile(r'[\\/:*?"<>|\s]+')
-BEFORE, AFTER, MERGE_GAP = 5, 25, 30
+BAD_NAME = re.compile(r'[\\/:*?"<>|\s()\[\]#%&]+')  # Windows-illegal plus what breaks a Markdown link
+BEFORE, AFTER, MERGE_GAP, MAX_GROUP_SPAN = 5, 25, 30, 180
 
 
 def in_scope(meta):
@@ -169,10 +194,11 @@ def render_index(title, rows):
 
 
 def group_rows(rows):
-    """Split time-sorted rows into groups; a row within MERGE_GAP seconds of the previous one joins its group (chained)."""
+    """Split time-sorted rows into groups. A row within MERGE_GAP seconds of the previous one joins its group (chained),
+    unless that would stretch the group past MAX_GROUP_SPAN seconds."""
     groups = []
     for r in rows:
-        if groups and r["at"] - groups[-1][-1]["at"] <= MERGE_GAP:
+        if groups and r["at"] - groups[-1][-1]["at"] <= MERGE_GAP and r["at"] - groups[-1][0]["at"] <= MAX_GROUP_SPAN:
             groups[-1].append(r)
         else:
             groups.append([r])
@@ -183,29 +209,41 @@ def cut_audio(url, start, end, mp3):
     """Default audio cutter: video window start-end (seconds) -> mono mp3."""
     with tempfile.TemporaryDirectory() as tmp:
         raw = download(url, start, end, "ba", Path(tmp) / "a")
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-ac", "1", "-b:a", "96k", str(mp3)], check=True)
+        run_tool(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-ac", "1", "-b:a", "96k", str(mp3)])
 
 
-def cut_frame(url, at, jpg):
-    """Default screenshot cutter: one 720p frame at `at` seconds -> jpg."""
-    fs = max(0, at - 1)
+def cut_frames(url, start, end, items):
+    """Default screenshot cutter: download the video window once, then one 720p frame per (at, jpg) in `items`.
+    Returns the list of `at` values whose frame failed; a failed download raises CutError."""
+    failed = []
     with tempfile.TemporaryDirectory() as tmp:
-        vid = download(url, fs, at + 2, "bv*[height<=720]", Path(tmp) / "v")
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(at - fs), "-i", str(vid), "-frames:v", "1", str(jpg)],
-                       check=True)
+        vid = download(url, start, end, VIDEO_FMT, Path(tmp) / "v")
+        for at, jpg in items:
+            try:
+                run_tool(["ffmpeg", "-v", "error", "-y", "-ss", str(at - start), "-i", str(vid), "-frames:v", "1", str(jpg)])
+            except CutError:
+                failed.append(at)
+    return failed
 
 
 def attempt(fn, *args, warn, what):
-    """Run one cutter; on CutError warn and return False so the other entries still go on."""
+    """Run one cutter; on CutError warn and return None so the other entries still go on, else its result."""
     try:
-        fn(*args)
-        return True
+        return fn(*args) or []
     except CutError as e:
         warn(f"{what} failed: {e}")
-        return False
+        return None
 
 
-def wait_confirm(folder, cut_audio=cut_audio, cut_frame=cut_frame,
+def clear_old(out):
+    """Remove the files a previous run wrote (numbering shifts as entries get confirmed, so old names go stale)."""
+    if out.is_dir():
+        for p in out.iterdir():
+            if p.suffix in (".mp3", ".jpg") or p.name == "index.md":
+                p.unlink()
+
+
+def wait_confirm(folder, cut_audio=cut_audio, cut_frames=cut_frames,
                  warn=lambda m: print(f"WARNING: {m}", file=sys.stderr)):
     """Cut waitConfirm/ clips for the suspected entries of a watch-output folder; returns the rows written."""
     folder = Path(folder)
@@ -233,21 +271,25 @@ def wait_confirm(folder, cut_audio=cut_audio, cut_frame=cut_frame,
         n = len(rows) + 1
         rows.append({"n": n, "at": at, "name": clip_name(n, at, heard), "line": line,
                      "heard": heard, "expected": str(e.get("expected", ""))})
+    out = folder / "waitConfirm"
+    clear_old(out)
     if not rows:
         warn("no suspected entry to cut")
         return []
-    out = folder / "waitConfirm"
+    url = source_url(meta)
     out.mkdir(exist_ok=True)
     for group in group_rows(rows):
         start = window(group[0]["at"], BEFORE, AFTER)[0]
         end = group[-1]["at"] + AFTER
-        audio_ok = attempt(cut_audio, meta["url"], start, end, out / f"{group[0]['name']}.mp3", warn=warn,
-                           what=f"audio {fmt(start)}-{fmt(end)}")
+        audio_ok = attempt(cut_audio, url, start, end, out / f"{group[0]['name']}.mp3", warn=warn,
+                           what=f"audio {fmt(start)}-{fmt(end)}") is not None
+        fs, fe = max(0, group[0]["at"] - 1), group[-1]["at"] + 2
+        failed = attempt(cut_frames, url, fs, fe, [(r["at"], out / f"{r['name']}.jpg") for r in group], warn=warn,
+                         what=f"screenshots {fmt(fs)}-{fmt(fe)}")
         for r in group:
             r["audio"], r["offset"] = group[0]["name"], r["at"] - start
             r["audio_ok"] = audio_ok
-            r["frame_ok"] = attempt(cut_frame, meta["url"], r["at"], out / f"{r['name']}.jpg", warn=warn,
-                                    what=f"screenshot {fmt(r['at'])}")
+            r["frame_ok"] = failed is not None and r["at"] not in failed
     (out / "index.md").write_text(render_index(meta.get("title", folder.name), rows), encoding="utf-8")
     return rows
 
@@ -269,6 +311,9 @@ def main(argv=None):
         if not Path(args.source).is_dir():
             ap.error("--wait-confirm needs a watch-output folder")
         rows = wait_confirm(args.source)
+        if not rows:
+            print("waitConfirm: 沒有可剪的項目（原因見上方警告），未產生 index.md", file=sys.stderr)
+            return 1
         print(f"waitConfirm: {len(rows)} clip(s) -> {Path(args.source) / 'waitConfirm' / 'index.md'}")
         return 0
     if not args.at:
@@ -282,11 +327,11 @@ def main(argv=None):
     with tempfile.TemporaryDirectory() as tmp:
         raw = download(url, start, end, "ba", Path(tmp) / "a")
         mp3 = out / f"clip_{fmt(start).replace(':', '-')}_to_{fmt(end).replace(':', '-')}.mp3"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-ac", "1", "-b:a", "96k", str(mp3)], check=True)
+        run_tool(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-ac", "1", "-b:a", "96k", str(mp3)])
         if args.frame:
-            vid = download(url, start, end, "bv*[height<=720]", Path(tmp) / "v")
-            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(vid), "-vf", f"fps=1/{args.step}",
-                            str(out / "frame_%02d.jpg")], check=True)
+            vid = download(url, start, end, VIDEO_FMT, Path(tmp) / "v")
+            run_tool(["ffmpeg", "-v", "error", "-y", "-i", str(vid), "-vf", f"fps=1/{args.step}",
+                      str(out / "frame_%02d.jpg")])
 
     print(f"audio : {mp3}   (clip 00:00 = video {fmt(start)})")
     if args.frame:

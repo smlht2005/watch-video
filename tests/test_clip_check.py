@@ -3,6 +3,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
@@ -44,12 +45,16 @@ class WaitConfirm(unittest.TestCase):
             calls.append((start, end))
             mp3.write_bytes(b"")
 
-        def frame(url, at, jpg):
-            jpg.write_bytes(b"")
+        self.frame_calls = []
+
+        def frames(url, start, end, items):
+            self.frame_calls.append((start, end, [at for at, _ in items]))
+            for _, jpg in items:
+                jpg.write_bytes(b"")
 
         with tempfile.TemporaryDirectory() as tmp:
             d = make_folder(tmp, errors, **meta)
-            rows = cc.wait_confirm(d, cut_audio=audio, cut_frame=frame, warn=warns.append)
+            rows = cc.wait_confirm(d, cut_audio=audio, cut_frames=frames, warn=warns.append)
             wc = d / "waitConfirm"
             index = (wc / "index.md").read_text(encoding="utf-8") if (wc / "index.md").exists() else None
             files = sorted(p.name for p in wc.iterdir()) if wc.exists() else []
@@ -89,14 +94,15 @@ class WaitConfirm(unittest.TestCase):
                 raise cc.CutError("YouTube 擋下載")
             mp3.write_bytes(b"")
 
-        def frame(url, at, jpg):
-            jpg.write_bytes(b"")
+        def frames(url, start, end, items):
+            for _, jpg in items:
+                jpg.write_bytes(b"")
 
         errors = [{"time": "01:41", "heard": "一", "expected": "x", "status": "suspected"},
                   {"time": "10:00", "heard": "難清", "expected": "難侵", "status": "suspected"}]
         with tempfile.TemporaryDirectory() as tmp:
             d = make_folder(tmp, errors)
-            rows = cc.wait_confirm(d, cut_audio=audio, cut_frame=frame, warn=warns.append)
+            rows = cc.wait_confirm(d, cut_audio=audio, cut_frames=frames, warn=warns.append)
             index = (d / "waitConfirm" / "index.md").read_text(encoding="utf-8")
             files = sorted(p.name for p in (d / "waitConfirm").iterdir())
         self.assertEqual(len(rows), 2)
@@ -132,6 +138,90 @@ class WaitConfirm(unittest.TestCase):
         rows, *_ = self.run_wc(
             [{"time": "01:41", "heard": "x", "expected": "y", "status": "suspected"}], category="AI", video_type="lecture")
         self.assertEqual(len(rows), 1)
+
+
+    def test_screenshots_are_downloaded_once_per_group(self):
+        errors = [{"time": t, "heard": h, "expected": "x", "status": "suspected"}
+                  for t, h in (("01:41", "一"), ("02:05", "二"), ("02:20", "三"), ("03:30", "四"))]
+        self.run_wc(errors)
+        self.assertEqual(self.frame_calls, [(100, 142, [101, 125, 140]), (209, 212, [210])])
+
+    def test_failed_frame_only_marks_that_entry(self):
+        def audio(url, start, end, mp3):
+            mp3.write_bytes(b"")
+
+        def frames(url, start, end, items):
+            for at, jpg in items:
+                if at != 125:
+                    jpg.write_bytes(b"")
+            return [125]
+
+        errors = [{"time": t, "heard": h, "expected": "x", "status": "suspected"} for t, h in (("01:41", "一"), ("02:05", "二"))]
+        with tempfile.TemporaryDirectory() as tmp:
+            d = make_folder(tmp, errors)
+            cc.wait_confirm(d, cut_audio=audio, cut_frames=frames, warn=lambda m: None)
+            index = (d / "waitConfirm" / "index.md").read_text(encoding="utf-8")
+        self.assertEqual(index.count("（下載失敗）"), 1)
+        self.assertIn("[截圖](./01_01-41_一.jpg)", index)
+
+    def test_group_is_capped_so_dense_entries_do_not_chain_into_one_huge_clip(self):
+        rows = [{"at": 100 + 25 * i} for i in range(10)]  # every 25 s, 225 s in total
+        groups = cc.group_rows(rows)
+        self.assertGreater(len(groups), 1)
+        for g in groups:
+            self.assertLessEqual(g[-1]["at"] - g[0]["at"], cc.MAX_GROUP_SPAN)
+
+    def test_rerun_removes_stale_files(self):
+        errors = [{"time": "01:41", "heard": "一", "expected": "x", "status": "suspected"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            d = make_folder(tmp, errors)
+            wc = d / "waitConfirm"
+            wc.mkdir()
+            for name in ("03_10-00_舊.mp3", "03_10-00_舊.jpg", "index.md", "notes.txt"):
+                (wc / name).write_bytes(b"")
+            cc.wait_confirm(d, cut_audio=lambda *a: None, cut_frames=lambda *a: None, warn=lambda m: None)
+            files = sorted(p.name for p in wc.iterdir())
+        self.assertEqual(files, ["index.md", "notes.txt"])
+
+    def test_nothing_to_cut_returns_empty_and_main_exits_nonzero(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = make_folder(tmp, [{"time": "01:41", "heard": "x", "expected": "y"}])  # no status
+            with mock.patch("sys.stderr"):
+                self.assertEqual(cc.main([str(d), "--wait-confirm"]), 1)
+            self.assertFalse((d / "waitConfirm" / "index.md").exists())
+
+    def test_names_are_safe_in_markdown_links(self):
+        self.assertEqual(cc.clip_name(1, 41, "大乘起信論(論)#1%[x]"), "01_00-41_大乘起信論論1x")
+
+    def test_missing_url_is_a_clear_error(self):
+        errors = [{"time": "01:41", "heard": "一", "expected": "x", "status": "suspected"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            d = make_folder(tmp, errors)
+            meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+            del meta["url"]
+            (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaisesRegex(cc.CutError, "沒有 url"):
+                cc.wait_confirm(d, cut_audio=lambda *a: None, cut_frames=lambda *a: None, warn=lambda m: None)
+
+
+class Tools(unittest.TestCase):
+    def test_missing_executable_becomes_cut_error(self):
+        with self.assertRaisesRegex(cc.CutError, "找不到 no-such-tool-xyz"):
+            cc.run_tool(["no-such-tool-xyz"])
+
+    def test_nonzero_exit_becomes_cut_error_with_last_stderr_line(self):
+        code = "import sys; sys.stderr.write('boom' + chr(10) + 'real reason'); sys.exit(2)"
+        with self.assertRaisesRegex(cc.CutError, "real reason"):
+            cc.run_tool([sys.executable, "-c", code])
+
+    def test_auth_args_survives_missing_watch_scripts(self):
+        with tempfile.TemporaryDirectory() as tmp,                 mock.patch.object(cc, "WATCH_SCRIPTS", Path(tmp)),                 mock.patch.dict(sys.modules):
+            sys.modules.pop("config", None)
+            sys.modules.pop("download", None)
+            self.assertEqual(cc.auth_args(), [])
+
+    def test_video_format_falls_back_to_muxed_stream(self):
+        self.assertIn("/b[height<=720]", cc.VIDEO_FMT)
 
 
 if __name__ == "__main__":
