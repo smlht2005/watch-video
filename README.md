@@ -54,6 +54,7 @@ flowchart LR
 ```bash
 python3 scripts/watch_archive.py "<影片網址>" [--glossary ai-chips,electronics] [--category AI] [--lang zh（一般不要加）] [--title "自訂標題"] [--terms "詞1,詞2"] [--timestamps "MM:SS,..."] [--resolution 1024] [--question "..."] [--keep-media] [--local | --whisper groq|openai|whisperx]
 python3 scripts/build_report.py watch-output/<領域>/<資料夾>   # 編輯 summary.md / meta.json 後重建報告
+python3 scripts/clip_check.py watch-output/佛學/<資料夾> --wait-confirm   # 佛學／講經：推測詞剪成音檔＋截圖放 waitConfirm/，開 index.md 點 ▶ 重聽確認（不入庫）
 ```
 
 **轉錄方式**（只在影片沒有平台字幕時才轉錄）：

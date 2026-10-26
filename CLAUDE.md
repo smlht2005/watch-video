@@ -23,6 +23,7 @@
 - 講座／講經（口語演講）：歸檔時加 `--clean-fillers`（`--glossary pure-land` 自動開啟，`meta.json.video_type: "lecture"` 重跑也會開），自動去除逐字稿的「呢」「啊」等語助詞；`--keep-fillers` 保留，`transcript.raw.md` 保留原話；見 `.claude/skills/watch-archive/references/proofread.md`。
 - 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 `.claude/skills/watch-archive/references/sop-4d.md`。
 - 字幕 OCR 很費時（74 分鐘的影片約一小時），**只用在佛經講解／講經座，且畫面有逐句燒入字幕**的影片，其他影片不用（先 `probe` 確認有字幕才 `run`）。用 OCR 抽字幕與逐字稿逐行比對校稿，專有名詞（人名、書名、術語）以字幕為準，不靠上下文推測；字幕是書面語、不是原話，只取差異處用字，不整句覆蓋；預設 `--model v5`（PP-OCRv5，讀得出繁體；舊 v4 會把繁體字認成相似字），OCR 仍有同音雜訊，每處人工判斷。先 `scripts/subtitle_ocr.py probe` 確認有字幕，再 `run`／`compare`；用法與比較見 `docs/subtitle-ocr-vs-whisper.md`。
+- 佛學／講經的推測詞：`known_asr_errors` 標「推測」的項目要寫 `status: "suspected"`，校稿後跑 `python3 scripts/clip_check.py watch-output/<領域>/<資料夾> --wait-confirm` 剪出待確認音檔（`waitConfirm/`，不入庫），請使用者點 `index.md` 聽音確認；定案後改 `status: "confirmed"`；見 `.claude/skills/watch-archive/references/proofread.md`、用語見 `GLOSSARY.md`。
 - 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
 - 歸檔完成並 push 到分支後，用 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 產生連結給使用者確認；使用者確認前不開 PR、不 merge。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
