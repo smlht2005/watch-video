@@ -4,13 +4,15 @@
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] 新建根目錄 `GLOSSARY.md`，定義三個詞：**推測詞**、**待確認音檔**、**使用者聽音確認**；只寫定義，不寫實作細節
-- [ ] 更新 `watch-archive` skill 與 references（`proofread.md`、`deliver.md`）：校稿寫完 `known_asr_errors` 後加一步執行 `--wait-confirm`
-- [ ] 文件說明 `status` 欄位寫法，以及使用者聽音後由 Claude 改成 `confirmed`、在 `expected` 加「使用者聽音確認」並重建報告
-- [ ] `CLAUDE.md` 硬規則加一條；`README.md`、`references/notes.md` 文字版同步
-- [ ] 更新 `docs/watch-archive-flow.png` 流程圖
-- [ ] 不寫 ADR（無難以回頭的取捨）
+- [x] 新建根目錄 `GLOSSARY.md`，定義三個詞：**推測詞**、**待確認音檔**、**使用者聽音確認**；只寫定義，不寫實作細節
+- [x] 更新 `watch-archive` skill 與 references（`proofread.md`、`deliver.md`）：校稿寫完 `known_asr_errors` 後加一步執行 `--wait-confirm`
+- [x] 文件說明 `status` 欄位寫法，以及使用者聽音後由 Claude 改成 `confirmed`、在 `expected` 加「使用者聽音確認」並重建報告
+- [x] `CLAUDE.md` 硬規則加一條；`README.md`、`references/notes.md` 文字版同步
+- [x] 更新 `docs/watch-archive-flow.png` 流程圖
+- [x] 不寫 ADR（無難以回頭的取捨）
 
 ## Comments
+
+- 完成於 commit `d16368e`（分支 claude/clip-check）。

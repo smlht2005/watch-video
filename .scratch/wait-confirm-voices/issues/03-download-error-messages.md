@@ -4,11 +4,13 @@
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] 下載被擋（429／要求登入）時印出原因與處理建議，Windows 提示使用 Firefox cookies
-- [ ] 失敗的項目在終端機列出並跳過，其餘項目照常產生
-- [ ] `index.md` 不為失敗的項目放無效的重聽連結
-- [ ] 測試用替身模擬下載失敗，驗證訊息與其他項目不受影響
+- [x] 下載被擋（429／要求登入）時印出原因與處理建議，Windows 提示使用 Firefox cookies
+- [x] 失敗的項目在終端機列出並跳過，其餘項目照常產生
+- [x] `index.md` 不為失敗的項目放無效的重聽連結
+- [x] 測試用替身模擬下載失敗，驗證訊息與其他項目不受影響
 
 ## Comments
+
+- 完成於 commit `236cd87`（分支 claude/clip-check）。
