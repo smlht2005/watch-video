@@ -1,10 +1,10 @@
 ---
 title: "AI 時代為什麼 Obsidian 反而更重要？"
 type: carousel-note
-source: "（使用者上傳圖片，原貼文網址未提供）"
-platform: "Image"
-video_id: "chihua-wang-3-knowledge-notes"
-uploader: "@chihua.wang.3（Knowledge Notes）"
+source: "https://www.threads.com/@chihua.wang.3/post/De9qij5FKBy"
+platform: "Threads"
+video_id: "De9qij5FKBy"
+uploader: "王啟樺（@chihua.wang.3）"
 category: "AI"
 date: "2026-10-27"
 status: unreviewed
@@ -33,7 +33,7 @@ related:
 
 ## 摘要
 
-**一句話重點：** @chihua.wang.3（Knowledge Notes）的圖文輪播主張：AI 能大量生成內容，但「真正的價值，不是更多的文字，而是你選擇建立的關係」——Obsidian 把 AI 產物以 Markdown 接住，由人親自建立有意義的 link，才讓內容變成自己的知識（**作者主張，未查證**）。
+**一句話重點：** 王啟樺（Threads @chihua.wang.3；圖頁頁尾署名「Knowledge Notes」）的圖文輪播主張：AI 能大量生成內容，但「真正的價值，不是更多的文字，而是你選擇建立的關係」——Obsidian 把 AI 產物以 Markdown 接住，由人親自建立有意義的 link，才讓內容變成自己的知識（**作者主張，未查證**）。
 
 | 頁 | 重點 |
 |---|---|
@@ -52,50 +52,50 @@ related:
 - **Callout**：Obsidian 的色塊標註語法（`> [!tip] 標題`），用來突出關鍵想法。
 - **語義相似度**：貼文指 AI 以「意思相近」自動推薦連結；貼文立場是這種連結不能取代人依目的選擇的連結（作者主張）。
 - 本檔為**圖文貼文，非影片**：以頁碼代替時間碼（第 N 頁＝00:0N），逐字稿欄是逐頁人工抄錄的圖片文字。
-- 貼文共 10 頁，使用者只提供 1–8 頁；第 9–10 頁內容未知，不做推測。
+- 貼文共 10 頁；使用者提供 1–8 頁，Threads 公開頁只暴露第 1 張圖，第 9–10 頁無法取得，不做推測。
 - 第 2 頁結語圖上寫「素素材」，應為「素材」之筆誤。
-- 貼文全屬觀點與方法主張，無可查證的數字；原貼文網址未提供。
+- 貼文全屬觀點與方法主張，無可查證的數字；原貼文：https://www.threads.com/@chihua.wang.3/post/De9qij5FKBy（分享連結 https://www.threads.com/share/_orjYS_Zd/）。貼文本文已逐字收進 `supplement.md`。
 
 ### 補充資料
 - 缺頁說明與在 Obsidian 實作的對照，見 `supplement.md`。
 
 ## 思維導圖
 
-![思維導圖](../_attachments/chihua-wang-3-knowledge-notes/mindmap.png)
+![思維導圖](../_attachments/De9qij5FKBy/mindmap.png)
 
 ## 圖文原頁
 
 **第 1 頁：AI 時代為什麼 Obsidian 反而更重要？**
 
-![第 1 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_01.jpg)
+![第 1 頁](../_attachments/De9qij5FKBy/slide_01.jpg)
 
 **第 2 頁：Obsidian 是接住 AI 產物的地方**
 
-![第 2 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_02.jpg)
+![第 2 頁](../_attachments/De9qij5FKBy/slide_02.jpg)
 
 **第 3 頁：AI 可以生內容，但 Obsidian 決定內容怎麼留下來**
 
-![第 3 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_03.jpg)
+![第 3 頁](../_attachments/De9qij5FKBy/slide_03.jpg)
 
 **第 4 頁：真正重要的問題：這份筆記要跟什麼連在一起？**
 
-![第 4 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_04.jpg)
+![第 4 頁](../_attachments/De9qij5FKBy/slide_04.jpg)
 
 **第 5 頁：link 不是排版，而是在定義關係**
 
-![第 5 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_05.jpg)
+![第 5 頁](../_attachments/De9qij5FKBy/slide_05.jpg)
 
 **第 6 頁：你的連結，會暴露你的思考方式**
 
-![第 6 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_06.jpg)
+![第 6 頁](../_attachments/De9qij5FKBy/slide_06.jpg)
 
 **第 7 頁：每一個 link，都在替未來的自己鋪路**
 
-![第 7 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_07.jpg)
+![第 7 頁](../_attachments/De9qij5FKBy/slide_07.jpg)
 
 **第 8 頁：AI 很強，但 link 不一定要交給 AI**
 
-![第 8 頁](../_attachments/chihua-wang-3-knowledge-notes/slide_08.jpg)
+![第 8 頁](../_attachments/De9qij5FKBy/slide_08.jpg)
 
 ## 連結
 
@@ -110,8 +110,17 @@ _由人選定並寫明關係；新增連結請改 links.md 再匯出。_
 
 ## 補充資料
 
+### 貼文本文（Threads 頁面 og:description，逐字；作者主張，未查證）
+AI 越能快速生成內容，越需要一個屬於自己的知識世界，決定哪些內容值得留下與如何重新理解。
+
+- 用 Obsidian 選擇要保存的內容，而不是把 AI 產出全部堆進資料庫。
+- 為概念建立連結與閱讀路徑，讓知識能回到自己的問題脈絡。
+- 保留由自己完成的連結、重寫與判斷，讓 AI 不取代理解。
+
+Obsidian 的核心價值不是儲存筆記，而是守住你和知識之間的關係。
+
 ### 缺頁
-- 貼文標示 1/10 至 10/10，本次只收到 1–8 頁；第 9、10 頁（可能為結論或行動建議）內容未知，取得後請補進 `transcript.md`、`meta.json.slides` 與 `frames/` 再重建。
+- 貼文標示 1/10 至 10/10，本次只收到 1–8 頁（Threads 頁面只公開第 1 張圖，其餘需登入／App）；第 9、10 頁（可能為結論或行動建議）內容未知，取得後請補進 `transcript.md`、`meta.json.slides` 與 `frames/` 再重建。
 
 ### 在 Obsidian 的對應做法（整理者補充，非貼文原文；推測性建議，未實測）
 - 把 AI 產出另存 `.md`，放進 vault 的 `AI產出/` 之類資料夾（第 2 頁）。
@@ -121,5 +130,5 @@ _由人選定並寫明關係；新增連結請改 links.md 再匯出。_
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-27_Image_AI時代為什麼Obsidian反而更重要__chihua-wang-3-knowledge-notes`
+- 原始資料夾：`watch-output/AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy`
 - 逐字稿來源：圖片文字（逐頁人工抄錄，非語音轉錄）

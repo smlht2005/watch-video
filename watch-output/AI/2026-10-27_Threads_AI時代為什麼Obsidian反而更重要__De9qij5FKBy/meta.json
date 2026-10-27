@@ -1,13 +1,13 @@
 {
-  "url": "（使用者上傳圖片，原貼文網址未提供）",
-  "platform": "Image",
-  "video_id": "chihua-wang-3-knowledge-notes",
+  "url": "https://www.threads.com/@chihua.wang.3/post/De9qij5FKBy",
+  "platform": "Threads",
+  "video_id": "De9qij5FKBy",
   "title": "AI 時代為什麼 Obsidian 反而更重要？",
   "title_override": "AI 時代為什麼 Obsidian 反而更重要？",
   "media_type": "carousel",
   "category": "AI",
-  "uploader": "@chihua.wang.3（Knowledge Notes）",
-  "duration": "8 頁（共 10 頁，第 9–10 頁未提供）",
+  "uploader": "王啟樺（@chihua.wang.3）",
+  "duration": "8 頁（貼文共 10 頁，第 9–10 頁無法取得）",
   "detail": "balanced",
   "transcript_source": "圖片文字（逐頁人工抄錄，非語音轉錄）",
   "detected_language": "zh",
@@ -108,5 +108,6 @@
         "連結選擇"
       ]
     }
-  ]
+  ],
+  "share_url": "https://www.threads.com/share/_orjYS_Zd/"
 }
