@@ -10,7 +10,7 @@ Status: ready-for-agent
 
 ## Solution
 
-把這套做法收進 `subtitle_ocr.py run`：加 `--segment-min 10`，整支切成固定長度的段落，每段辨識完立刻存檔；中斷後重跑自動跳過已完成的段落；全部完成後合併成 `--out`。每段結束印進度（符合「長時間背景工作每約 10 分鐘回報」）。另有 `status` 看進度、`--low-priority` 降低優先權、`--background` 脫離 session 執行。輸出格式不變（`{秒數: 文字}`），`compare` 不用改。
+把這套做法收進 `subtitle_ocr.py run`：加 `--segment-min 10`，整支切成固定長度的段落，每段辨識完立刻存檔；中斷後重跑自動跳過已完成的段落；全部完成後合併成 `--out`。每段結束印進度（符合「長時間背景工作每約 10 分鐘回報」）。另有 `status` 看進度、`--low-priority` 降低優先權、`--background` 脫離 session 執行。輸出格式不變（`{秒數: 文字}`），`compare` 不用改。**OCR 的適用範圍本來就限佛學／講經且有燒入字幕（`probe` 通過）；這類影片超過 30 分鐘時自動啟動分段**，不必每次記得加旗標。
 
 ## User Stories
 
@@ -27,12 +27,14 @@ Status: ready-for-agent
 11. 身為校稿者，我想要 `--background` 讓辨識脫離目前 session 在背景跑並寫 log，這樣關掉 Claude 也不會被砍。
 12. 身為校稿者，我想要段落邊界不遺失或重複字幕列（每段的取樣點對齊 `--every`），這樣合併後與一次跑完等價。
 13. 身為校稿者，我想要 `--start`／`--end` 仍可限制範圍，這樣只想補某一段時可用。
-14. 身為維護者，我想要不加 `--segment-min` 時行為與現在完全相同，這樣舊指令與既有測試不受影響。
+14. 身為校稿者，我想要佛學／講經、有燒入字幕、影片超過 30 分鐘時自動啟動分段（預設 10 分鐘一段），這樣我不用記得加旗標。
+14a. 身為維護者，我想要 30 分鐘以內的影片、或明確指定 `--segment-min 0` 時行為與現在完全相同，這樣舊指令與既有測試不受影響。
 15. 身為維護者，我想要 skill、references、docs 與記憶都更新成「預設用分段跑」，這樣下次歸檔不會再手寫驅動腳本。
 
 ## Implementation Decisions
 
-- 介面：`run` 加 `--segment-min N`（0／未指定＝現行一次跑完）、`--seg-dir DIR`（預設 `<out>.segs/`）、`--low-priority`、`--background`；新增 `status <out>` 子命令。
+- **自動啟動**：`run` 取得影片長度後，若未指定 `--segment-min` 且長度 > 30 分鐘（`--auto-segment-min`，預設 30），自動採 `--segment-min 10`、並印一行說明「長片自動分段」；30 分鐘以內維持一次跑完；`--segment-min 0` 強制關閉。佛學／講經且有字幕由流程把關（skill 規定只有這類影片才跑 OCR，且須先 `probe` 通過），腳本只看長度，不判斷領域。
+- 介面：`run` 加 `--segment-min N`（0＝強制一次跑完；未指定＝依長度自動決定）、`--seg-dir DIR`（預設 `<out>.segs/`）、`--low-priority`、`--background`；新增 `status <out>` 子命令。
 - 段落檔名 `seg_<起始秒 5 位數>.json`，內容同現行輸出 `{秒數: 文字}`，秒數為整支影片的絕對秒數。段落長度為 `--segment-min` 分鐘，最後一段到 `--end` 或影片結尾。
 - 取樣點：每段起點為 `--every` 的整數倍（段長取 `--every` 的倍數），確保合併後與一次跑完取樣點相同。
 - 續跑：段落檔存在即視為完成；**不比對內容**。要重做某段就刪該檔。
