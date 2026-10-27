@@ -282,5 +282,90 @@ class Locks(unittest.TestCase):
         self.assertEqual(len(json.loads((d / "o.json").read_text(encoding="utf-8"))), 5)
 
 
+class Background(unittest.TestCase):
+    def test_child_command_drops_background_and_adds_low_priority(self):
+        cmd = so.background_command(["run", "v.mp4", "--out", "o.json", "--background", "--every", "3"], "/x/subtitle_ocr.py")
+        self.assertEqual(cmd[1:], ["-u", "/x/subtitle_ocr.py", "run", "v.mp4", "--out", "o.json", "--every", "3", "--low-priority"])
+        self.assertNotIn("--background", cmd)
+
+    def test_low_priority_is_not_added_twice(self):
+        cmd = so.background_command(["run", "v.mp4", "--low-priority", "--background"], "s.py")
+        self.assertEqual(cmd.count("--low-priority"), 1)
+
+    def test_start_background_detaches_and_logs(self):
+        import tempfile
+        seen = {}
+
+        class FakeProc:
+            pid = 4242
+
+        def fake_popen(cmd, **kw):
+            seen.update(cmd=cmd, kw=kw)
+            return FakeProc()
+        with tempfile.TemporaryDirectory() as d:
+            log = Path(d) / "segs" / "progress.log"
+            proc = so.start_background(["python", "x"], log, popen=fake_popen)
+            self.assertEqual(proc.pid, 4242)
+            self.assertTrue(log.exists())                      # log dir and file are created up front
+            kw = seen["kw"]
+            self.assertEqual(kw["env"]["PYTHONUTF8"], "1")
+            if os.name == "nt":
+                self.assertTrue(kw["creationflags"] & 0x00000008)   # DETACHED_PROCESS
+            else:
+                self.assertTrue(kw["start_new_session"])
+
+    @unittest.skipUnless(os.name == "nt", "Windows priority classes")
+    def test_apply_low_priority_really_sets_idle_class_on_windows(self):
+        import subprocess
+        import sys
+        code = ("import sys, os, subprocess; sys.path.insert(0, sys.argv[1]); import subtitle_ocr as so; "
+                "so.apply_low_priority(); print(subprocess.run(['powershell', '-NoProfile', '-Command', "
+                "'(Get-Process -Id %d).PriorityClass' % os.getpid()], capture_output=True, text=True).stdout.strip())")
+        out = subprocess.run([sys.executable, "-c", code, str(Path(so.__file__).parent)], capture_output=True, text=True)
+        self.assertEqual(out.stdout.strip(), "Idle")
+
+    def run_cli(self, extra, patches):
+        import io
+        import contextlib
+        from unittest import mock
+        out = io.StringIO()
+        with mock.patch.multiple(so, **patches), contextlib.redirect_stdout(out):
+            rc = so.main(["run", "v.mp4", "--out", "o.json"] + extra)
+        return rc, out.getvalue()
+
+    def test_background_flag_starts_a_child_and_returns_without_ocr(self):
+        from unittest import mock
+        started = {}
+
+        class P:
+            pid = 7
+
+        def fake_start(cmd, log_path, popen=None):
+            started.update(cmd=cmd, log=log_path)
+            return P()
+        rc, text = self.run_cli(["--background"], {
+            "start_background": fake_start, "video_duration": mock.Mock(side_effect=AssertionError("no OCR here")),
+            "ocr_range": mock.Mock(side_effect=AssertionError("no OCR here"))})
+        self.assertEqual(rc, 0)
+        self.assertIn("--low-priority", started["cmd"])
+        self.assertNotIn("--background", started["cmd"])
+        self.assertEqual(Path(started["log"]).name, "progress.log")
+        self.assertIn("status o.json", text)
+        self.assertIn("pid 7", text)
+
+    def test_low_priority_flag_lowers_priority_only_when_asked(self):
+        from unittest import mock
+        calls = []
+        patches = {"apply_low_priority": lambda: calls.append(1), "video_duration": lambda v: 60.0,
+                   "ocr_range": lambda *a, **k: {"0": "x"}}
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            for extra, expected in (([], 0), (["--low-priority"], 1)):
+                calls.clear()
+                with mock.patch.multiple(so, **patches):
+                    so.main(["run", "v.mp4", "--out", str(Path(d) / "o.json")] + extra)
+                self.assertEqual(len(calls), expected)
+
+
 if __name__ == "__main__":
     unittest.main()

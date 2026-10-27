@@ -6,10 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] 旗標傳遞：`--background` 組出的子程序指令不含 `--background`、含 `--low-priority`，其餘參數照傳
-- [ ] 啟動後立即返回，印出 log 與 `status` 的用法
-- [ ] progress.log 在背景程序內持續寫入每段進度
-- [ ] 以替身驗證，不真的起程序；實機在 Windows 手動驗證一次並記錄
-- [ ] 文件註明：關掉 Claude 不會終止背景程序，但關機會
+- [x] 旗標傳遞：`--background` 組出的子程序指令不含 `--background`、含 `--low-priority`，其餘參數照傳
+- [x] 啟動後立即返回，印出 log 與 `status` 的用法
+- [x] progress.log 在背景程序內持續寫入每段進度
+- [x] 以替身驗證，不真的起程序；實機在 Windows 手動驗證一次並記錄
+- [x] 文件註明：關掉 Claude 不會終止背景程序，但關機會
 
 ## Comments

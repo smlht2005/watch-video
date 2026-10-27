@@ -11,6 +11,7 @@ Usage:
   python3 scripts/subtitle_ocr.py probe <video> [--model v5|v4]          # are there burned-in subtitles at all?
   python3 scripts/subtitle_ocr.py run <video> --out ocr.json [--workers 2] [--every 3] [--model v5|v4] [--start S] [--end S]
                                             [--segment-min N|0] [--auto-segment-min 30] [--seg-dir DIR]
+                                            [--low-priority] [--background]
   python3 scripts/subtitle_ocr.py status ocr.json [--seg-dir DIR]     # how many segments are done / left / running
   python3 scripts/subtitle_ocr.py compare <folder> --ocr ocr.json [--thr 0.85] [--out diff.txt]
 
@@ -276,16 +277,34 @@ def clock(sec):
     return f"{sec // 3600}:{sec % 3600 // 60:02d}:{sec % 60:02d}"
 
 
+def _kernel32():
+    """kernel32 with explicit signatures: ctypes' default int types truncate 64-bit handles and the call silently fails."""
+    import ctypes
+    from ctypes import wintypes
+    k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    k32.GetCurrentProcess.restype = wintypes.HANDLE
+    k32.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+    k32.SetPriorityClass.restype = wintypes.BOOL
+    k32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    k32.OpenProcess.restype = wintypes.HANDLE
+    k32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+    k32.GetExitCodeProcess.restype = wintypes.BOOL
+    k32.CloseHandle.argtypes = [wintypes.HANDLE]
+    return k32
+
+
 def pid_alive(pid):
     """Is a process with this pid running on this machine? (os.kill(pid, 0) would kill it on Windows, so ask the OS.)"""
     if os.name == "nt":
         import ctypes
-        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, int(pid))   # PROCESS_QUERY_LIMITED_INFORMATION
+        from ctypes import wintypes
+        k32 = _kernel32()
+        handle = k32.OpenProcess(0x1000, False, int(pid))   # PROCESS_QUERY_LIMITED_INFORMATION
         if not handle:
             return False
-        code = ctypes.c_ulong()
-        ok = ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
-        ctypes.windll.kernel32.CloseHandle(handle)
+        code = wintypes.DWORD()
+        ok = k32.GetExitCodeProcess(handle, ctypes.byref(code))
+        k32.CloseHandle(handle)
         return bool(ok) and code.value == 259   # STILL_ACTIVE
     try:
         os.kill(int(pid), 0)
@@ -338,7 +357,11 @@ def release_segment(seg_dir, start):
         pass
 
 
-def run_segmented(out, seg_dir, segments, ocr_segment, log=print, every=None, ttl=LOCK_TTL):
+def say(msg):
+    print(msg, flush=True)
+
+
+def run_segmented(out, seg_dir, segments, ocr_segment, log=say, every=None, ttl=LOCK_TTL):
     """OCR each segment that has no seg file yet, then merge them all into `out` once none is missing.
 
     ocr_segment(start, end) -> {seconds: text}. Several processes may run this on the same seg_dir: each segment is
@@ -405,7 +428,51 @@ def cmd_status(args):
     return 0
 
 
+def apply_low_priority():
+    """Lower this process's priority (Windows: Idle class, elsewhere nice 19); worker processes inherit it."""
+    if os.name == "nt":
+        k32 = _kernel32()
+        if not k32.SetPriorityClass(k32.GetCurrentProcess(), 0x40):   # IDLE_PRIORITY_CLASS
+            raise OSError("SetPriorityClass failed")
+    else:
+        os.nice(19)
+
+
+def background_command(argv, script):
+    """The command that re-runs this `run` invocation detached: no --background, with --low-priority, unbuffered."""
+    rest = [a for a in argv if a != "--background"]
+    if "--low-priority" not in rest:
+        rest.append("--low-priority")
+    return [sys.executable, "-u", str(script)] + rest
+
+
+def start_background(cmd, log_path, popen=subprocess.Popen):
+    """Start `cmd` detached from this session (it survives closing the terminal / Claude), appending output to log_path."""
+    Path(log_path).parent.mkdir(parents=True, exist_ok=True)
+    log = open(log_path, "a", encoding="utf-8")
+    kw = {"stdin": subprocess.DEVNULL, "stdout": log, "stderr": subprocess.STDOUT, "close_fds": True,
+          "env": {**os.environ, "PYTHONUTF8": "1"}}
+    if os.name == "nt":
+        kw["creationflags"] = 0x00000008 | 0x00000200 | 0x08000000   # DETACHED_PROCESS | NEW_PROCESS_GROUP | NO_WINDOW
+    else:
+        kw["start_new_session"] = True
+    proc = popen(cmd, **kw)
+    log.close()
+    return proc
+
+
 def cmd_run(args):
+    if args.background:
+        seg_dir = args.seg_dir or str(args.out) + ".segs"
+        log_path = Path(seg_dir) / "progress.log"
+        proc = start_background(background_command(args.raw_argv, Path(__file__).resolve()), log_path)
+        print(f"started in the background (pid {proc.pid}, low priority); progress: {log_path}")
+        print(f"check with: python3 scripts/subtitle_ocr.py status {args.out}"
+              + (f" --seg-dir {args.seg_dir}" if args.seg_dir else ""))
+        print("closing this terminal / Claude does not stop it; a reboot does (rerun the same command to resume)")
+        return 0
+    if args.low_priority:
+        apply_low_priority()
     total = video_duration(args.video) if args.segment_min is None or args.segment_min else None
     if args.segment_min is None:
         step_min = resolve_segment_min(None, total, args.auto_segment_min)
@@ -496,6 +563,9 @@ def main(argv=None):
                    "resumes; 0 = one pass; default: segments of 10 min when the video is longer than --auto-segment-min")
     p.add_argument("--auto-segment-min", type=int, default=AUTO_SEGMENT_MIN)
     p.add_argument("--seg-dir", help="where segment files go (default <out>.segs)")
+    p.add_argument("--low-priority", action="store_true", help="run at idle priority so the laptop stays usable")
+    p.add_argument("--background", action="store_true",
+                   help="start detached from this session (implies --low-priority), log to <seg-dir>/progress.log, return at once")
     p.add_argument("--lock-ttl", type=int, default=LOCK_TTL, help="seconds after which a segment lock counts as abandoned")
     p.set_defaults(fn=cmd_run)
     p = sub.add_parser("status", help="show how far a segmented run got")
@@ -513,6 +583,7 @@ def main(argv=None):
     p.add_argument("--model", choices=["v5", "v4"], default="v5", help="model the ocr.json came from (v4 gets the misread fixes)")
     p.set_defaults(fn=cmd_compare)
     args = ap.parse_args(argv)
+    args.raw_argv = list(sys.argv[1:] if argv is None else argv)
     return args.fn(args)
 
 
