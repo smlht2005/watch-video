@@ -112,13 +112,15 @@ def strip_h1(md: str) -> str:
 def slide_blocks(meta, segs):
     """One block per slide: one frame, optional note, then the transcript spoken while it is on screen."""
     slides = sorted(meta["slides"], key=lambda x: to_sec(x["start"]))
-    end = meta.get("duration", "").split(" ")[0]
+    carousel = meta.get("media_type") == "carousel"  # image post: page N sits at 00:0N, no real timeline
+    end = "" if carousel else meta.get("duration", "").split(" ")[0]
     L = []
     for n, sl in enumerate(slides):
         nxt = slides[n + 1]["start"] if n + 1 < len(slides) else end
         lo, hi = to_sec(sl["start"]), (to_sec(nxt) if nxt else 10 ** 9)
         title = f"：{sl['title']}" if sl.get("title") else ""
-        L += [f"### 投影片 {n + 1}{title}（{sl['start']}–{nxt}）", "", f"![{sl['start']}](frames/{sl['frame']})", ""]
+        span = "" if carousel else f"（{sl['start']}–{nxt}）"
+        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '投影片 %d' % (n + 1)}{title}{span}", "", f"![{sl['start']}](frames/{sl['frame']})", ""]
         if sl.get("note"):
             L += [f"**重點：** {sl['note']}", ""]
         if sl.get("keywords"):
@@ -232,7 +234,7 @@ def build_md(dest: Path, meta, summary, segs, frames, map_png=None) -> str:
     L = [f"# {meta['title']}", ""]
     L += [f"- 來源：{meta['url']}",
           f"- 平台 / 上傳者：{meta['platform']} / {meta.get('uploader', '')}",
-          f"- 長度：{meta.get('duration', '')}",
+          f"- {'頁數' if meta.get('media_type') == 'carousel' else '長度'}：{meta.get('duration', '')}",
           f"- 逐字稿來源：{meta.get('transcript_source', '')}",
           f"- 更新日期：{meta.get('last_updated', '')}"]
     if meta.get("keywords"):

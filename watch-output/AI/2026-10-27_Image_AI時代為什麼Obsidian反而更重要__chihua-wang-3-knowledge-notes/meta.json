@@ -1,0 +1,112 @@
+{
+  "url": "（使用者上傳圖片，原貼文網址未提供）",
+  "platform": "Image",
+  "video_id": "chihua-wang-3-knowledge-notes",
+  "title": "AI 時代為什麼 Obsidian 反而更重要？",
+  "title_override": "AI 時代為什麼 Obsidian 反而更重要？",
+  "media_type": "carousel",
+  "category": "AI",
+  "uploader": "@chihua.wang.3（Knowledge Notes）",
+  "duration": "8 頁（共 10 頁，第 9–10 頁未提供）",
+  "detail": "balanced",
+  "transcript_source": "圖片文字（逐頁人工抄錄，非語音轉錄）",
+  "detected_language": "zh",
+  "language_source": "manual",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "keywords": [
+    "Obsidian",
+    "知識管理",
+    "連結",
+    "Wikilink",
+    "Markdown",
+    "AI協作"
+  ],
+  "first_archived": "2026-10-27",
+  "last_updated": "2026-10-27",
+  "known_asr_errors": [],
+  "slides": [
+    {
+      "start": "00:01",
+      "frame": "slide_01.jpg",
+      "title": "AI 時代為什麼 Obsidian 反而更重要？",
+      "note": "AI 生成的材料（AI 對話、文章摘要、研究整理、程式與筆記）放進 Obsidian，由你主動比較、延伸、質疑、整合，形成屬於你的思考路徑。",
+      "keywords": [
+        "Obsidian",
+        "AI",
+        "知識管理"
+      ]
+    },
+    {
+      "start": "00:02",
+      "frame": "slide_02.jpg",
+      "title": "Obsidian 是接住 AI 產物的地方",
+      "note": "AI 的產出（對話、摘要、靈感、研究重點）整理輸出成 .md 檔——簡單、開放、可長期保存——再放進 Obsidian，與既有筆記連結成更大的網絡。",
+      "keywords": [
+        "Markdown",
+        "AI產出"
+      ]
+    },
+    {
+      "start": "00:03",
+      "frame": "slide_03.jpg",
+      "title": "AI 可以生內容，但 Obsidian 決定內容怎麼留下來",
+      "note": "同一份 AI 長文，經標題層級、Callout、Wikilink 與待建立節點整理後，從一時的輸出變成可持續累積的知識；AI 負責生成素材，人負責判斷、連結與整合。",
+      "keywords": [
+        "Wikilink",
+        "Callout",
+        "筆記結構"
+      ]
+    },
+    {
+      "start": "00:04",
+      "frame": "slide_04.jpg",
+      "title": "真正重要的問題：這份筆記要跟什麼連在一起？",
+      "note": "一個想法的價值來自它能連到的其他知識；圍繞「我的筆記」問六個問題：統計推論、哲學、心理學、管理學、社會脈絡、實際情境。",
+      "keywords": [
+        "連結",
+        "提問"
+      ]
+    },
+    {
+      "start": "00:05",
+      "frame": "slide_05.jpg",
+      "title": "link 不是排版，而是在定義關係",
+      "note": "好的 link 連結兩個相關概念、有方向有脈絡；把不相關內容隨意連起來只會混亂。link 是在定義關係，不是在排版。",
+      "keywords": [
+        "連結品質",
+        "雙向連結"
+      ]
+    },
+    {
+      "start": "00:06",
+      "frame": "slide_06.jpg",
+      "title": "你的連結，會暴露你的思考方式",
+      "note": "同一本書，因背景與問題意識不同，連出完全不同的網絡：工程背景連到行為設計、系統思考；心理學背景連到動機理論、自我認同。重點是連到你已有的知識與問題。",
+      "keywords": [
+        "思考方式",
+        "原子習慣"
+      ]
+    },
+    {
+      "start": "00:07",
+      "frame": "slide_07.jpg",
+      "title": "每一個 link，都在替未來的自己鋪路",
+      "note": "從核心概念出發，順著 link 延伸到歷史脈絡、實際應用、反例與侷限、另一個學科，知識不再孤立，而是越來越大的地圖。",
+      "keywords": [
+        "知識地圖",
+        "延伸"
+      ]
+    },
+    {
+      "start": "00:08",
+      "frame": "slide_08.jpg",
+      "title": "AI 很強，但 link 不一定要交給 AI",
+      "note": "AI 會依語義相似度生出看起來相關的連結；有價值的 link 由你根據目的、脈絡、經驗與獨特觀點選擇（打勾保留、打叉剔除）。",
+      "keywords": [
+        "AI",
+        "連結選擇"
+      ]
+    }
+  ]
+}
