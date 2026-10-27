@@ -45,6 +45,8 @@ python3 scripts/obsidian_export.py --all                            # 全部重�
 
 ## 圖文貼文（輪播圖，非影片）
 
+- **Threads／IG 輪播的完整圖頁在 `<貼文網址>/embed`**：主頁 HTML 只有 `og:image`（第 1 張）；`curl -A "Mozilla/5.0" <貼文網址>/embed` 的頁面含全部頁面圖（`cdninstagram.com` JPG，第一個 `t51.2885-19` 是頭像，要略過）。主頁的 `og:description` 是貼文本文。不要只看主頁就說缺頁（2026-10-27 教訓：曾因此誤報第 9–10 頁無法取得）。
+
 使用者只給圖片時（例如 IG／Threads 輪播），照影片流程的檔案格式手動歸檔：
 
 - `meta.json` 加 `"media_type": "carousel"`，`platform` 填 `Image`，`duration` 寫頁數（如 `8 頁（共 10 頁，第 9–10 頁未提供）`），`transcript_source` 寫「圖片文字（逐頁人工抄錄，非語音轉錄）」；`slides` 每頁一筆，`start` 用 `00:0N`（第 N 頁），`frame` 指向 `frames/slide_0N.jpg`（同時寫 `frames.json`）。

@@ -38,5 +38,15 @@
     "file": "slide_08.jpg",
     "t": "00:08",
     "reason": "carousel-page"
+  },
+  {
+    "file": "slide_09.jpg",
+    "t": "00:09",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_10.jpg",
+    "t": "00:10",
+    "reason": "carousel-page"
   }
 ]

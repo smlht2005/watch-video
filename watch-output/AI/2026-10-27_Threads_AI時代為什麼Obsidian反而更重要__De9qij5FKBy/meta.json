@@ -7,7 +7,7 @@
   "media_type": "carousel",
   "category": "AI",
   "uploader": "王啟樺（@chihua.wang.3）",
-  "duration": "8 頁（貼文共 10 頁，第 9–10 頁無法取得）",
+  "duration": "10 頁（完整）",
   "detail": "balanced",
   "transcript_source": "圖片文字（逐頁人工抄錄，非語音轉錄）",
   "detected_language": "zh",
@@ -20,7 +20,8 @@
     "連結",
     "Wikilink",
     "Markdown",
-    "AI協作"
+    "AI協作",
+    "留白"
   ],
   "first_archived": "2026-10-27",
   "last_updated": "2026-10-27",
@@ -106,6 +107,26 @@
       "keywords": [
         "AI",
         "連結選擇"
+      ]
+    },
+    {
+      "start": "00:09",
+      "frame": "slide_09.jpg",
+      "title": "可以故意留一塊「AI 不碰」的筆記區",
+      "note": "AI 擅長摘要整理、分類歸納、比較延伸、連結知識、生成草稿，這些交給 AI 提升效率；另留「我的思考區」處理模糊、矛盾、情感、價值判斷與長期思考，AI 先不要碰。",
+      "keywords": [
+        "留白",
+        "cognitive work"
+      ]
+    },
+    {
+      "start": "00:10",
+      "frame": "slide_10.jpg",
+      "title": "把 AI 的產出，重新轉化成自己的理解",
+      "note": "AI 給的是起點；後續用自己的語言去蕪存菁、重寫並加入個人觀點，再與既有知識串聯，累積成屬於自己的知識世界。",
+      "keywords": [
+        "改寫",
+        "個人知識世界"
       ]
     }
   ],
