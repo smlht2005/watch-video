@@ -1,11 +1,12 @@
 {
   "url": "https://www.threads.com/@chihua.wang.3/post/De9qij5FKBy",
+  "share_url": "https://www.threads.com/share/_orjYS_Zd/",
   "platform": "Threads",
   "video_id": "De9qij5FKBy",
   "title": "AI 時代為什麼 Obsidian 反而更重要？",
   "title_override": "AI 時代為什麼 Obsidian 反而更重要？",
-  "media_type": "carousel",
   "category": "AI",
+  "media_type": "carousel",
   "uploader": "王啟樺（@chihua.wang.3）",
   "duration": "10 頁（完整）",
   "detail": "balanced",
@@ -23,9 +24,9 @@
     "AI協作",
     "留白"
   ],
+  "known_asr_errors": [],
   "first_archived": "2026-10-27",
   "last_updated": "2026-10-27",
-  "known_asr_errors": [],
   "slides": [
     {
       "start": "00:01",
@@ -129,6 +130,5 @@
         "個人知識世界"
       ]
     }
-  ],
-  "share_url": "https://www.threads.com/share/_orjYS_Zd/"
+  ]
 }

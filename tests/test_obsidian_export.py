@@ -41,7 +41,7 @@ class Export(unittest.TestCase):
         return d
 
     def test_note_has_properties_links_and_safe_name(self):
-        d = self.folder(links="# 連結\n- [[知識管理]]｜上位\n- [[雙向連結|link]]｜機制\n- [[知識管理]]｜重複\n")
+        d = self.folder(links="# 連結\n## 已確認\n- [[知識管理]]｜上位概念：主題\n- [[雙向連結|link]]｜互補：機制\n- [[知識管理]]｜舉例：重複\n## 候選\n- [[未確認]]｜舉例：不匯出\n")
         oe.export(d, self.vault)
         md = next((self.vault / "AI").glob("*.md"))
         self.assertEqual(md.name, "測試影片.md")
@@ -52,6 +52,8 @@ class Export(unittest.TestCase):
         self.assertIn('  - "[[雙向連結]]"', text)
         self.assertNotIn('  - "2026"', text)  # purely numeric tags are invalid in Obsidian
         self.assertIn("## 連結", text)
+        self.assertIn("- [[知識管理]]｜上位概念：主題", text)
+        self.assertNotIn("未確認", text)
 
     def test_no_links_md_means_no_links_section(self):
         oe.export(self.folder(), self.vault)
