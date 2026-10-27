@@ -141,9 +141,24 @@ def compare(lines, events, thr=0.85, window_pad=1):
     return flagged
 
 
+def download_file(url, dest, retrieve=None):
+    """Download to `<dest>.part` and rename on success, so an interrupted download never looks like a finished model."""
+    if retrieve is None:
+        import urllib.request
+        retrieve = urllib.request.urlretrieve
+    part = Path(str(dest) + ".part")
+    try:
+        retrieve(url, part)
+        if not part.exists() or part.stat().st_size == 0:
+            raise OSError(f"empty download: {url}")
+        os.replace(part, dest)
+    except BaseException:
+        part.unlink(missing_ok=True)
+        raise
+
+
 def v5_paths(model="v5"):
     """Local paths of a PP-OCRv5 Chinese recognizer and its dictionary, downloaded on first use."""
-    import urllib.request
     folder, base, files = V5_MODELS[model]
     cache = Path.home() / ".cache" / "watch" / folder
     cache.mkdir(parents=True, exist_ok=True)
@@ -152,7 +167,7 @@ def v5_paths(model="v5"):
         dest = cache / name
         if not dest.exists() or dest.stat().st_size == 0:
             print(f"downloading {model} {name} ...", file=sys.stderr, flush=True)
-            urllib.request.urlretrieve(base + name, dest)
+            download_file(base + name, dest)
         paths[kwarg] = str(dest)
     return paths
 

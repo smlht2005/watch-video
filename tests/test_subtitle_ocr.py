@@ -581,6 +581,34 @@ class Models(unittest.TestCase):
     def test_v4_has_no_downloadable_files(self):
         self.assertNotIn("v4", so.V5_MODELS)
 
+    def test_failed_download_leaves_no_model_file(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            dest = Path(d) / "rec.onnx"
+
+            def retrieve(url, path):
+                Path(path).write_bytes(b"half")
+                raise OSError("net")
+            with self.assertRaises(OSError):
+                so.download_file("http://x/rec.onnx", dest, retrieve)
+            self.assertEqual(list(Path(d).iterdir()), [])
+
+    def test_good_download_lands_under_the_final_name(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            dest = Path(d) / "rec.onnx"
+            so.download_file("http://x/rec.onnx", dest, lambda url, path: Path(path).write_bytes(b"onnx"))
+            self.assertEqual(dest.read_bytes(), b"onnx")
+            self.assertEqual([f.name for f in Path(d).iterdir()], ["rec.onnx"])
+
+    def test_empty_download_is_an_error(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            dest = Path(d) / "rec.onnx"
+            with self.assertRaises(OSError):
+                so.download_file("http://x/rec.onnx", dest, lambda url, path: Path(path).write_bytes(b""))
+            self.assertEqual(list(Path(d).iterdir()), [])
+
 
 if __name__ == "__main__":
     unittest.main()
