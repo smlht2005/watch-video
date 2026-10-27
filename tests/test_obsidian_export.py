@@ -231,6 +231,55 @@ class KnowledgePoints(Fixture):
         self.assertTrue(all("watch-archive" in p.parts for p in new))
 
 
+class ReviewRegressions(Fixture):
+    """Findings of the 2026-10-27 code review."""
+
+    def test_long_titles_equal_in_first_60_chars_do_not_overwrite_each_other(self):
+        import contextlib
+        import io
+        d = self.folder(carousel=True)
+        same = "長" * 60
+        (d / "knowledge.md").write_text(f"## 已確認\n### {same}甲\n- 說明：一\n### {same}乙\n- 說明：二\n", encoding="utf-8")
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            oe.export(d, self.vault)
+        self.assertEqual(len(list((self.vault / "知識點").glob("*.md"))), 1)
+        self.assertIn("檔名相同", err.getvalue())
+        video = next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
+        self.assertEqual(video.count(f"- [[{same}]]"), 1)
+
+    def test_users_copy_of_a_generated_note_survives_reexport(self):
+        d = self.folder()
+        oe.export(d, self.vault)
+        src = self.vault / "AI" / "測試影片.md"
+        copy = self.vault / "AI" / "測試影片 我的筆記.md"
+        copy.write_text(src.read_text(encoding="utf-8") + "\n我加的\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        self.assertTrue(copy.exists())
+        oe.write_index(self.vault)
+        self.assertNotIn("我的筆記", (self.vault / "00-索引.md").read_text(encoding="utf-8"))
+
+    def test_users_suffixed_note_is_not_overwritten_either(self):
+        (self.vault / "AI").mkdir(parents=True)
+        (self.vault / "AI" / "測試影片.md").write_text("mine", encoding="utf-8")
+        (self.vault / "AI" / "測試影片 (abc123).md").write_text("mine too", encoding="utf-8")
+        oe.export(self.folder(), self.vault)
+        self.assertEqual((self.vault / "AI" / "測試影片 (abc123).md").read_text(encoding="utf-8"), "mine too")
+        self.assertTrue((self.vault / "AI" / "測試影片 (abc123) 2.md").exists())
+
+    def test_pages_ordered_by_time_not_by_string(self):
+        from PIL import Image
+        d = self.folder(carousel=True)
+        for name in ("a.jpg", "b.jpg"):
+            Image.new("RGB", (20, 20)).save(d / "frames" / name)
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        meta["slides"] = [{"start": "00:10", "frame": "b.jpg", "title": "後"}, {"start": "0:05", "frame": "a.jpg", "title": "前"}]
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        oe.export(d, self.vault, with_pages=True)
+        text = next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
+        self.assertIn("**第 1 頁：前**", text)
+
+
 class CarouselReport(unittest.TestCase):
     def test_carousel_report_uses_page_headings_and_no_time_range(self):
         import build_report as br

@@ -30,10 +30,13 @@ import shutil
 import sys
 from pathlib import Path
 
+from build_report import strip_h1 as _strip_h1, to_sec  # one copy of the time and heading helpers
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT_ROOT = ROOT / "watch-output"
 DEFAULT_VAULT = ROOT / "obsidian-vault"
 MARK = "generated_by: watch-archive"
+MANIFEST = ".watch-archive.json"  # {video_id: [vault-relative paths we wrote]}; the only proof a file is ours
 WIKI_RE = re.compile(r"\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]")
 UNSAFE = re.compile(r'[\\/:*?"<>|#^\[\]]')  # characters Windows or Obsidian link names cannot hold
 
@@ -58,7 +61,7 @@ def read_text(p: Path) -> str:
 
 
 def strip_h1(md: str) -> str:
-    return re.sub(r"\A\s*# .*\n+", "", md).strip()
+    return _strip_h1(md.lstrip()).strip()
 
 
 def frontmatter_of(path: Path) -> dict:
@@ -75,7 +78,46 @@ def frontmatter_of(path: Path) -> dict:
 
 
 def is_ours(path: Path) -> bool:
+    """Legacy test (before the manifest): our mark in the properties. A copy the user made keeps the mark, so this is
+    only used for vaults exported before the manifest existed."""
     return MARK in read_text(path)[:2000]
+
+
+def load_manifest(vault: Path) -> dict:
+    try:
+        return json.loads(read_text(vault / MANIFEST) or "{}")
+    except ValueError:
+        return {}
+
+
+def save_manifest(vault: Path, manifest: dict):
+    vault.mkdir(parents=True, exist_ok=True)
+    (vault / MANIFEST).write_text(json.dumps(manifest, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def rel(vault: Path, path: Path) -> str:
+    return path.relative_to(vault).as_posix()
+
+
+def owned(vault: Path, path: Path, vid: str, manifest: dict) -> bool:
+    """Is `path` a file we generated for this video? The manifest decides; a video missing from it (vault exported
+    before the manifest) falls back to the old mark + video_id test once."""
+    if vid in manifest:
+        return rel(vault, path) in manifest[vid]
+    return is_ours(path) and frontmatter_of(path).get("video_id") == vid
+
+
+def free_path(vault: Path, folder: Path, base: str, vid: str, manifest: dict, taken=()) -> Path:
+    """First of '<base>.md', '<base> (<id>).md', '<base> (<id>) 2.md'… that is free or already ours for this video;
+    a file the user owns is never overwritten."""
+    names = [f"{base}.md", f"{base} ({vid[:12]}).md"] + [f"{base} ({vid[:12]}) {n}.md" for n in range(2, 100)]
+    for name in names:
+        p = folder / name
+        if p in taken:
+            continue
+        if not p.exists() or owned(vault, p, vid, manifest):
+            return p
+    raise SystemExit(f"no free note name for {base!r} in {folder}")
 
 
 def category_of(dest: Path, meta: dict) -> str:
@@ -85,23 +127,23 @@ def category_of(dest: Path, meta: dict) -> str:
         return meta.get("category") or "未分類"
 
 
-def note_path(vault: Path, cat: str, title: str, vid: str) -> Path:
-    """<vault>/<cat>/<title>.md; when another video already owns that name, '<title> (<id>)' keeps both."""
-    base = safe_name(title)
-    p = vault / cat / f"{base}.md"
-    fm = frontmatter_of(p) if p.exists() else {}
-    if p.exists() and (fm.get("video_id") != vid or MARK not in read_text(p)[:2000]):
-        p = vault / cat / f"{base} ({vid[:12]}).md"
-    return p
+def note_path(vault: Path, cat: str, title: str, vid: str, manifest: dict) -> Path:
+    """<vault>/<cat>/<title>.md; when another video or the user owns that name, a suffixed name keeps both."""
+    return free_path(vault, vault / cat, safe_name(title), vid, manifest)
 
 
-def drop_stale(vault: Path, vid: str, keep: set):
-    """Remove generated notes of this video that a renamed title or a moved category left behind."""
-    for md in vault.rglob("*.md"):
-        if md in keep or "_attachments" in md.parts or not is_ours(md):
-            continue
-        if frontmatter_of(md).get("video_id") == vid:
-            md.unlink()
+def drop_stale(vault: Path, vid: str, keep: set, manifest: dict):
+    """Remove files we generated for this video earlier but not this time (renamed title, moved category, dropped
+    knowledge point), then record what we own now. Only paths listed in the manifest are removed."""
+    if vid in manifest:
+        old = [vault / r for r in manifest[vid]]
+    else:  # vault exported before the manifest: one-time scan by mark + video_id
+        old = [md for md in vault.rglob("*.md") if "_attachments" not in md.parts and is_ours(md)
+               and frontmatter_of(md).get("video_id") == vid]
+    for p in old:
+        if p not in keep and p.suffix == ".md":
+            p.unlink(missing_ok=True)
+    manifest[vid] = sorted(rel(vault, p) for p in keep)
 
 
 LINK_RE = re.compile(r"^\s*[-*]\s*\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]\s*[｜|]\s*([^：:]+?)\s*[：:]\s*(.+?)\s*$")
@@ -202,13 +244,6 @@ DEFAULT_FLAG = "講者／作者主張，未查證"  # CLAUDE.md hard rule: claim
 IMG_MAX = 1024
 
 
-def to_sec(ts: str) -> int:
-    n = [int(x) for x in ts.split(":")]
-    while len(n) < 3:
-        n.insert(0, 0)
-    return n[0] * 3600 + n[1] * 60 + n[2]
-
-
 def source_image(dest: Path, meta: dict, source: str):
     """The picture a knowledge point's 出處 refers to: '第 N 頁' -> that page of a carousel; 'MM:SS' -> the frame
     closest in time. None when it cannot be resolved (the note is then exported without a picture)."""
@@ -247,13 +282,9 @@ def quote_found(dest: Path, quote: str) -> bool:
     return not q_ or q_ in norm(read_text(dest / "transcript.md") + read_text(dest / "supplement.md"))
 
 
-def point_note_path(vault: Path, title: str, vid: str) -> Path:
+def point_note_path(vault: Path, title: str, vid: str, manifest: dict, taken=()) -> Path:
     """<vault>/知識點/<title>.md; another video's (or the user's) note of that name is never overwritten."""
-    base = safe_name(title)
-    p = vault / POINT_DIR / f"{base}.md"
-    if p.exists() and (frontmatter_of(p).get("video_id") != vid or not is_ours(p)):
-        p = vault / POINT_DIR / f"{base} ({vid[:12]}).md"
-    return p
+    return free_path(vault, vault / POINT_DIR, safe_name(title), vid, manifest, taken)
 
 
 def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: list, image_rel: str = "") -> str:
@@ -283,7 +314,8 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     vid = meta.get("video_id") or dest.name.rpartition("__")[2]
     cat = category_of(dest, meta)
     title = meta["title"]
-    path = note_path(vault, cat, title, vid)
+    manifest = load_manifest(vault)
+    path = note_path(vault, cat, title, vid, manifest)
     path.parent.mkdir(parents=True, exist_ok=True)
     att = vault / "_attachments" / vid
     rel_att = os.path.relpath(att, path.parent).replace(os.sep, "/")
@@ -306,17 +338,21 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     links_conf, links_cand, problems = read_links(read_text(dest / "links.md"))
     points, points_cand, p_problems = read_points(read_text(dest / "knowledge.md"))
     problems += p_problems
-    seen_titles = set()
     for pt in points:
-        if pt["title"] in seen_titles:
-            problems.append(f"知識點標題重複：「{pt['title']}」（後者會覆蓋前者，請改名）")
-        seen_titles.add(pt["title"])
         if pt["quote"] and not quote_found(dest, pt["quote"]):
             problems.append(f"知識點「{pt['title']}」的引文在 transcript.md／supplement.md 找不到，可能是轉述")
     targets = list(dict.fromkeys([t for t, _, _ in links_conf]))
-    point_paths = {}  # point title -> note path (decided first so the video note can link to them)
+    # note path per point, decided first so the video note can link to them; two titles that become the same file
+    # name (identical, or equal in their first 60 characters) would overwrite each other: keep the first only
+    point_paths, by_name = {}, {}
     for pt in points:
-        point_paths[pt["title"]] = point_note_path(vault, pt["title"], vid)
+        key = safe_name(pt["title"])
+        if key in by_name:
+            problems.append(f"知識點「{pt['title']}」與「{by_name[key]}」的檔名相同（標題重複或前 60 字相同），已略過後者，請改名")
+            continue
+        by_name[key] = pt["title"]
+        point_paths[pt["title"]] = point_note_path(vault, pt["title"], vid, manifest, set(point_paths.values()))
+    points = [pt for pt in points if pt["title"] in point_paths and by_name.get(safe_name(pt["title"])) == pt["title"]]
     sop_src = next(iter(sorted((dest / "kb").glob("*_操作SOP.md"))), None) if (dest / "kb").is_dir() else None
     targets_sop = [sop_src.stem] if sop_src else []
 
@@ -340,7 +376,7 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
         body += ["## 思維導圖", "", f"![思維導圖]({attach(dest / 'mindmap.png', 'mindmap.png')})", ""]
     if carousel and with_pages:
         body += ["## 圖文原頁", ""]
-        for i, sl in enumerate(sorted(meta.get("slides", []), key=lambda s: s["start"]), 1):
+        for i, sl in enumerate(sorted(meta.get("slides", []), key=lambda sl: to_sec(sl["start"])), 1):
             src = dest / "frames" / sl["frame"]
             if src.exists():
                 body += [f"**第 {i} 頁：{sl.get('title', '')}**", "", f"![第 {i} 頁]({attach_small(src, sl['frame'])})", ""]
@@ -377,11 +413,12 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
         sop_text = sop_text.replace("](attachments/", f"]({rel_att}/")
         sop_text = sop_text.replace("---\n", f"---\n{MARK}\n", 1)
         sop_path = path.parent / f"{sop_src.stem}.md"
-        if not sop_path.exists() or is_ours(sop_path):
+        if not sop_path.exists() or owned(vault, sop_path, vid, manifest):
             sop_path.write_text(sop_text, encoding="utf-8")
             keep.add(sop_path)
             written.append(sop_path)
-    drop_stale(vault, vid, keep)
+    drop_stale(vault, vid, keep, manifest)
+    save_manifest(vault, manifest)
     if links_cand:
         problems.append(f"links.md 有 {len(links_cand)} 條候選連結未匯出（確認後移到「## 已確認」）")
     if points_cand:
@@ -403,13 +440,16 @@ def related_targets(md: Path) -> list:
 
 def write_index(vault: Path):
     """00-索引.md: generated notes by 領域, knowledge points by source note, and 待建立節點 (a [[link]] whose note
-    does not exist yet). Only notes carrying our mark are listed."""
+    does not exist yet). Only notes we generated (per the manifest) are listed."""
     rows, points, stems, wanted, orphans = {}, {}, set(), {}, []
+    manifest = load_manifest(vault)
+    listed = {vault / r for paths in manifest.values() for r in paths}
+    ours = (lambda md: md in listed) if manifest else is_ours  # a copy the user made of our note is not ours
     for md in sorted(vault.rglob("*.md")):
         if "_attachments" in md.parts or md.name == "00-索引.md":
             continue
         stems.add(md.stem)
-        if not is_ours(md):
+        if not ours(md):
             continue
         fm = frontmatter_of(md)
         for t in related_targets(md):

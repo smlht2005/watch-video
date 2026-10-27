@@ -69,7 +69,9 @@ def parse_images(embed_html: str):
     """Post page images in order, de-duplicated by path (query strings differ), avatar removed."""
     seen, out = set(), []
     for m in IMG_RE.finditer(embed_html):
-        url = html.unescape(m.group(0)).replace("\\/", "/").replace("\\u0026", "&").replace("\\u00253D", "%3D")
+        raw = m.group(0)
+        raw = raw[:-1] if raw.endswith("\\") else raw  # JSON blob: the backslash of an escaped closing quote
+        url = html.unescape(raw).replace("\\/", "/").replace("\\u0026", "&").replace("\\u00253D", "%3D")
         key = url.split("?")[0]
         if key in seen:
             continue
@@ -134,18 +136,22 @@ def scaffold(dest: Path, info: dict, share_url: str, title: str, category: str, 
     today = dt.date.today().isoformat()
     mp = dest / "meta.json"
     prev = json.loads(mp.read_text(encoding="utf-8")) if mp.exists() else {}
-    meta = {
+    defaults = {"detail": "balanced", "transcript_source": "圖片文字（逐頁人工抄錄，非語音轉錄）",
+                "detected_language": "zh", "language_source": "manual", "needs_zh_translation": False,
+                "glossaries": [], "keywords": [], "known_asr_errors": [], "title_override": "", "first_archived": today}
+    meta = {**defaults, **prev}  # every hand-added or hand-edited field survives a rerun
+    meta.update({  # source fields: always refreshed from the post
         "url": info["post_url"], "share_url": share_url, "platform": "Threads", "video_id": info["post_id"],
-        "title": prev.get("title") or title, "title_override": prev.get("title_override", ""), "category": category,
-        "media_type": "carousel", "uploader": f"{info['author']}（@{info['handle']}）" if info["author"] else f"@{info['handle']}",
-        "duration": f"{n_pages} 頁（完整）", "detail": "balanced",
-        "transcript_source": "圖片文字（逐頁人工抄錄，非語音轉錄）", "detected_language": "zh", "language_source": "manual",
-        "needs_zh_translation": False, "glossaries": prev.get("glossaries", []),
-        "keywords": prev.get("keywords", []), "known_asr_errors": prev.get("known_asr_errors", []),
-        "first_archived": prev.get("first_archived", today), "last_updated": today,
-        "slides": prev.get("slides") or [{"start": ts(n), "frame": slide(n), "title": f"第 {n} 頁", "note": "", "keywords": []}
-                                          for n in range(1, n_pages + 1)],
-    }
+        "category": category, "media_type": "carousel",
+        "uploader": f"{info['author']}（@{info['handle']}）" if info["author"] else f"@{info['handle']}",
+        "duration": f"{n_pages} 頁（完整）", "last_updated": today,
+    })
+    meta["title"] = prev.get("title") or title
+    slides = list(prev.get("slides") or [])
+    have = {sl.get("frame") for sl in slides}
+    slides += [{"start": ts(n), "frame": slide(n), "title": f"第 {n} 頁", "note": "", "keywords": []}
+               for n in range(1, n_pages + 1) if slide(n) not in have]  # pages found on a later fetch
+    meta["slides"] = slides
     mp.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if not (dest / "transcript.md").exists():
         lines = "\n".join(f"[{ts(n)}] （待抄錄第 {n} 頁圖上文字）" for n in range(1, n_pages + 1))

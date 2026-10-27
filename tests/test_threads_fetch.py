@@ -34,6 +34,10 @@ class Parse(unittest.TestCase):
         self.assertEqual([u.split("?")[0].rsplit("/", 1)[1] for u in urls], ["p1.jpg", "p2.jpg", "p3.jpg"])
         self.assertIn("&b=c", urls[0])  # &amp; unescaped
 
+    def test_json_escaped_url_has_no_trailing_backslash(self):
+        blob = r'{"u":"https:\/\/scontent.cdninstagram.com\/v\/p1.jpg?stp=x\u0026_nc=y\"}'
+        self.assertEqual(tf.parse_images(blob), ["https://scontent.cdninstagram.com/v/p1.jpg?stp=x&_nc=y"])
+
     def test_page_cap(self):
         many = "".join(f'<img src="{CDN}q{i}.jpg">' for i in range(tf.MAX_PAGES + 5))
         self.assertEqual(len(tf.parse_images(many)), tf.MAX_PAGES)
@@ -115,6 +119,31 @@ class Archive(unittest.TestCase):
         self.assertIn("我抄的", (d / "transcript.md").read_text(encoding="utf-8"))
         again = json.loads((d / "meta.json").read_text(encoding="utf-8"))
         self.assertEqual((again["keywords"], again["title"]), (["k"], "自訂標題"))
+
+    def test_rerun_with_more_pages_extends_slides_and_keeps_hand_fields(self):
+        self.run_archive()
+        d = self.folder()
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        meta["slides"][0]["title"] = "我寫的第一頁"
+        meta["video_type"] = "carousel-note"
+        meta["detail"] = "detailed"
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        more = EMBED + f'<img src="{CDN}p4.jpg">'
+        self.run_archive(fetch=lambda url: tf.fetch(url, get=fake_get(embed=more)))
+        again = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        self.assertEqual([sl["frame"] for sl in again["slides"]], [f"slide_0{i}.jpg" for i in range(1, 5)])
+        self.assertEqual(again["slides"][0]["title"], "我寫的第一頁")
+        self.assertEqual((again["video_type"], again["detail"], again["duration"]), ("carousel-note", "detailed", "4 頁（完整）"))
+
+    def test_category_change_moves_the_folder(self):
+        self.run_archive()
+        (self.root / "glossary" / "categories.json").write_text(json.dumps({"categories": ["AI", "身心生活", "未分類"]}), encoding="utf-8")
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            wa.archive_threads_post("https://www.threads.com/share/_x/", "身心生活", "", fetch=lambda url: tf.fetch(url, get=fake_get()),
+                                    get_bytes=lambda u: b"")
+        self.assertFalse(list((self.root / "watch-output" / "AI").glob("*__De9qij5FKBy")))
+        moved = next((self.root / "watch-output" / "身心生活").glob("*__De9qij5FKBy"))
+        self.assertEqual(json.loads((moved / "meta.json").read_text(encoding="utf-8"))["category"], "身心生活")
 
     def test_video_post_falls_back_to_video_pipeline(self):
         self.assertFalse(self.run_archive(fetch=lambda url: {}))

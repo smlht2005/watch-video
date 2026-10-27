@@ -468,7 +468,13 @@ def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None
     OUT_ROOT.mkdir(exist_ok=True)
     cat_dir = OUT_ROOT / category
     cat_dir.mkdir(parents=True, exist_ok=True)
-    dest = existing[0] if existing else cat_dir / f"{dt.date.today():%Y-%m-%d}_Threads_{clean_title(title)}__{vid}"[:NAME_MAX]
+    if existing:  # follow a category change, as the video pipeline does
+        dest = existing[0]
+        moved = cat_dir / dest.name
+        if moved != dest and not moved.exists():
+            dest = Path(shutil.move(str(dest), str(moved)))
+    else:
+        dest = cat_dir / f"{dt.date.today():%Y-%m-%d}_Threads_{clean_title(title)}__{vid}"[:NAME_MAX]
     try:
         meta = threads_fetch.scaffold(dest, info, url, title, category, get_bytes)
     except threads_fetch.ThreadsError as e:
