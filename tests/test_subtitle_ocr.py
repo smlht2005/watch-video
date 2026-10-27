@@ -1,5 +1,6 @@
 """Subtitle OCR diffing (scripts/subtitle_ocr.py). Run: python3 -m unittest discover -s tests -v"""
 import json
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -186,6 +187,99 @@ class Progress(unittest.TestCase):
             self.assertEqual(so.status_report(Path(d) / "o.json", Path(d) / "s")[-1], f"all segments done; merged into {Path(d) / 'o.json'}")
             (Path(d) / "o.json").unlink()
             self.assertIn("rerun the same run command", so.status_report(Path(d) / "o.json", Path(d) / "s")[-1])
+
+
+class Locks(unittest.TestCase):
+    def dir(self):
+        import tempfile
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        return Path(d.name)
+
+    def test_only_one_of_many_simultaneous_claimers_wins(self):
+        import threading
+        d, results, gate = self.dir(), [], threading.Barrier(8)
+
+        def go():
+            gate.wait()
+            results.append(so.claim_segment(d, 0))
+        threads = [threading.Thread(target=go) for _ in range(8)]
+        [x.start() for x in threads]
+        [x.join() for x in threads]
+        self.assertEqual(results.count(True), 1)
+
+    def test_live_fresh_lock_is_respected(self):
+        d = self.dir()
+        self.assertTrue(so.claim_segment(d, 0))
+        self.assertFalse(so.claim_segment(d, 0))
+
+    def test_lock_older_than_ttl_is_taken_over(self):
+        d = self.dir()
+        so.claim_segment(d, 0, now=lambda: 1000)
+        self.assertFalse(so.claim_segment(d, 0, ttl=60, now=lambda: 1050))
+        self.assertTrue(so.claim_segment(d, 0, ttl=60, now=lambda: 1100))
+
+    def test_lock_of_a_dead_process_on_this_machine_is_taken_over(self):
+        d = self.dir()
+        so.claim_segment(d, 0)
+        self.assertFalse(so.claim_segment(d, 0, alive=lambda pid: True))
+        self.assertTrue(so.claim_segment(d, 0, alive=lambda pid: False))
+
+    def test_lock_from_another_host_is_only_judged_by_age(self):
+        d = self.dir()
+        so.lock_path(d, 0).write_text(json.dumps({"pid": 1, "host": "elsewhere", "time": 10 ** 12}), encoding="utf-8")
+        self.assertFalse(so.claim_segment(d, 0, alive=lambda pid: False))
+
+    def test_garbled_lock_is_stale(self):
+        d = self.dir()
+        so.lock_path(d, 0).write_text("", encoding="utf-8")
+        self.assertTrue(so.claim_segment(d, 0))
+
+    def test_real_pid_check(self):
+        self.assertTrue(so.pid_alive(os.getpid()))
+        self.assertFalse(so.pid_alive(4194301))
+
+    def test_finished_segment_releases_its_lock(self):
+        d = self.dir()
+        so.run_segmented(d / "o.json", d / "s", [(0, 600)], lambda a, b: {"0": "x"}, log=lambda m: None)
+        self.assertFalse(so.lock_path(d / "s", 0).exists())
+
+    def test_failed_segment_releases_its_lock(self):
+        d = self.dir()
+
+        def boom(a, b):
+            raise RuntimeError("x")
+        with self.assertRaises(RuntimeError):
+            so.run_segmented(d / "o.json", d / "s", [(0, 600)], boom, log=lambda m: None)
+        self.assertFalse(so.lock_path(d / "s", 0).exists())
+
+    def test_segment_held_by_another_process_is_left_alone_and_nothing_is_merged(self):
+        d, calls, lines = self.dir(), [], []
+        (d / "s").mkdir()
+        self.assertTrue(so.claim_segment(d / "s", 600))        # "another process" holds the second segment
+        missing = so.run_segmented(d / "o.json", d / "s", [(0, 600), (600, 1200)],
+                                   lambda a, b: calls.append(a) or {"0": "x"}, log=lines.append)
+        self.assertEqual((calls, missing), ([0], [600]))
+        self.assertFalse((d / "o.json").exists())
+        self.assertIn("being run by another process", lines[-1])
+        self.assertTrue(so.lock_path(d / "s", 600).exists())   # not released by us
+
+    def test_two_runs_on_the_same_dir_share_the_work(self):
+        d, done = self.dir(), []
+        segs = [(a, a + 600) for a in range(0, 3000, 600)]
+
+        def second(a, b):
+            done.append(("b", a))
+            return {str(a): "b"}
+
+        def first(a, b):
+            done.append(("a", a))
+            if a == 0:   # while the first run is busy with segment 0, a second run starts and works through the rest
+                so.run_segmented(d / "o.json", d / "s", segs, second, log=lambda m: None)
+            return {str(a): "a"}
+        so.run_segmented(d / "o.json", d / "s", segs, first, log=lambda m: None)
+        self.assertEqual(sorted(a for _, a in done), [0, 600, 1200, 1800, 2400])   # every segment OCR'd exactly once
+        self.assertEqual(len(json.loads((d / "o.json").read_text(encoding="utf-8"))), 5)
 
 
 if __name__ == "__main__":

@@ -38,6 +38,7 @@ import difflib
 import json
 import os
 import re
+import socket
 import subprocess
 import sys
 import tempfile
@@ -56,6 +57,7 @@ V5_FILES = {"rec.onnx": "rec_model_path", "dict.txt": "rec_keys_path"}
 FIXED_MISREADS = {"罪生": "眾生", "筱": "從", "弛": "祂", "菩隆": "菩薩"}
 AUTO_SEGMENT_MIN = 30   # videos longer than this many minutes are OCR'd in segments unless --segment-min says otherwise
 SEGMENT_MIN = 10        # minutes per segment when segmenting automatically
+LOCK_TTL = 30 * 60      # seconds after which a segment lock is considered abandoned
 UNCHANGED = 3.0   # mean 0-255 difference of a 48x12 thumbnail below which two band images count as the same
 
 
@@ -274,10 +276,73 @@ def clock(sec):
     return f"{sec // 3600}:{sec % 3600 // 60:02d}:{sec % 60:02d}"
 
 
-def run_segmented(out, seg_dir, segments, ocr_segment, log=print, every=None):
+def pid_alive(pid):
+    """Is a process with this pid running on this machine? (os.kill(pid, 0) would kill it on Windows, so ask the OS.)"""
+    if os.name == "nt":
+        import ctypes
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, int(pid))   # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return False
+        code = ctypes.c_ulong()
+        ok = ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(handle)
+        return bool(ok) and code.value == 259   # STILL_ACTIVE
+    try:
+        os.kill(int(pid), 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def lock_path(seg_dir, start):
+    return Path(seg_dir) / f"seg_{start:05d}.lock"
+
+
+def lock_is_stale(path, ttl=LOCK_TTL, now=time.time, alive=pid_alive):
+    """A lock is abandoned when it is older than `ttl`, or was taken on this machine by a process that no longer runs."""
+    try:
+        info = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return True   # empty/garbled lock: the taker died while writing it
+    if now() - info.get("time", 0) > ttl:
+        return True
+    return info.get("host") == socket.gethostname() and not alive(info.get("pid", -1))
+
+
+def claim_segment(seg_dir, start, ttl=LOCK_TTL, now=time.time, alive=pid_alive):
+    """Take the lock for one segment. Exactly one caller wins; an abandoned lock is taken over."""
+    path = lock_path(seg_dir, start)
+    for _ in range(3):
+        try:
+            fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            if not lock_is_stale(path, ttl, now, alive):
+                return False
+            try:   # rename (not delete) so that only one of several takers removes the dead lock
+                os.rename(path, f"{path}.stale.{os.getpid()}.{int(now())}")
+            except OSError:
+                pass   # someone else already took it over: loop and see who holds it now
+            continue
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump({"pid": os.getpid(), "host": socket.gethostname(), "time": now()}, f)
+        return True
+    return False
+
+
+def release_segment(seg_dir, start):
+    try:
+        os.remove(lock_path(seg_dir, start))
+    except OSError:
+        pass
+
+
+def run_segmented(out, seg_dir, segments, ocr_segment, log=print, every=None, ttl=LOCK_TTL):
     """OCR each segment that has no seg file yet, then merge them all into `out` once none is missing.
 
-    ocr_segment(start, end) -> {seconds: text}. Logs one line per segment. plan.json in seg_dir records the plan so
+    ocr_segment(start, end) -> {seconds: text}. Several processes may run this on the same seg_dir: each segment is
+    claimed with a lock file, so they never OCR the same one; segments held by others are left for them. Logs one line per segment. plan.json in seg_dir records the plan so
     `status` can tell how much is left. Returns the segment starts still missing (empty = merged)."""
     Path(seg_dir).mkdir(parents=True, exist_ok=True)
     write_atomic(Path(seg_dir) / "plan.json", {"out": str(out), "every": every, "segments": segments})
@@ -287,10 +352,18 @@ def run_segmented(out, seg_dir, segments, ocr_segment, log=print, every=None):
         if seg_path(seg_dir, a).exists():
             log(f"[seg {n}/{todo}] {span} already done, skipping")
             continue
-        t0 = time.time()
-        data = ocr_segment(a, b)
-        write_atomic(seg_path(seg_dir, a), data)
-        log(f"[seg {n}/{todo}] {span} done: {len(data)} samples, {time.time() - t0:.0f}s")
+        if not claim_segment(seg_dir, a, ttl):
+            log(f"[seg {n}/{todo}] {span} is being run by another process, skipping")
+            continue
+        try:
+            if seg_path(seg_dir, a).exists():   # finished by someone else between our check and our claim
+                continue
+            t0 = time.time()
+            data = ocr_segment(a, b)
+            write_atomic(seg_path(seg_dir, a), data)
+            log(f"[seg {n}/{todo}] {span} done: {len(data)} samples, {time.time() - t0:.0f}s")
+        finally:
+            release_segment(seg_dir, a)
     missing = [a for a, _ in segments if not seg_path(seg_dir, a).exists()]
     if missing:
         return missing
@@ -350,9 +423,14 @@ def cmd_run(args):
     segments = plan_segments(total, step_min, args.every, args.start, args.end)
     missing = run_segmented(
         args.out, seg_dir, segments,
-        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b), every=args.every)
+        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b), every=args.every,
+        ttl=args.lock_ttl)
     if missing:
+        busy = [a for a in missing if lock_path(seg_dir, a).exists()]
         print(f"{len(missing)} segment(s) missing (starts: {missing}); {args.out} not written", file=sys.stderr)
+        if busy:
+            print(f"{len(busy)} of them are being run by another process; run `status {args.out}` and rerun this "
+                  f"command when they finish to merge", file=sys.stderr)
         return 1
     print(f"wrote {args.out} from {len(segments)} segments in {seg_dir}")
     return 0
@@ -418,6 +496,7 @@ def main(argv=None):
                    "resumes; 0 = one pass; default: segments of 10 min when the video is longer than --auto-segment-min")
     p.add_argument("--auto-segment-min", type=int, default=AUTO_SEGMENT_MIN)
     p.add_argument("--seg-dir", help="where segment files go (default <out>.segs)")
+    p.add_argument("--lock-ttl", type=int, default=LOCK_TTL, help="seconds after which a segment lock counts as abandoned")
     p.set_defaults(fn=cmd_run)
     p = sub.add_parser("status", help="show how far a segmented run got")
     p.add_argument("out", help="the --out of the run")
