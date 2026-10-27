@@ -157,33 +157,13 @@ def v5_paths(model="v5"):
     return paths
 
 
-def threads_config(n):
-    """Path of a RapidOCR config that caps onnxruntime's compute threads at n (RapidOCR's kwargs cannot set it).
-
-    onnxruntime defaults to one thread per core; they all wait for each other at every layer, so when other programs take
-    some cores, a run at idle priority slows down by several times. A handful of threads is much steadier."""
-    import yaml
-    from rapidocr_onnxruntime.main import DEFAULT_CFG_PATH
-    cfg = yaml.safe_load(Path(DEFAULT_CFG_PATH).read_text(encoding="utf-8"))
-    for part in ("Det", "Cls", "Rec"):
-        cfg[part]["intra_op_num_threads"] = n
-        cfg[part]["inter_op_num_threads"] = 1
-    dest = Path.home() / ".cache" / "watch" / f"rapidocr_threads{n}.yaml"
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
-    return str(dest)
-
-
-def load_ocr(model="v5", threads=0):
+def load_ocr(model="v5"):
     try:
         from rapidocr_onnxruntime import RapidOCR
     except ImportError:
         sys.exit("rapidocr_onnxruntime is not installed. Make a venv and `pip install rapidocr-onnxruntime`, "
                  "then run this script with that venv's python (see the header of this file).")
-    kw = v5_paths(model) if model in V5_MODELS else {}
-    if threads:
-        kw["config_path"] = threads_config(threads)
-    return RapidOCR(**kw)
+    return RapidOCR(**(v5_paths(model) if model in V5_MODELS else {}))
 
 
 def join_boxes(result):
@@ -220,9 +200,9 @@ _engine = None
 
 def _ocr_chunk(job):
     global _engine
-    model, threads, paths = job
+    model, paths = job
     if _engine is None:
-        _engine = load_ocr(model, threads)
+        _engine = load_ocr(model)
     texts, infos = [], []
     for p in paths:
         text, info = read_text_timed(_engine, p)
@@ -285,12 +265,12 @@ def describe_info(i):
             f"{i['boxes']:.1f} boxes, {i['w']:.0f}x{i['h']:.0f}px")
 
 
-def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say, threads=0):
+def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say):
     """OCR one time range of the video; returns {seconds (absolute, as str): text}. Logs a `[trace]` line per stage
     and per batch of images so a slow run shows where the time goes."""
     t_all = time.time()
     log(f"[trace] pid {os.getpid()} priority {priority_name()}, {os.cpu_count()} cpus, workers {workers}, "
-        f"threads {threads or 'default'}, model {model}, power {power_status()}")
+        f"model {model}, power {power_status()}")
     with tempfile.TemporaryDirectory() as tmp:
         t0 = time.time()
         paths = extract_band(video, tmp, every, crop, start, end)
@@ -309,7 +289,7 @@ def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say,
         batches = [todo[k:k + OCR_BATCH] for k in range(0, len(todo), OCR_BATCH)]
         text, done, infos, t0 = {}, 0, [], time.time()
         with ProcessPoolExecutor(workers) as pool:
-            futures = {pool.submit(_ocr_chunk, (model, threads, [paths[i] for i in c])): c for c in batches}
+            futures = {pool.submit(_ocr_chunk, (model, [paths[i] for i in c])): c for c in batches}
             for fut in as_completed(futures):
                 texts, batch = fut.result()
                 text.update(zip(futures[fut], texts))
@@ -604,8 +584,7 @@ def cmd_run(args):
     else:
         step_min = args.segment_min
     if not step_min:
-        out = ocr_range(args.video, args.workers, args.every, args.crop, args.model, args.start, args.end,
-                        threads=args.threads)
+        out = ocr_range(args.video, args.workers, args.every, args.crop, args.model, args.start, args.end)
         Path(args.out).write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
         print(f"wrote {args.out}")
         return 0
@@ -613,7 +592,7 @@ def cmd_run(args):
     segments = plan_segments(total, step_min, args.every, args.start, args.end)
     missing = run_segmented(
         args.out, seg_dir, segments,
-        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b, threads=args.threads),
+        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b),
         every=args.every,
         ttl=args.lock_ttl)
     if missing:
@@ -680,7 +659,6 @@ def main(argv=None):
     p.add_argument("--crop", default=DEFAULT_CROP)
     p.add_argument("--every", type=int, default=2, help="seconds between sampled frames")
     p.add_argument("--workers", type=int, default=4)
-    p.add_argument("--threads", type=int, default=0, help="cap onnxruntime compute threads per process (0 = onnxruntime default, one per core)")
     p.add_argument("--model", choices=MODEL_CHOICES, default="v5")
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)

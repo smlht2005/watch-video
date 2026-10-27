@@ -439,7 +439,7 @@ class StageTiming(unittest.TestCase):
             def submit(self, fn, job):
                 from concurrent.futures import Future
                 f = Future()
-                f.set_result((["a"] * len(job[2]), [fast, slow][:len(job[2])]))
+                f.set_result((["a"] * len(job[1]), [fast, slow][:len(job[1])]))
                 return f
         lines = []
         with mock.patch.multiple(so, extract_band=lambda *a, **k: ["p0", "p1"], thumbnails=lambda p: [[0] * 4, [255] * 4],
