@@ -1,7 +1,9 @@
 """Subtitle OCR diffing (scripts/subtitle_ocr.py). Run: python3 -m unittest discover -s tests -v"""
 import json
 import os
+import socket
 import sys
+import time
 import unittest
 from pathlib import Path
 
@@ -173,12 +175,29 @@ class Progress(unittest.TestCase):
                 return {"0": "x"}
             with self.assertRaises(RuntimeError):
                 so.run_segmented(Path(d) / "o.json", sd, [(0, 600), (600, 1200), (1200, 1500)], ocr, log=lambda m: None)
-            (sd / "seg_00600.lock").write_text("x")
+            so.claim_segment(sd, 600)
             lines = so.status_report(Path(d) / "o.json", sd)
             self.assertEqual(lines[0], "1/3 segments done, 2 left")
             self.assertEqual(lines[1], "running: 0:10:00-0:20:00")
             self.assertEqual(lines[2], "waiting: 0:20:00-0:25:00")
             self.assertTrue(lines[3].startswith("last segment finished"))
+
+    def test_status_does_not_call_a_dead_lock_running(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            sd = Path(d) / "s"
+
+            def ocr(a, b):
+                if a == 600:
+                    raise RuntimeError("killed")
+                return {"0": "x"}
+            with self.assertRaises(RuntimeError):
+                so.run_segmented(Path(d) / "o.json", sd, [(0, 600), (600, 1200)], ocr, log=lambda m: None)
+            so.lock_path(sd, 600).write_text(json.dumps(
+                {"pid": 4194301, "host": socket.gethostname(), "time": time.time()}), encoding="utf-8")
+            lines = so.status_report(Path(d) / "o.json", sd)
+            self.assertFalse(any(x.startswith("running:") for x in lines))
+            self.assertIn("waiting: 0:10:00-0:20:00", lines)
 
     def test_status_when_finished_says_merged(self):
         import tempfile
@@ -215,9 +234,29 @@ class Locks(unittest.TestCase):
 
     def test_lock_older_than_ttl_is_taken_over(self):
         d = self.dir()
-        so.claim_segment(d, 0, now=lambda: 1000)
+        so.lock_path(d, 0).write_text(json.dumps({"pid": 1, "host": "elsewhere", "time": 1000}), encoding="utf-8")
         self.assertFalse(so.claim_segment(d, 0, ttl=60, now=lambda: 1050))
         self.assertTrue(so.claim_segment(d, 0, ttl=60, now=lambda: 1100))
+
+    def test_old_lock_of_a_live_process_on_this_machine_is_respected(self):
+        d = self.dir()
+        so.claim_segment(d, 0, now=lambda: 1000)
+        self.assertFalse(so.claim_segment(d, 0, ttl=60, now=lambda: 10 ** 6, alive=lambda pid: True))
+
+    def test_takeover_never_removes_a_lock_created_in_between(self):
+        d, calls = self.dir(), []
+
+        def alive(pid):
+            calls.append(pid)
+            if len(calls) == 1:   # another process replaces the stale lock with its own live one right after we judged it
+                so.lock_path(d, 0).write_text(json.dumps(
+                    {"pid": os.getpid(), "host": socket.gethostname(), "time": time.time()}), encoding="utf-8")
+                return False
+            return True
+        so.lock_path(d, 0).write_text(json.dumps(
+            {"pid": 1, "host": socket.gethostname(), "time": time.time()}), encoding="utf-8")
+        self.assertFalse(so.claim_segment(d, 0, alive=alive))
+        self.assertEqual(json.loads(so.lock_path(d, 0).read_text(encoding="utf-8"))["pid"], os.getpid())
 
     def test_lock_of_a_dead_process_on_this_machine_is_taken_over(self):
         d = self.dir()

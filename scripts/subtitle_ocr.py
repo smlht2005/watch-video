@@ -387,14 +387,15 @@ def lock_path(seg_dir, start):
 
 
 def lock_is_stale(path, ttl=LOCK_TTL, now=time.time, alive=pid_alive):
-    """A lock is abandoned when it is older than `ttl`, or was taken on this machine by a process that no longer runs."""
+    """A lock is abandoned when its process no longer runs (taken on this machine: age does not matter, a slow
+    segment can outlast `ttl`), or, for a lock from another machine we cannot ask, when it is older than `ttl`."""
     try:
         info = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return True   # empty/garbled lock: the taker died while writing it
-    if now() - info.get("time", 0) > ttl:
-        return True
-    return info.get("host") == socket.gethostname() and not alive(info.get("pid", -1))
+    if info.get("host") == socket.gethostname():
+        return not alive(info.get("pid", -1))
+    return now() - info.get("time", 0) > ttl
 
 
 def claim_segment(seg_dir, start, ttl=LOCK_TTL, now=time.time, alive=pid_alive):
@@ -406,11 +407,19 @@ def claim_segment(seg_dir, start, ttl=LOCK_TTL, now=time.time, alive=pid_alive):
         except FileExistsError:
             if not lock_is_stale(path, ttl, now, alive):
                 return False
-            try:   # rename (not delete) so that only one of several takers removes the dead lock
-                os.rename(path, f"{path}.stale.{os.getpid()}.{int(now())}")
+            grabbed = f"{path}.grab.{os.getpid()}"
+            try:   # rename (not delete) so that only one of several takers gets hold of the dead lock
+                os.rename(path, grabbed)
             except OSError:
-                pass   # someone else already took it over: loop and see who holds it now
-            continue
+                continue   # someone else already took it over: loop and see who holds it now
+            if lock_is_stale(grabbed, ttl, now, alive):
+                os.replace(grabbed, f"{path}.stale.{os.getpid()}.{int(now())}")
+                continue
+            try:   # we grabbed a live lock another process created after our check: give it back
+                os.rename(grabbed, path)
+            except OSError:
+                pass
+            return False
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump({"pid": os.getpid(), "host": socket.gethostname(), "time": now()}, f)
         return True
@@ -460,7 +469,7 @@ def run_segmented(out, seg_dir, segments, ocr_segment, log=say, every=None, ttl=
     return []
 
 
-def status_report(out, seg_dir=None):
+def status_report(out, seg_dir=None, ttl=LOCK_TTL):
     """Lines describing how far a segmented run got: done / left / running, last activity, merged or not."""
     seg_dir = Path(seg_dir or str(out) + ".segs")
     plan_file = seg_dir / "plan.json"
@@ -469,7 +478,8 @@ def status_report(out, seg_dir=None):
     plan = json.loads(plan_file.read_text(encoding="utf-8"))
     segs = [tuple(x) for x in plan["segments"]]
     done = [s for s in segs if seg_path(seg_dir, s[0]).exists()]
-    running = [s for s in segs if s not in done and (seg_dir / f"seg_{s[0]:05d}.lock").exists()]
+    running = [s for s in segs if s not in done and lock_path(seg_dir, s[0]).exists()
+               and not lock_is_stale(lock_path(seg_dir, s[0]), ttl)]
     left = [s for s in segs if s not in done]
     lines = [f"{len(done)}/{len(segs)} segments done, {len(left)} left"]
     if running:
