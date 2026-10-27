@@ -427,7 +427,7 @@ class Background(unittest.TestCase):
             started.update(cmd=cmd, log=log_path)
             return P()
         rc, text = self.run_cli(["--background"], {
-            "start_background": fake_start, "video_duration": mock.Mock(side_effect=AssertionError("no OCR here")),
+            "check_video": lambda v: None, "start_background": fake_start, "video_duration": mock.Mock(side_effect=AssertionError("no OCR here")),
             "ocr_range": mock.Mock(side_effect=AssertionError("no OCR here"))})
         self.assertEqual(rc, 0)
         self.assertIn("--low-priority", started["cmd"])
@@ -439,7 +439,7 @@ class Background(unittest.TestCase):
     def test_low_priority_flag_lowers_priority_only_when_asked(self):
         from unittest import mock
         calls = []
-        patches = {"apply_low_priority": lambda: calls.append(1), "video_duration": lambda v: 60.0,
+        patches = {"check_video": lambda v: None, "apply_low_priority": lambda: calls.append(1), "video_duration": lambda v: 60.0,
                    "ocr_range": lambda *a, **k: {"0": "x"}}
         import tempfile
         with tempfile.TemporaryDirectory() as d:
@@ -533,6 +533,41 @@ class StageTiming(unittest.TestCase):
         self.assertIn("at 603s", slow_lines[0])
         self.assertIn("rec 14.0", slow_lines[0])
         self.assertTrue(any("avg per image" in l and "slowest 20.0s" in l for l in lines))
+
+
+class CliChecks(unittest.TestCase):
+    def args(self, **kw):
+        import argparse
+        base = dict(background=False, low_priority=False, segment_min=0, seg_dir=None, video="v.mp4", out="o.json",
+                    workers=1, every=3, crop="c", model="v5", start=None, end=None, raw_argv=[])
+        return argparse.Namespace(**{**base, **kw})
+
+    def test_negative_segment_min_is_rejected(self):
+        import argparse
+        with self.assertRaises(argparse.ArgumentTypeError):
+            so.segment_min_arg("-5")
+        self.assertEqual((so.segment_min_arg("0"), so.segment_min_arg("10")), (0, 10))
+
+    def test_missing_video_stops_before_background_start(self):
+        from unittest import mock
+        with mock.patch("subtitle_ocr.start_background") as start:
+            with self.assertRaises(SystemExit):
+                so.cmd_run(self.args(background=True, video="no/such.mp4"))
+        start.assert_not_called()
+
+    def test_seg_dir_with_single_pass_warns(self):
+        import contextlib
+        import io
+        import tempfile
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d:
+            video = Path(d) / "v.mp4"
+            video.write_bytes(b"x")
+            err = io.StringIO()
+            with mock.patch("subtitle_ocr.ocr_range", return_value={}), contextlib.redirect_stderr(err),                     contextlib.redirect_stdout(io.StringIO()):
+                so.cmd_run(self.args(video=str(video), out=str(Path(d) / "o.json"), seg_dir="x"))
+            self.assertIn("--seg-dir", err.getvalue())
+            self.assertIn("ignored", err.getvalue())
 
 
 class Models(unittest.TestCase):

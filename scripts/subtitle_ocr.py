@@ -594,7 +594,22 @@ def start_background(cmd, log_path, popen=subprocess.Popen):
     return proc
 
 
+def segment_min_arg(text):
+    """argparse type for --segment-min: minutes, 0 or more."""
+    n = int(text)
+    if n < 0:
+        raise argparse.ArgumentTypeError("--segment-min must be 0 (single pass) or a positive number of minutes")
+    return n
+
+
+def check_video(video):
+    """Stop early (before a background process hides the error in its log) when the video file is not there."""
+    if not Path(video).is_file():
+        sys.exit(f"video not found: {video}")
+
+
 def cmd_run(args):
+    check_video(args.video)
     if args.background:
         seg_dir = args.seg_dir or str(args.out) + ".segs"
         log_path = Path(seg_dir) / "progress.log"
@@ -615,6 +630,9 @@ def cmd_run(args):
     else:
         step_min = args.segment_min
     if not step_min:
+        if args.seg_dir:
+            print("warning: --seg-dir is ignored with --segment-min 0 (a single pass writes only --out, no resume)",
+                  file=sys.stderr)
         out = ocr_range(args.video, args.workers, args.every, args.crop, args.model, args.start, args.end)
         Path(args.out).write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
         print(f"wrote {args.out}")
@@ -700,7 +718,7 @@ def main(argv=None):
     p.add_argument("--model", choices=MODEL_CHOICES, default="v5")
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
-    p.add_argument("--segment-min", type=int, help="OCR in segments of N minutes, each saved to --seg-dir so a rerun "
+    p.add_argument("--segment-min", type=segment_min_arg, help="OCR in segments of N minutes, each saved to --seg-dir so a rerun "
                    "resumes; 0 = one pass; default: segments of 10 min when the video is longer than --auto-segment-min")
     p.add_argument("--auto-segment-min", type=int, default=AUTO_SEGMENT_MIN)
     p.add_argument("--seg-dir", help="where segment files go (default <out>.segs)")
