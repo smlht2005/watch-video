@@ -2,6 +2,12 @@
 
 > 歸檔結果除了 Word／Markdown 報告，也可匯成同一個 Obsidian vault，讓每支影片變成一篇筆記，並把使用者確認過的「知識點」各存成一篇原子筆記。Spec：`.scratch/obsidian-vault-export/spec.md`。
 
+## 流程圖
+
+![獨立知識流程：歸檔 → 人確認 → Obsidian 知識庫](../../../../docs/obsidian-knowledge-flow.png)
+
+圖源 `docs/obsidian-knowledge-flow.svg`；改圖後用 Playwright 重新截圖（視窗 1600×900）：`node -e "const{chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1600,height:900}});await p.goto('file://'+process.cwd()+'/docs/obsidian-knowledge-flow.svg');await p.screenshot({path:'docs/obsidian-knowledge-flow.png'});await b.close()})()"`。
+
 ## 原則
 
 - **只放使用者確認過的**：連結與知識點都分 `## 已確認`／`## 候選` 兩區。Claude 只能寫進候選區，使用者確認後才移到已確認區；匯出只取已確認區。檔案沒有這兩個標題時，整份視為候選（警告、不匯出）。

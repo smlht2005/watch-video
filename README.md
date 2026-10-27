@@ -149,6 +149,8 @@ watch-output/
 
 ### Obsidian 知識庫（`links.md`、`knowledge.md` → `obsidian-vault/`）
 
+![獨立知識流程](docs/obsidian-knowledge-flow.png)
+
 每支影片（或圖文貼文）可匯成 Obsidian 筆記，並把**你確認過的知識點**各存成一篇原子筆記：
 
 ```bash
