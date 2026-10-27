@@ -135,5 +135,58 @@ class Segments(unittest.TestCase):
         self.assertEqual(so.resolve_segment_min(None, 1900, auto_min=60), 0)
 
 
+class Progress(unittest.TestCase):
+    def run_it(self, d, segs, ocr, **kw):
+        lines = []
+        so.run_segmented(Path(d) / "o.json", Path(d) / "s", segs, ocr, log=lines.append, **kw)
+        return lines
+
+    def test_one_progress_line_per_segment_with_range_and_count(self):
+        import re
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            lines = self.run_it(d, [(0, 600), (600, 1200)], lambda a, b: {str(a): "x", str(a + 3): "y"})
+            self.assertEqual(len(lines), 2)
+            self.assertRegex(lines[0], r"^\[seg 1/2\] 0:00:00-0:10:00 done: 2 samples, \d+s$")
+            self.assertRegex(lines[1], r"^\[seg 2/2\] 0:10:00-0:20:00 done: 2 samples, \d+s$")
+
+    def test_skipped_segment_is_reported_as_already_done(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            self.run_it(d, [(0, 600)], lambda a, b: {"0": "x"})
+            self.assertEqual(self.run_it(d, [(0, 600)], lambda a, b: {})[0], "[seg 1/1] 0:00:00-0:10:00 already done, skipping")
+
+    def test_status_without_a_run_says_so(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            self.assertIn("no segmented run", so.status_report(Path(d) / "o.json")[0])
+
+    def test_status_partway_lists_running_and_waiting(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            sd = Path(d) / "s"
+
+            def ocr(a, b):
+                if a == 600:
+                    raise RuntimeError("killed")
+                return {"0": "x"}
+            with self.assertRaises(RuntimeError):
+                so.run_segmented(Path(d) / "o.json", sd, [(0, 600), (600, 1200), (1200, 1500)], ocr, log=lambda m: None)
+            (sd / "seg_00600.lock").write_text("x")
+            lines = so.status_report(Path(d) / "o.json", sd)
+            self.assertEqual(lines[0], "1/3 segments done, 2 left")
+            self.assertEqual(lines[1], "running: 0:10:00-0:20:00")
+            self.assertEqual(lines[2], "waiting: 0:20:00-0:25:00")
+            self.assertTrue(lines[3].startswith("last segment finished"))
+
+    def test_status_when_finished_says_merged(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            self.run_it(d, [(0, 600)], lambda a, b: {"0": "x"})
+            self.assertEqual(so.status_report(Path(d) / "o.json", Path(d) / "s")[-1], f"all segments done; merged into {Path(d) / 'o.json'}")
+            (Path(d) / "o.json").unlink()
+            self.assertIn("rerun the same run command", so.status_report(Path(d) / "o.json", Path(d) / "s")[-1])
+
+
 if __name__ == "__main__":
     unittest.main()

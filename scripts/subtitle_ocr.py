@@ -11,6 +11,7 @@ Usage:
   python3 scripts/subtitle_ocr.py probe <video> [--model v5|v4]          # are there burned-in subtitles at all?
   python3 scripts/subtitle_ocr.py run <video> --out ocr.json [--workers 2] [--every 3] [--model v5|v4] [--start S] [--end S]
                                             [--segment-min N|0] [--auto-segment-min 30] [--seg-dir DIR]
+  python3 scripts/subtitle_ocr.py status ocr.json [--seg-dir DIR]     # how many segments are done / left / running
   python3 scripts/subtitle_ocr.py compare <folder> --ocr ocr.json [--thr 0.85] [--out diff.txt]
 
 `run` crops the subtitle band (--crop W:H:X:Y, ffmpeg expressions; default = bottom 18% / left 82%, which keeps a
@@ -40,6 +41,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -267,17 +269,28 @@ def write_atomic(path, data):
     os.replace(tmp, path)
 
 
-def run_segmented(out, seg_dir, segments, ocr_segment, log=print):
+def clock(sec):
+    sec = int(sec)
+    return f"{sec // 3600}:{sec % 3600 // 60:02d}:{sec % 60:02d}"
+
+
+def run_segmented(out, seg_dir, segments, ocr_segment, log=print, every=None):
     """OCR each segment that has no seg file yet, then merge them all into `out` once none is missing.
 
-    ocr_segment(start, end) -> {seconds: text}. Returns the segment starts still missing (empty = merged)."""
+    ocr_segment(start, end) -> {seconds: text}. Logs one line per segment. plan.json in seg_dir records the plan so
+    `status` can tell how much is left. Returns the segment starts still missing (empty = merged)."""
     Path(seg_dir).mkdir(parents=True, exist_ok=True)
+    write_atomic(Path(seg_dir) / "plan.json", {"out": str(out), "every": every, "segments": segments})
+    todo = len(segments)
     for n, (a, b) in enumerate(segments, 1):
+        span = f"{clock(a)}-{clock(b)}"
         if seg_path(seg_dir, a).exists():
-            log(f"[seg {n}/{len(segments)}] {a}-{b}s already done, skipping")
+            log(f"[seg {n}/{todo}] {span} already done, skipping")
             continue
-        log(f"[seg {n}/{len(segments)}] {a}-{b}s")
-        write_atomic(seg_path(seg_dir, a), ocr_segment(a, b))
+        t0 = time.time()
+        data = ocr_segment(a, b)
+        write_atomic(seg_path(seg_dir, a), data)
+        log(f"[seg {n}/{todo}] {span} done: {len(data)} samples, {time.time() - t0:.0f}s")
     missing = [a for a, _ in segments if not seg_path(seg_dir, a).exists()]
     if missing:
         return missing
@@ -286,6 +299,37 @@ def run_segmented(out, seg_dir, segments, ocr_segment, log=print):
         merged.update(json.loads(seg_path(seg_dir, a).read_text(encoding="utf-8")))
     write_atomic(out, dict(sorted(merged.items(), key=lambda kv: int(kv[0]))))
     return []
+
+
+def status_report(out, seg_dir=None):
+    """Lines describing how far a segmented run got: done / left / running, last activity, merged or not."""
+    seg_dir = Path(seg_dir or str(out) + ".segs")
+    plan_file = seg_dir / "plan.json"
+    if not plan_file.exists():
+        return [f"no segmented run found in {seg_dir} (run with --segment-min, or wrong --out/--seg-dir)"]
+    plan = json.loads(plan_file.read_text(encoding="utf-8"))
+    segs = [tuple(x) for x in plan["segments"]]
+    done = [s for s in segs if seg_path(seg_dir, s[0]).exists()]
+    running = [s for s in segs if s not in done and (seg_dir / f"seg_{s[0]:05d}.lock").exists()]
+    left = [s for s in segs if s not in done]
+    lines = [f"{len(done)}/{len(segs)} segments done, {len(left)} left"]
+    if running:
+        lines.append("running: " + ", ".join(f"{clock(a)}-{clock(b)}" for a, b in running))
+    waiting = [s for s in left if s not in running]
+    if waiting:
+        lines.append("waiting: " + ", ".join(f"{clock(a)}-{clock(b)}" for a, b in waiting))
+    if done:
+        newest = max(seg_path(seg_dir, a).stat().st_mtime for a, _ in done)
+        lines.append(f"last segment finished {int((time.time() - newest) / 60)} min ago")
+    if not left:
+        lines.append(f"all segments done; {'merged into ' + str(out) if Path(out).exists() else 'rerun the same run command to merge into ' + str(out)}")
+    return lines
+
+
+def cmd_status(args):
+    for line in status_report(args.out, args.seg_dir):
+        print(line)
+    return 0
 
 
 def cmd_run(args):
@@ -306,7 +350,7 @@ def cmd_run(args):
     segments = plan_segments(total, step_min, args.every, args.start, args.end)
     missing = run_segmented(
         args.out, seg_dir, segments,
-        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b))
+        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b), every=args.every)
     if missing:
         print(f"{len(missing)} segment(s) missing (starts: {missing}); {args.out} not written", file=sys.stderr)
         return 1
@@ -375,6 +419,10 @@ def main(argv=None):
     p.add_argument("--auto-segment-min", type=int, default=AUTO_SEGMENT_MIN)
     p.add_argument("--seg-dir", help="where segment files go (default <out>.segs)")
     p.set_defaults(fn=cmd_run)
+    p = sub.add_parser("status", help="show how far a segmented run got")
+    p.add_argument("out", help="the --out of the run")
+    p.add_argument("--seg-dir")
+    p.set_defaults(fn=cmd_status)
     p = sub.add_parser("compare", help="list transcript lines the subtitles do not cover")
     p.add_argument("folder")
     p.add_argument("--ocr", required=True)
