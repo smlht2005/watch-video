@@ -8,6 +8,7 @@ uploader: "ztwtqgpmnbc"
 category: "AI"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237"
 generated_by: watch-archive
 aliases:
   - "中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了"

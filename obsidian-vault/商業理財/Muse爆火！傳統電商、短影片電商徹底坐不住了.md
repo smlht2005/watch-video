@@ -8,6 +8,7 @@ uploader: ""
 category: "商業理財"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4"
 generated_by: watch-archive
 aliases:
   - "Muse爆火！傳統電商、短影片電商徹底坐不住了"

@@ -8,6 +8,7 @@ uploader: "Ryan Carter"
 category: "AI/claude-code"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129"
 generated_by: watch-archive
 aliases:
   - "Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ..."

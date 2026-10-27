@@ -8,6 +8,7 @@ uploader: "CodeLucky"
 category: "雲端"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/雲端/2026-10-11_YouTube_Kind-Tutorial-Kubernetes-in-Docker---Com__N4kwKtdcDWA"
 generated_by: watch-archive
 aliases:
   - "Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters"

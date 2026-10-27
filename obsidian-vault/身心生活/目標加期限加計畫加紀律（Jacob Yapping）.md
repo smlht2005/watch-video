@@ -8,6 +8,7 @@ uploader: "Jacob Yapping"
 category: "身心生活"
 date: "2026-10-20"
 status: unreviewed
+origin_folder: "watch-output/身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm"
 generated_by: watch-archive
 aliases:
   - "目標加期限加計畫加紀律（Jacob Yapping）"

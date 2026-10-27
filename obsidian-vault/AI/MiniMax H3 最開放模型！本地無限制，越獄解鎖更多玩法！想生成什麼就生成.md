@@ -8,6 +8,7 @@ uploader: "零度解說（YouTube 頻道）"
 category: "AI"
 date: "2026-10-12"
 status: unreviewed
+origin_folder: "watch-output/AI/2026-10-12_GoogleDrive_MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成__1EIhyh60imHgwatjkElA-8di38oYtiv0T"
 generated_by: watch-archive
 aliases:
   - "MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成"

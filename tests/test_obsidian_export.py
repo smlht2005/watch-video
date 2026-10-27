@@ -9,7 +9,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import obsidian_export as oe  # noqa: E402
 
 
-class Export(unittest.TestCase):
+class Fixture(unittest.TestCase):
+    """Temp vault + archive folder builder shared by the export tests."""
+
+
     def setUp(self):
         tmp = tempfile.TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
@@ -40,6 +43,9 @@ class Export(unittest.TestCase):
             (d / "kb" / "測試_操作SOP.md").write_text('---\ntitle: "x"\ntype: sop\n---\n\n![圖](attachments/step-0030.jpg)\n', encoding="utf-8")
         return d
 
+
+
+class Export(Fixture):
     def test_note_has_properties_links_and_safe_name(self):
         d = self.folder(links="# 連結\n## 已確認\n- [[知識管理]]｜上位概念：主題\n- [[雙向連結|link]]｜互補：機制\n- [[知識管理]]｜舉例：重複\n## 候選\n- [[未確認]]｜舉例：不匯出\n")
         oe.export(d, self.vault)
@@ -61,11 +67,14 @@ class Export(unittest.TestCase):
         self.assertNotIn("## 連結", text)
         self.assertNotIn("related:", text)
 
-    def test_carousel_pages_and_relative_attachments(self):
-        oe.export(self.folder(carousel=True, cat="AI/claude-code"), self.vault)
+    def test_carousel_pages_only_with_flag_and_relative_attachments(self):
+        d = self.folder(carousel=True, cat="AI/claude-code")
+        oe.export(d, self.vault)
         md = next((self.vault / "AI" / "claude-code").glob("*.md"))
-        text = md.read_text(encoding="utf-8")
-        self.assertIn("![第 1 頁](../../_attachments/abc123/slide_01.jpg)", text)
+        self.assertNotIn("圖文原頁", md.read_text(encoding="utf-8"))
+        self.assertFalse((self.vault / "_attachments" / "abc123" / "slide_01.jpg").exists())
+        oe.export(d, self.vault, with_pages=True)
+        self.assertIn("![第 1 頁](../../_attachments/abc123/slide_01.jpg)", md.read_text(encoding="utf-8"))
         self.assertTrue((self.vault / "_attachments" / "abc123" / "slide_01.jpg").exists())
 
     def test_sop_note_copied_with_rewritten_images_and_linked(self):
@@ -112,6 +121,114 @@ class Export(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+POINTS = """# 知識點
+## 已確認
+### 連結是在定義關係
+- 出處：第 1 頁
+- 引文：「第一頁文字」
+- 說明：link 不是排版。
+- 連結：[[知識管理]]｜上位概念：主題
+### 沒填標示的點
+- 出處：00:31
+- 說明：只有說明。
+## 候選
+### 還沒確認的點
+- 說明：不該匯出
+"""
+
+
+class KnowledgePoints(Fixture):
+    def folder(self, **kw):
+        kw.setdefault("carousel", True)
+        d = super().folder(**kw)
+        (d / "transcript.md").write_text("```\n[00:01] 第一頁文字\n```\n", encoding="utf-8")
+        (d / "knowledge.md").write_text(POINTS, encoding="utf-8")
+        (d / "frames.json").write_text(json.dumps([{"file": "slide_01.jpg", "t": "00:01"}]), encoding="utf-8")
+        return d
+
+    def pts(self):
+        return self.vault / "知識點"
+
+    def test_only_confirmed_points_become_atomic_notes_with_source_and_default_flag(self):
+        oe.export(self.folder(), self.vault)
+        names = sorted(p.stem for p in self.pts().glob("*.md"))
+        self.assertEqual(names, ["沒填標示的點", "連結是在定義關係"])
+        text = (self.pts() / "連結是在定義關係.md").read_text(encoding="utf-8")
+        self.assertIn("type: knowledge-point", text)
+        self.assertIn("claim: \"講者／作者主張，未查證\"", text)
+        self.assertIn("> 「第一頁文字」", text)
+        self.assertIn("- [[知識管理]]｜上位概念：主題", text)
+        self.assertIn("[[測試影片]]", text)  # provenance link is automatic
+        video = (self.vault / "AI" / "測試影片.md").read_text(encoding="utf-8")
+        self.assertIn("- [[連結是在定義關係]]", video)
+        self.assertIn("status: reviewed", video)
+        self.assertNotIn("還沒確認的點", video + "".join(p.read_text(encoding="utf-8") for p in self.pts().glob("*.md")))
+
+    def test_point_carries_its_source_picture_shrunk(self):
+        from PIL import Image
+        d = self.folder()
+        Image.new("RGB", (3000, 2000), (9, 9, 9)).save(d / "frames" / "slide_01.jpg")
+        oe.export(d, self.vault)
+        text = (self.pts() / "連結是在定義關係.md").read_text(encoding="utf-8")
+        self.assertIn("![出處圖](../_attachments/abc123/slide_01.jpg)", text)
+        self.assertLessEqual(max(Image.open(self.vault / "_attachments" / "abc123" / "slide_01.jpg").size), oe.IMG_MAX)
+        self.assertIn("slide_01.jpg", (self.pts() / "沒填標示的點.md").read_text(encoding="utf-8"))  # 00:31 -> nearest frame
+
+    def test_no_headings_means_all_candidates_and_a_warning(self):
+        import contextlib
+        import io
+        d = self.folder()
+        (d / "knowledge.md").write_text("### 沒標分區\n- 說明：x\n", encoding="utf-8")
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            oe.export(d, self.vault)
+        self.assertFalse(self.pts().exists() and list(self.pts().glob("*.md")))
+        self.assertIn("候選知識點未匯出", err.getvalue())
+
+    def test_unfound_quote_and_link_without_relation_warn(self):
+        import contextlib
+        import io
+        d = self.folder()
+        (d / "knowledge.md").write_text(
+            "## 已確認\n### 轉述的點\n- 出處：第 1 頁\n- 引文：「原文裡沒有這句」\n- 說明：x\n- 連結：[[概念]]｜沒有冒號\n", encoding="utf-8")
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            oe.export(d, self.vault)
+        self.assertIn("找不到，可能是轉述", err.getvalue())
+        self.assertIn("缺關係說明", err.getvalue())
+
+    def test_link_without_relation_is_rejected(self):
+        c, cand, problems = oe.read_links("## 已確認\n- [[甲]]｜互補：理由\n- [[乙]]\n- [[丙]]｜只有類型\n## 候選\n- [[丁]]｜舉例：待確認\n")
+        self.assertEqual(c, [("甲", "互補", "理由")])
+        self.assertEqual(cand, [("丁", "舉例", "待確認")])
+        self.assertEqual(len(problems), 2)
+
+    def test_index_lists_points_pending_nodes_same_name_and_orphans(self):
+        d1 = self.folder(vid="aaa111")
+        oe.export(d1, self.vault)
+        oe.export(self.folder(vid="bbb222"), self.vault)
+        oe.write_index(self.vault)
+        idx = (self.vault / "00-索引.md").read_text(encoding="utf-8")
+        self.assertIn("## 知識點（4）", idx)
+        self.assertIn("同名，待人工合併", idx)
+        self.assertIn("## 待建立節點", idx)
+        self.assertIn("[[知識管理]]", idx)
+        import shutil
+        shutil.rmtree(d1)
+        oe.write_index(self.vault)
+        self.assertIn("來源資料夾已不存在", (self.vault / "00-索引.md").read_text(encoding="utf-8"))
+
+    def test_vault_option_confines_everything_to_watch_archive_subfolder(self):
+        mine = self.root / "myvault"
+        (mine / "筆記").mkdir(parents=True)
+        (mine / "筆記" / "x.md").write_text("mine", encoding="utf-8")
+        before = {p for p in mine.rglob("*")}
+        oe.export(self.folder(), mine / "watch-archive")
+        oe.write_index(mine / "watch-archive")
+        new = {p for p in mine.rglob("*")} - before
+        self.assertTrue(all("watch-archive" in p.parts for p in new))
 
 
 class CarouselReport(unittest.TestCase):

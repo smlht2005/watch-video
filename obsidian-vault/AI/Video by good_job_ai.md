@@ -8,6 +8,7 @@ uploader: "一股GoodJob"
 category: "AI"
 date: "2026-10-13"
 status: unreviewed
+origin_folder: "watch-output/AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR"
 generated_by: watch-archive
 aliases:
   - "Video by good_job_ai"

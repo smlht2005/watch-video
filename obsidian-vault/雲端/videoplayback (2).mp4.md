@@ -8,6 +8,7 @@ uploader: ""
 category: "雲端"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/雲端/2026-10-11_Drive_videoplayback-2-mp4__view"
 generated_by: watch-archive
 aliases:
   - "videoplayback (2).mp4"

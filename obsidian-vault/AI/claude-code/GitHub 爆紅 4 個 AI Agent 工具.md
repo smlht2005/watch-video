@@ -8,6 +8,7 @@ uploader: "ChiaChia,Lin"
 category: "AI/claude-code"
 date: "2026-10-21"
 status: unreviewed
+origin_folder: "watch-output/AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN"
 generated_by: watch-archive
 aliases:
   - "GitHub 爆紅 4 個 AI Agent 工具"

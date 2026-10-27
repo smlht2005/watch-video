@@ -442,7 +442,7 @@ def whisper_hints(backend: str, lang: str, prompt: str) -> tuple[dict, str, str,
     return ({"WATCH_WHISPERX_LANGUAGE": lang} if lang else {}), lang, "", warnings
 
 
-def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None) -> bool:
+def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None, get_bytes=None) -> bool:
     """Threads image post (carousel): caption + every page image -> folder skeleton + report. True when archived.
 
     False (after a WARNING) means "not an image post or fetch failed": the caller continues with the video pipeline.
@@ -470,7 +470,7 @@ def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None
     cat_dir.mkdir(parents=True, exist_ok=True)
     dest = existing[0] if existing else cat_dir / f"{dt.date.today():%Y-%m-%d}_Threads_{clean_title(title)}__{vid}"[:NAME_MAX]
     try:
-        meta = threads_fetch.scaffold(dest, info, url, title, category)
+        meta = threads_fetch.scaffold(dest, info, url, title, category, get_bytes)
     except threads_fetch.ThreadsError as e:
         sys.exit(f"threads image download failed: {e}")
     if title_arg:

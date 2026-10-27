@@ -7,7 +7,8 @@ video_id: "De9qij5FKBy"
 uploader: "王啟樺（@chihua.wang.3）"
 category: "AI"
 date: "2026-10-27"
-status: unreviewed
+status: reviewed
+origin_folder: "watch-output/AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy"
 generated_by: watch-archive
 aliases:
   - "AI 時代為什麼 Obsidian 反而更重要？"
@@ -22,13 +23,13 @@ tags:
   - "AI協作"
   - "留白"
 related:
-  - "[[知識管理]]"
-  - "[[雙向連結]]"
-  - "[[Markdown]]"
-  - "[[原子習慣]]"
-  - "[[AI 與人類協作]]"
-  - "[[watch-archive 流程]]"
-  - "[[認知工作]]"
+  - "[[價值在於人選擇建立的關係]]"
+  - "[[Markdown 檔適合接住 AI 產物]]"
+  - "[[link 是在定義關係，不是排版]]"
+  - "[[連結會暴露你的思考方式]]"
+  - "[[連結不該只依語義相似度]]"
+  - "[[留一塊「AI 不碰」的思考區]]"
+  - "[[把 AI 的產出重寫成自己的理解]]"
 ---
 
 # AI 時代為什麼 Obsidian 反而更重要？
@@ -67,59 +68,15 @@ related:
 
 ![思維導圖](../_attachments/De9qij5FKBy/mindmap.png)
 
-## 圖文原頁
+## 知識點
 
-**第 1 頁：AI 時代為什麼 Obsidian 反而更重要？**
-
-![第 1 頁](../_attachments/De9qij5FKBy/slide_01.jpg)
-
-**第 2 頁：Obsidian 是接住 AI 產物的地方**
-
-![第 2 頁](../_attachments/De9qij5FKBy/slide_02.jpg)
-
-**第 3 頁：AI 可以生內容，但 Obsidian 決定內容怎麼留下來**
-
-![第 3 頁](../_attachments/De9qij5FKBy/slide_03.jpg)
-
-**第 4 頁：真正重要的問題：這份筆記要跟什麼連在一起？**
-
-![第 4 頁](../_attachments/De9qij5FKBy/slide_04.jpg)
-
-**第 5 頁：link 不是排版，而是在定義關係**
-
-![第 5 頁](../_attachments/De9qij5FKBy/slide_05.jpg)
-
-**第 6 頁：你的連結，會暴露你的思考方式**
-
-![第 6 頁](../_attachments/De9qij5FKBy/slide_06.jpg)
-
-**第 7 頁：每一個 link，都在替未來的自己鋪路**
-
-![第 7 頁](../_attachments/De9qij5FKBy/slide_07.jpg)
-
-**第 8 頁：AI 很強，但 link 不一定要交給 AI**
-
-![第 8 頁](../_attachments/De9qij5FKBy/slide_08.jpg)
-
-**第 9 頁：可以故意留一塊「AI 不碰」的筆記區**
-
-![第 9 頁](../_attachments/De9qij5FKBy/slide_09.jpg)
-
-**第 10 頁：把 AI 的產出，重新轉化成自己的理解**
-
-![第 10 頁](../_attachments/De9qij5FKBy/slide_10.jpg)
-
-## 連結
-
-_由人選定並寫明關係；新增連結請改 links.md 再匯出。_
-
-- [[知識管理]]｜上位概念：本篇討論的是 AI 時代的個人知識管理方法
-- [[雙向連結]]｜核心機制：貼文主張 link 是「定義關係」，不是排版
-- [[Markdown]]｜格式基礎：AI 產物轉成 .md 才能長期保存、可攜
-- [[原子習慣]]｜舉例：第 6 頁用同一本書示範不同背景連出不同網路
-- [[AI 與人類協作]]｜分工：AI 生成素材，人負責判斷、連結與整合
-- [[watch-archive 流程]]｜應用：本 repo 的影片歸檔可匯出成 Obsidian 筆記，連結仍由人確認
-- [[認知工作]]｜界線：第 9 頁主張模糊、矛盾、價值判斷屬人的 cognitive work，AI 先不要碰
+- [[價值在於人選擇建立的關係]]
+- [[Markdown 檔適合接住 AI 產物]]
+- [[link 是在定義關係，不是排版]]
+- [[連結會暴露你的思考方式]]
+- [[連結不該只依語義相似度]]
+- [[留一塊「AI 不碰」的思考區]]
+- [[把 AI 的產出重寫成自己的理解]]
 
 ## 補充資料
 

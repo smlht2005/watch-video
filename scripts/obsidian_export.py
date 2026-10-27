@@ -198,6 +198,55 @@ def origin(dest: Path) -> str:
         return dest.name
 
 
+DEFAULT_FLAG = "講者／作者主張，未查證"  # CLAUDE.md hard rule: claims taken from a video or post are never facts
+IMG_MAX = 1024
+
+
+def to_sec(ts: str) -> int:
+    n = [int(x) for x in ts.split(":")]
+    while len(n) < 3:
+        n.insert(0, 0)
+    return n[0] * 3600 + n[1] * 60 + n[2]
+
+
+def source_image(dest: Path, meta: dict, source: str):
+    """The picture a knowledge point's 出處 refers to: '第 N 頁' -> that page of a carousel; 'MM:SS' -> the frame
+    closest in time. None when it cannot be resolved (the note is then exported without a picture)."""
+    page = re.search(r"第\s*(\d+)\s*頁", source)
+    if page and meta.get("slides"):
+        slides = sorted(meta["slides"], key=lambda sl: to_sec(sl["start"]))
+        n = int(page.group(1))
+        if 1 <= n <= len(slides):
+            f = dest / "frames" / slides[n - 1]["frame"]
+            return f if f.exists() else None
+    tm = re.search(r"\b(\d{1,2}:\d{2}(?::\d{2})?)\b", source)
+    if tm:
+        try:
+            frames = json.loads(read_text(dest / "frames.json") or "[]")
+        except ValueError:
+            return None
+        cands = [(abs(to_sec(f["t"]) - to_sec(tm.group(1))), f["file"]) for f in frames if f.get("file") and f.get("t")]
+        if cands:
+            f = dest / "frames" / min(cands)[1]
+            return f if f.exists() else None
+    return None
+
+
+def shrink_copy(src: Path, out: Path):
+    """Vault copy of a picture: longest side <= IMG_MAX px, JPEG q80 (the original stays only in frames/)."""
+    from PIL import Image
+    img = Image.open(src).convert("RGB")
+    img.thumbnail((IMG_MAX, IMG_MAX))
+    img.save(out, "JPEG", quality=80)
+
+
+def quote_found(dest: Path, quote: str) -> bool:
+    """A quote must appear in the transcript or supplement (ignoring quote marks and whitespace), or it is a paraphrase."""
+    norm = lambda t: re.sub(r"[\s「」『』\"“”]+", "", t)  # noqa: E731
+    q_ = norm(quote)
+    return not q_ or q_ in norm(read_text(dest / "transcript.md") + read_text(dest / "supplement.md"))
+
+
 def point_note_path(vault: Path, title: str, vid: str) -> Path:
     """<vault>/知識點/<title>.md; another video's (or the user's) note of that name is never overwritten."""
     base = safe_name(title)
@@ -207,11 +256,11 @@ def point_note_path(vault: Path, title: str, vid: str) -> Path:
     return p
 
 
-def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: list) -> str:
+def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: list, image_rel: str = "") -> str:
     """One atomic note: the claim, its source quote and origin, a flag for unverified claims, relations chosen by a human."""
     targets = list(dict.fromkeys([t for t, _, _ in pt["links"]] + [note_stem]))
     front = ["---", f"title: {q(pt['title'])}", "type: knowledge-point", f"video_id: {q(vid)}",
-             f"source_note: {q('[[' + note_stem + ']]')}", f"origin: {q(pt['source'])}", f"claim: {q(pt['flag'])}",
+             f"source_note: {q('[[' + note_stem + ']]')}", f"origin: {q(pt['source'])}", f"claim: {q(pt['flag'] or DEFAULT_FLAG)}",
              f"category: {q(cat)}", f"date: {q(meta.get('last_updated', ''))}", "status: confirmed", MARK,
              "tags:"] + [f"  - {q(t)}" for t in dict.fromkeys(["knowledge-point", *tags[1:]])]
     front += ["related:"] + [f"  - {q('[[' + t + ']]')}" for t in targets] + ["---", ""]
@@ -220,15 +269,16 @@ def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: lis
         body += [pt["note"], ""]
     if pt["quote"]:
         body += [f"> {pt['quote']}", ">", f"> — {pt['source'] or '出處未標'}", ""]
-    if pt["flag"]:
-        body += [f"**標示：** {pt['flag']}", ""]
+    if image_rel:
+        body += [f"![出處圖]({image_rel})", ""]
+    body += [f"**標示：** {pt['flag'] or DEFAULT_FLAG}", ""]
     if pt["links"]:
         body += ["## 連結", "", *relation_lines(pt["links"]), ""]
     body += ["## 出處", "", f"- [[{note_stem}]]" + (f"（{pt['source']}）" if pt["source"] else ""), ""]
     return "\n".join(front + body)
 
 
-def export(dest: Path, vault: Path) -> list:
+def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     meta = json.loads(read_text(dest / "meta.json"))
     vid = meta.get("video_id") or dest.name.rpartition("__")[2]
     cat = category_of(dest, meta)
@@ -246,10 +296,23 @@ def export(dest: Path, vault: Path) -> list:
         shutil.copyfile(src, att / name)
         return f"{rel_att}/{name}"
 
+    def attach_small(src: Path, name: str):
+        att.mkdir(parents=True, exist_ok=True)
+        out = att / (Path(name).stem + ".jpg")
+        shrink_copy(src, out)
+        return f"{rel_att}/{out.name}"
+
     summary = read_text(dest / "summary.md")
     links_conf, links_cand, problems = read_links(read_text(dest / "links.md"))
     points, points_cand, p_problems = read_points(read_text(dest / "knowledge.md"))
     problems += p_problems
+    seen_titles = set()
+    for pt in points:
+        if pt["title"] in seen_titles:
+            problems.append(f"知識點標題重複：「{pt['title']}」（後者會覆蓋前者，請改名）")
+        seen_titles.add(pt["title"])
+        if pt["quote"] and not quote_found(dest, pt["quote"]):
+            problems.append(f"知識點「{pt['title']}」的引文在 transcript.md／supplement.md 找不到，可能是轉述")
     targets = list(dict.fromkeys([t for t, _, _ in links_conf]))
     point_paths = {}  # point title -> note path (decided first so the video note can link to them)
     for pt in points:
@@ -263,7 +326,8 @@ def export(dest: Path, vault: Path) -> list:
     front = ["---", f"title: {q(title)}", f"type: {'carousel-note' if carousel else 'video-note'}",
              f"source: {q(meta.get('url', ''))}", f"platform: {q(meta.get('platform', ''))}",
              f"video_id: {q(vid)}", f"uploader: {q(meta.get('uploader', ''))}", f"category: {q(cat)}",
-             f"date: {q(meta.get('last_updated', ''))}", "status: unreviewed", MARK, "aliases:", f"  - {q(title)}",
+             f"date: {q(meta.get('last_updated', ''))}", f"status: {'reviewed' if (links_conf or points) else 'unreviewed'}",
+             f"origin_folder: {q(origin(dest))}", MARK, "aliases:", f"  - {q(title)}",
              "tags:"] + [f"  - {q(t)}" for t in tags]
     related = [f"[[{t}]]" for t in targets + targets_sop + [pp.stem for pp in point_paths.values()]]
     if related:
@@ -274,12 +338,12 @@ def export(dest: Path, vault: Path) -> list:
     body += ["## 摘要", "", demote(summary), ""]
     if (dest / "mindmap.png").exists():
         body += ["## 思維導圖", "", f"![思維導圖]({attach(dest / 'mindmap.png', 'mindmap.png')})", ""]
-    if carousel:
+    if carousel and with_pages:
         body += ["## 圖文原頁", ""]
         for i, sl in enumerate(sorted(meta.get("slides", []), key=lambda s: s["start"]), 1):
             src = dest / "frames" / sl["frame"]
             if src.exists():
-                body += [f"**第 {i} 頁：{sl.get('title', '')}**", "", f"![第 {i} 頁]({attach(src, sl['frame'])})", ""]
+                body += [f"**第 {i} 頁：{sl.get('title', '')}**", "", f"![第 {i} 頁]({attach_small(src, sl['frame'])})", ""]
     if point_paths:
         body += ["## 知識點", "", *[f"- [[{pp.stem}]]" for pp in point_paths.values()], ""]
     if links_conf:
@@ -300,7 +364,10 @@ def export(dest: Path, vault: Path) -> list:
     for pt in points:
         pp = point_paths[pt["title"]]
         pp.parent.mkdir(parents=True, exist_ok=True)
-        pp.write_text(point_md(pt, meta, vid, cat, note_stem, tags), encoding="utf-8")
+        img = source_image(dest, meta, pt["source"])
+        rel = os.path.relpath(att, pp.parent).replace(os.sep, "/")
+        out_name = Path(attach_small(img, img.name)).name if img else ""
+        pp.write_text(point_md(pt, meta, vid, cat, note_stem, tags, f"{rel}/{out_name}" if out_name else ""), encoding="utf-8")
         keep.add(pp)
         written.append(pp)
     if sop_src:
@@ -337,7 +404,7 @@ def related_targets(md: Path) -> list:
 def write_index(vault: Path):
     """00-索引.md: generated notes by 領域, knowledge points by source note, and 待建立節點 (a [[link]] whose note
     does not exist yet). Only notes carrying our mark are listed."""
-    rows, points, stems, wanted = {}, {}, set(), {}
+    rows, points, stems, wanted, orphans = {}, {}, set(), {}, []
     for md in sorted(vault.rglob("*.md")):
         if "_attachments" in md.parts or md.name == "00-索引.md":
             continue
@@ -353,6 +420,8 @@ def write_index(vault: Path):
             points.setdefault(fm.get("source_note", "").strip("[]"), []).append(md.stem)
             continue
         rows.setdefault(fm.get("category", "未分類"), []).append((fm.get("date", ""), md.stem))
+        if fm.get("origin_folder") and not (ROOT / fm["origin_folder"]).exists():
+            orphans.append((md.stem, fm["origin_folder"]))
     out = ["---", "title: \"索引\"", MARK, "---", "", "# watch-archive 知識庫索引", "",
            "_由 `scripts/obsidian_export.py` 產生；每次匯出重建。_", ""]
     for cat in sorted(rows):
@@ -361,13 +430,20 @@ def write_index(vault: Path):
         out.append("")
     if points:
         out += [f"## 知識點（{sum(len(v) for v in points.values())}）", ""]
+        base = lambda t: re.sub(r" \([\w-]{1,12}\)$", "", t)  # noqa: E731
+        names = [base(t) for v in points.values() for t in v]
         for src in sorted(points):
-            out += [f"- [[{src}]]"] + [f"  - [[{t}]]" for t in sorted(points[src])]
+            out += [f"- [[{src}]]"] + [f"  - [[{t}]]" + ("（同名，待人工合併）" if names.count(base(t)) > 1 else "")
+                                       for t in sorted(points[src])]
         out.append("")
     pending = sorted(t for t in wanted if t not in stems)
     if pending:
         out += [f"## 待建立節點（{len(pending)}）", "", "_已被連結、但還沒有筆記；有空再補，或連結不適合就改 links.md。_", ""]
         out += [f"- [[{t}]]（被 {'、'.join(sorted(set(wanted[t])))} 連結）" for t in pending]
+        out.append("")
+    if orphans:
+        out += [f"## 來源資料夾已不存在（{len(orphans)}）", "", "_不會自動刪除；不要了請自行刪筆記。_", ""]
+        out += [f"- [[{stem}]]（原：`{folder}`）" for stem, folder in sorted(orphans)]
         out.append("")
     (vault / "00-索引.md").write_text("\n".join(out), encoding="utf-8")
 
@@ -380,6 +456,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("folder", nargs="?", help="watch-output/<領域>/<資料夾>")
     ap.add_argument("--all", action="store_true", help="export every archived folder")
+    ap.add_argument("--with-pages", action="store_true",
+                    help="also put every page of an image post into its note (default: only the pictures knowledge points cite)")
     ap.add_argument("--vault", default=None,
                     help="your own vault: everything goes into <vault>/watch-archive/ and nothing else in it is touched "
                          "(default: this repo's obsidian-vault/, a vault of its own)")
@@ -389,7 +467,7 @@ def main():
     vault = Path(args.vault) / "watch-archive" if args.vault else DEFAULT_VAULT
     dests = [mp.parent for mp in folders()] if args.all else [Path(args.folder)]
     for d in dests:
-        for p in export(d, vault):
+        for p in export(d, vault, args.with_pages):
             print("wrote", p)
     write_index(vault)
     print("wrote", vault / "00-索引.md")

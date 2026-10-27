@@ -8,6 +8,7 @@ uploader: "李佳達"
 category: "AI"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU"
 generated_by: watch-archive
 aliases:
   - "AI逐字稿怎麼驗收不偷工_2小時免費體驗課"

@@ -23,6 +23,9 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 UA = {"User-Agent": "Mozilla/5.0"}
+CDN_SUFFIXES = ("cdninstagram.com", "fbcdn.net")  # page images only from Meta's CDN, never an arbitrary host in the HTML
+MAX_PAGES = 30
+MAX_BYTES = 15 * 1024 * 1024
 AVATAR = "t51.2885-19"  # Instagram CDN path segment of profile pictures
 POST_RE = re.compile(r"^/@([^/]+)/post/([\w-]+)")
 IMG_RE = re.compile(r"https:[^\"'\s<>]+?\.(?:jpg|webp)[^\"'\s<>]*")
@@ -71,9 +74,11 @@ def parse_images(embed_html: str):
         if key in seen:
             continue
         seen.add(key)
-        if AVATAR not in key:
-            out.append(url)
-    return out
+        host = urlparse(url).netloc.lower()
+        if AVATAR in key or urlparse(url).scheme != "https" or not host.endswith(CDN_SUFFIXES):
+            continue
+        out.append(url)
+    return out[:MAX_PAGES]
 
 
 def author_name(og_title: str) -> str:
@@ -97,9 +102,15 @@ def fetch(url: str, get=http_get) -> dict:
 
 
 def download(url: str, dest: Path, get_bytes=None):
-    get_bytes = get_bytes or (lambda u: urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=40).read())
+    def fetch_bytes(u):
+        with urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=40) as r:
+            data = r.read(MAX_BYTES + 1)
+        if len(data) > MAX_BYTES:
+            raise ValueError(f"image larger than {MAX_BYTES // 1024 // 1024} MB")
+        return data
+
     try:
-        dest.write_bytes(get_bytes(url))
+        dest.write_bytes((get_bytes or fetch_bytes)(url))
     except Exception as e:  # noqa: BLE001
         raise ThreadsError(f"network: image download failed ({type(e).__name__}: {e})") from e
 

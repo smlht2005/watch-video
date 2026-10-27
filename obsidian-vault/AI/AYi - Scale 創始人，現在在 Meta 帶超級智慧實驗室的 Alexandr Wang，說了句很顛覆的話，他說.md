@@ -8,6 +8,7 @@ uploader: "AYi"
 category: "AI"
 date: "2026-10-11"
 status: unreviewed
+origin_folder: "watch-output/AI/2026-10-11_X_AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa__2109141804620619953"
 generated_by: watch-archive
 aliases:
   - "AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司..."
