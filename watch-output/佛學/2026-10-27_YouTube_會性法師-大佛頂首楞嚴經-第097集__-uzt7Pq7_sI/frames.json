@@ -1,0 +1,247 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "00:44",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0003.jpg",
+    "t": "01:28",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "02:56",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "03:40",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0007.jpg",
+    "t": "04:24",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0011.jpg",
+    "t": "07:21",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0012.jpg",
+    "t": "08:05",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0021.jpg",
+    "t": "14:41",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0037.jpg",
+    "t": "26:27",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0042.jpg",
+    "t": "30:07",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0046.jpg",
+    "t": "33:03",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0055.jpg",
+    "t": "39:40",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0060.jpg",
+    "t": "43:20",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0067.jpg",
+    "t": "48:29",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0074.jpg",
+    "t": "53:37",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0080.jpg",
+    "t": "58:02",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0087.jpg",
+    "t": "1:03:10",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0090.jpg",
+    "t": "1:05:22",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0096.jpg",
+    "t": "1:09:47",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0099.jpg",
+    "t": "1:11:59",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0100.jpg",
+    "t": "1:12:43",
+    "reason": "uniform"
+  },
+  {
+    "file": "slide_01.jpg",
+    "t": "02:18",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_02.jpg",
+    "t": "04:04",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "09:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "11:39",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_05.jpg",
+    "t": "15:02",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_06.jpg",
+    "t": "17:08",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_07.jpg",
+    "t": "19:08",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_08.jpg",
+    "t": "21:44",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_09.jpg",
+    "t": "25:14",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_10.jpg",
+    "t": "26:46",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_11.jpg",
+    "t": "29:57",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_12.jpg",
+    "t": "33:16",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_13.jpg",
+    "t": "35:26",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_14.jpg",
+    "t": "37:12",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_15.jpg",
+    "t": "40:12",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_16.jpg",
+    "t": "41:57",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_17.jpg",
+    "t": "43:42",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_18.jpg",
+    "t": "46:36",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_19.jpg",
+    "t": "48:59",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_20.jpg",
+    "t": "50:42",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_21.jpg",
+    "t": "53:33",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_22.jpg",
+    "t": "57:24",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_23.jpg",
+    "t": "59:41",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_24.jpg",
+    "t": "60:49",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_25.jpg",
+    "t": "63:44",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_26.jpg",
+    "t": "65:32",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_27.jpg",
+    "t": "69:46",
+    "reason": "clean-slide"
+  }
+]
