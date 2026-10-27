@@ -51,14 +51,21 @@ DEFAULT_CROP = "iw*0.82:ih*0.18:0:ih*0.8"
 PUNCT = re.compile(r"[\s，。、？！；：「」『』（）《》\"“”…—\-·,.?!:;\[\]()0-9a-zA-Z]")
 CJK = re.compile(r"[一-鿿]")
 LINE = re.compile(r"^\[(\d+):(\d+)(?::(\d+))?\] (.*)$")
-HF_V5 = "https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/chinese/"
-V5_FILES = {"rec.onnx": "rec_model_path", "dict.txt": "rec_keys_path"}
+# PP-OCRv5 Chinese recognizers: the mobile one (16 MB) reads the same subtitles as the server one (84 MB) about 20x faster
+V5_MODELS = {
+    "v5": ("ppocrv5-mobile", "https://huggingface.co/twmht/ppocr_v5_mobile/resolve/main/",
+           {"rec.onnx": "rec_model_path", "ppocr_keys_ocrv5.txt": "rec_keys_path"}),
+    "v5-server": ("ppocrv5", "https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/chinese/",
+                  {"rec.onnx": "rec_model_path", "dict.txt": "rec_keys_path"}),
+}
+MODEL_CHOICES = ["v5", "v5-server", "v4"]
 # v4 misreads traditional glyphs as these look-alikes; applied only to v4 output (v5 does not need it). Only reads that
 # have no legitimate use in sutra lectures: 编 (遍/編) and 竞 (竟/競) are real words too, so they are left for a human.
 FIXED_MISREADS = {"罪生": "眾生", "筱": "從", "弛": "祂", "菩隆": "菩薩"}
 AUTO_SEGMENT_MIN = 30   # videos longer than this many minutes are OCR'd in segments unless --segment-min says otherwise
 SEGMENT_MIN = 10        # minutes per segment when segmenting automatically
 LOCK_TTL = 30 * 60      # seconds after which a segment lock is considered abandoned
+SLOW_IMAGE_S = 15       # an image slower than this gets its own trace line
 OCR_BATCH = 10          # images per work item, so progress can be traced while a segment is running
 UNCHANGED = 3.0   # mean 0-255 difference of a 48x12 thumbnail below which two band images count as the same
 
@@ -134,17 +141,18 @@ def compare(lines, events, thr=0.85, window_pad=1):
     return flagged
 
 
-def v5_paths():
-    """Local paths of the PP-OCRv5 Chinese recognizer and its dictionary, downloaded on first use."""
+def v5_paths(model="v5"):
+    """Local paths of a PP-OCRv5 Chinese recognizer and its dictionary, downloaded on first use."""
     import urllib.request
-    cache = Path.home() / ".cache" / "watch" / "ppocrv5"
+    folder, base, files = V5_MODELS[model]
+    cache = Path.home() / ".cache" / "watch" / folder
     cache.mkdir(parents=True, exist_ok=True)
     paths = {}
-    for name, kwarg in V5_FILES.items():
+    for name, kwarg in files.items():
         dest = cache / name
         if not dest.exists() or dest.stat().st_size == 0:
-            print(f"downloading PP-OCRv5 {name} ...", file=sys.stderr, flush=True)
-            urllib.request.urlretrieve(HF_V5 + name, dest)
+            print(f"downloading {model} {name} ...", file=sys.stderr, flush=True)
+            urllib.request.urlretrieve(base + name, dest)
         paths[kwarg] = str(dest)
     return paths
 
@@ -172,19 +180,39 @@ def load_ocr(model="v5", threads=0):
     except ImportError:
         sys.exit("rapidocr_onnxruntime is not installed. Make a venv and `pip install rapidocr-onnxruntime`, "
                  "then run this script with that venv's python (see the header of this file).")
-    kw = v5_paths() if model == "v5" else {}
+    kw = v5_paths(model) if model in V5_MODELS else {}
     if threads:
         kw["config_path"] = threads_config(threads)
     return RapidOCR(**kw)
 
 
-def read_text(engine, image_path):
-    """One OCR pass over a band image; boxes are joined top-to-bottom, left-to-right."""
-    result, _ = engine(str(image_path))
+def join_boxes(result):
+    """Text of the detected boxes, top-to-bottom then left-to-right."""
     if not result:
         return ""
     result = sorted(result, key=lambda r: (round(r[0][0][1] / 20), r[0][0][0]))
     return "".join(r[1] for r in result)
+
+
+def read_text(engine, image_path):
+    """One OCR pass over a band image; boxes are joined top-to-bottom, left-to-right."""
+    result, _ = engine(str(image_path))
+    return join_boxes(result)
+
+
+def read_text_timed(engine, image_path):
+    """read_text plus where the time went: (text, {wall, det, cls, rec, other, boxes, w, h}) in seconds.
+
+    RapidOCR reports det/cls/rec itself; `other` is the rest (decode, resize, pre/post-processing, python overhead)."""
+    from PIL import Image
+    with Image.open(image_path) as im:
+        w, h = im.size
+    t0 = time.time()
+    result, elapse = engine(str(image_path))
+    wall = time.time() - t0
+    det, cls, rec = (list(elapse) + [0.0, 0.0, 0.0])[:3] if elapse and len(elapse) == 3 else (0.0, 0.0, 0.0)
+    return join_boxes(result), {"wall": wall, "det": det, "cls": cls, "rec": rec,
+                                "other": max(wall - det - cls - rec, 0.0), "boxes": len(result or []), "w": w, "h": h}
 
 
 _engine = None
@@ -195,12 +223,12 @@ def _ocr_chunk(job):
     model, threads, paths = job
     if _engine is None:
         _engine = load_ocr(model, threads)
-    texts, secs = [], []
+    texts, infos = [], []
     for p in paths:
-        t0 = time.time()
-        texts.append(read_text(_engine, p))
-        secs.append(time.time() - t0)
-    return texts, secs
+        text, info = read_text_timed(_engine, p)
+        texts.append(text)
+        infos.append(info)
+    return texts, infos
 
 
 def extract_band(video, outdir, every, crop, start=None, end=None):
@@ -246,6 +274,17 @@ def say(msg):
     print(msg, flush=True)
 
 
+def mean_info(infos):
+    n = max(len(infos), 1)
+    return {k: sum(i[k] for i in infos) / n for k in ("wall", "det", "cls", "rec", "other", "boxes", "w", "h")}
+
+
+def describe_info(i):
+    """One trace fragment: total = det + cls + rec + other, then boxes and image size."""
+    return (f"{i['wall']:.1f}s = det {i['det']:.1f} + cls {i['cls']:.1f} + rec {i['rec']:.1f} + other {i['other']:.1f}, "
+            f"{i['boxes']:.1f} boxes, {i['w']:.0f}x{i['h']:.0f}px")
+
+
 def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say, threads=0):
     """OCR one time range of the video; returns {seconds (absolute, as str): text}. Logs a `[trace]` line per stage
     and per batch of images so a slow run shows where the time goes."""
@@ -268,16 +307,19 @@ def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say,
         log(f"[trace] thumbnails + change detection: {time.time() - t0:.0f}s; OCR on {len(todo)} changed images "
             f"(skipping {len(paths) - len(todo)})")
         batches = [todo[k:k + OCR_BATCH] for k in range(0, len(todo), OCR_BATCH)]
-        text, done, per_image, t0 = {}, 0, [], time.time()
+        text, done, infos, t0 = {}, 0, [], time.time()
         with ProcessPoolExecutor(workers) as pool:
             futures = {pool.submit(_ocr_chunk, (model, threads, [paths[i] for i in c])): c for c in batches}
             for fut in as_completed(futures):
-                texts, secs = fut.result()
+                texts, batch = fut.result()
                 text.update(zip(futures[fut], texts))
                 done += len(texts)
-                per_image += secs
+                infos += batch
+                for i, info in zip(futures[fut], batch):
+                    if info["wall"] >= SLOW_IMAGE_S:
+                        log(f"[trace] slow image at {(start or 0) + i * every}s: {describe_info(info)}")
                 log(f"[trace] OCR {done}/{len(todo)} images, {time.time() - t0:.0f}s elapsed, "
-                    f"{sum(per_image) / len(per_image):.1f}s/image avg, slowest {max(per_image):.1f}s")
+                    f"slowest {max(x['wall'] for x in infos):.1f}s | avg per image: {describe_info(mean_info(infos))}")
     log(f"[trace] range done in {time.time() - t_all:.0f}s, power {power_status()}")
     base = start or 0
     return {str(base + i * every): text[source[i]] for i in range(len(paths))}
@@ -630,7 +672,7 @@ def main(argv=None):
     p = sub.add_parser("probe", help="check whether the video has burned-in subtitles")
     p.add_argument("video")
     p.add_argument("--crop", default=DEFAULT_CROP)
-    p.add_argument("--model", choices=["v5", "v4"], default="v5")
+    p.add_argument("--model", choices=MODEL_CHOICES, default="v5")
     p.set_defaults(fn=cmd_probe)
     p = sub.add_parser("run", help="OCR the subtitle band into a JSON file")
     p.add_argument("video")
@@ -639,7 +681,7 @@ def main(argv=None):
     p.add_argument("--every", type=int, default=2, help="seconds between sampled frames")
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--threads", type=int, default=0, help="cap onnxruntime compute threads per process (0 = onnxruntime default, one per core)")
-    p.add_argument("--model", choices=["v5", "v4"], default="v5")
+    p.add_argument("--model", choices=MODEL_CHOICES, default="v5")
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
     p.add_argument("--segment-min", type=int, help="OCR in segments of N minutes, each saved to --seg-dir so a rerun "
@@ -663,7 +705,7 @@ def main(argv=None):
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
     p.add_argument("--out")
-    p.add_argument("--model", choices=["v5", "v4"], default="v5", help="model the ocr.json came from (v4 gets the misread fixes)")
+    p.add_argument("--model", choices=MODEL_CHOICES, default="v5", help="model the ocr.json came from (v4 gets the misread fixes)")
     p.set_defaults(fn=cmd_compare)
     args = ap.parse_args(argv)
     args.raw_argv = list(sys.argv[1:] if argv is None else argv)

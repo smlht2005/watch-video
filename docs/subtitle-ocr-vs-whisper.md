@@ -32,7 +32,9 @@ OCR 字幕**不能取代** Groq 轉錄，但拿來當**專有名詞的標準答�
 
 環境：Windows，OCR 用 [RapidOCR](https://github.com/RapidAI/RapidOCR)（`rapidocr-onnxruntime`）裝在獨立 venv，不動系統 Python；`probe`／`run` 用該 venv 的 python，`compare` 只需 opencc，用一般 python。
 
-**模型**：預設 `--model v5`（PP-OCRv5 中文辨識，來自 Hugging Face `monkt/paddleocr-onnx`，首次執行自動下載到 `~/.cache/watch/ppocrv5`，偵測仍用 RapidOCR 內建 v4 以保速度）。第104集實測：10 張 v4 誤判的字幕列，v5 全部讀對（眾、從、麼、圓、門、漢），但每張約 4.5 秒，v4 約 1.5 秒（慢約 3 倍；連偵測也換成 v5 會慢到約 13 秒，不划算）。`--model v4` 保留給舊 ocr.json，`compare --model v4` 會套用固定誤判對照表。
+**模型**（`--model`）：預設 `v5` ＝ PP-OCRv5 **mobile** 中文辨識（16 MB，Hugging Face `twmht/ppocr_v5_mobile`，首次執行自動下載到 `~/.cache/watch/ppocrv5-mobile`），偵測沿用 RapidOCR 內建 v4。`v5-server` ＝ 同一代的 server 版（84 MB，`monkt/paddleocr-onnx`）；`v4` ＝ RapidOCR 內建，保留給舊 ocr.json，`compare --model v4` 會套用固定誤判對照表。
+
+**為什麼預設改成 mobile**（第097集追蹤 `[trace]`）：server 版每張約 9.5 秒，其中辨識 `rec` 占約 8 成（單張 1.5–43 秒，隨 CPU 供電、散熱與優先權劇烈波動）；mobile 版辨識只要 0.0–0.3 秒。第104集 10 張 v4 誤判的字幕列，mobile 與 server 同樣讀對（眾、從、麼、圓、門、漢），mobile 還多讀對「顯示」；兩者都讀不對「遍於」（讀成偏／編），仍要靠人工。mobile 的輸出字與字之間不夾空格。
 
 1. 下載影片（`yt-dlp -f 136` 之類的 720p 視訊即可，放暫存區、不入庫）。
 2. `python scripts/subtitle_ocr.py probe <video>`：抽 12 張畫面 OCR，過半有字就判定有燒入字幕，順便印出每張讀到的字；字幕位置不同時用 `--crop W:H:X:Y` 調整（預設是畫面下方 18%、左側 82%，避開右側直排標題）。

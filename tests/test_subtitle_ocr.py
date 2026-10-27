@@ -387,5 +387,82 @@ class Power(unittest.TestCase):
         self.assertIn("power battery 40%", lines[-1])
 
 
+class StageTiming(unittest.TestCase):
+    def test_read_text_timed_splits_stages_and_counts_boxes(self):
+        import tempfile
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("PIL not installed")
+
+        def engine(path):
+            box = lambda x, text: [[[x, 0], [x + 5, 0], [x + 5, 5], [x, 5]], text, 0.9]   # noqa: E731
+            return [box(50, "世"), box(0, "觀")], [0.5, 0.0, 1.5]
+        with tempfile.TemporaryDirectory() as d:
+            png = Path(d) / "a.png"
+            Image.new("L", (40, 8)).save(png)
+            text, info = so.read_text_timed(engine, png)
+        self.assertEqual(text, "觀世")                      # left-to-right
+        self.assertEqual((info["det"], info["cls"], info["rec"], info["boxes"]), (0.5, 0.0, 1.5, 2))
+        self.assertEqual((info["w"], info["h"]), (40, 8))
+        self.assertGreaterEqual(info["other"], 0.0)
+
+    def test_no_text_means_zero_boxes_and_zero_stages(self):
+        import tempfile
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("PIL not installed")
+        with tempfile.TemporaryDirectory() as d:
+            png = Path(d) / "a.png"
+            Image.new("L", (10, 4)).save(png)
+            text, info = so.read_text_timed(lambda p: (None, None), png)
+        self.assertEqual((text, info["boxes"], info["det"], info["rec"]), ("", 0, 0.0, 0.0))
+
+    def test_mean_and_description(self):
+        a = {"wall": 4.0, "det": 1.0, "cls": 0.0, "rec": 2.0, "other": 1.0, "boxes": 2, "w": 100, "h": 10}
+        b = {"wall": 8.0, "det": 3.0, "cls": 0.0, "rec": 4.0, "other": 1.0, "boxes": 4, "w": 100, "h": 10}
+        m = so.mean_info([a, b])
+        self.assertEqual((m["wall"], m["det"], m["rec"], m["boxes"]), (6.0, 2.0, 3.0, 3.0))
+        self.assertEqual(so.describe_info(m), "6.0s = det 2.0 + cls 0.0 + rec 3.0 + other 1.0, 3.0 boxes, 100x10px")
+
+    def test_slow_image_gets_its_own_trace_line(self):
+        from unittest import mock
+        slow = {"wall": 20.0, "det": 5.0, "cls": 0.0, "rec": 14.0, "other": 1.0, "boxes": 6, "w": 1050, "h": 130}
+        fast = dict(slow, wall=2.0, det=0.5, rec=1.0, other=0.5)
+
+        class Pool:
+            def __init__(self, n): pass
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+
+            def submit(self, fn, job):
+                from concurrent.futures import Future
+                f = Future()
+                f.set_result((["a"] * len(job[2]), [fast, slow][:len(job[2])]))
+                return f
+        lines = []
+        with mock.patch.multiple(so, extract_band=lambda *a, **k: ["p0", "p1"], thumbnails=lambda p: [[0] * 4, [255] * 4],
+                                 ProcessPoolExecutor=Pool):
+            so.ocr_range("v.mp4", 1, 3, "c", "v5", start=600, log=lines.append)
+        slow_lines = [l for l in lines if "slow image" in l]
+        self.assertEqual(len(slow_lines), 1)
+        self.assertIn("at 603s", slow_lines[0])
+        self.assertIn("rec 14.0", slow_lines[0])
+        self.assertTrue(any("avg per image" in l and "slowest 20.0s" in l for l in lines))
+
+
+class Models(unittest.TestCase):
+    def test_default_is_the_mobile_recognizer_and_server_is_still_selectable(self):
+        self.assertEqual(so.MODEL_CHOICES[0], "v5")
+        self.assertIn("mobile", so.V5_MODELS["v5"][0])
+        self.assertIn("monkt", so.V5_MODELS["v5-server"][1])
+        for _, _, files in so.V5_MODELS.values():
+            self.assertEqual(sorted(files.values()), ["rec_keys_path", "rec_model_path"])
+
+    def test_v4_has_no_downloadable_files(self):
+        self.assertNotIn("v4", so.V5_MODELS)
+
+
 if __name__ == "__main__":
     unittest.main()
