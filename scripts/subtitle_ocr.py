@@ -251,7 +251,7 @@ def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say,
     and per batch of images so a slow run shows where the time goes."""
     t_all = time.time()
     log(f"[trace] pid {os.getpid()} priority {priority_name()}, {os.cpu_count()} cpus, workers {workers}, "
-        f"threads {threads or 'default'}, model {model}")
+        f"threads {threads or 'default'}, model {model}, power {power_status()}")
     with tempfile.TemporaryDirectory() as tmp:
         t0 = time.time()
         paths = extract_band(video, tmp, every, crop, start, end)
@@ -278,7 +278,7 @@ def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say,
                 per_image += secs
                 log(f"[trace] OCR {done}/{len(todo)} images, {time.time() - t0:.0f}s elapsed, "
                     f"{sum(per_image) / len(per_image):.1f}s/image avg, slowest {max(per_image):.1f}s")
-    log(f"[trace] range done in {time.time() - t_all:.0f}s")
+    log(f"[trace] range done in {time.time() - t_all:.0f}s, power {power_status()}")
     base = start or 0
     return {str(base + i * every): text[source[i]] for i in range(len(paths))}
 
@@ -478,6 +478,34 @@ def priority_name():
         k32 = _kernel32()
         return PRIORITY_NAMES.get(k32.GetPriorityClass(k32.GetCurrentProcess()), "unknown")
     return f"nice {os.nice(0)}"
+
+
+def power_status():
+    """'AC 88%' / 'battery 62%' / 'unknown' for the trace log: on battery a laptop CPU is power-limited and runs several
+    times slower (measured 4 s vs 11-35 s per image), which looks like a hang unless the log says so."""
+    try:
+        if os.name == "nt":
+            import ctypes
+
+            class Status(ctypes.Structure):
+                _fields_ = [("ac", ctypes.c_ubyte), ("flag", ctypes.c_ubyte), ("percent", ctypes.c_ubyte),
+                            ("saver", ctypes.c_ubyte), ("life", ctypes.c_ulong), ("full", ctypes.c_ulong)]
+            st = Status()
+            if not ctypes.windll.kernel32.GetSystemPowerStatus(ctypes.byref(st)):
+                return "unknown"
+            return format_power(st.ac, st.percent)
+        base = Path("/sys/class/power_supply")
+        ac = [int((d / "online").read_text()) for d in base.glob("A*") if (d / "online").exists()]
+        pct = [int((d / "capacity").read_text()) for d in base.glob("BAT*") if (d / "capacity").exists()]
+        return format_power(1 if any(ac) else 0 if ac else 255, pct[0] if pct else 255)
+    except (OSError, ValueError, IndexError):
+        return "unknown"
+
+
+def format_power(ac, percent):
+    """ac: 1 = on AC, 0 = on battery, anything else unknown (GetSystemPowerStatus values); percent 255 = unknown."""
+    state = {1: "AC", 0: "battery"}.get(ac, "unknown power")
+    return state + ("" if percent > 100 else f" {percent}%")
 
 
 def apply_low_priority():

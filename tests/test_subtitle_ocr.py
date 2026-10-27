@@ -367,5 +367,25 @@ class Background(unittest.TestCase):
                 self.assertEqual(len(calls), expected)
 
 
+class Power(unittest.TestCase):
+    def test_format_power(self):
+        self.assertEqual(so.format_power(1, 88), "AC 88%")
+        self.assertEqual(so.format_power(0, 62), "battery 62%")
+        self.assertEqual(so.format_power(255, 255), "unknown power")
+        self.assertEqual(so.format_power(1, 255), "AC")   # desktop without a battery
+
+    def test_power_status_never_raises(self):
+        self.assertIsInstance(so.power_status(), str)
+
+    def test_trace_header_and_footer_show_power(self):
+        from unittest import mock
+        lines = []
+        with mock.patch.multiple(so, power_status=lambda: "battery 40%", extract_band=lambda *a, **k: [],
+                                 thumbnails=lambda p: []):
+            so.ocr_range("v.mp4", 1, 3, "c", "v5", log=lines.append)
+        self.assertIn("power battery 40%", lines[0])
+        self.assertIn("power battery 40%", lines[-1])
+
+
 if __name__ == "__main__":
     unittest.main()
