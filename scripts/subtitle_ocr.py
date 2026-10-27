@@ -430,10 +430,12 @@ def claim_segment(seg_dir, start, ttl=LOCK_TTL, now=time.time, alive=pid_alive):
             if lock_is_stale(grabbed, ttl, now, alive):
                 os.replace(grabbed, f"{path}.stale.{os.getpid()}.{int(now())}")
                 continue
-            try:   # we grabbed a live lock another process created after our check: give it back
-                os.rename(grabbed, path)
+            try:   # we grabbed a live lock another process created after our check: give it back, never over a newer one
+                os.link(grabbed, path)
             except OSError:
-                pass
+                pass   # the name was taken meanwhile: that process holds the segment now
+            finally:
+                os.remove(grabbed)
             return False
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump({"pid": os.getpid(), "host": socket.gethostname(), "time": now()}, f)

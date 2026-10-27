@@ -313,6 +313,32 @@ class Locks(unittest.TestCase):
         so.lock_path(d, 0).write_text(json.dumps({"pid": 1, "host": "elsewhere", "time": 10 ** 12}), encoding="utf-8")
         self.assertFalse(so.claim_segment(d, 0, alive=lambda pid: False))
 
+    def test_giving_a_grabbed_live_lock_back_never_overwrites_or_leaves_litter(self):
+        from unittest import mock
+        d, calls = self.dir(), []
+        third = {"pid": 999, "host": socket.gethostname(), "time": time.time()}
+
+        def alive(pid):
+            calls.append(pid)
+            if len(calls) == 1:   # a live lock appears after we judged the old one stale
+                so.lock_path(d, 0).write_text(json.dumps(
+                    {"pid": os.getpid(), "host": socket.gethostname(), "time": time.time()}), encoding="utf-8")
+                return False
+            return True
+
+        def put_back(real):
+            def wrapper(src, dst, *a, **k):   # a third process takes the lock name just before we give the lock back
+                if ".grab." in str(src) and not so.lock_path(d, 0).exists():
+                    so.lock_path(d, 0).write_text(json.dumps(third), encoding="utf-8")
+                return real(src, dst, *a, **k)
+            return wrapper
+        so.lock_path(d, 0).write_text(json.dumps(
+            {"pid": 1, "host": socket.gethostname(), "time": time.time()}), encoding="utf-8")
+        with mock.patch("subtitle_ocr.os.rename", put_back(os.rename)), mock.patch("subtitle_ocr.os.link", put_back(os.link)):
+            self.assertFalse(so.claim_segment(d, 0, alive=alive))
+        self.assertEqual(json.loads(so.lock_path(d, 0).read_text(encoding="utf-8"))["pid"], 999)
+        self.assertEqual([f.name for f in d.iterdir() if ".grab." in f.name], [])
+
     def test_garbled_lock_is_stale(self):
         d = self.dir()
         so.lock_path(d, 0).write_text("", encoding="utf-8")
