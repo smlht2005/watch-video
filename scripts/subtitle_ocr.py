@@ -44,7 +44,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 DEFAULT_CROP = "iw*0.82:ih*0.18:0:ih*0.8"
@@ -59,6 +59,7 @@ FIXED_MISREADS = {"罪生": "眾生", "筱": "從", "弛": "祂", "菩隆": "菩
 AUTO_SEGMENT_MIN = 30   # videos longer than this many minutes are OCR'd in segments unless --segment-min says otherwise
 SEGMENT_MIN = 10        # minutes per segment when segmenting automatically
 LOCK_TTL = 30 * 60      # seconds after which a segment lock is considered abandoned
+OCR_BATCH = 10          # images per work item, so progress can be traced while a segment is running
 UNCHANGED = 3.0   # mean 0-255 difference of a 48x12 thumbnail below which two band images count as the same
 
 
@@ -148,13 +149,33 @@ def v5_paths():
     return paths
 
 
-def load_ocr(model="v5"):
+def threads_config(n):
+    """Path of a RapidOCR config that caps onnxruntime's compute threads at n (RapidOCR's kwargs cannot set it).
+
+    onnxruntime defaults to one thread per core; they all wait for each other at every layer, so when other programs take
+    some cores, a run at idle priority slows down by several times. A handful of threads is much steadier."""
+    import yaml
+    from rapidocr_onnxruntime.main import DEFAULT_CFG_PATH
+    cfg = yaml.safe_load(Path(DEFAULT_CFG_PATH).read_text(encoding="utf-8"))
+    for part in ("Det", "Cls", "Rec"):
+        cfg[part]["intra_op_num_threads"] = n
+        cfg[part]["inter_op_num_threads"] = 1
+    dest = Path.home() / ".cache" / "watch" / f"rapidocr_threads{n}.yaml"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
+    return str(dest)
+
+
+def load_ocr(model="v5", threads=0):
     try:
         from rapidocr_onnxruntime import RapidOCR
     except ImportError:
         sys.exit("rapidocr_onnxruntime is not installed. Make a venv and `pip install rapidocr-onnxruntime`, "
                  "then run this script with that venv's python (see the header of this file).")
-    return RapidOCR(**v5_paths()) if model == "v5" else RapidOCR()
+    kw = v5_paths() if model == "v5" else {}
+    if threads:
+        kw["config_path"] = threads_config(threads)
+    return RapidOCR(**kw)
 
 
 def read_text(engine, image_path):
@@ -171,10 +192,15 @@ _engine = None
 
 def _ocr_chunk(job):
     global _engine
-    model, paths = job
+    model, threads, paths = job
     if _engine is None:
-        _engine = load_ocr(model)
-    return [read_text(_engine, p) for p in paths]
+        _engine = load_ocr(model, threads)
+    texts, secs = [], []
+    for p in paths:
+        t0 = time.time()
+        texts.append(read_text(_engine, p))
+        secs.append(time.time() - t0)
+    return texts, secs
 
 
 def extract_band(video, outdir, every, crop, start=None, end=None):
@@ -216,11 +242,21 @@ def cmd_probe(args):
     return 0 if ratio >= 0.5 else 1
 
 
-def ocr_range(video, workers, every, crop, model, start=None, end=None):
-    """OCR one time range of the video; returns {seconds (absolute, as str): text}."""
+def say(msg):
+    print(msg, flush=True)
+
+
+def ocr_range(video, workers, every, crop, model, start=None, end=None, log=say, threads=0):
+    """OCR one time range of the video; returns {seconds (absolute, as str): text}. Logs a `[trace]` line per stage
+    and per batch of images so a slow run shows where the time goes."""
+    t_all = time.time()
+    log(f"[trace] pid {os.getpid()} priority {priority_name()}, {os.cpu_count()} cpus, workers {workers}, "
+        f"threads {threads or 'default'}, model {model}")
     with tempfile.TemporaryDirectory() as tmp:
+        t0 = time.time()
         paths = extract_band(video, tmp, every, crop, start, end)
-        print(f"{len(paths)} band images", flush=True)
+        log(f"[trace] extract {len(paths)} band images: {time.time() - t0:.0f}s")
+        t0 = time.time()
         thumbs = thumbnails(paths)
         todo, source = [], {}   # indexes to OCR; every other index copies the nearest earlier OCR'd one
         prev, prev_i = None, None
@@ -229,13 +265,20 @@ def ocr_range(video, workers, every, crop, model, start=None, end=None):
                 todo.append(i)
                 prev, prev_i = th, i
             source[i] = prev_i
-        print(f"OCR on {len(todo)} changed images (skipping {len(paths) - len(todo)})", flush=True)
-        chunks = [todo[k::workers] for k in range(workers)]
+        log(f"[trace] thumbnails + change detection: {time.time() - t0:.0f}s; OCR on {len(todo)} changed images "
+            f"(skipping {len(paths) - len(todo)})")
+        batches = [todo[k:k + OCR_BATCH] for k in range(0, len(todo), OCR_BATCH)]
+        text, done, per_image, t0 = {}, 0, [], time.time()
         with ProcessPoolExecutor(workers) as pool:
-            parts = list(pool.map(_ocr_chunk, [(model, [paths[i] for i in c]) for c in chunks]))
-        text = {}
-        for c, texts in zip(chunks, parts):
-            text.update(zip(c, texts))
+            futures = {pool.submit(_ocr_chunk, (model, threads, [paths[i] for i in c])): c for c in batches}
+            for fut in as_completed(futures):
+                texts, secs = fut.result()
+                text.update(zip(futures[fut], texts))
+                done += len(texts)
+                per_image += secs
+                log(f"[trace] OCR {done}/{len(todo)} images, {time.time() - t0:.0f}s elapsed, "
+                    f"{sum(per_image) / len(per_image):.1f}s/image avg, slowest {max(per_image):.1f}s")
+    log(f"[trace] range done in {time.time() - t_all:.0f}s")
     base = start or 0
     return {str(base + i * every): text[source[i]] for i in range(len(paths))}
 
@@ -290,6 +333,8 @@ def _kernel32():
     k32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
     k32.GetExitCodeProcess.restype = wintypes.BOOL
     k32.CloseHandle.argtypes = [wintypes.HANDLE]
+    k32.GetPriorityClass.argtypes = [wintypes.HANDLE]
+    k32.GetPriorityClass.restype = wintypes.DWORD
     return k32
 
 
@@ -355,10 +400,6 @@ def release_segment(seg_dir, start):
         os.remove(lock_path(seg_dir, start))
     except OSError:
         pass
-
-
-def say(msg):
-    print(msg, flush=True)
 
 
 def run_segmented(out, seg_dir, segments, ocr_segment, log=say, every=None, ttl=LOCK_TTL):
@@ -428,6 +469,17 @@ def cmd_status(args):
     return 0
 
 
+PRIORITY_NAMES = {0x40: "Idle", 0x4000: "BelowNormal", 0x20: "Normal", 0x8000: "AboveNormal", 0x80: "High", 0x100: "Realtime"}
+
+
+def priority_name():
+    """This process's priority, for the trace log (Windows class name; elsewhere the nice value)."""
+    if os.name == "nt":
+        k32 = _kernel32()
+        return PRIORITY_NAMES.get(k32.GetPriorityClass(k32.GetCurrentProcess()), "unknown")
+    return f"nice {os.nice(0)}"
+
+
 def apply_low_priority():
     """Lower this process's priority (Windows: Idle class, elsewhere nice 19); worker processes inherit it."""
     if os.name == "nt":
@@ -482,7 +534,8 @@ def cmd_run(args):
     else:
         step_min = args.segment_min
     if not step_min:
-        out = ocr_range(args.video, args.workers, args.every, args.crop, args.model, args.start, args.end)
+        out = ocr_range(args.video, args.workers, args.every, args.crop, args.model, args.start, args.end,
+                        threads=args.threads)
         Path(args.out).write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
         print(f"wrote {args.out}")
         return 0
@@ -490,7 +543,8 @@ def cmd_run(args):
     segments = plan_segments(total, step_min, args.every, args.start, args.end)
     missing = run_segmented(
         args.out, seg_dir, segments,
-        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b), every=args.every,
+        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b, threads=args.threads),
+        every=args.every,
         ttl=args.lock_ttl)
     if missing:
         busy = [a for a in missing if lock_path(seg_dir, a).exists()]
@@ -556,6 +610,7 @@ def main(argv=None):
     p.add_argument("--crop", default=DEFAULT_CROP)
     p.add_argument("--every", type=int, default=2, help="seconds between sampled frames")
     p.add_argument("--workers", type=int, default=4)
+    p.add_argument("--threads", type=int, default=0, help="cap onnxruntime compute threads per process (0 = onnxruntime default, one per core)")
     p.add_argument("--model", choices=["v5", "v4"], default="v5")
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
