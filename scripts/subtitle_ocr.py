@@ -10,12 +10,17 @@ burned-in subtitles; run `probe` first.
 Usage:
   python3 scripts/subtitle_ocr.py probe <video> [--model v5|v4]          # are there burned-in subtitles at all?
   python3 scripts/subtitle_ocr.py run <video> --out ocr.json [--workers 2] [--every 3] [--model v5|v4] [--start S] [--end S]
+                                            [--segment-min N|0] [--auto-segment-min 30] [--seg-dir DIR]
   python3 scripts/subtitle_ocr.py compare <folder> --ocr ocr.json [--thr 0.85] [--out diff.txt]
 
 `run` crops the subtitle band (--crop W:H:X:Y, ffmpeg expressions; default = bottom 18% / left 82%, which keeps a
 vertical title on the right out of the band), grabs one frame every --every seconds, skips frames whose band is
 unchanged, and OCRs the rest in parallel. Output is {"seconds": "text"}. The video is never committed (media/ is
 gitignored); put ocr.json and the frames in the scratchpad.
+
+Segments: a video longer than --auto-segment-min (30) minutes is OCR'd in 10-minute segments, each saved at once as
+<out>.segs/seg_<start s>.json; rerun the same command to resume (existing segments are skipped; delete one to redo it);
+when none is missing they are merged into --out. --segment-min N sets the length, 0 forces a single pass.
 
 OCR needs RapidOCR; install it in its own venv so the system Python is untouched:
   python -m venv ocrenv && ocrenv/Scripts/pip install rapidocr-onnxruntime   (Windows; bin/ elsewhere)
@@ -30,6 +35,7 @@ difference before applying it; `--model v4` output is also passed through FIXED_
 import argparse
 import difflib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -46,6 +52,8 @@ V5_FILES = {"rec.onnx": "rec_model_path", "dict.txt": "rec_keys_path"}
 # v4 misreads traditional glyphs as these look-alikes; applied only to v4 output (v5 does not need it). Only reads that
 # have no legitimate use in sutra lectures: 编 (遍/編) and 竞 (竟/競) are real words too, so they are left for a human.
 FIXED_MISREADS = {"罪生": "眾生", "筱": "從", "弛": "祂", "菩隆": "菩薩"}
+AUTO_SEGMENT_MIN = 30   # videos longer than this many minutes are OCR'd in segments unless --segment-min says otherwise
+SEGMENT_MIN = 10        # minutes per segment when segmenting automatically
 UNCHANGED = 3.0   # mean 0-255 difference of a 48x12 thumbnail below which two band images count as the same
 
 
@@ -203,9 +211,10 @@ def cmd_probe(args):
     return 0 if ratio >= 0.5 else 1
 
 
-def cmd_run(args):
+def ocr_range(video, workers, every, crop, model, start=None, end=None):
+    """OCR one time range of the video; returns {seconds (absolute, as str): text}."""
     with tempfile.TemporaryDirectory() as tmp:
-        paths = extract_band(args.video, tmp, args.every, args.crop, args.start, args.end)
+        paths = extract_band(video, tmp, every, crop, start, end)
         print(f"{len(paths)} band images", flush=True)
         thumbs = thumbnails(paths)
         todo, source = [], {}   # indexes to OCR; every other index copies the nearest earlier OCR'd one
@@ -216,16 +225,92 @@ def cmd_run(args):
                 prev, prev_i = th, i
             source[i] = prev_i
         print(f"OCR on {len(todo)} changed images (skipping {len(paths) - len(todo)})", flush=True)
-        chunks = [todo[k::args.workers] for k in range(args.workers)]
-        with ProcessPoolExecutor(args.workers) as pool:
-            parts = list(pool.map(_ocr_chunk, [(args.model, [paths[i] for i in c]) for c in chunks]))
+        chunks = [todo[k::workers] for k in range(workers)]
+        with ProcessPoolExecutor(workers) as pool:
+            parts = list(pool.map(_ocr_chunk, [(model, [paths[i] for i in c]) for c in chunks]))
         text = {}
         for c, texts in zip(chunks, parts):
             text.update(zip(c, texts))
-    base = args.start or 0
-    out = {str(base + i * args.every): text[source[i]] for i in range(len(paths))}
-    Path(args.out).write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
-    print(f"wrote {args.out}")
+    base = start or 0
+    return {str(base + i * every): text[source[i]] for i in range(len(paths))}
+
+
+def video_duration(video):
+    return float(subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(video)],
+        check=True, capture_output=True, text=True).stdout.strip())
+
+
+def resolve_segment_min(requested, duration, auto_min=AUTO_SEGMENT_MIN):
+    """Minutes per segment, or 0 for a single pass. None = decide by length: longer than `auto_min` minutes -> SEGMENT_MIN."""
+    if requested is not None:
+        return max(requested, 0)
+    return SEGMENT_MIN if duration > auto_min * 60 else 0
+
+
+def plan_segments(total, step_min, every, start=None, end=None):
+    """[(seg_start, seg_end)] covering [start, end or total); each segment is a multiple of `every` seconds long so the
+    sample points of all segments together are the same as one pass."""
+    step = max(step_min * 60 // every, 1) * every
+    lo, hi = start or 0, int(min(end, total)) if end else int(total + 0.999)
+    return [(a, min(a + step, hi)) for a in range(lo, hi, step)]
+
+
+def seg_path(seg_dir, start):
+    return Path(seg_dir) / f"seg_{start:05d}.json"
+
+
+def write_atomic(path, data):
+    """Write JSON so a killed process never leaves a half-written segment that looks finished."""
+    tmp = Path(str(path) + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def run_segmented(out, seg_dir, segments, ocr_segment, log=print):
+    """OCR each segment that has no seg file yet, then merge them all into `out` once none is missing.
+
+    ocr_segment(start, end) -> {seconds: text}. Returns the segment starts still missing (empty = merged)."""
+    Path(seg_dir).mkdir(parents=True, exist_ok=True)
+    for n, (a, b) in enumerate(segments, 1):
+        if seg_path(seg_dir, a).exists():
+            log(f"[seg {n}/{len(segments)}] {a}-{b}s already done, skipping")
+            continue
+        log(f"[seg {n}/{len(segments)}] {a}-{b}s")
+        write_atomic(seg_path(seg_dir, a), ocr_segment(a, b))
+    missing = [a for a, _ in segments if not seg_path(seg_dir, a).exists()]
+    if missing:
+        return missing
+    merged = {}
+    for a, _ in segments:
+        merged.update(json.loads(seg_path(seg_dir, a).read_text(encoding="utf-8")))
+    write_atomic(out, dict(sorted(merged.items(), key=lambda kv: int(kv[0]))))
+    return []
+
+
+def cmd_run(args):
+    total = video_duration(args.video) if args.segment_min is None or args.segment_min else None
+    if args.segment_min is None:
+        step_min = resolve_segment_min(None, total, args.auto_segment_min)
+        if step_min:
+            print(f"video is {total / 60:.0f} min (> {args.auto_segment_min}): OCR in {step_min}-minute segments "
+                  f"(--segment-min 0 to disable)", flush=True)
+    else:
+        step_min = args.segment_min
+    if not step_min:
+        out = ocr_range(args.video, args.workers, args.every, args.crop, args.model, args.start, args.end)
+        Path(args.out).write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
+        print(f"wrote {args.out}")
+        return 0
+    seg_dir = args.seg_dir or str(args.out) + ".segs"
+    segments = plan_segments(total, step_min, args.every, args.start, args.end)
+    missing = run_segmented(
+        args.out, seg_dir, segments,
+        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b))
+    if missing:
+        print(f"{len(missing)} segment(s) missing (starts: {missing}); {args.out} not written", file=sys.stderr)
+        return 1
+    print(f"wrote {args.out} from {len(segments)} segments in {seg_dir}")
     return 0
 
 
@@ -285,6 +370,10 @@ def main(argv=None):
     p.add_argument("--model", choices=["v5", "v4"], default="v5")
     p.add_argument("--start", type=int)
     p.add_argument("--end", type=int)
+    p.add_argument("--segment-min", type=int, help="OCR in segments of N minutes, each saved to --seg-dir so a rerun "
+                   "resumes; 0 = one pass; default: segments of 10 min when the video is longer than --auto-segment-min")
+    p.add_argument("--auto-segment-min", type=int, default=AUTO_SEGMENT_MIN)
+    p.add_argument("--seg-dir", help="where segment files go (default <out>.segs)")
     p.set_defaults(fn=cmd_run)
     p = sub.add_parser("compare", help="list transcript lines the subtitles do not cover")
     p.add_argument("folder")

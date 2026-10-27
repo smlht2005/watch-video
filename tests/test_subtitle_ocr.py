@@ -1,4 +1,5 @@
 """Subtitle OCR diffing (scripts/subtitle_ocr.py). Run: python3 -m unittest discover -s tests -v"""
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -57,6 +58,81 @@ class FixMisreads(unittest.TestCase):
 
     def test_legitimate_words_are_left_alone(self):
         self.assertEqual(so.fix_misreads({"0": "编織起來"}), {"0": "编織起來"})
+
+
+class Segments(unittest.TestCase):
+    EVERY = 3
+
+    def fake_ocr(self, calls):
+        def ocr(a, b):
+            calls.append((a, b))
+            return {str(t): f"t{t}" for t in range(a, b, self.EVERY)}
+        return ocr
+
+    def test_plan_covers_the_video_with_a_short_last_segment(self):
+        self.assertEqual(so.plan_segments(1500, 10, self.EVERY), [(0, 600), (600, 1200), (1200, 1500)])
+
+    def test_plan_respects_start_and_end(self):
+        self.assertEqual(so.plan_segments(4000, 10, self.EVERY, start=300, end=1300), [(300, 900), (900, 1300)])
+
+    def test_segment_length_is_a_multiple_of_every(self):
+        self.assertEqual(so.plan_segments(2000, 10, 7)[0], (0, 595))   # 600 s rounded down to a multiple of 7
+
+    def test_merge_equals_a_single_pass(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            calls, out = [], Path(d) / "ocr.json"
+            segs = so.plan_segments(1500, 10, self.EVERY)
+            self.assertEqual(so.run_segmented(out, Path(d) / "s", segs, self.fake_ocr(calls), log=lambda m: None), [])
+            merged = json.loads(out.read_text(encoding="utf-8"))
+            self.assertEqual(merged, {str(t): f"t{t}" for t in range(0, 1500, self.EVERY)})
+            self.assertEqual(list(merged), sorted(merged, key=int))
+
+    def test_rerun_skips_finished_segments(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            calls, out, sd = [], Path(d) / "ocr.json", Path(d) / "s"
+            segs = so.plan_segments(1500, 10, self.EVERY)
+            so.run_segmented(out, sd, segs, self.fake_ocr(calls), log=lambda m: None)
+            so.seg_path(sd, 600).unlink()
+            out.unlink()
+            calls.clear()
+            so.run_segmented(out, sd, segs, self.fake_ocr(calls), log=lambda m: None)
+            self.assertEqual(calls, [(600, 1200)])
+            self.assertTrue(out.exists())
+
+    def test_tmp_file_is_not_a_finished_segment(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            calls, sd = [], Path(d) / "s"
+            sd.mkdir()
+            Path(str(so.seg_path(sd, 0)) + ".tmp").write_text("{half", encoding="utf-8")
+            so.run_segmented(Path(d) / "o.json", sd, [(0, 600)], self.fake_ocr(calls), log=lambda m: None)
+            self.assertEqual(calls, [(0, 600)])
+
+    def test_missing_segment_means_no_merged_file(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "o.json"
+            segs = [(0, 600), (600, 1200)]
+
+
+            def ocr(a, b):
+                if a == 600:
+                    raise RuntimeError("killed")
+                return {"0": "x"}
+            with self.assertRaises(RuntimeError):
+                so.run_segmented(out, Path(d) / "s", segs, ocr, log=lambda m: None)
+            self.assertFalse(out.exists())
+            self.assertTrue(so.seg_path(Path(d) / "s", 0).exists())
+
+    def test_auto_segment_by_length(self):
+        self.assertEqual(so.resolve_segment_min(None, 30 * 60), 0)        # exactly 30 min: one pass
+        self.assertEqual(so.resolve_segment_min(None, 30 * 60 + 1), so.SEGMENT_MIN)
+        self.assertEqual(so.resolve_segment_min(None, 4333), 10)
+        self.assertEqual(so.resolve_segment_min(0, 4333), 0)               # explicit 0 turns it off
+        self.assertEqual(so.resolve_segment_min(5, 600), 5)                # explicit N is honoured on short videos
+        self.assertEqual(so.resolve_segment_min(None, 1900, auto_min=60), 0)
 
 
 if __name__ == "__main__":
