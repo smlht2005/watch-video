@@ -25,6 +25,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threads_fetch
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -441,6 +442,55 @@ def whisper_hints(backend: str, lang: str, prompt: str) -> tuple[dict, str, str,
     return ({"WATCH_WHISPERX_LANGUAGE": lang} if lang else {}), lang, "", warnings
 
 
+def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None, get_bytes=None) -> bool:
+    """Threads image post (carousel): caption + every page image -> folder skeleton + report. True when archived.
+
+    False (after a WARNING) means "not an image post or fetch failed": the caller continues with the video pipeline.
+    The page text is still transcribed by Claude from frames/slide_NN.jpg (step 4); see
+    .claude/skills/watch-archive/references/obsidian-4e.md."""
+    try:
+        info = (fetch or threads_fetch.fetch)(url)
+    except threads_fetch.ThreadsError as e:
+        print(f"WARNING: Threads image-post fetch failed ({e}); trying the video pipeline. If the post is a carousel, "
+              "upload its images instead (see .claude/skills/watch-archive/references/obsidian-4e.md).", file=sys.stderr)
+        return False
+    if not info:
+        return False  # a video post: yt-dlp path
+    vid = safe_id(info["post_id"])
+    existing = find_dirs(vid)
+    prev = json.loads((existing[0] / "meta.json").read_text(encoding="utf-8")) if existing and (existing[0] / "meta.json").exists() else {}
+    try:
+        category = pick_category(category_arg, prev.get("category", ""), [])
+    except ValueError as e:
+        sys.exit(str(e))
+    first_line = (info["caption"].splitlines() or [""])[0]
+    title = title_arg or prev.get("title_override") or prev.get("title") or tidy_title(first_line)[:TITLE_MAX] or "Threads 圖文貼文"
+    OUT_ROOT.mkdir(exist_ok=True)
+    cat_dir = OUT_ROOT / category
+    cat_dir.mkdir(parents=True, exist_ok=True)
+    if existing:  # follow a category change, as the video pipeline does
+        dest = existing[0]
+        moved = cat_dir / dest.name
+        if moved != dest and not moved.exists():
+            dest = Path(shutil.move(str(dest), str(moved)))
+    else:
+        dest = cat_dir / f"{dt.date.today():%Y-%m-%d}_Threads_{clean_title(title)}__{vid}"[:NAME_MAX]
+    try:
+        meta = threads_fetch.scaffold(dest, info, url, title, category, get_bytes)
+    except threads_fetch.ThreadsError as e:
+        sys.exit(f"threads image download failed: {e}")
+    if title_arg:
+        meta["title"] = meta["title_override"] = title_arg
+        (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    build_report.build(dest)
+    update_index()
+    print(f"archived -> {dest.relative_to(ROOT)}")
+    print(f"carousel: {len(info['images'])} 頁圖已下載到 frames/slide_NN.jpg，貼文本文在 supplement.md。"
+          "下一步（步驟 4）：看圖逐頁抄錄到 transcript.md、寫 meta.json 的 slides（title／note／keywords）、summary.md、mindmap.md；"
+          "之後 build_report.py → obsidian_export.py。")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
@@ -470,6 +520,9 @@ def main():
     fg.add_argument("--clean-fillers", action="store_true", help="strip filler particles (呢、啊…) from the Chinese transcript; default for lectures (講座／講經: --glossary pure-land or video_type lecture); remembered")
     fg.add_argument("--keep-fillers", action="store_true", help="keep filler particles even for lectures; remembered")
     args = ap.parse_args()
+
+    if threads_fetch.is_threads(args.url) and archive_threads_post(args.url, args.category, args.title or ""):
+        return
 
     platform, raw_id = platform_and_id(args.url)
     vid = safe_id(raw_id)

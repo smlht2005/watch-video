@@ -1,0 +1,19 @@
+{
+  "_說明": "Obsidian／個人知識管理領域。用 --glossary obsidian 載入。目前只有提示詞（terms），尚無實際觀察到的轉錄錯誤，所以 replace 留空；遇到穩定錯誤再補。",
+  "category": "AI",
+  "terms": [
+    "Obsidian",
+    "Markdown",
+    "Wikilink",
+    "雙向連結",
+    "Callout",
+    "vault",
+    "知識庫",
+    "第二大腦",
+    "數位花園",
+    "PKM",
+    "Zettelkasten",
+    "原子習慣"
+  ],
+  "replace": {}
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "file": "slide_01.jpg",
+    "t": "00:01",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_02.jpg",
+    "t": "00:02",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "00:03",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "00:04",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_05.jpg",
+    "t": "00:05",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_06.jpg",
+    "t": "00:06",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_07.jpg",
+    "t": "00:07",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_08.jpg",
+    "t": "00:08",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_09.jpg",
+    "t": "00:09",
+    "reason": "carousel-page"
+  },
+  {
+    "file": "slide_10.jpg",
+    "t": "00:10",
+    "reason": "carousel-page"
+  }
+]
