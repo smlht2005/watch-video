@@ -129,6 +129,50 @@ class Segments(unittest.TestCase):
             self.assertFalse(out.exists())
             self.assertTrue(so.seg_path(Path(d) / "s", 0).exists())
 
+    def test_rerun_with_different_params_is_refused(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            calls, out, sd = [], Path(d) / "ocr.json", Path(d) / "s"
+            segs = [(0, 600)]
+            so.run_segmented(out, sd, segs, self.fake_ocr(calls), log=lambda m: None, params={"model": "v4"})
+            calls.clear()
+            with self.assertRaises(so.PlanMismatch) as cm:
+                so.run_segmented(out, sd, segs, self.fake_ocr(calls), log=lambda m: None, params={"model": "v5"})
+            self.assertIn("model", str(cm.exception))
+            self.assertEqual(calls, [])
+
+    def test_rerun_with_same_params_still_resumes(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            calls, out, sd = [], Path(d) / "ocr.json", Path(d) / "s"
+            so.run_segmented(out, sd, [(0, 600)], self.fake_ocr(calls), log=lambda m: None, params={"model": "v5"})
+            calls.clear()
+            so.run_segmented(out, sd, [(0, 600)], self.fake_ocr(calls), log=lambda m: None, params={"model": "v5"})
+            self.assertEqual(calls, [])
+
+    def test_plan_without_params_from_an_older_run_is_accepted(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            calls, sd = [], Path(d) / "s"
+            sd.mkdir()
+            (sd / "plan.json").write_text(json.dumps({"out": "o", "every": 3, "segments": [[0, 600]]}), encoding="utf-8")
+            so.run_segmented(Path(d) / "o.json", sd, [(0, 600)], self.fake_ocr(calls), log=lambda m: None,
+                             params={"model": "v5"})
+            self.assertEqual(calls, [(0, 600)])
+
+    def test_write_atomic_uses_a_tmp_name_per_process(self):
+        import tempfile
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d) / "x.json"
+            with mock.patch("subtitle_ocr.os.replace") as rep:
+                so.write_atomic(target, {"a": 1})
+            src = str(rep.call_args[0][0])
+            self.assertIn(str(os.getpid()), src)
+            self.assertTrue(src.endswith(".tmp"))
+            so.write_atomic(target, {"a": 1})
+            self.assertEqual([f.name for f in Path(d).glob("*.tmp")], [])
+
     def test_auto_segment_by_length(self):
         self.assertEqual(so.resolve_segment_min(None, 30 * 60), 0)        # exactly 30 min: one pass
         self.assertEqual(so.resolve_segment_min(None, 30 * 60 + 1), so.SEGMENT_MIN)

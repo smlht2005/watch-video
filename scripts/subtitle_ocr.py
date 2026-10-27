@@ -332,7 +332,7 @@ def seg_path(seg_dir, start):
 
 def write_atomic(path, data):
     """Write JSON so a killed process never leaves a half-written segment that looks finished."""
-    tmp = Path(str(path) + ".tmp")
+    tmp = Path(f"{path}.{os.getpid()}.tmp")   # per process: two runs on one dir must not share a tmp file
     tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     os.replace(tmp, path)
 
@@ -433,14 +433,35 @@ def release_segment(seg_dir, start):
         pass
 
 
-def run_segmented(out, seg_dir, segments, ocr_segment, log=say, every=None, ttl=LOCK_TTL):
+class PlanMismatch(RuntimeError):
+    """The segment files in a seg_dir were made with other parameters than this run's."""
+
+
+def check_plan_params(plan_file, params):
+    """Refuse to resume (and merge) segments made with a different model / sampling / crop / video / range."""
+    if params is None or not Path(plan_file).exists():
+        return
+    try:
+        old = json.loads(Path(plan_file).read_text(encoding="utf-8")).get("params")
+    except (OSError, ValueError):
+        return
+    if old is None or old == params:   # a plan from before params were recorded cannot be checked
+        return
+    diff = ", ".join(f"{k}: {old.get(k)!r} -> {params.get(k)!r}" for k in sorted(set(old) | set(params))
+                     if old.get(k) != params.get(k))
+    raise PlanMismatch(f"segments in {Path(plan_file).parent} were made with different settings ({diff}); "
+                       f"use a new --out, or delete that folder to start over")
+
+
+def run_segmented(out, seg_dir, segments, ocr_segment, log=say, every=None, ttl=LOCK_TTL, params=None):
     """OCR each segment that has no seg file yet, then merge them all into `out` once none is missing.
 
     ocr_segment(start, end) -> {seconds: text}. Several processes may run this on the same seg_dir: each segment is
     claimed with a lock file, so they never OCR the same one; segments held by others are left for them. Logs one line per segment. plan.json in seg_dir records the plan so
     `status` can tell how much is left. Returns the segment starts still missing (empty = merged)."""
     Path(seg_dir).mkdir(parents=True, exist_ok=True)
-    write_atomic(Path(seg_dir) / "plan.json", {"out": str(out), "every": every, "segments": segments})
+    check_plan_params(Path(seg_dir) / "plan.json", params)
+    write_atomic(Path(seg_dir) / "plan.json", {"out": str(out), "every": every, "segments": segments, "params": params})
     todo = len(segments)
     for n, (a, b) in enumerate(segments, 1):
         span = f"{clock(a)}-{clock(b)}"
@@ -600,11 +621,18 @@ def cmd_run(args):
         return 0
     seg_dir = args.seg_dir or str(args.out) + ".segs"
     segments = plan_segments(total, step_min, args.every, args.start, args.end)
-    missing = run_segmented(
-        args.out, seg_dir, segments,
-        lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b),
-        every=args.every,
-        ttl=args.lock_ttl)
+    params = {"video": str(args.video), "model": args.model, "every": args.every, "crop": args.crop,
+              "start": args.start, "end": args.end}
+    try:
+        missing = run_segmented(
+            args.out, seg_dir, segments,
+            lambda a, b: ocr_range(args.video, args.workers, args.every, args.crop, args.model, a, b),
+            every=args.every,
+            ttl=args.lock_ttl,
+            params=params)
+    except PlanMismatch as e:
+        print(str(e), file=sys.stderr)
+        return 2
     if missing:
         busy = [a for a in missing if lock_path(seg_dir, a).exists()]
         print(f"{len(missing)} segment(s) missing (starts: {missing}); {args.out} not written", file=sys.stderr)
