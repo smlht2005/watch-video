@@ -147,6 +147,23 @@ watch-output/
 
 `build_report.py` 把 `mindmap.md`（縮排條列：第一個頂層項目是中心，下一層是主分支，再下一層是子節點，最多畫 3 層）用 PIL 畫成橫向樹狀圖 `mindmap.png`，放在報告「圖文對照」之前，並連結原圖與大綱檔。沒有手寫的 `mindmap.md` 時，從 `meta.json.slides` 自動產生（中心＝標題、主分支＝各段標題、子節點＝各段 `keywords`），檔案第一行有 `<!-- auto: … -->` 標記，每次重建都會重產；刪掉這行就視為手寫、不再覆蓋。中文字型依序找微軟正黑體、Noto Sans CJK（取繁中字面）、文泉驛（`pick_frames.py` 的縮圖表共用同一套）。docx 裡太高的導圖會在空白列切成多張，不會縮到看不清；報告中只有同資料夾真的存在的檔案連結才會變成可點的相對連結。寫法見 `.claude/skills/watch-archive/references/content.md` 4b。
 
+### Obsidian 知識庫（`links.md`、`knowledge.md` → `obsidian-vault/`）
+
+![獨立知識流程](docs/obsidian-knowledge-flow.png)
+
+每支影片（或圖文貼文）可匯成 Obsidian 筆記，並把**你確認過的知識點**各存成一篇原子筆記：
+
+```bash
+python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>        # 寫進 repo 內的 obsidian-vault/；--all 全部重匯
+python3 scripts/obsidian_export.py <資料夾> --vault <你的 vault>       # 只寫進 <你的 vault>/watch-archive/，其他檔案不動
+```
+
+- 筆記：屬性（YAML）、摘要、思維導圖、知識點清單、已確認連結、補充資料；`知識點/` 每個知識點一篇（引文、出處、出處圖、標示）；`00-索引.md` 列筆記、知識點、待建立節點。逐字稿不進筆記。
+- **只放你確認過的**：`links.md`、`knowledge.md` 分「已確認／候選」，Claude 只寫候選；連結每條要有關係類型與說明，不用相似度自動連。
+- 重匯只覆蓋帶 `generated_by: watch-archive` 的檔案，你自己的筆記與圖片不動；圖文貼文預設只放知識點引用的頁面圖，`--with-pages` 才放全部。
+- Threads 圖文貼文：貼網址即自動抓本文與全部頁面圖（只讀公開頁）；頁面文字由 Claude 看圖抄錄。
+- 開啟：`git pull` 後 Obsidian →「Open folder as vault」→ 選 `obsidian-vault/`。細節見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
+
 ### 測試
 
 ```bash
