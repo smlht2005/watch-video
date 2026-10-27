@@ -41,7 +41,7 @@
 <text x="55" y="742" font-size="20" font-weight="bold" fill="#f8fafc">守則</text>
 <g font-size="17" fill="#cbd5e1">
 <text x="55" y="770">• 不印出 API key　• 不強制 --lang，先自動偵測（強制會把外語硬轉）　• 講座／講經自動去語助詞（呢、啊…），raw.md 保留原話；--keep-fillers 可保留</text>
-<text x="55" y="796">• 已知非中文語言 → 一律寫繁中 transcript.zh.md　• 穩定的校正進領域詞典，不確定的進 known_asr_errors　• 校稿兩輪：批次替換後必須逐行重讀　• 字幕 OCR 只用於佛經講解座且有燒入字幕</text>
+<text x="55" y="796">• 已知非中文語言 → 一律寫繁中 transcript.zh.md　• 穩定的校正進領域詞典，不確定的進 known_asr_errors　• 校稿兩輪：批次替換後必須逐行重讀　• 字幕 OCR 限有字幕佛經講座，長片自動分段</text>
 <text x="55" y="822">• 先合併成投影片／主題段落（每段 2–4 分鐘），長錄影在主題轉換點補 --timestamps 截圖　• 影片沒呈現的資訊放 supplement.md，並更新原本的推測</text>
 <text x="55" y="848">• 同一影片 ID 只一個資料夾（依 --category 分領域），重跑 = 更新　• 失敗回報類別（網路／下載／轉錄／權限）　• 他人影片不入庫　• YouTube 擋下載：Windows 用 Firefox cookies</text>
 <text x="55" y="874">• WhisperX 自動偵測語言不可靠（曾把中文講座翻成日文）　• Groq 長音訊偶爾整段 30 秒漏轉（已自動補漏）、或把提示詞當成逐字稿吐出　• 有原講稿時拿來二次校對</text>

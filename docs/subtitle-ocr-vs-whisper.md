@@ -32,11 +32,17 @@ OCR 字幕**不能取代** Groq 轉錄，但拿來當**專有名詞的標準答�
 
 環境：Windows，OCR 用 [RapidOCR](https://github.com/RapidAI/RapidOCR)（`rapidocr-onnxruntime`）裝在獨立 venv，不動系統 Python；`probe`／`run` 用該 venv 的 python，`compare` 只需 opencc，用一般 python。
 
-**模型**：預設 `--model v5`（PP-OCRv5 中文辨識，來自 Hugging Face `monkt/paddleocr-onnx`，首次執行自動下載到 `~/.cache/watch/ppocrv5`，偵測仍用 RapidOCR 內建 v4 以保速度）。第104集實測：10 張 v4 誤判的字幕列，v5 全部讀對（眾、從、麼、圓、門、漢），但每張約 4.5 秒，v4 約 1.5 秒（慢約 3 倍；連偵測也換成 v5 會慢到約 13 秒，不划算）。`--model v4` 保留給舊 ocr.json，`compare --model v4` 會套用固定誤判對照表。
+**模型**（`--model`）：預設 `v5` ＝ PP-OCRv5 **mobile** 中文辨識（16 MB，Hugging Face `twmht/ppocr_v5_mobile`，首次執行自動下載到 `~/.cache/watch/ppocrv5-mobile`），偵測沿用 RapidOCR 內建 v4。`v5-server` ＝ 同一代的 server 版（84 MB，`monkt/paddleocr-onnx`）；`v4` ＝ RapidOCR 內建，保留給舊 ocr.json，`compare --model v4` 會套用固定誤判對照表。
+
+**為什麼預設改成 mobile**（第097集追蹤 `[trace]`）：server 版每張約 9.5 秒，其中辨識 `rec` 占約 8 成（單張 1.5–43 秒，隨 CPU 供電、散熱與優先權劇烈波動）；mobile 版辨識只要 0.0–0.3 秒。第104集 10 張 v4 誤判的字幕列，mobile 與 server 同樣讀對（眾、從、麼、圓、門、漢），mobile 還多讀對「顯示」；兩者都讀不對「遍於」（讀成偏／編），仍要靠人工。mobile 的輸出字與字之間不夾空格。
 
 1. 下載影片（`yt-dlp -f 136` 之類的 720p 視訊即可，放暫存區、不入庫）。
 2. `python scripts/subtitle_ocr.py probe <video>`：抽 12 張畫面 OCR，過半有字就判定有燒入字幕，順便印出每張讀到的字；字幕位置不同時用 `--crop W:H:X:Y` 調整（預設是畫面下方 18%、左側 82%，避開右側直排標題）。
-3. `python scripts/subtitle_ocr.py run <video> --out ocr.json --workers 7`：每 `--every` 秒（預設 2）切一張字幕列，**畫面沒變的不 OCR**（約省 40%），其餘多程序平行；可用 `--start`／`--end` 只跑一段。輸出 `{秒數: 文字}`。
+3. `python scripts/subtitle_ocr.py run <video> --out ocr.json --workers 1 --every 3 --background`：每 `--every` 秒（預設 2）切一張字幕列，**畫面沒變的不 OCR**（約省 40%）；可用 `--start`／`--end` 只跑一段。輸出 `{秒數: 文字}`。
+   - **分段（超過 30 分鐘自動啟動）**：每 10 分鐘一段，各自存成 `<out>.segs/seg_<起始秒>.json`（原子寫入）；中斷或重開機後**重跑同一個指令**就會跳過已完成的段落；全部完成才合併成 `--out`，缺段時不寫 `--out` 並列出缺哪些。`--segment-min N` 改段長，`--segment-min 0` 強制一次跑完，`--auto-segment-min` 改門檻，`--seg-dir` 改段落資料夾。要重做某一段就刪它的 `seg_*.json`。續跑前會比對 `plan.json` 記的參數（影片、`--model`、`--every`、`--crop`、`--start`、`--end`），不同就拒絕（結束碼 2），避免把不同設定的段落混在一起合併；要換參數請用新的 `--out`，或刪掉 `.segs` 資料夾。`--segment-min 0`（一次跑完）不寫段落，給 `--seg-dir` 會被忽略並印警告。
+   - **進度**：每段結束印一行（`[seg 3/8] 0:20:00-0:30:00 done: 200 samples, 58s`）；`python scripts/subtitle_ocr.py status ocr.json` 列出完成／剩餘／進行中的段落與距上次完成多久。
+   - **低負載與脫離 session**：`--low-priority` 把辨識程序降到 Idle 優先權；`--background` 另起脫離 session 的程序（隱含低優先權），log 寫到 `<seg-dir>/progress.log`、本程序立刻返回。關掉終端機或 Claude 不會中止它，關機會；重開機後重跑同一個指令即可續跑。
+   - **兩個程序**：每段用 `.lock` 搶占，同時跑不會辨識同一段，過期的鎖自動接手：同一台機器只看程序還在不在（段落跑超過 30 分鐘也不會被搶），不同機器才看鎖超過 30 分鐘；`status` 不會把死鎖當成執行中；但 onnxruntime 本身已用多核心，筆電上兩個程序比單程序**更慢**（實測每段 60 秒 vs 兩個程序各約 165 秒），所以預設用單程序（`--workers 1`）。先做完的程序若看到還有段落在別的程序手上，會印提示並以非 0 結束，等另一個完成後重跑同一指令即合併。
 4. `python scripts/subtitle_ocr.py compare <資料夾> --ocr ocr.json [--thr 0.85]`：字幕先簡轉繁，相鄰相似的合併成事件，逐字稿每行用 `difflib` 算被字幕涵蓋的比例，低於門檻的列出「逐字稿／字幕／比例」，人工逐段讀。
 5. 人工判斷差異，整理成替換表（含上下文，避免誤傷）批次套用到 `transcript.md`，每段改完就 commit。
 6. 摘要、投影片說明與 `meta.json` 裡出現的錯誤名稱要一併更新；`known_asr_errors` 記錄「字幕確認」與仍不確定的處理。
@@ -45,13 +51,14 @@ OCR 字幕**不能取代** Groq 轉錄，但拿來當**專有名詞的標準答�
 
 ## 注意事項
 
-- OCR 單張 v4 約 1–2 秒、v5 約 4–5 秒（CPU）；v5 全片要低負載分段跑（見 `--workers 2 --every 3`），v5 讀出的字之間可能夾空格，比對時已忽略。字幕變化不頻繁時，可只取字幕變化的畫面，約省一半時間。
+- OCR 單張 v4 約 1–2 秒、v5 約 4–5 秒（CPU）；v5 全片要分段低負載跑（`--workers 1 --every 3 --background`，第104集 72 分鐘約一小時），v5 讀出的字之間可能夾空格，比對時已忽略。字幕變化不頻繁時，可只取字幕變化的畫面，約省一半時間。
+- **慢的時候先看 `progress.log` 的 `[trace]` 行**：開頭行有 pid、優先權、CPU 數、模型與電源狀態（`power AC 88%`／`power battery 62%`），每 10 張一行平均與最慢秒數。筆電用電池時 CPU 被功耗限制，同一批畫面每張從約 4 秒變成 11–35 秒（第097集實測），看起來像卡住；請接上電源再跑，長片尤其要接電源。
 - 比對腳本的「涵蓋比例」對短行、時間重疊行會誤報，低於 0.85 的行不必全部有問題。
 - 暫存檔（`sub/` 圖片、OCR JSON、venv）放暫存區，不要進 repo；影片檔不入庫。
 - Bash 的 `rm` 展開變數會被安全檢查擋，清暫存時改用字面路徑或 `"${VAR:?}"` 寫法。
 
 ## 可以改進的方向
 
-- 已完成（`scripts/subtitle_ocr.py`）：判斷有無燒入字幕（`probe`）、只對變化的畫面 OCR 並多程序平行（`run`）、輸出逐字稿 vs 字幕差異清單（`compare`）。
+- 已完成（`scripts/subtitle_ocr.py`）：判斷有無燒入字幕（`probe`）、只對變化的畫面 OCR（`run`）、長片自動分段可續跑、低優先權與背景執行、進度（`status`）、輸出逐字稿 vs 字幕差異清單（`compare`）。
 - 尚未做：`watch_archive.py` 歸檔時自動 `probe` 並提示；OCR 引擎自動安裝。
 - 沒有字幕的影片：退回「Groq 兩次轉錄互補」；補漏遇 429 時，單獨重送缺漏段（見 `whisper.py` 的補漏流程與 issue #12／#13）。
