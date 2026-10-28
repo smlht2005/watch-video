@@ -1,0 +1,18 @@
+- 5 個 Codex 神級 Skill
+  - 1. Caveman
+    - 砍客套、保留程式碼
+    - 63→20 token（講者主張）
+    - 三檔強度
+  - 2. Taste Skill
+    - 去 AI 味網站設計
+    - 20 種設計路線（講者主張）
+  - 3. Playwright
+    - 讀頁面結構，可重現
+    - 對比 Computer Use
+    - 競品調研自動化
+  - 4. GSAP Skill
+    - 蘋果級網頁動效
+    - 免費可商用（講者主張）
+  - 5. Hypit
+    - 拆解爆款影片
+    - 批次換產品／人物
