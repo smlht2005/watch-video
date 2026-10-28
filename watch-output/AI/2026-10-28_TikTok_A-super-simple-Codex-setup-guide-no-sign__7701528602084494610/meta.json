@@ -1,0 +1,172 @@
+{
+  "url": "https://vm.tiktok.com/ZSgpgNqYd/",
+  "platform": "TikTok",
+  "video_id": "7701528602084494610",
+  "title": "A super simple Codex setup guide, no sign-up needed. Get it installed...",
+  "title_raw": "A super simple Codex setup guide, no sign-up needed. Get it installed...",
+  "title_override": "",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "DeepSeek、CC Switch、Codex、MiniMax、Kimi、MiMo、GLM、API Key"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "putrianggita599",
+  "duration": "03:29 (208.9s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-28",
+  "last_updated": "2026-10-28",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "DeepSick／DeepSake／Deep Seek",
+      "expected": "DeepSeek（畫面為 DeepSeek 圖示與網站）"
+    },
+    {
+      "time": "00:36",
+      "heard": "智普的GLM",
+      "expected": "智譜 GLM（推測）"
+    },
+    {
+      "time": "03:24",
+      "heard": "我是好冷",
+      "expected": "Holland（畫面字卡「Holland」，推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:31",
+      "heard": "實圖能力",
+      "expected": "識圖能力（推測）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "ai-codex",
+    "Codex",
+    "DeepSeek",
+    "CC Switch",
+    "API Key",
+    "國產模型",
+    "省錢",
+    "安裝教學"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：兩分鐘用上 Codex",
+      "note": "講者說看完影片就能用上 Codex，不需網路配置、不需手機號，兩分鐘跑通。上期講了 Codex 省 token，評論區最多人問的卻是怎麼下載，所以這次出保姆級教學，建議邊看邊照著操作。",
+      "keywords": [
+        "Codex",
+        "保姆級教學"
+      ]
+    },
+    {
+      "start": "00:20",
+      "frame": "slide_02.jpg",
+      "title": "原理：換腦不換身體",
+      "note": "講者把 Codex 比喻成身體、模型比喻成大腦：工具呼叫、Skill 呼叫仍用 Codex 那一套，只把大腦換成 DeepSeek。DeepSeek、智譜 GLM、MiniMax、Kimi、小米 MiMo 等國產模型，用哪個順手都能接進 Codex（效能與性價比高為講者主張，未查證）。",
+      "keywords": [
+        "DeepSeek",
+        "國產模型",
+        "大腦與身體"
+      ]
+    },
+    {
+      "start": "00:50",
+      "frame": "slide_03.jpg",
+      "title": "準備三樣東西",
+      "note": "示範以 DeepSeek 為例，先備好三樣全免費的東西：Codex 軟體、切換工具 CC Switch、DeepSeek 的 API Key。",
+      "keywords": [
+        "CC Switch",
+        "API Key"
+      ]
+    },
+    {
+      "start": "00:59",
+      "frame": "slide_04.jpg",
+      "title": "步驟一：下載 Codex",
+      "note": "Codex 直接從 ChatGPT 官網下載。第一次開啟會彈出登入視窗，不必登入，直接選「其他方式登入」。",
+      "keywords": [
+        "下載",
+        "其他方式登入"
+      ]
+    },
+    {
+      "start": "01:09",
+      "frame": "slide_05.jpg",
+      "title": "步驟二：取得 DeepSeek API Key",
+      "note": "API Key 相當於 DeepSeek 發給你的專屬密碼，用多少 Token 就扣多少錢。打開 DeepSeek 開放平台，左側點 API Keys、新建一個（名稱自訂），建立後按複製即完成。講者另稱 DeepSeek V4 加上識圖能力後他越用越多（講者主張，未查證）。",
+      "keywords": [
+        "API Keys",
+        "Token 計費"
+      ]
+    },
+    {
+      "start": "01:38",
+      "frame": "slide_06.jpg",
+      "title": "步驟三：用 CC Switch 換腦",
+      "note": "CC Switch 的功能是把 Codex 原本的大模型切換成 DeepSeek，同樣從其官網下載。開啟後點 Codex 圖示、右上角加號、選 DeepSeek、貼上剛才的 API Key，再點啟用；它會提示開啟本地連線服務，到左上角設定打開本地連線總開關、勾選對應選項後按測試，顯示執行正常即切換成功。",
+      "keywords": [
+        "CC Switch",
+        "本地連線",
+        "測試"
+      ]
+    },
+    {
+      "start": "02:11",
+      "frame": "slide_07.jpg",
+      "title": "步驟四：完全退出再重開 Codex",
+      "note": "這步最容易漏：必須把 Codex 完全退出再重新開啟，然後在登入方式填入 API Key，模型就能選到 DeepSeek。發一句話，正常回覆就代表跑通。",
+      "keywords": [
+        "重啟 Codex",
+        "API Key 登入"
+      ]
+    },
+    {
+      "start": "02:26",
+      "frame": "slide_08.jpg",
+      "title": "費用比較：DeepSeek 對 Pro",
+      "note": "講者稱天天用 Codex 的人基本得上 Pro 5X，最低約每月 700 多元；DeepSeek 沒有月費也沒有五小時限額，用多少扣多少。以 V4 Flash 算，100 萬 Token 輸出 8 元，每天 8 元約一個月 200 多元，不到 Pro 的三分之一（以上皆講者主張，未查證）。",
+      "keywords": [
+        "Pro 5X",
+        "V4 Flash",
+        "計費"
+      ]
+    },
+    {
+      "start": "02:58",
+      "frame": "slide_09.jpg",
+      "title": "效果評估與建議",
+      "note": "講者用它做 PPT、報表等辦公任務，覺得與原版差別不大；但若要做整個專案這類大工作，建議兩者結合使用（講者主張，未查證）。",
+      "keywords": [
+        "辦公任務",
+        "混合使用"
+      ]
+    },
+    {
+      "start": "03:13",
+      "frame": "slide_10.jpg",
+      "title": "結語",
+      "note": "邀請觀眾在留言區說想接哪家模型、安裝遇到的問題；講者「Holland」（逐字稿聽成「好冷」，推測）預告下期再見。",
+      "keywords": [
+        "結語"
+      ]
+    }
+  ],
+  "video_type": "tutorial",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
