@@ -1,0 +1,229 @@
+{
+  "url": "https://x.com/huxlab/status/2116346641838211440",
+  "platform": "X",
+  "video_id": "2116346641838211440",
+  "title": "Anthropic Prompting 101：用車禍報告範例逐步打造提示詞",
+  "title_raw": "Hux - Anthropic 的两名工程师花了 24 分钟，详细讲解了 Claude Code 中你不知道存在且免费的每个功能。  大多数人会直接跳...",
+  "title_override": "Anthropic Prompting 101：用車禍報告範例逐步打造提示詞",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "heuristic",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [
+    "common"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "Hux",
+  "duration": "24:47 (1487.3s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "captions (en, manual, original)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-31",
+  "last_updated": "2026-10-31",
+  "known_asr_errors": [
+    {
+      "time": "02:16",
+      "heard": "Claude 4 solid model",
+      "expected": "Claude 4 Sonnet（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "02:20",
+      "heard": "max soaking budget",
+      "expected": "max thinking budget（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "15:12",
+      "heard": "user-facing Edelman application",
+      "expected": "不明，語意為面向使用者的應用（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "05:40 等",
+      "heard": "Cloud",
+      "expected": "Claude（已全文替換）"
+    }
+  ],
+  "keywords": [
+    "提示工程",
+    "prompt engineering",
+    "Anthropic",
+    "system prompt",
+    "XML 標籤",
+    "few-shot",
+    "prefill",
+    "extended thinking",
+    "prompt caching",
+    "hallucination"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0004.jpg",
+      "title": "開場：什麼是提示工程",
+      "note": "Hannah 與 Christian（Anthropic Applied AI 團隊）自我介紹，說明今天要用真實情境一起建一份提示詞。提示工程是替模型寫清楚指令、給足脈絡並安排資訊順序；學習最好的方法是實作。",
+      "keywords": [
+        "提示工程",
+        "Applied AI"
+      ]
+    },
+    {
+      "start": "00:52",
+      "frame": "frame_0009.jpg",
+      "title": "情境：瑞典車險理賠",
+      "note": "情境改編自真實客戶：瑞典保險公司要讓 Claude 讀車禍報告表（17 個勾選框）與人手繪製的事故草圖，抽出事實並判斷誰有過失。重點是從圖片取得事實資訊，再做判斷。",
+      "keywords": [
+        "車禍報告",
+        "圖片分析"
+      ]
+    },
+    {
+      "start": "02:05",
+      "frame": "frame_0010.jpg",
+      "title": "基準版 v1：Claude 以為是滑雪事故",
+      "note": "在 console 用 Claude 4 Sonnet、temperature 0，只給極簡提示詞。結果 Claude 把它當成瑞典街道上的滑雪事故，因為提示詞完全沒交代情境。",
+      "keywords": [
+        "console",
+        "基準版"
+      ]
+    },
+    {
+      "start": "03:17",
+      "frame": "frame_0015.jpg",
+      "title": "迭代與提示詞結構（十個要點總覽）",
+      "note": "提示工程是反覆迭代的實證科學，可設測試案例驗證。API 任務要一次到位：任務描述→內容→詳細指示→範例→重要事項重複提醒，共拆成十個要點，之後逐一在 console 建構。",
+      "keywords": [
+        "迭代",
+        "提示詞結構"
+      ]
+    },
+    {
+      "start": "05:25",
+      "frame": "frame_0019.jpg",
+      "title": "要點 1–2：任務脈絡與語氣（v2）",
+      "note": "在 v2 說明系統是協助理賠人員審閱瑞典文車禍表、草圖為人手繪製，並要求保持事實、有把握才下判斷。結果 Claude 辨認出是車禍、抓到 A 車勾第 1 格、B 車勾第 12 格，但仍誠實指出資訊不足。",
+      "keywords": [
+        "task context",
+        "tone",
+        "v2"
+      ]
+    },
+    {
+      "start": "08:40",
+      "frame": "frame_0021.jpg",
+      "title": "要點 3：背景資料、文件與圖片",
+      "note": "表單結構每次相同，只有填寫內容會變，最適合放進系統提示詞，也適合用 prompt caching。事先知道表單長相，Claude 不必每次重新弄懂，讀表單表現也更好。",
+      "keywords": [
+        "背景資料",
+        "prompt caching",
+        "系統提示詞"
+      ]
+    },
+    {
+      "start": "09:37",
+      "frame": "frame_0026.jpg",
+      "title": "組織資訊：XML 標籤與 v3",
+      "note": "Claude 喜歡結構；用 XML 標籤（或 Markdown）分隔資訊，並能標明內容性質、方便後文回頭引用。v3 把 17 列的意義與填寫習慣（圈選、塗鴉、沒打 X）寫進系統提示詞，Claude 更有信心，判定 B 車有過失。",
+      "keywords": [
+        "XML",
+        "v3",
+        "系統提示詞"
+      ]
+    },
+    {
+      "start": "12:51",
+      "frame": "frame_0032.jpg",
+      "title": "要點 5：範例（few-shot）",
+      "note": "範例是引導 Claude 的有力機制：把人類直覺判斷正確的棘手案例，連同資料（可用 Base64 圖片）與拆解說明放進系統提示詞。實務上可能有數十到數百個灰色地帶範例，持續從失敗案例補進去。",
+      "keywords": [
+        "few-shot",
+        "範例",
+        "XML"
+      ]
+    },
+    {
+      "start": "14:55",
+      "frame": "frame_0035.jpg",
+      "title": "要點 6：對話歷史",
+      "note": "對話歷史與範例同理，提供豐富脈絡。本案例是後台自動化、最後有人把關，所以沒用；若是面向使用者的長對話應用，系統提示詞是放歷史的好位置。",
+      "keywords": [
+        "conversation history"
+      ]
+    },
+    {
+      "start": "15:45",
+      "frame": "frame_0040.jpg",
+      "title": "要點 7：重述當前任務與防幻覺",
+      "note": "在提示詞末尾回頭提醒任務與重要準則，目的之一是防止幻覺：看不清就不要猜、草圖無法辨認就直說。可要求只在非常有把握時回答，並在下事實主張時引用表單依據。",
+      "keywords": [
+        "hallucination",
+        "reminder"
+      ]
+    },
+    {
+      "start": "16:56",
+      "frame": "frame_0044.jpg",
+      "title": "要點 8：逐步思考與分析順序（v4）",
+      "note": "v4 加入詳細任務清單：先仔細讀表單、列出已勾選項目，再看草圖並與表單對照，最後得出判斷。分析順序很重要，類似人類先看有脈絡的表單再看草圖；缺點是 Claude 會逐框展示過程，之後可再調整。",
+      "keywords": [
+        "step-by-step",
+        "v4",
+        "順序"
+      ]
+    },
+    {
+      "start": "20:01",
+      "frame": "frame_0053.jpg",
+      "title": "要點 9：輸出格式（v5）",
+      "note": "應用端通常只要關鍵結果存進資料庫，所以在 v5 加入重要準則（摘要清楚、簡潔、準確），並要求把最終判定包在 final verdict XML 標籤內，應用只解析標籤。輸出因此簡潔、格式嚴謹。",
+      "keywords": [
+        "output formatting",
+        "v5",
+        "XML"
+      ]
+    },
+    {
+      "start": "22:10",
+      "frame": "frame_0057.jpg",
+      "title": "要點 10：預填回應（prefill）",
+      "note": "在 Assistant 的位置先寫上開頭文字（如左方括號或 XML 標籤），Claude 會接著往下寫，可控制回應行為與格式，例如確保 JSON 可序列化。本案例用 final verdict 標籤包起來再解析即可。",
+      "keywords": [
+        "prefill",
+        "JSON"
+      ]
+    },
+    {
+      "start": "23:14",
+      "frame": "frame_0060.jpg",
+      "title": "延伸思考 vs. 提示工程",
+      "note": "Claude 3.7 與 Claude 4 是混合推理模型，可開延伸思考當提示工程的輔助。讀思考過程可了解 Claude 如何處理資料，再把有效的推理方式寫進系統提示詞，更省 token 也更能改進提示詞。",
+      "keywords": [
+        "extended thinking"
+      ]
+    },
+    {
+      "start": "24:14",
+      "frame": "frame_0064.jpg",
+      "title": "結語",
+      "note": "感謝與會者，兩位講者全天都在現場回答問題。預告一小時後有「面向智能體的提示詞」場次，以及 ClaudePlays Pokémon 示範。",
+      "keywords": [
+        "結語"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "off",
+  "_note": "原推文標題宣稱『Claude Code 中免費的每個功能』，但影片實際是 Anthropic 的 Prompting 101（Claude API／console），與 Claude Code 無關，故歸 AI 而非 AI/claude-code。"
+}
