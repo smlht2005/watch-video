@@ -5,7 +5,7 @@
   "title": "Anthropic Prompting 101：用車禍報告範例逐步打造提示詞",
   "title_raw": "Hux - Anthropic 的两名工程师花了 24 分钟，详细讲解了 Claude Code 中你不知道存在且免费的每个功能。  大多数人会直接跳...",
   "title_override": "Anthropic Prompting 101：用車禍報告範例逐步打造提示詞",
-  "category": "AI/claude-code",
+  "category": "AI/提示詞",
   "whisper_hints": {
     "language": "auto",
     "prompt": ""
@@ -225,5 +225,5 @@
   "video_type": "",
   "clean_fillers": "auto",
   "sop_mode": "off",
-  "_note": "原推文標題宣稱『Claude Code 中免費的每個功能』，但影片實際是 Anthropic 的 Prompting 101（Claude API／console），與 Claude Code 無關，使用者指定仍歸 AI/claude-code（作為學習主題）。"
+  "_note": "原推文標題宣稱『Claude Code 中免費的每個功能』，但影片實際是 Anthropic 的 Prompting 101（Claude API／console），與 Claude Code 無關，使用者指定歸 AI/提示詞。"
 }

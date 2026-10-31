@@ -20,15 +20,20 @@
 | 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
 | 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
 
-## AI／claude-code（5）
+## AI／claude-code（4）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-10-31 | X | Anthropic Prompting 101：用車禍報告範例逐步打造提示詞 | 24:47 (1487.3s) | captions (en, manual, original) | [開啟](./AI/claude-code/2026-10-31_X_Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞__2116346641838211440/) |
 | 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo/) |
 | 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
 | 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
 | 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
+
+## AI／提示詞（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-31 | X | Anthropic Prompting 101：用車禍報告範例逐步打造提示詞 | 24:47 (1487.3s) | captions (en, manual, original) | [開啟](./AI/提示詞/2026-10-31_X_Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞__2116346641838211440/) |
 
 ## 佛學（8）
 
