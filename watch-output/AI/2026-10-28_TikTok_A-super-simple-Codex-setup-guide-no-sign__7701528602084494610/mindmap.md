@@ -1,0 +1,27 @@
+- Codex 換 DeepSeek
+  - 原理
+    - 大腦換、身體不變
+    - 國產模型皆可接
+  - 準備三樣（全免費）
+    - Codex 軟體
+    - CC Switch
+    - DeepSeek API Key
+  - 步驟一 下載 Codex
+    - 官網下載
+    - 選其他方式登入
+  - 步驟二 取得 API Key
+    - 開放平台新建
+    - 複製 Key
+  - 步驟三 CC Switch
+    - Codex→加號→DeepSeek
+    - 貼 Key 並啟用
+    - 開本地連線並測試
+  - 步驟四 重開 Codex
+    - 完全退出再開
+    - 用 API Key 登入
+  - 費用（講者主張）
+    - 月約 200 多元（講者主張）
+    - 不到 Pro 三分之一（講者主張）
+  - 效果與建議
+    - 辦公任務差不多
+    - 大專案建議混用

@@ -1,9 +1,10 @@
 # watch-output 索引
 
-## AI（13）
+## AI（14）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610/) |
 | 2026-10-27 | Threads | AI 時代為什麼 Obsidian 反而更重要？ | 10 頁（完整） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy/) |
 | 2026-10-26 | TikTok | 分享一段Claude的技術主管的ai指令，讓AI進行深度思考 | 02:44 (164.4s) | whisper (groq) | [開啟](./AI/2026-10-26_TikTok_分享一段Claude的技術主管的ai指令-讓AI進行深度思考__7700971611037404430/) |
 | 2026-10-21 | Instagram | 新模型來了，你的提示詞有一半該刪了：7 個改法 | 02:52 (171.6s) | whisper (groq) | [開啟](./AI/2026-10-21_Instagram_新模型來了-你的提示詞有一半該刪了-7-個改法__DejZRx-gtMG/) |
