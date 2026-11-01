@@ -1,0 +1,272 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "first-frame"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "00:03",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0003.jpg",
+    "t": "00:07",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0004.jpg",
+    "t": "00:08",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "00:11",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "00:13",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0007.jpg",
+    "t": "00:15",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "00:18",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0009.jpg",
+    "t": "00:20",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0010.jpg",
+    "t": "00:21",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0011.jpg",
+    "t": "00:24",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0012.jpg",
+    "t": "00:26",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0013.jpg",
+    "t": "00:35",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0014.jpg",
+    "t": "00:42",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0015.jpg",
+    "t": "00:47",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0016.jpg",
+    "t": "00:53",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0017.jpg",
+    "t": "00:59",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0018.jpg",
+    "t": "01:03",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0019.jpg",
+    "t": "01:08",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0020.jpg",
+    "t": "01:12",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0021.jpg",
+    "t": "01:17",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0022.jpg",
+    "t": "01:21",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0023.jpg",
+    "t": "01:24",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0024.jpg",
+    "t": "01:27",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0025.jpg",
+    "t": "01:32",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0026.jpg",
+    "t": "01:38",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0027.jpg",
+    "t": "01:43",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0028.jpg",
+    "t": "01:46",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0029.jpg",
+    "t": "01:52",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0030.jpg",
+    "t": "01:57",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0031.jpg",
+    "t": "01:59",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0032.jpg",
+    "t": "02:04",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0033.jpg",
+    "t": "02:10",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0034.jpg",
+    "t": "02:15",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0035.jpg",
+    "t": "02:17",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0036.jpg",
+    "t": "02:21",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0037.jpg",
+    "t": "02:25",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0038.jpg",
+    "t": "02:28",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0039.jpg",
+    "t": "02:32",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0040.jpg",
+    "t": "02:36",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0041.jpg",
+    "t": "02:42",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0042.jpg",
+    "t": "02:45",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0043.jpg",
+    "t": "02:50",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0044.jpg",
+    "t": "02:58",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0045.jpg",
+    "t": "03:01",
+    "reason": "scene-change"
+  },
+  {
+    "file": "slide_01.jpg",
+    "t": "00:09",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_02.jpg",
+    "t": "00:40",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "00:49",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "01:12",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_05.jpg",
+    "t": "01:45",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_06.jpg",
+    "t": "02:02",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_07.jpg",
+    "t": "02:22",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_08.jpg",
+    "t": "02:40",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_09.jpg",
+    "t": "03:02",
+    "reason": "clean-slide"
+  }
+]
