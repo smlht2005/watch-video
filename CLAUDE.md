@@ -48,6 +48,10 @@
 
 （`to-spec`／`to-tickets`／`implement` 等 mattpocock 技能的設定，由 `/setup-matt-pocock-skills` 產生；已設定好，新 session 不必重跑。）
 
+### 第三方技能：ppt-master
+
+`.claude/skills/ppt-master/`：自 https://github.com/hugohe3/ppt-master（MIT，v6.8.0，commit `82468e8`）原樣複製的 `skills/ppt-master`，產生可編輯 PPTX 簡報；新 session 用 `/ppt-master` 或說「做簡報」即可觸發。使用前在 session 內先 `pip install -r .claude/skills/ppt-master/requirements.txt`。不要修改此資料夾（技能內建 `attribution_guard.py` 完整性檢查）；升級時重新複製。注意使用者偏好簡報產生為 Google Slides，此技能產出 .pptx，使用前先確認。
+
 ### Issue tracker
 
 工作項目以本機 markdown 存在 `.scratch/<feature>/`（spec.md、issues/NN-*.md），隨 repo commit。See `docs/agents/issue-tracker.md`.
