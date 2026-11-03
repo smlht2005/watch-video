@@ -1,0 +1,111 @@
+{
+  "url": "https://www.facebook.com/share/v/19wM8h9Hdy/",
+  "platform": "Facebook",
+  "video_id": "19wM8h9Hdy",
+  "title": "Padmasana is not painful if you do this way",
+  "title_raw": "164K views · 2.5K reactions | Padmasana is not painful if you do this way | Prashant Jakhmola",
+  "title_override": "",
+  "category": "瑜伽",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "Prashant Jakhmola",
+  "duration": "02:49 (169.4s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-03",
+  "last_updated": "2026-11-03",
+  "known_asr_errors": [
+    {
+      "time": "00:26",
+      "heard": "the here joint",
+      "expected": "推測為 hip joint（髖關節）",
+      "status": "suspected"
+    },
+    {
+      "time": "02:13",
+      "heard": "In step come the other leg",
+      "expected": "推測為「Next step, come to the other leg」；02:13 後逐字稿片段化，中譯依上下文整理（推測）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "蓮花坐",
+    "Padmasana",
+    "瑜伽",
+    "髖關節",
+    "膝蓋保護",
+    "蝴蝶式",
+    "髖內旋",
+    "運動傷害預防"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0007.jpg",
+      "title": "蓮花坐為何會痛：膝蓋是屈戌關節",
+      "note": "講者說膝蓋是屈戌關節，只能彎曲與伸直；蓮花坐看似扭轉膝蓋，其實動作應來自髖關節。畫面以關節圖說明。（講者主張，未查證）",
+      "keywords": [
+        "膝蓋",
+        "屈戌關節",
+        "髖關節"
+      ]
+    },
+    {
+      "start": "00:33",
+      "frame": "frame_0019.jpg",
+      "title": "準備一：膝不扭轉，抓腿推伸展髖",
+      "note": "先彎曲並確認膝蓋沒有扭轉，抱住腿往前推，伸展髖與臀肌，減輕蓮花坐對下背與薦骨的壓力；停留 5–10 次呼吸（講者建議）。",
+      "keywords": [
+        "髖伸展",
+        "5–10 次呼吸"
+      ]
+    },
+    {
+      "start": "01:11",
+      "frame": "frame_0030.jpg",
+      "title": "換邊與扭轉：髖要放下",
+      "note": "另一側同樣做法：先確認沒有扭轉，抱腿放到另一側再扭轉；扭轉時髖要放下而不是抬起，才能伸展後側臀肌。",
+      "keywords": [
+        "扭轉",
+        "臀肌"
+      ]
+    },
+    {
+      "start": "01:41",
+      "frame": "frame_0042.jpg",
+      "title": "蝴蝶式作為前置準備",
+      "note": "講者稱蓮花坐前蝴蝶式非常重要，鼠蹊要有足夠柔軟度；並提出兩種進入蓮花坐的方式：旋轉彎曲，或完全彎曲放下再把腳拉近。",
+      "keywords": [
+        "蝴蝶式",
+        "鼠蹊柔軟度"
+      ]
+    },
+    {
+      "start": "02:13",
+      "frame": "frame_0049.jpg",
+      "title": "安全抬腿：髖內旋",
+      "note": "要把腳放到另一條腿上時會有扭轉，講者示範安全做法：把整條腿從下方抬起，做髖關節內旋並來回擺動。畫面標示「Step-2」；結尾有「Complete video on YouTube」與帳號字樣。此段逐字稿片段化（見校正備註）。",
+      "keywords": [
+        "髖內旋",
+        "Step-2"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "off"
+}

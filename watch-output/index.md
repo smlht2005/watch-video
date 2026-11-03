@@ -57,11 +57,10 @@
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
 | 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
 
-## 身心生活（10）
+## 身心生活（9）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
 | 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/2026-10-25_Facebook_越活越順的人-每天都在用的8個正向暗示__1172561908430922/) |
 | 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ/) |
 | 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
@@ -71,6 +70,12 @@
 | 2026-10-18 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/2026-10-18_TikTok_負債兩千萬到心想事成-完成式話術與謝謝__7696050866951867655/) |
 | 2026-10-17 | TikTok | 22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權 | 01:26 (85.5s) | whisper (groq) | [開啟](./身心生活/2026-10-17_TikTok_22歲谷愛凌大腦強大的秘密-頂級強者都在練的-元認知-思維-教你拿回人生掌控權__7697214960836873479/) |
 | 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
+
+## 瑜伽（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./瑜伽/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
 
 ## 電子（1）
 
