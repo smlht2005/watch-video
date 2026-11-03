@@ -1,0 +1,122 @@
+{
+  "url": "https://www.threads.com/@jean50pluss/post/DfQ-esshLEi",
+  "platform": "Threads",
+  "video_id": "DfQ-esshLEi",
+  "title": "颱風天用嘴巴跟 AI 說想怎麼剪，17 分鐘剪好一支影片",
+  "title_raw": "颱風天，我用嘴巴跟 AI 說想怎麼剪，前後 17 分鐘就剪好一支影片",
+  "title_override": "颱風天用嘴巴跟 AI 說想怎麼剪，17 分鐘剪好一支影片",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "ComfyUI、MiniMax H3、文生影片、圖生影片、工作流、自訂節點、量化版、LoRA、NF4、BF16、DiffSynth-Studio、ModelScope、Comfy Cloud、Comfy MCP、Z-Image Turbo、ACE-Step、GPT Image 2、MCP"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "ai-video"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "Jean Lee（@jean50pluss）",
+  "duration": "03:40 (219.6s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-03",
+  "last_updated": "2026-11-03",
+  "known_asr_errors": [
+    {
+      "time": "00:20",
+      "heard": "剪印",
+      "expected": "剪映（推測，已改）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:37",
+      "heard": "Gene Q版",
+      "expected": "Q版（畫面語音文字為「俊 Q 版」，已改）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:49",
+      "heard": "放火前的成果",
+      "expected": "幫我剪的成果（依 02:52 燒入字幕，已改）",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "AI剪輯",
+    "語音下指令",
+    "颱風天",
+    "旅居生活",
+    "兩支手機",
+    "剪映",
+    "影片製作",
+    "Threads"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：颱風天想錄下 AI 剪輯流程",
+      "note": "作者在颱風天想把自己正在做的事錄下來，讓大家知道 AI 剪輯的流程其實沒有想像中複雜。",
+      "keywords": [
+        "AI剪輯",
+        "颱風天"
+      ]
+    },
+    {
+      "start": "00:21",
+      "frame": "slide_02.jpg",
+      "title": "對 AI 說出剪輯需求",
+      "note": "作者把錄好的素材放進雲端資料夾，改用語音輸入對 AI 下指令：整理資料夾、依先前做過的 Q 版內容處理、把後面幾句講不順的話修順，並說明影片主題是「為什麼要準備兩支手機」。送出後就等待，期間完全沒有自己動手剪（畫面是手機上的 AI 對話 App，右上角為作者錄影小視窗）。",
+      "keywords": [
+        "口述指令",
+        "整理檔案",
+        "修順口誤"
+      ]
+    },
+    {
+      "start": "01:12",
+      "frame": "slide_03.jpg",
+      "title": "等待成品，並對比手動剪輯",
+      "note": "AI 開始思考、處理檔案；作者說約十分鐘左右就能完成一支小片，旅遊整天的長片會久一點，但再久也不會比自己剪久。作者舉例：曾用剪映自己剪一分鐘的下午茶影片，花了快 6、7 小時（講者主張，未查證）。畫面上的 AI 工作過程以「快轉 ×24」播放。",
+      "keywords": [
+        "剪映",
+        "手動剪輯",
+        "時間比較"
+      ]
+    },
+    {
+      "start": "02:35",
+      "frame": "slide_04.jpg",
+      "title": "AI 交付 sample 與成品",
+      "note": "AI 先回報確認理解（橘色＝旅遊手機、綠色＝錢的手機），再輸出 sample 與成品供檢視；螢幕計時約 15 分鐘時完成。成品畫面標示兩支手機用途：一支平常在台灣用、放銀行與投資 App；出國玩帶另一支，平時放保險箱、專門拍攝。",
+      "keywords": [
+        "成品",
+        "兩支手機",
+        "旅居生活"
+      ]
+    },
+    {
+      "start": "03:23",
+      "frame": "slide_05.jpg",
+      "title": "結語：排時間發文，前後 17 分鐘",
+      "note": "作者看完覺得「這樣就好了」，接著排程、放上架發文即完成，從下指令到完成前後 17 分鐘（講者主張，未查證）。畫面字卡：「不會剪片也沒關係，用講的就好」。",
+      "keywords": [
+        "排程發文",
+        "17分鐘"
+      ]
+    }
+  ],
+  "video_type": "demo",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "share_url": "https://www.threads.com/share/BAOTM1LSxi"
+}

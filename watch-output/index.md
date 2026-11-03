@@ -1,9 +1,10 @@
 # watch-output 索引
 
-## AI（16）
+## AI（17）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-03 | Web | 颱風天用嘴巴跟 AI 說想怎麼剪，17 分鐘剪好一支影片 | 03:40 (219.6s) | whisper (groq) | [開啟](./AI/2026-11-03_Web_颱風天用嘴巴跟-AI-說想怎麼剪-17-分鐘剪好一支影片__DfQ-esshLEimp4/) |
 | 2026-11-02 | TikTok | 開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！ | 01:46 (105.9s) | whisper (groq) | [開啟](./AI/2026-11-02_TikTok_開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的__7700148582044781830/) |
 | 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610/) |
 | 2026-10-28 | TikTok | 5個神級Skill，裝完Codex直接開掛！ | 02:01 (121.1s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575/) |
@@ -57,10 +58,11 @@
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
 | 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
 
-## 身心生活（9）
+## 身心生活（10）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
 | 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/2026-10-25_Facebook_越活越順的人-每天都在用的8個正向暗示__1172561908430922/) |
 | 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ/) |
 | 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
