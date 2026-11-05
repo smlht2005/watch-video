@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="content">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+
+  <g id="header" data-pptx-bounds="64 40 1152 100">
+    <circle cx="104" cy="90" r="40" fill="#F26B4E" />
+    <text x="104" y="104" font-size="40" font-weight="bold" fill="#FFFFFF" text-anchor="middle">6</text>
+    <text x="168" y="74" font-size="18" fill="#6B7280">DAY 6 ・ 第六天</text>
+    <text x="168" y="118" font-size="40" font-weight="bold" fill="#2F4858">專項破冷場</text>
+  </g>
+
+  <g id="takeaway" data-pptx-bounds="64 156 1152 64">
+    <rect x="64" y="156" width="1152" height="64" rx="16" fill="#F26B4E" fill-opacity="0.10" />
+    <text x="92" y="198" font-size="28" font-weight="bold" fill="#2F4858">對「還好」追問意思，並給他一個選擇</text>
+  </g>
+
+  <g id="dialogue" data-pptx-bounds="64 244 660 380">
+    <text x="64" y="268" font-size="18" fill="#6B7280">對方只回一兩個字：嗯、哦、還好</text>
+    <rect x="64" y="278" width="120" height="64" rx="20" fill="#2F4858" />
+    <text x="88" y="320" font-size="24" fill="#FFFFFF">還好</text>
+    <text x="724" y="378" font-size="18" fill="#6B7280" text-anchor="end">我：追問意思＋給選擇</text>
+    <rect x="340" y="388" width="384" height="104" rx="20" fill="#F26B4E" fill-opacity="0.12" stroke="#F26B4E" stroke-width="2" />
+    <text font-size="24" fill="#2B2B2B" x="364" y="430">還好是什麼意思？</text><text font-size="24" fill="#2B2B2B" x="364" y="470">比上次好一點，還是差不多？</text><text font-size="24" fill="#2B2B2B" x="64" y="552">遇到只回一兩個字的人，</text><text font-size="24" fill="#2B2B2B" x="64" y="590">不要放棄，也不要自己硬撐著說。</text></g>
+
+  <g id="method-card" data-pptx-bounds="756 244 460 380">
+    <rect x="756" y="244" width="460" height="380" rx="20" fill="#F3E9DA" />
+    
+  <g transform="translate(788, 272) scale(2)" fill="none" stroke="#2F4858" stroke-width="2">
+    <path d="M10 4l2 1l2 -1" />
+    <path d="M12 2v6.5l3 1.72" />
+    <path d="M17.928 6.268l.134 2.232l1.866 1.232" />
+    <path d="M20.66 7l-5.629 3.25l.01 3.458" />
+    <path d="M19.928 14.268l-1.866 1.232l-.134 2.232" />
+    <path d="M20.66 17l-5.629 -3.25l-2.99 1.738" />
+    <path d="M14 20l-2 -1l-2 1" />
+    <path d="M12 22v-6.5l-3 -1.72" />
+    <path d="M6.072 17.732l-.134 -2.232l-1.866 -1.232" />
+    <path d="M3.34 17l5.629 -3.25l-.01 -3.458" />
+    <path d="M4.072 9.732l1.866 -1.232l.134 -2.232" />
+    <path d="M3.34 7l5.629 3.25l2.99 -1.738" />
+  </g>
+    <text x="852" y="308" font-size="28" font-weight="bold" fill="#2F4858">做法</text>
+    <line x1="788" y1="340" x2="1184" y2="340" stroke="#E2D6C3" stroke-width="2" />
+    <circle cx="800" cy="384" r="6" fill="#F26B4E" />
+    <text x="820" y="392" font-size="24" fill="#2B2B2B">追問「還好」的意思</text>
+    <circle cx="800" cy="444" r="6" fill="#F26B4E" />
+    <text x="820" y="452" font-size="24" fill="#2B2B2B">再給他一個選擇</text>
+    <circle cx="800" cy="504" r="6" fill="#F26B4E" />
+    <text x="820" y="512" font-size="24" fill="#2B2B2B">引導他多說一句</text>
+    <text x="788" y="592" font-size="18" fill="#6B7280">（講者主張，未查證）</text>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">8 / 11</text>
+  </g>
+</svg>

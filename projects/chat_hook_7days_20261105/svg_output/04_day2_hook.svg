@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="content">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+
+  <g id="header" data-pptx-bounds="64 40 1152 100">
+    <circle cx="104" cy="90" r="40" fill="#F26B4E" />
+    <text x="104" y="104" font-size="40" font-weight="bold" fill="#FFFFFF" text-anchor="middle">2</text>
+    <text x="168" y="74" font-size="18" fill="#6B7280">DAY 2 ・ 第二天</text>
+    <text x="168" y="118" font-size="40" font-weight="bold" fill="#2F4858">找鉤子詞</text>
+  </g>
+
+  <g id="takeaway" data-pptx-bounds="64 156 1152 64">
+    <rect x="64" y="156" width="1152" height="64" rx="16" fill="#F26B4E" fill-opacity="0.10" />
+    <text x="92" y="198" font-size="28" font-weight="bold" fill="#2F4858">對方話裡資訊量最大或情緒最重的詞，就是下一句的切入點</text>
+  </g>
+
+  <g id="dialogue" data-pptx-bounds="64 244 660 380">
+    <text x="64" y="268" font-size="18" fill="#6B7280">對方</text>
+    <rect x="64" y="278" width="360" height="64" rx="20" fill="#2F4858" />
+    <text x="88" y="320" font-size="24" fill="#FFFFFF">我最近<tspan font-weight="bold" fill="#E9B872">壓力好大</tspan>，一直在<tspan font-weight="bold" fill="#E9B872">加班</tspan></text>
+    <rect x="64" y="358" width="300" height="44" rx="22" fill="#E9B872" fill-opacity="0.40" />
+    <text x="88" y="388" font-size="24" fill="#2B2B2B">鉤子：壓力大、加班</text>
+    <text x="724" y="446" font-size="18" fill="#6B7280" text-anchor="end">我</text>
+    <rect x="340" y="456" width="384" height="64" rx="20" fill="#F26B4E" fill-opacity="0.12" stroke="#F26B4E" stroke-width="2" />
+    <text x="364" y="498" font-size="24" fill="#2B2B2B">加班多久了？是最近專案忙嗎？</text>
+    <text x="64" y="578" font-size="24" fill="#2B2B2B">不用自己找話題，對方已經給你了，<tspan x="64" dy="38">你只是接住他。</tspan></text>
+  </g>
+
+  <g id="method-card" data-pptx-bounds="756 244 460 380">
+    <rect x="756" y="244" width="460" height="380" rx="20" fill="#F3E9DA" />
+    <use data-icon="tabler-outline/search" x="788" y="272" width="48" height="48" fill="#2F4858" stroke-width="2" />
+    <text x="852" y="308" font-size="28" font-weight="bold" fill="#2F4858">做法</text>
+    <line x1="788" y1="340" x2="1184" y2="340" stroke="#E2D6C3" stroke-width="2" />
+    <circle cx="800" cy="384" r="6" fill="#F26B4E" />
+    <text x="820" y="392" font-size="24" fill="#2B2B2B">聽完，把鉤子挑出來</text>
+    <circle cx="800" cy="444" r="6" fill="#F26B4E" />
+    <text x="820" y="452" font-size="24" fill="#2B2B2B">圍繞它開口發問</text>
+    <circle cx="800" cy="504" r="6" fill="#F26B4E" />
+    <text x="820" y="512" font-size="24" fill="#2B2B2B">不用自己找話題</text>
+    <text x="788" y="592" font-size="18" fill="#6B7280">（講者主張，未查證）</text>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">4 / 11</text>
+  </g>
+</svg>

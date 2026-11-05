@@ -1,0 +1,852 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "/home/user/watch-video/projects/chat_hook_7days_20261105",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "7ac69d5c13290113ca15f0fb76048c9acbcfedf3427617ab2997746c75706529",
+    "file_count": 11,
+    "files": [
+      {
+        "file": "01_cover.svg",
+        "sha256": "21e05dcedd889e8229fec09dbd6d89807044c84e6c53801e38f13a28b27f016b"
+      },
+      {
+        "file": "02_two_replies.svg",
+        "sha256": "2c4e544b2424c68167db7fd07054094da5a39c128e1c85410d5d153747b14a6e"
+      },
+      {
+        "file": "03_day1_listen.svg",
+        "sha256": "dddd799fc23500f21403f8051edaf8380902f691b247620881d4d667fddf0ca4"
+      },
+      {
+        "file": "04_day2_hook.svg",
+        "sha256": "0eb9aa1ade48e53d2f8c6929f79f64ac0dd180df39a9812ba6f96719daefa8c1"
+      },
+      {
+        "file": "05_day3_repeat.svg",
+        "sha256": "ab80d88b3728a2c8dc40d696cfb00ea8d2f183040ea003987e10a4256d30755c"
+      },
+      {
+        "file": "06_day4_emotion.svg",
+        "sha256": "4b08bd69253fece248650ea2a46e6685836ce6e43d2efb021bef2882be3ae46e"
+      },
+      {
+        "file": "07_day5_interview.svg",
+        "sha256": "dcf5e7cc8a879e84d45250bd628dd7ecc00626fd07d5e7bb42dfbb1cad9d505d"
+      },
+      {
+        "file": "08_day6_icebreak.svg",
+        "sha256": "868de366269714aac4fa56c94d2304f2b9443a8213238b39acc141723cb09c24"
+      },
+      {
+        "file": "09_day7_practice.svg",
+        "sha256": "9c616f787dec54bd7b7d0f3911a8915e53df916a57f73f1a51b1b3411b65b263"
+      },
+      {
+        "file": "10_daily_practice.svg",
+        "sha256": "85968dd54f449f6e1c6a18eb32be7b9a8fba30559afdc72d914803f842ca47f9"
+      },
+      {
+        "file": "11_closing.svg",
+        "sha256": "75b7423902f1f14bdc670753a6cf792addc5f69f632766b0ef7dce5183528a2a"
+      }
+    ]
+  },
+  "summary": {
+    "total": 11,
+    "passed": 11,
+    "warnings": 0,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 0,
+      "issues": []
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {
+      "#FFFFFF": [
+        "01_cover.svg",
+        "02_two_replies.svg",
+        "03_day1_listen.svg",
+        "04_day2_hook.svg",
+        "05_day3_repeat.svg",
+        "06_day4_emotion.svg",
+        "07_day5_interview.svg",
+        "08_day6_icebreak.svg",
+        "09_day7_practice.svg"
+      ]
+    },
+    "fonts": {},
+    "sizes": {
+      "56": [
+        "01_cover.svg",
+        "11_closing.svg"
+      ]
+    }
+  },
+  "carrier_receipt": {
+    "scope": "informational-not-a-quota",
+    "pages": 11,
+    "totals": {
+      "text_elements": 158,
+      "image_placements": 0,
+      "icons": 12,
+      "svg_geometry_elements": 107,
+      "preset_shapes": 0,
+      "page_frame_elements": 14,
+      "marker_uses": 2,
+      "inline_emphasis_runs": 2,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "pages_with": {
+      "images": 0,
+      "icons": 9,
+      "presets": 0,
+      "charts": 0,
+      "tables": 0,
+      "formulas": 0,
+      "inline_emphasis_runs": 1,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "relationship_pages": 7,
+    "geometry_elements": {
+      "circle": 42,
+      "ellipse": 0,
+      "line": 9,
+      "path": 0,
+      "polygon": 0,
+      "polyline": 0,
+      "rect": 56
+    },
+    "preset_names": {},
+    "native_objects": {
+      "chart": 0,
+      "formula_block": 0,
+      "formula_inline": 0,
+      "other": 0,
+      "table": 0
+    },
+    "image_page_max_frame_share_range": []
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_cover.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/01_cover.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 9,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 3,
+              "circle": 2,
+              "ellipse": 0,
+              "line": 0,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 2,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 9,
+        "tspan_elements": 2,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "56": 2
+        }
+      },
+      "passed": true,
+      "source_sha256": "21e05dcedd889e8229fec09dbd6d89807044c84e6c53801e38f13a28b27f016b"
+    },
+    {
+      "file": "02_two_replies.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/02_two_replies.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 14,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 9,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 0,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 14,
+        "tspan_elements": 2,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "2c4e544b2424c68167db7fd07054094da5a39c128e1c85410d5d153747b14a6e"
+    },
+    {
+      "file": "03_day1_listen.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/03_day1_listen.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 17,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 4,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 3,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 2
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 3,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "dddd799fc23500f21403f8051edaf8380902f691b247620881d4d667fddf0ca4"
+    },
+    {
+      "file": "04_day2_hook.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/04_day2_hook.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 17,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 2,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 3,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "0eb9aa1ade48e53d2f8c6929f79f64ac0dd180df39a9812ba6f96719daefa8c1"
+    },
+    {
+      "file": "05_day3_repeat.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/05_day3_repeat.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 18,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 7,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 1,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "ab80d88b3728a2c8dc40d696cfb00ea8d2f183040ea003987e10a4256d30755c"
+    },
+    {
+      "file": "06_day4_emotion.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/06_day4_emotion.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 17,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "4b08bd69253fece248650ea2a46e6685836ce6e43d2efb021bef2882be3ae46e"
+    },
+    {
+      "file": "07_day5_interview.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/07_day5_interview.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 18,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 7,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 1,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "dcf5e7cc8a879e84d45250bd628dd7ecc00626fd07d5e7bb42dfbb1cad9d505d"
+    },
+    {
+      "file": "08_day6_icebreak.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/08_day6_icebreak.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 16,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 5,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 16,
+        "tspan_elements": 2,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "868de366269714aac4fa56c94d2304f2b9443a8213238b39acc141723cb09c24"
+    },
+    {
+      "file": "09_day7_practice.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/09_day7_practice.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 18,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 7,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#FFFFFF"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "9c616f787dec54bd7b7d0f3911a8915e53df916a57f73f1a51b1b3411b65b263"
+    },
+    {
+      "file": "10_daily_practice.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/10_daily_practice.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 9,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 1,
+              "circle": 5,
+              "ellipse": 0,
+              "line": 0,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 2,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 9,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "85968dd54f449f6e1c6a18eb32be7b9a8fba30559afdc72d914803f842ca47f9"
+    },
+    {
+      "file": "11_closing.svg",
+      "path": "projects/chat_hook_7days_20261105/svg_output/11_closing.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 5,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 1,
+              "circle": 1,
+              "ellipse": 0,
+              "line": 0,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 2,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif"
+        ],
+        "text_elements": 5,
+        "tspan_elements": 1,
+        "sparse_typography_sizes": {
+          "56": 2
+        }
+      },
+      "passed": true,
+      "source_sha256": "75b7423902f1f14bdc670753a6cf792addc5f69f632766b0ef7dce5183528a2a"
+    }
+  ]
+}

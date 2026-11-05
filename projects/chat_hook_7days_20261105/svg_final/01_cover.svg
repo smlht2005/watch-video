@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="cover">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+  <circle id="disc" data-pptx-role="decoration" cx="980" cy="360" r="280" fill="#F3E9DA" />
+
+  <g id="title-block" data-pptx-bounds="64 150 640 330">
+    <text x="64" y="196" font-size="28" font-weight="bold" fill="#6B7280">七天接話練習</text>
+    <text font-size="56" font-weight="bold" fill="#2F4858" x="64" y="290">聊天不要聊自己，</text><text font-size="56" font-weight="bold" fill="#2F4858" x="64" y="362">要聊對方剛才那一句</text><text x="64" y="440" font-size="28" fill="#2B2B2B">七天，每天一個小動作</text>
+  </g>
+
+  <g id="bubbles" data-pptx-bounds="720 190 500 380">
+    <text x="760" y="214" font-size="18" fill="#6B7280">對方剛才那一句</text>
+    <rect x="760" y="224" width="264" height="72" rx="24" fill="#2F4858" />
+    <text x="788" y="270" font-size="24" fill="#FFFFFF">我最近在學做飯</text>
+    <text x="1180" y="346" font-size="18" fill="#6B7280" text-anchor="end">你這樣接</text>
+    <rect x="900" y="356" width="280" height="72" rx="24" fill="#F26B4E" fill-opacity="0.14" stroke="#F26B4E" stroke-width="2" />
+    <text x="928" y="402" font-size="24" fill="#2B2B2B">學了多久了？</text>
+    <circle cx="1040" cy="500" r="60" fill="#F26B4E" />
+    <text x="1040" y="514" font-size="40" font-weight="bold" fill="#FFFFFF" text-anchor="middle">7 天</text>
+  </g>
+
+  <g id="source" data-pptx-bounds="64 580 640 80" fill="#6B7280" font-size="18">
+    <text x="64" y="610">來源：TikTok @juzhongren33（3:04）</text><text x="64" y="640">內容為講者主張，未查證</text></g>
+</svg>

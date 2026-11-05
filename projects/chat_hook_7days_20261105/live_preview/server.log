@@ -1,0 +1,10 @@
+[09:38:39] [INFO] svg_editor: running at http://127.0.0.1:6060 (live preview (auto-startup))
+[09:38:39] [INFO] svg_editor: project: /home/user/watch-video/projects/chat_hook_7days_20261105
+[09:38:39] [INFO] svg_editor: svg_output: /home/user/watch-video/projects/chat_hook_7days_20261105/svg_output (0 slides)
+[09:38:39] [INFO] svg_editor: idle timeout: 7200s (0 = disabled)
+ * Serving Flask app 'server'
+ * Debug mode: off
+[09:38:39] [INFO] svg_editor: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:6060
+[09:38:39] [INFO] svg_editor: [33mPress CTRL+C to quit[0m
+[09:38:39] [INFO] svg_editor: 127.0.0.1 - - [05/Nov/2026 09:38:39] "GET /api/health HTTP/1.1" 200 -

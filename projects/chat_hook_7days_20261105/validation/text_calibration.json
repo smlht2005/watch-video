@@ -1,0 +1,70 @@
+{
+  "roles": {
+    "body": {
+      "family": "\"Microsoft JhengHei\", \"PingFang TC\", Arial, sans-serif",
+      "size": 24.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 3.9,
+      "latin_chars_per_100px": 8.1,
+      "caps_chars_per_100px": 7.5,
+      "digits_chars_per_100px": 7.1,
+      "citation_chars_per_100px": 7.5,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": {
+        "px": 1261.0,
+        "slide": "P11",
+        "text": "「底層是你有沒有真的把注意力放在對方身上」（講者主張，未查證）· 註記：資料來…"
+      }
+    },
+    "title": {
+      "family": "\"Microsoft JhengHei\", \"PingFang TC\", Arial, sans-serif",
+      "size": 40.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 2.4,
+      "latin_chars_per_100px": 4.9,
+      "caps_chars_per_100px": 4.5,
+      "digits_chars_per_100px": 4.3,
+      "citation_chars_per_100px": 4.5,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": {
+        "px": 720.8,
+        "slide": "P01",
+        "text": "聊天不要聊自己，要聊對方剛才那一句"
+      }
+    },
+    "subtitle": {
+      "family": "\"Microsoft JhengHei\", \"PingFang TC\", Arial, sans-serif",
+      "size": 28.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 3.4,
+      "latin_chars_per_100px": 6.9,
+      "caps_chars_per_100px": 6.4,
+      "digits_chars_per_100px": 6.1,
+      "citation_chars_per_100px": 6.4,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": {
+        "px": 949.8,
+        "slide": "P02",
+        "text": "回「學多久了？」比回「我也在學」更能讓對方越聊越來勁（講者主張）"
+      }
+    },
+    "annotation": {
+      "family": "\"Microsoft JhengHei\", \"PingFang TC\", Arial, sans-serif",
+      "size": 18.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 5.2,
+      "latin_chars_per_100px": 10.8,
+      "caps_chars_per_100px": 10.0,
+      "digits_chars_per_100px": 9.5,
+      "citation_chars_per_100px": 10.0,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": null
+    }
+  },
+  "script_samples": {},
+  "source": "spec_lock.md",
+  "generated_at": "2026-11-05T09:37:46Z",
+  "notes": [
+    "every role is measured at normal weight; recalibrate a role realized as bold deck-wide with --role NAME:FAMILY:SIZE:bold: bold widens Latin and digits about 7%, while the bundled advance table gives CJK one width for both weights"
+  ]
+}

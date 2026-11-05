@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="content">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L8 5 L1 9" fill="none" stroke="#6B7280" stroke-width="2" />
+    </marker>
+  </defs>
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+
+  <g id="header" data-pptx-bounds="64 40 1152 100">
+    <circle cx="104" cy="90" r="40" fill="#F26B4E" />
+    <text x="104" y="104" font-size="40" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+    <text x="168" y="74" font-size="18" fill="#6B7280">DAY 1 ・ 第一天</text>
+    <text x="168" y="118" font-size="40" font-weight="bold" fill="#2F4858">聽完再開口</text>
+  </g>
+
+  <g id="takeaway" data-pptx-bounds="64 156 1152 64">
+    <rect x="64" y="156" width="1152" height="64" rx="16" fill="#F26B4E" fill-opacity="0.10" />
+    <text x="92" y="198" font-size="28" font-weight="bold" fill="#2F4858">等對方完整說完，再接話</text>
+  </g>
+
+  <g id="steps" data-pptx-bounds="64 244 660 380">
+    <text x="64" y="268" font-size="18" fill="#6B7280">這樣練</text>
+    <rect x="64" y="290" width="196" height="150" rx="20" fill="#F3E9DA" />
+    <use data-icon="tabler-outline/ear" x="138" y="306" width="48" height="48" fill="#2F4858" stroke-width="2" />
+    <text x="162" y="392" font-size="24" fill="#2B2B2B" text-anchor="middle">對方把話<tspan x="162" dy="34">說完整</tspan></text>
+    <line x1="268" y1="365" x2="290" y2="365" stroke="#6B7280" stroke-width="2" marker-end="url(#arr)" />
+    <rect x="296" y="290" width="196" height="150" rx="20" fill="#F3E9DA" />
+    <use data-icon="tabler-outline/calendar" x="370" y="306" width="48" height="48" fill="#2F4858" stroke-width="2" />
+    <text x="394" y="392" font-size="24" fill="#2B2B2B" text-anchor="middle">默數兩秒</text>
+    <line x1="500" y1="365" x2="522" y2="365" stroke="#6B7280" stroke-width="2" marker-end="url(#arr)" />
+    <rect x="528" y="290" width="196" height="150" rx="20" fill="#F26B4E" fill-opacity="0.10" stroke="#F26B4E" stroke-width="2" />
+    <use data-icon="tabler-outline/message-circle" x="602" y="306" width="48" height="48" fill="#2F4858" stroke-width="2" />
+    <text x="626" y="392" font-size="24" fill="#2B2B2B" text-anchor="middle">你再開口</text>
+    <text x="64" y="504" font-size="24" fill="#2B2B2B">大多數人在對方說到一半時，<tspan x="64" dy="38">腦子已經在組織自己的回答，</tspan><tspan x="64" dy="38">根本沒在聽後半段。</tspan></text>
+    <text x="64" y="618" font-size="18" fill="#6B7280">（講者主張，未查證）</text>
+  </g>
+
+  <g id="method-card" data-pptx-bounds="756 244 460 380">
+    <rect x="756" y="244" width="460" height="380" rx="20" fill="#F3E9DA" />
+    <use data-icon="tabler-outline/ear" x="788" y="272" width="48" height="48" fill="#2F4858" stroke-width="2" />
+    <text x="852" y="308" font-size="28" font-weight="bold" fill="#2F4858">做法</text>
+    <line x1="788" y1="340" x2="1184" y2="340" stroke="#E2D6C3" stroke-width="2" />
+    <circle cx="800" cy="384" r="6" fill="#F26B4E" />
+    <text x="820" y="392" font-size="24" fill="#2B2B2B">等對方完整說完</text>
+    <circle cx="800" cy="444" r="6" fill="#F26B4E" />
+    <text x="820" y="452" font-size="24" fill="#2B2B2B">默數兩秒再接話</text>
+    <circle cx="800" cy="504" r="6" fill="#F26B4E" />
+    <text x="820" y="512" font-size="24" fill="#2B2B2B">今天只做這一個動作</text>
+    <text x="788" y="592" font-size="18" fill="#6B7280">和任何人聊天的時候都這樣練</text>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">3 / 11</text>
+  </g>
+</svg>

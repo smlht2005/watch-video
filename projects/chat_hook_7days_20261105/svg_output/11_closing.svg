@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="ending">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+  <circle id="disc" data-pptx-role="decoration" cx="640" cy="330" r="280" fill="#F3E9DA" />
+
+  <g id="closing" data-pptx-bounds="200 100 880 420">
+    <use data-icon="tabler-outline/eye" x="592" y="110" width="96" height="96" fill="#F26B4E" stroke-width="2" />
+    <text x="640" y="296" font-size="56" font-weight="bold" fill="#2F4858" text-anchor="middle">底層是你有沒有真的<tspan x="640" dy="72">把注意力放在對方身上</tspan></text>
+    <text x="640" y="450" font-size="28" fill="#2B2B2B" text-anchor="middle">練到位了，跟任何人都能找到聊下去的方向</text>
+    <text x="640" y="500" font-size="18" fill="#6B7280" text-anchor="middle">（講者主張，未查證）</text>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">11 / 11</text>
+  </g>
+</svg>

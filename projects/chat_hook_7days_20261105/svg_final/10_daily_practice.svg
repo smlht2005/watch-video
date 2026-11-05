@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="content">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+  <circle id="disc" data-pptx-role="decoration" cx="1000" cy="360" r="240" fill="#F3E9DA" />
+
+  <g id="message" data-pptx-bounds="64 120 640 470">
+    <text x="64" y="170" font-size="40" font-weight="bold" fill="#2F4858">日常加練</text>
+    <text x="64" y="232" font-size="28" font-weight="bold" fill="#2F4858">每天留十分鐘看談話節目</text>
+    <circle cx="76" cy="292" r="6" fill="#F26B4E" />
+    <text x="100" y="300" font-size="24" fill="#2B2B2B">不是為了娛樂，是觀察對話裡誰更會接話</text>
+    <circle cx="76" cy="352" r="6" fill="#F26B4E" />
+    <text x="100" y="360" font-size="24" fill="#2B2B2B">為什麼那個話題能聊起來</text>
+    <circle cx="76" cy="412" r="6" fill="#F26B4E" />
+    <text x="100" y="420" font-size="24" fill="#2B2B2B">可以看採訪影片、播客或街頭訪談</text>
+    <circle cx="76" cy="472" r="6" fill="#F26B4E" />
+    <text x="100" y="480" font-size="24" fill="#2B2B2B">看完，用一句話記下今天學到的接話方式</text>
+    <text x="64" y="570" font-size="18" fill="#6B7280">（講者主張，未查證）</text>
+  </g>
+
+  <g id="tv-icon" data-pptx-bounds="920 280 160 160">
+    <!-- icon: tabler-outline/device-tv -->
+  <g transform="translate(920, 280) scale(6.66667)" fill="none" stroke="#2F4858" stroke-width="2">
+    <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />
+    <path d="M16 3l-4 4l-4 -4" />
+  </g>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">10 / 11</text>
+  </g>
+</svg>

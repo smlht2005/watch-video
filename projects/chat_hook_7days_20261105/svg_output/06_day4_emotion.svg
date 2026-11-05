@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="content">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+
+  <g id="header" data-pptx-bounds="64 40 1152 100">
+    <circle cx="104" cy="90" r="40" fill="#F26B4E" />
+    <text x="104" y="104" font-size="40" font-weight="bold" fill="#FFFFFF" text-anchor="middle">4</text>
+    <text x="168" y="74" font-size="18" fill="#6B7280">DAY 4 ・ 第四天</text>
+    <text x="168" y="118" font-size="40" font-weight="bold" fill="#2F4858">先接情緒，再接事件</text>
+  </g>
+
+  <g id="takeaway" data-pptx-bounds="64 156 1152 64">
+    <rect x="64" y="156" width="1152" height="64" rx="16" fill="#F26B4E" fill-opacity="0.10" />
+    <text x="92" y="198" font-size="28" font-weight="bold" fill="#2F4858">只接事件顯得敷衍，先接情緒對方更願意說</text>
+  </g>
+
+  <g id="dialogue" data-pptx-bounds="64 244 660 380">
+    <text x="64" y="268" font-size="18" fill="#6B7280">對方</text>
+    <rect x="64" y="278" width="312" height="64" rx="20" fill="#2F4858" />
+    <text x="88" y="320" font-size="24" fill="#FFFFFF">我今天被領導當眾批評了</text>
+    <text x="724" y="378" font-size="18" fill="#6B7280" text-anchor="end">只接事件：顯得敷衍</text>
+    <rect x="556" y="388" width="168" height="64" rx="20" fill="#E2D6C3" />
+    <text x="580" y="430" font-size="24" fill="#2B2B2B">批評什麼？</text>
+    <text x="724" y="494" font-size="18" fill="#2F4858" font-weight="bold" text-anchor="end">先接情緒：對方立刻打開話匣子</text>
+    <rect x="364" y="504" width="360" height="64" rx="20" fill="#F26B4E" fill-opacity="0.12" stroke="#F26B4E" stroke-width="2" />
+    <text x="388" y="546" font-size="24" fill="#2B2B2B">被當眾批評，那挺難受的吧？</text>
+  </g>
+
+  <g id="method-card" data-pptx-bounds="756 244 460 380">
+    <rect x="756" y="244" width="460" height="380" rx="20" fill="#F3E9DA" />
+    <use data-icon="tabler-outline/heart" x="788" y="272" width="48" height="48" fill="#2F4858" stroke-width="2" />
+    <text x="852" y="308" font-size="28" font-weight="bold" fill="#2F4858">做法</text>
+    <line x1="788" y1="340" x2="1184" y2="340" stroke="#E2D6C3" stroke-width="2" />
+    <circle cx="800" cy="384" r="6" fill="#F26B4E" />
+    <text x="820" y="392" font-size="24" fill="#2B2B2B">每次聽到對方說話</text>
+    <circle cx="800" cy="444" r="6" fill="#F26B4E" />
+    <text x="820" y="452" font-size="24" fill="#2B2B2B">先感受他當下的情緒</text>
+    <circle cx="800" cy="504" r="6" fill="#F26B4E" />
+    <text x="820" y="512" font-size="24" fill="#2B2B2B">再決定怎麼接</text>
+    <text x="788" y="592" font-size="18" fill="#6B7280">（講者主張，未查證）</text>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">6 / 11</text>
+  </g>
+</svg>

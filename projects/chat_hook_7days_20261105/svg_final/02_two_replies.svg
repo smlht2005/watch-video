@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif" data-pptx-page-role="content">
+  <rect id="bg" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#FBF6EE" />
+
+  <g id="header" data-pptx-bounds="64 40 1152 64">
+    <text x="64" y="88" font-size="40" font-weight="bold" fill="#2F4858">同一句話，兩種回法</text>
+  </g>
+
+  <g id="prompt" data-pptx-bounds="64 116 1152 72">
+    <text x="520" y="160" font-size="18" fill="#6B7280" text-anchor="end">對方說</text>
+    <rect x="532" y="120" width="216" height="64" rx="20" fill="#2F4858" />
+    <text x="556" y="162" font-size="24" fill="#FFFFFF">我最近在學做飯</text>
+  </g>
+
+  <g id="card-self" data-pptx-bounds="64 204 560 320">
+    <rect x="64" y="204" width="560" height="320" rx="20" fill="#F3E9DA" />
+    <text x="88" y="250" font-size="28" font-weight="bold" fill="#2F4858">聊自己</text>
+    <rect x="88" y="270" width="270" height="100" rx="20" fill="#E2D6C3" />
+    <text font-size="24" fill="#2B2B2B" x="112" y="308">哦，我也在學，</text><text font-size="24" fill="#2B2B2B" x="112" y="348">我上週做了紅燒肉</text><rect x="88" y="392" width="260" height="44" rx="22" fill="#E2D6C3" />
+    <text x="112" y="423" font-size="24" fill="#2B2B2B">話題很快就斷了</text>
+    <text x="88" y="480" font-size="24" fill="#2B2B2B">把話題拉回自己的經驗</text>
+  </g>
+
+  <g id="card-other" data-pptx-bounds="656 204 560 320">
+    <rect x="656" y="204" width="560" height="320" rx="20" fill="#F26B4E" fill-opacity="0.10" stroke="#F26B4E" stroke-width="2" />
+    <text x="680" y="250" font-size="28" font-weight="bold" fill="#2F4858">聊對方剛才那一句</text>
+    <rect x="680" y="270" width="312" height="100" rx="20" fill="#FFFFFF" stroke="#F26B4E" stroke-width="2" />
+    <text font-size="24" fill="#2B2B2B" x="704" y="308">真的？學了多久了？</text><text font-size="24" fill="#2B2B2B" x="704" y="348">跟影片學，還是有人帶？</text><rect x="680" y="392" width="260" height="44" rx="22" fill="#F26B4E" fill-opacity="0.25" />
+    <text x="704" y="423" font-size="24" fill="#2B2B2B">對方越聊越來勁</text>
+    <text x="680" y="480" font-size="24" fill="#2B2B2B">把注意力放在對方上一句</text>
+  </g>
+
+  <g id="takeaway" data-pptx-bounds="64 540 1152 64">
+    <rect x="64" y="540" width="1152" height="64" rx="16" fill="#F26B4E" fill-opacity="0.10" />
+    <text x="92" y="582" font-size="28" font-weight="bold" fill="#2F4858">回「學多久了？」比回「我也在學」更能讓對方越聊越來勁</text>
+  </g>
+
+  <g id="footer" data-pptx-role="footer" data-pptx-bounds="64 652 1152 40" fill="#6B7280" font-size="18">
+    <text x="64" y="680">來源：TikTok @juzhongren33 ・ 內容為講者主張，未查證</text>
+    <text x="1216" y="680" text-anchor="end">2 / 11</text>
+  </g>
+</svg>
