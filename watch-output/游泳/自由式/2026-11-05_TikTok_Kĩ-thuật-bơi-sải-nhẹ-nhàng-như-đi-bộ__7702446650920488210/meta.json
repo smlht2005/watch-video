@@ -1,0 +1,106 @@
+{
+  "url": "https://vt.tiktok.com/ZSpYhDSY6/",
+  "platform": "TikTok",
+  "video_id": "7702446650920488210",
+  "title": "Kĩ thuật bơi sải nhẹ nhàng như đi bộ",
+  "title_raw": "Kĩ thuật bơi sải nhẹ nhàng như đi bộ #bơi #bơilội #swimming #swim #sw...",
+  "title_override": "",
+  "category": "游泳/自由式",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "bơi",
+    "bơilội",
+    "swimming",
+    "swim",
+    "sw..."
+  ],
+  "uploader": "dayboisinhtonbmt",
+  "duration": "00:13 (12.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-05",
+  "last_updated": "2026-11-05",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "Thanks for watching!",
+      "expected": "（無人聲，推測為 Whisper 對無語音片段的幻覺）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "游泳",
+    "自由式",
+    "2 beat 打腿",
+    "省力",
+    "陸上模擬",
+    "分割畫面",
+    "身體滾動",
+    "打腿節奏",
+    "越南語標題",
+    "無人聲"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "起手",
+      "一臂前伸",
+      "滑行"
+    ],
+    "00:04": [
+      "划手",
+      "同側打腿"
+    ],
+    "00:09": [
+      "循環",
+      "節奏"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "起手：身體側躺、一臂前伸",
+      "note": "畫面上下同步：上方是在沙發上側躺的陸上模擬，下方是泳池實拍。起手時身體拉長、一手前伸，另一手開始回收，雙腿伸直在身後。這是影片標題所說「2 beat」節奏的起點（每一次划手配一次打腿）。",
+      "keywords": [
+        "起手",
+        "一臂前伸"
+      ]
+    },
+    {
+      "start": "00:04",
+      "frame": "frame_0007.jpg",
+      "title": "划手配合單腿打腿",
+      "note": "手臂回收、入水並向前划的同時，只有一條腿做一次較大的打腿，另一條腿放鬆跟隨；沙發版本把動作放慢、放大，方便看清腿與手的配合。池中的泳者身體幾乎不晃，看起來像走路般輕鬆（標題主張）。",
+      "keywords": [
+        "划手",
+        "打腿"
+      ]
+    },
+    {
+      "start": "00:09",
+      "frame": "frame_0011.jpg",
+      "title": "左右循環，維持輕鬆節奏",
+      "note": "後段重複同樣的循環：左右手交替、每划一次手配一次打腿，上下兩個畫面同步對照，示範動作可連續、低耗能地進行。影片結束時沒有文字講解，細節需自行對照畫面。",
+      "keywords": [
+        "循環",
+        "節奏"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
