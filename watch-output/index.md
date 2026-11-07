@@ -1,9 +1,10 @@
 # watch-output 索引
 
-## AI（16）
+## AI（17）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-07 | TikTok | 上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go... | 15:55 (955.0s) | whisper (groq) | [開啟](./AI/2026-11-07_TikTok_上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod__7673187275961912597/) |
 | 2026-11-02 | TikTok | 開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！ | 01:46 (105.9s) | whisper (groq) | [開啟](./AI/2026-11-02_TikTok_開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的__7700148582044781830/) |
 | 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610/) |
 | 2026-10-28 | TikTok | 5個神級Skill，裝完Codex直接開掛！ | 02:01 (121.1s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575/) |

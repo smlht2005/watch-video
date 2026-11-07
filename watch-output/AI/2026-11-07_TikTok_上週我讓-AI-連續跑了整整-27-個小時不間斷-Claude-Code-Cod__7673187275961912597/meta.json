@@ -1,0 +1,362 @@
+{
+  "url": "https://vt.tiktok.com/ZSph3HMHy/",
+  "platform": "TikTok",
+  "video_id": "7673187275961912597",
+  "title": "上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go...",
+  "title_raw": "上周我让 AI 连续跑了整整 27 个小时不间断。Claude Code、Codex、Hermes Agent 三家公司同时推出了 /go...",
+  "title_override": "",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "one.ai186",
+  "duration": "15:55 (955.0s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-07",
+  "last_updated": "2026-11-07",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "Go／go",
+      "expected": "/goal（投影片標題為 /goal，已依投影片改）",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "Cloud / Cloud Code",
+      "expected": "Claude / Claude Code",
+      "status": "confirmed"
+    },
+    {
+      "time": "04:14",
+      "heard": "沒什麼大災問",
+      "expected": "沒什麼大學問（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "09:26",
+      "heard": "創意月籤",
+      "expected": "創意躍遷（推測，字幕畫面出現「躍遷」意涵）",
+      "status": "suspected"
+    },
+    {
+      "time": "06:46",
+      "heard": "偏向直化的工作",
+      "expected": "偏向主觀／質化的工作（推測，投影片為「質化」）",
+      "status": "suspected"
+    },
+    {
+      "time": "07:11",
+      "heard": "滿滿的機油味",
+      "expected": "滿滿的 AI 味（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "07:46",
+      "heard": "兼具",
+      "expected": "間距（推測，依上下文與投影片）",
+      "status": "suspected"
+    },
+    {
+      "time": "11:03",
+      "heard": "AI採購的地雷",
+      "expected": "AI 踩的地雷（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "12:03",
+      "heard": "歷史不是",
+      "expected": "第四步是（依投影片 Step 4/6）",
+      "status": "confirmed"
+    },
+    {
+      "time": "09:19",
+      "heard": "反骨復生",
+      "expected": "反骨附身（推測，投影片為「梵谷附身」類比）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "/goal",
+    "Claude Code",
+    "Codex",
+    "Hermes Agent",
+    "Context Anxiety",
+    "Evaluation",
+    "Rubric",
+    "長時間任務",
+    "評審",
+    "Anthropic"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：讓 AI 連跑 27 小時",
+      "note": "講者主張上週讓 AI agent 連續跑了 27 小時、過程無人介入（未查證）。他批評「你問一句、它答一句」的互動模式，並預告影片教你如何定好目標後讓 AI 持續工作。",
+      "keywords": []
+    },
+    {
+      "start": "00:20",
+      "frame": "slide_02.jpg",
+      "title": "真正的自動化是解放注意力",
+      "note": "只把任務丟給 AI 還只走完自動化前半段；若你仍要每 10 分鐘回去確認、稽核、再丟下一輪，注意力依舊被綁住。講者引用認知科學說法（未查證）：心裡掛著未完成的事就會佔用腦力，因此注意力才是稀缺資源。",
+      "keywords": []
+    },
+    {
+      "start": "01:07",
+      "frame": "slide_03.jpg",
+      "title": "影片三部分預告",
+      "note": "第一部分拆解主流工具針對長時間任務（Long Running Task）推出的功能與研究；第二部分講讓 agent 長時間運行的設計原理；第三部分教你如何立刻應用到工作上，目標是從協作者變成 AI 時代的管理者。",
+      "keywords": []
+    },
+    {
+      "start": "01:44",
+      "frame": "slide_04.jpg",
+      "title": "三家同時推出 /goal 功能",
+      "note": "講者指出 Claude Code、OpenAI Codex、Hermes Agent 幾乎同時推出同名功能 /goal：在對話框輸入 /goal 並寫下目標，AI 就會一直做到完成為止。他認為社群對這個趨勢重視不足。",
+      "keywords": []
+    },
+    {
+      "start": "02:14",
+      "frame": "slide_05.jpg",
+      "title": "AI 為何會偷懶：Context Anxiety",
+      "note": "AI 常做到一半停下來問你、或沒做完卻宣稱完成。講者轉述 Anthropic 2025 年底的研究（講者主張，未查證）：LLM 會看自己的 context window 用了多少，快滿時就開始慌著收尾交差，講者戲稱為「下班心態」。",
+      "keywords": []
+    },
+    {
+      "start": "03:07",
+      "frame": "slide_06.jpg",
+      "title": "/goal 的原理：實作者＋評審",
+      "note": "/goal 通常由兩個角色協作：實作者執行指令並產出，評審在每輪結束後檢查目標是否達成，沒達成就指出問題、要求繼續。講者用「胡蘿蔔吊在豬鼻子前」比喻，讓 agent 自我鞭策、不必你每三分鐘回來檢查。",
+      "keywords": []
+    },
+    {
+      "start": "03:47",
+      "frame": "slide_07.jpg",
+      "title": "前身：Ralph Loop 外掛",
+      "note": "講者提到去年中很火的 Ralph Loop 外掛，名字取自《辛普森家庭》裡有點傻、但永遠不放棄的小孩，精神是無論如何都持續做到底的迴圈。如今三家公司把這個理念做成官方功能。",
+      "keywords": []
+    },
+    {
+      "start": "04:11",
+      "frame": "slide_08.jpg",
+      "title": "/goal 的使用方式",
+      "note": "用法很簡單：在 Claude Code、Codex 或 Hermes Agent 的對話框輸入 /goal 並說明任務；進階設定包括限制 Token 上限等，細節請看官方文件（講者說連結放在資訊欄）。",
+      "keywords": []
+    },
+    {
+      "start": "04:33",
+      "frame": "slide_09.jpg",
+      "title": "關鍵在提示詞：「好一點」沒有邊界",
+      "note": "隨性地丟「把這個專案改得好一點」，AI 只會做一兩個小改動、五分鐘就宣稱完成，因為「好一點」是沒有邊界的目標，AI 只能自己定義 definition of done，結果通常不如你意。",
+      "keywords": []
+    },
+    {
+      "start": "05:00",
+      "frame": "slide_10.jpg",
+      "title": "寫得好的 goal 提示詞範例",
+      "note": "講者示範好例子：把結帳頁面反應速度降到 0.2 秒內、用速度測試工具驗證、其他功能不能壞、只能改結帳區塊與相關測試、每次修改要記錄內容與測出的速度與下一步，卡住時要停下回報。",
+      "keywords": []
+    },
+    {
+      "start": "05:29",
+      "frame": "slide_11.jpg",
+      "title": "要素一：Outcome（成果）",
+      "note": "第一個要素是 outcome：任務完成時應該是什麼狀態。在範例中就是「反應速度 0.2 秒以內」，用可衡量的終點取代模糊的期待。",
+      "keywords": []
+    },
+    {
+      "start": "05:38",
+      "frame": "slide_12.jpg",
+      "title": "要素二：Verification（驗證）",
+      "note": "第二個要素是 verification：怎麼證明真的完成了。範例是用速度測試工具驗證，讓「完成」不靠 AI 自己宣稱。",
+      "keywords": []
+    },
+    {
+      "start": "05:44",
+      "frame": "slide_13.jpg",
+      "title": "要素三：Constraints（限制）",
+      "note": "第三個要素是 constraints：哪些事情不能做。範例限制只能改結帳區塊的程式碼與測試，其他所有功能必須保持完好。",
+      "keywords": []
+    },
+    {
+      "start": "05:49",
+      "frame": "slide_14.jpg",
+      "title": "要素四：Iteration Policy（迭代規則）",
+      "note": "第四個要素是 iteration policy：每次嘗試之間要做什麼。範例要求 AI 記錄改了什麼、結果是什麼、下一個值得試的方向，讓長時間迭代有跡可循。",
+      "keywords": []
+    },
+    {
+      "start": "05:58",
+      "frame": "slide_15.jpg",
+      "title": "要素五：Error Handling（錯誤處理）",
+      "note": "第五個要素是 error handling：AI 在什麼狀況下要暫停並回報，而不是無腦地一直做下去。例如測試工具跑不起來、或所有方法都試過時，要回報試過什麼、卡在哪、需要什麼資訊。",
+      "keywords": []
+    },
+    {
+      "start": "06:03",
+      "frame": "slide_16.jpg",
+      "title": "完成的定義是提示詞的核心",
+      "note": "講者主張好的 goal 提示詞關鍵不在文筆，而在把「完成」定義得多明確：定義寫得好，AI 會一直跑到完成、成果是你要的樣子；定義寫得爛，AI 三分鐘就草草收工，浪費 token。",
+      "keywords": []
+    },
+    {
+      "start": "06:21",
+      "frame": "slide_17.jpg",
+      "title": "難題：白領工作很難量化驗證",
+      "note": "寫程式有測試通過、效能數字、Lint 乾淨等明確標準；但圖好不好看、文章好不好、產品好不好用、影片有沒有質感，沒有單元測試，也難定義過關或失敗。講者要回答這類工作如何套用同樣邏輯。",
+      "keywords": []
+    },
+    {
+      "start": "06:51",
+      "frame": "slide_18.jpg",
+      "title": "Anthropic 實驗：讓 Claude 設計網頁",
+      "note": "講者轉述 Anthropic 另一篇研究（講者主張，未查證）：用執行者加評審架構讓 Claude 設計網站。但 AI 自評設計常把很糟的成品說成「現代感、高質感」，所以評審不能只憑感覺。",
+      "keywords": []
+    },
+    {
+      "start": "07:20",
+      "frame": "slide_19.jpg",
+      "title": "維度一：設計品質",
+      "note": "Anthropic 把「漂亮」拆成四個明確維度。第一個是設計品質：顏色、字型、排版是否共同營造出整體的設計語言、獨特氛圍與識別感。",
+      "keywords": []
+    },
+    {
+      "start": "07:30",
+      "frame": "slide_20.jpg",
+      "title": "維度二：原創性",
+      "note": "第二個是原創性：是不是刻意的設計選擇，還是套用預設模板。Anthropic 團隊列出 AI 愛用的通用元件，例如白色卡片配紫色漸層，這類會被判定缺乏原創性。",
+      "keywords": []
+    },
+    {
+      "start": "07:45",
+      "frame": "slide_21.jpg",
+      "title": "維度三：技術執行",
+      "note": "第三個是技術執行：字型階層、間距、配色、對比等技術細節是否整齊一致；若各頁標題字型大小不一，這關就不通過。",
+      "keywords": []
+    },
+    {
+      "start": "07:50",
+      "frame": "slide_22.jpg",
+      "title": "維度四：可用性",
+      "note": "第四個是可用性：不談美感、純看實用，使用者看得懂介面嗎、找得到主要按鈕嗎、能直覺完成來這個網站的目的嗎。",
+      "keywords": []
+    },
+    {
+      "start": "08:05",
+      "frame": "slide_23.jpg",
+      "title": "加重弱項權重，評分標準＝你的 benchmark",
+      "note": "講者轉述：Anthropic 發現 Claude 在技術執行與可用性通常不錯，但設計品質與原創性常平庸，所以故意把評分權重偏向這兩項。評分標準可當作 benchmark，校正模型的預設傾向。",
+      "keywords": []
+    },
+    {
+      "start": "08:33",
+      "frame": "slide_24.jpg",
+      "title": "評審看真實畫面，不看程式碼",
+      "note": "把評分標準（rubric）交給評審後，評審用 Playwright 開瀏覽器、自己截圖再打分，看的是使用者真的會看到的畫面，而不是程式碼。",
+      "keywords": []
+    },
+    {
+      "start": "08:48",
+      "frame": "slide_25.jpg",
+      "title": "美術館網站：第九輪到第十輪的躍遷",
+      "note": "講者轉述案例（未查證）：第九輪產出深色主題、版面乾淨但中規中矩的網站；第十輪重新想像成空間體驗，用 CSS 透視做出 3D 展間，觀眾穿過虛擬的門走進展廳。進步不是線性的，第十輪可能比第十五輪更好。",
+      "keywords": []
+    },
+    {
+      "start": "09:44",
+      "frame": "slide_26.jpg",
+      "title": "共同指向：Evaluation",
+      "note": "講者歸納：/goal 的設計、Anthropic 的研究、Karpathy 的 Auto Research 都指向 Evaluation，而不是 Prompt Engineering 或 Context Engineering——你能否定義清楚什麼叫做得好。評分標準讓評估者能逼執行者持續迭代。",
+      "keywords": []
+    },
+    {
+      "start": "10:16",
+      "frame": "slide_27.jpg",
+      "title": "品味怎麼拆給 AI：六步驟 SOP 預告",
+      "note": "講者說自己摸索很久，收斂出一套六個步驟的 SOP，用來把工作領域裡的品味拆解成 AI 可遵循的準則。",
+      "keywords": []
+    },
+    {
+      "start": "10:28",
+      "frame": "slide_28.jpg",
+      "title": "步驟一：先讓 AI 做一輪你的工作",
+      "note": "先不要急著寫 rubric。例如要 AI 寫作，就丟 5 到 10 個主題讓它隨便跑，這是在測試你所用 AI 的基準能力（baseline）。",
+      "keywords": []
+    },
+    {
+      "start": "10:43",
+      "frame": "slide_29.jpg",
+      "title": "步驟二：親自檢視，寫下皺眉的理由",
+      "note": "逐一閱讀 baseline 產出，感受哪些讓你皺眉、以及具體原因（例如開頭沒有 hook、沒有具體例子），把理由寫成清單，就是 rubric 的雛形，像是 AI 踩的地雷。",
+      "keywords": []
+    },
+    {
+      "start": "11:13",
+      "frame": "slide_30.jpg",
+      "title": "步驟三：把皺眉理由分類成維度",
+      "note": "把清單拆成幾個維度，之後 AI 評審才能依維度打分。例：50 條理由可收斂成邏輯鬆散、沒有人味、開頭沒 hook 三類，這三個維度就是寫作 rubric 的骨架；講者說 Anthropic 也是同樣做法。",
+      "keywords": []
+    },
+    {
+      "start": "12:03",
+      "frame": "slide_31.jpg",
+      "title": "步驟四：每個維度寫成具體案例",
+      "note": "這是整套 rubric 的核心。不能寫「避免 AI 味」這種抽象描述，要寫「絕對不要用破折號」「絕對不要用『不是 A 而是 B』句型」。Anthropic 的 front-end skill 也點名 Inter、Roboto、Arial 字型與白底紫色漸層，每條都是評審一掃就抓得到的標準。",
+      "keywords": []
+    },
+    {
+      "start": "13:11",
+      "frame": "slide_32.jpg",
+      "title": "步驟五：用多樣化案例取代單一描述",
+      "note": "講者轉述 Anthropic 的教訓：rubric 寫「博物館等級質感」，結果所有產出都變成博物館風；後來改成列出 11 種美學風格（Brutalist、Art Deco 等）讓 Claude 視情況選擇。AI 容易 overfitting 範例，所以要寫多個方向。",
+      "keywords": []
+    },
+    {
+      "start": "13:53",
+      "frame": "slide_33.jpg",
+      "title": "步驟六：把 rubric 交給評審 agent 實跑",
+      "note": "把前五步的 rubric 放進 goal 提示詞，要求達標前持續迭代。剛開始要人工檢查每輪產出，若評審判斷與你不一致，多半是 rubric 還沒抓到真正的品味，回頭修改；跑三四輪後，你對「好」的定義會逐漸清晰。",
+      "keywords": []
+    },
+    {
+      "start": "14:45",
+      "frame": "slide_34.jpg",
+      "title": "結語：寫 rubric 是在逼你把品味寫成文字",
+      "note": "講者主張，寫 Evaluation rubric 表面上給 AI 用，實際是逼你把一直只存在腦袋裡的模糊品味具體寫成文字；一旦寫成文字，AI 就能幫你守住並大規模執行。",
+      "keywords": []
+    },
+    {
+      "start": "15:07",
+      "frame": "slide_35.jpg",
+      "title": "兩個提示詞（資訊欄領取）",
+      "note": "講者準備兩個提示詞：Rubric Builder 把過去 AI 的壞產出收斂成可打分的 rubric；Goal Prompt Builder 把模糊任務改寫成含完成標準、驗證方式、限制條件與卡住回報方式的 goal 提示詞。內容在影片資訊欄，影片本身未呈現全文。",
+      "keywords": []
+    },
+    {
+      "start": "15:31",
+      "frame": "slide_36.jpg",
+      "title": "小練習：用 30 分鐘跑完六步驟",
+      "note": "挑一件你最常做、又最需要個人品味的任務（貼文、客戶 email、行銷圖、產品文案、影片剪輯），花 30 分鐘走完六個步驟，看能否讓 AI 的產出更穩定、更貼近預期。",
+      "keywords": []
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
