@@ -59,8 +59,8 @@
     {
       "time": "05:17",
       "heard": "蘭宗法師",
-      "expected": "不確定（法師名）",
-      "status": "suspected"
+      "expected": "男眾法師",
+      "status": "confirmed"
     },
     {
       "time": "04:53",
@@ -77,14 +77,14 @@
     {
       "time": "07:50",
       "heard": "吐珠",
-      "expected": "突出（推測，「椎間盤突出」）",
-      "status": "suspected"
+      "expected": "椎間盤突出",
+      "status": "confirmed"
     },
     {
       "time": "11:44",
       "heard": "二葉莊子",
-      "expected": "不確定",
-      "status": "suspected"
+      "expected": "我不說，這樣我又造惡業種子",
+      "status": "confirmed"
     },
     {
       "time": "21:50",
