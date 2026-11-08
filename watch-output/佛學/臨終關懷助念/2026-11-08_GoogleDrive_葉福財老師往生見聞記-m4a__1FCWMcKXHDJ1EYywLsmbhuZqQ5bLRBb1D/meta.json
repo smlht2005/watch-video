@@ -295,6 +295,12 @@
       "heard": "學工老師",
       "expected": "雪公老師",
       "status": "confirmed"
+    },
+    {
+      "time": "08:37",
+      "heard": "三藏四合部",
+      "expected": "三藏十二部",
+      "status": "confirmed"
     }
   ],
   "keywords": [
