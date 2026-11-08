@@ -40,15 +40,15 @@
     },
     {
       "time": "00:09",
-      "heard": "謹大姐／最原長",
-      "expected": "不確定（人名／稱謂）",
-      "status": "suspected"
+      "heard": "謹大姐",
+      "expected": "簡大姐",
+      "status": "confirmed"
     },
     {
       "time": "00:23",
       "heard": "為福財做妻",
-      "expected": "為福財助念／做齋（推測）",
-      "status": "suspected"
+      "expected": "為福財做七",
+      "status": "confirmed"
     },
     {
       "time": "01:30",
@@ -65,8 +65,8 @@
     {
       "time": "04:53",
       "heard": "唱功師父",
-      "expected": "不確定（法師名）",
-      "status": "suspected"
+      "expected": "懺公師父",
+      "status": "confirmed"
     },
     {
       "time": "07:28",
@@ -103,6 +103,12 @@
       "heard": "王勇老師",
       "expected": "黃泳老師",
       "status": "confirmed"
+    },
+    {
+      "time": "00:11",
+      "heard": "最原長",
+      "expected": "不確定（可能為「最元老」，推測）",
+      "status": "suspected"
     }
   ],
   "keywords": [
