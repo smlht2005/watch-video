@@ -121,6 +121,12 @@
       "heard": "西方極任世界",
       "expected": "西方極樂世界",
       "status": "confirmed"
+    },
+    {
+      "time": "08:11",
+      "heard": "阿蜜佛",
+      "expected": "阿彌陀佛",
+      "status": "confirmed"
     }
   ],
   "keywords": [
