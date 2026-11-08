@@ -259,6 +259,24 @@
       "heard": "當初大家",
       "expected": "耽誤大家",
       "status": "suspected"
+    },
+    {
+      "time": "24:07",
+      "heard": "默學",
+      "expected": "末學",
+      "status": "confirmed"
+    },
+    {
+      "time": "23:40",
+      "heard": "脫背",
+      "expected": "駝背",
+      "status": "confirmed"
+    },
+    {
+      "time": "22:16",
+      "heard": "念想比昨天我看到的真的更重要",
+      "expected": "面相比昨天我看到的真的更莊嚴",
+      "status": "confirmed"
     }
   ],
   "keywords": [
