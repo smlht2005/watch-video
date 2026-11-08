@@ -114,13 +114,14 @@ def slide_blocks(meta, segs):
     slides = sorted(meta["slides"], key=lambda x: to_sec(x["start"]))
     carousel = meta.get("media_type") == "carousel"  # image post: page N sits at 00:0N, no real timeline
     end = "" if carousel else meta.get("duration", "").split(" ")[0]
+    seg_label = "投影片" if any(x.get("frame") for x in slides) else "段落"  # no frames (audio-only) -> not slides
     L = []
     for n, sl in enumerate(slides):
         nxt = slides[n + 1]["start"] if n + 1 < len(slides) else end
         lo, hi = to_sec(sl["start"]), (to_sec(nxt) if nxt else 10 ** 9)
         title = f"：{sl['title']}" if sl.get("title") else ""
         span = "" if carousel else f"（{sl['start']}–{nxt}）"
-        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '投影片 %d' % (n + 1)}{title}{span}", ""] + ([f"![{sl['start']}](frames/{sl['frame']})", ""] if sl.get("frame") else [])
+        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '%s %d' % (seg_label, n + 1)}{title}{span}", ""] + ([f"![{sl['start']}](frames/{sl['frame']})", ""] if sl.get("frame") else [])
         if sl.get("note"):
             L += [f"**重點：** {sl['note']}", ""]
         if sl.get("keywords"):
