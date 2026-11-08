@@ -53,8 +53,8 @@
     {
       "time": "01:30",
       "heard": "已經感染到08",
-      "expected": "已經轉移到肝（推測）",
-      "status": "suspected"
+      "expected": "已經感染到淋巴",
+      "status": "confirmed"
     },
     {
       "time": "04:45",
@@ -107,8 +107,14 @@
     {
       "time": "00:11",
       "heard": "最原長",
-      "expected": "不確定（可能為「最元老」，推測）",
-      "status": "suspected"
+      "expected": "最年長",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:15",
+      "heard": "美進師姐",
+      "expected": "美靜師姐",
+      "status": "confirmed"
     }
   ],
   "keywords": [
