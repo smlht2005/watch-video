@@ -127,6 +127,12 @@
       "heard": "阿蜜佛",
       "expected": "阿彌陀佛",
       "status": "confirmed"
+    },
+    {
+      "time": "05:17",
+      "heard": "佛號生辦",
+      "expected": "佛號聲拜",
+      "status": "confirmed"
     }
   ],
   "keywords": [
