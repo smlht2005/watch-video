@@ -133,6 +133,132 @@
       "heard": "佛號生辦",
       "expected": "佛號聲拜",
       "status": "confirmed"
+    },
+    {
+      "time": "04:29",
+      "heard": "義求脫離病苦",
+      "expected": "欲求脫離病苦",
+      "status": "suspected"
+    },
+    {
+      "time": "04:40",
+      "heard": "佛號聖不斷",
+      "expected": "佛號聲不斷",
+      "status": "suspected"
+    },
+    {
+      "time": "04:53",
+      "heard": "六字弘明",
+      "expected": "六字洪名",
+      "status": "suspected"
+    },
+    {
+      "time": "05:12",
+      "heard": "助念大",
+      "expected": "助念帶",
+      "status": "suspected"
+    },
+    {
+      "time": "06:28",
+      "heard": "不起現形",
+      "expected": "不起現行",
+      "status": "suspected"
+    },
+    {
+      "time": "07:16",
+      "heard": "念這個佛佛",
+      "expected": "念這個陀佛",
+      "status": "suspected"
+    },
+    {
+      "time": "07:43",
+      "heard": "五腫瘤",
+      "expected": "骨腫瘤",
+      "status": "suspected"
+    },
+    {
+      "time": "07:58",
+      "heard": "不能完全痛",
+      "expected": "不能完全止痛",
+      "status": "suspected"
+    },
+    {
+      "time": "07:59",
+      "heard": "有十歲前",
+      "expected": "有時候",
+      "status": "suspected"
+    },
+    {
+      "time": "11:40",
+      "heard": "慘不得得",
+      "expected": "慘不忍睹",
+      "status": "suspected"
+    },
+    {
+      "time": "11:51",
+      "heard": "受以得度",
+      "expected": "得以得度",
+      "status": "suspected"
+    },
+    {
+      "time": "12:21",
+      "heard": "解食",
+      "expected": "減食",
+      "status": "suspected"
+    },
+    {
+      "time": "17:22",
+      "heard": "慈吟燦竹、尊師大師的淨土花願文",
+      "expected": "慈雲懺主、遵式大師的淨土發願文",
+      "status": "suspected"
+    },
+    {
+      "time": "19:11",
+      "heard": "亂案情組",
+      "expected": "Line群組",
+      "status": "suspected"
+    },
+    {
+      "time": "20:30",
+      "heard": "兩會警察",
+      "expected": "兩位警察",
+      "status": "suspected"
+    },
+    {
+      "time": "22:47",
+      "heard": "入念前就瞻仰一樓",
+      "expected": "入殮前就瞻仰遺容",
+      "status": "suspected"
+    },
+    {
+      "time": "24:03",
+      "heard": "佛奧功德",
+      "expected": "佛號功德",
+      "status": "suspected"
+    },
+    {
+      "time": "04:12",
+      "heard": "莫負己凌",
+      "expected": "莫負己靈",
+      "status": "suspected"
+    },
+    {
+      "time": "24:11",
+      "heard": "這份喜宴",
+      "expected": "這份喜悅",
+      "status": "suspected"
+    },
+    {
+      "time": "24:24",
+      "heard": "分享喜宴",
+      "expected": "分享喜悅",
+      "status": "suspected"
+    },
+    {
+      "time": "24:44",
+      "heard": "當初大家",
+      "expected": "耽誤大家",
+      "status": "suspected"
     }
   ],
   "keywords": [
