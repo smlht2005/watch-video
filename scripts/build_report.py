@@ -120,7 +120,7 @@ def slide_blocks(meta, segs):
         lo, hi = to_sec(sl["start"]), (to_sec(nxt) if nxt else 10 ** 9)
         title = f"：{sl['title']}" if sl.get("title") else ""
         span = "" if carousel else f"（{sl['start']}–{nxt}）"
-        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '投影片 %d' % (n + 1)}{title}{span}", "", f"![{sl['start']}](frames/{sl['frame']})", ""]
+        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '投影片 %d' % (n + 1)}{title}{span}", ""] + ([f"![{sl['start']}](frames/{sl['frame']})", ""] if sl.get("frame") else [])
         if sl.get("note"):
             L += [f"**重點：** {sl['note']}", ""]
         if sl.get("keywords"):
@@ -503,7 +503,7 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9, diagrams=fr
             doc.add_heading(m.group(2), level=len(m.group(1)))
         elif (im := re.match(r"^!\[[^\]]*\]\(([^)]+)\)$", line.strip())):
             img = dest / im.group(1)
-            if img.exists():
+            if img.is_file():
                 from PIL import Image
                 import io
                 if im.group(1) in diagrams:

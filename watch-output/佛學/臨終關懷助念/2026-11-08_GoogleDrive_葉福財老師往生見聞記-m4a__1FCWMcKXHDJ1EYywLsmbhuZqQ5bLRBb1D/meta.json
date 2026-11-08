@@ -1,0 +1,222 @@
+{
+  "url": "https://drive.google.com/file/d/1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/view?usp=drivesdk",
+  "platform": "GoogleDrive",
+  "video_id": "1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D",
+  "title": "葉福財老師往生見聞記（師母分享）",
+  "title_raw": "葉福財老師往生見聞記.m4a",
+  "title_override": "葉福財老師往生見聞記",
+  "category": "佛學/臨終關懷助念",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "雪公、李炳南、台中蓮社、淨土安心法門、梵行、十迴向、觀無量壽佛經、韋提希、阿闍世王、目連尊者、善導大師、觀經四帖疏、知禮大師、妙宗鈔、印光大師、至誠心、迴向發願心、欣厭、阿賴耶識、散善義、敦倫盡分、蕅益大師、斌宗法師、葛繁、依正二報、輕慢厭捨、輕賤厭捨、雜毒善、事同蛇蠍"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "pure-land"
+  ],
+  "glossary_applied": {
+    "雪宮老師": 1
+  },
+  "source_hashtags": [],
+  "uploader": "",
+  "duration": "24:59 (1498.7s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-08",
+  "last_updated": "2026-11-08",
+  "known_asr_errors": [
+    {
+      "time": "00:29",
+      "heard": "報仇、仇恨、仇恨",
+      "expected": "感恩（推測，語意為致謝）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:09",
+      "heard": "謹大姐／最原長",
+      "expected": "不確定（人名／稱謂）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:23",
+      "heard": "為福財做妻",
+      "expected": "為福財助念／做齋（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:30",
+      "heard": "已經感染到08",
+      "expected": "已經轉移到肝（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "04:45",
+      "heard": "蘭宗法師",
+      "expected": "不確定（法師名）",
+      "status": "suspected"
+    },
+    {
+      "time": "04:53",
+      "heard": "唱功師父",
+      "expected": "不確定（法師名）",
+      "status": "suspected"
+    },
+    {
+      "time": "07:28",
+      "heard": "譚希拉法師",
+      "expected": "倓虛法師（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "07:50",
+      "heard": "吐珠",
+      "expected": "不確定（疼痛比較對象）",
+      "status": "suspected"
+    },
+    {
+      "time": "11:44",
+      "heard": "二葉莊子",
+      "expected": "不確定",
+      "status": "suspected"
+    },
+    {
+      "time": "22:11",
+      "heard": "至海、靖儒、王勇老師",
+      "expected": "人名／團體名不確定",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "臨終關懷",
+    "助念",
+    "往生見聞",
+    "念佛",
+    "居家安寧",
+    "陀羅尼經被",
+    "懺悔",
+    "癌末",
+    "面帶微笑"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "",
+      "title": "開場：家屬致謝",
+      "note": "師母向前來助念的蓮友致謝，並預告要分享葉老師從發病到往生的歷程。",
+      "keywords": [
+        "致謝"
+      ]
+    },
+    {
+      "start": "00:31",
+      "frame": "",
+      "title": "病程：2020 至 2026",
+      "note": "2020 年腦脊膜瘤開刀與伽瑪刀，2022 年大出血檢出直腸癌，2024 年骨盆腔腫瘤壓迫坐骨神經，基因檢測確認轉移性骨癌末期。歷經開刀、放療、化療、標靶，肺肝腎仍相對正常。",
+      "keywords": [
+        "癌末",
+        "治療"
+      ]
+    },
+    {
+      "start": "02:51",
+      "frame": "",
+      "title": "護佑與座右銘",
+      "note": "葉老師認為一切是佛菩薩護佑，人生最後只有一句佛號有用。他勉師母發願要說「我一定往生」，並寫下三段座右銘：爭取有限念佛時間、一切所作皆為往生、如法修行如願成就。",
+      "keywords": [
+        "發願",
+        "座右銘"
+      ]
+    },
+    {
+      "start": "04:35",
+      "frame": "",
+      "title": "日常修持與真懺悔",
+      "note": "家中佛號不斷，備四種錄音檔輪替；懺悔的要義是不再造，念佛能把惡業種子如石壓草般壓下；並教以腹部呼吸念佛：呼念「阿彌」、吸念「陀佛」，沒力時只念「阿」字。",
+      "keywords": [
+        "懺悔",
+        "腹部呼吸"
+      ]
+    },
+    {
+      "start": "07:41",
+      "frame": "",
+      "title": "癌末劇痛與居家安寧",
+      "note": "六月起骨腫瘤疼痛加劇，葉老師拒絕嗎啡，以免嗜睡昏沉妨礙念佛，選擇居家安寧。",
+      "keywords": [
+        "疼痛",
+        "安寧"
+      ]
+    },
+    {
+      "start": "09:13",
+      "frame": "",
+      "title": "留影與果報自省",
+      "note": "母親節前夕全家留影；九月暴痛時，他回想幼年捕殺青蛙，視為果報現前，囑咐親人不要殺生。",
+      "keywords": [
+        "果報",
+        "殺生"
+      ]
+    },
+    {
+      "start": "12:08",
+      "frame": "",
+      "title": "臨終前的變化",
+      "note": "八月起減食，九月跌倒後左腿無力，子女先備妥外籍看護與電動氣墊床；往生前三天僅進流質，意識清楚、持續念佛。",
+      "keywords": [
+        "減食",
+        "照護"
+      ]
+    },
+    {
+      "start": "14:18",
+      "frame": "",
+      "title": "往生當天的開導與迴向",
+      "note": "往生當日安排住院安寧，葉老師不願，師母直言「今晚就走」。出現臨終喉音後蓋陀羅尼經被，向他說四段話：放下身體、弘法者當往生為表率、一生功德圓滿，並誦迴向文三遍。",
+      "keywords": [
+        "臨終喉音",
+        "迴向"
+      ]
+    },
+    {
+      "start": "18:17",
+      "frame": "",
+      "title": "往生與報案",
+      "note": "晚間九點多發現無鼻息與心跳；在家自然往生須報案，消防員電話指導按壓確認，救護人員與警察到場做筆錄。",
+      "keywords": [
+        "報案",
+        "流程"
+      ]
+    },
+    {
+      "start": "20:42",
+      "frame": "",
+      "title": "助念與面帶微笑",
+      "note": "親友隨蓮社助念帶助念至十二點多，掀開經被見面帶微笑；隔日蓮友再助念、王老師開示迴向。",
+      "keywords": [
+        "助念",
+        "微笑"
+      ]
+    },
+    {
+      "start": "22:40",
+      "frame": "",
+      "title": "助念功德與結語",
+      "note": "入殮前遺體柔軟，原本腫硬的左腿與腳掌消腫，家人親眼見證；師母以助念與佛號功德不可思議作結並贈小禮物。",
+      "keywords": [
+        "柔軟",
+        "功德"
+      ]
+    }
+  ],
+  "video_type": "lecture",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
