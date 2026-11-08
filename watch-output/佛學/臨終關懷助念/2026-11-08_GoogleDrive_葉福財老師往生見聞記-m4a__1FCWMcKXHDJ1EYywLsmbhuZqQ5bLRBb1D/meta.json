@@ -87,10 +87,22 @@
       "status": "suspected"
     },
     {
-      "time": "22:11",
-      "heard": "至海、靖儒、王勇老師",
-      "expected": "人名／團體名不確定",
-      "status": "suspected"
+      "time": "21:50",
+      "heard": "至海",
+      "expected": "智海",
+      "status": "confirmed"
+    },
+    {
+      "time": "21:50",
+      "heard": "靖儒",
+      "expected": "淨廬",
+      "status": "confirmed"
+    },
+    {
+      "time": "21:50",
+      "heard": "王勇老師",
+      "expected": "黃泳老師",
+      "status": "confirmed"
     }
   ],
   "keywords": [
@@ -199,7 +211,7 @@
       "start": "20:42",
       "frame": "",
       "title": "助念與面帶微笑",
-      "note": "親友隨蓮社助念帶助念至十二點多，掀開經被見面帶微笑；隔日蓮友再助念、王老師開示迴向。",
+      "note": "親友隨蓮社助念帶助念至十二點多，掀開經被見面帶微笑；隔日蓮友再助念、黃泳老師開示迴向。",
       "keywords": [
         "助念",
         "微笑"
