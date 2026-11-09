@@ -1,0 +1,25 @@
+- CodeGraph：讓 AI 查程式碼地圖
+  - 開場
+    - 43 趟→2 趟（講者主張）
+  - 問題
+    - 搜尋、開檔、再搜尋
+    - 燒 token、只能乾等
+  - 原理
+    - 誰呼叫誰畫成地圖
+    - AI 直接查地圖
+    - 7.5 萬星（講者主張）
+  - 用法
+    - codegraph install
+    - codegraph init
+    - 3251 檔 33 秒（講者主張）
+  - 官方實測
+    - VS Code 0 次讀檔（講者主張）
+    - Excalidraw $2.43→$0.54（講者主張）
+    - Tokio 快 2.6 倍（講者主張）
+  - 7 專案平均
+    - Token −62%（講者主張）
+    - 花費 −44%（講者主張）
+  - 本機與相容性
+    - 100% 本機、免 API key
+    - Claude Code／Codex
+    - Cursor／Gemini
