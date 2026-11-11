@@ -1,0 +1,140 @@
+{
+  "url": "https://www.facebook.com/share/r/1K5oJdZBoZ/",
+  "platform": "Facebook",
+  "video_id": "1K5oJdZBoZ",
+  "title": "每天十分鐘寫下五件事讓自己進步",
+  "title_raw": "1.5K views · 458 reactions | 留言「動詞小抄」 我把完整教學傳給你 | 朱騏",
+  "title_override": "每天十分鐘寫下五件事讓自己進步",
+  "category": "身心生活",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "朱騏",
+  "duration": "01:30 (89.8s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-11",
+  "last_updated": "2026-11-11",
+  "known_asr_errors": [],
+  "keywords": [
+    "自我成長",
+    "每日回顧",
+    "10 分鐘",
+    "手寫記錄",
+    "感恩",
+    "小成就",
+    "錯誤學習",
+    "經驗變能力",
+    "零碎想法",
+    "動詞小抄"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "10 分鐘回顧"
+    ],
+    "00:11": [
+      "感恩"
+    ],
+    "00:21": [
+      "小成就"
+    ],
+    "00:32": [
+      "犯錯",
+      "經驗值"
+    ],
+    "00:48": [
+      "如何做到",
+      "技能"
+    ],
+    "01:02": [
+      "零碎想法",
+      "創作"
+    ],
+    "01:19": [
+      "動詞小抄"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：每天 10 分鐘，把經驗變成能力",
+      "note": "講者建議別再每天滑手機，改花十分鐘寫下今天學到了什麼，就能每天進步一點。畫面資訊圖：把瑣碎的一天透過「10 分鐘回顧」的漏斗，收進罐子，變成具體進步的累積。",
+      "keywords": [
+        "10 分鐘回顧"
+      ]
+    },
+    {
+      "start": "00:11",
+      "frame": "slide_02.jpg",
+      "title": "第一項：今天感恩的事",
+      "note": "寫下感恩的事，大腦會開始注意到生活中的美好，原本覺得理所當然的事其實是讓自己變好的養分；講者說這個習慣能讓心情從「今天好累」變成「今天有收穫」。",
+      "keywords": [
+        "感恩"
+      ]
+    },
+    {
+      "start": "00:21",
+      "frame": "slide_03.jpg",
+      "title": "第二項：今天達成的小成就",
+      "note": "我們常只記得還有什麼沒做完，卻忘了已完成的事。把小成就寫下來，會發現今天不是白忙一場，小小的完成累積起來就是大大的進步。",
+      "keywords": [
+        "小成就"
+      ]
+    },
+    {
+      "start": "00:32",
+      "frame": "slide_04.jpg",
+      "title": "第三項：今天的犯錯與經驗學習",
+      "note": "多數人犯錯後只懊惱一下就忘，下次又掉進同一個坑。把錯誤連同「我學到了什麼」寫下來，錯誤就不再只是浪費時間，而會變成經驗值。",
+      "keywords": [
+        "犯錯",
+        "經驗值"
+      ]
+    },
+    {
+      "start": "00:48",
+      "frame": "slide_05.jpg",
+      "title": "第四項：今天如何做到某一件事",
+      "note": "做對一件事卻不知道為什麼成功，成功就只是運氣。把「怎麼做到的」寫下來，就變成可重複使用的技能，下次遇到類似狀況就知道怎麼辦——這是把經驗變成能力的關鍵。",
+      "keywords": [
+        "如何做到",
+        "技能"
+      ]
+    },
+    {
+      "start": "01:02",
+      "frame": "slide_06.jpg",
+      "title": "第五項：零碎想法",
+      "note": "好點子常在走路、洗澡或和朋友聊天時冒出來，不寫下來很快就忘。養成記錄習慣後，零碎想法會慢慢連在一起，變成創作的內容。",
+      "keywords": [
+        "零碎想法",
+        "創作"
+      ]
+    },
+    {
+      "start": "01:19",
+      "frame": "slide_07.jpg",
+      "title": "結語：動詞小抄",
+      "note": "講者另外整理了「該用什麼動詞記錄」的小抄（畫面為各類別的動詞清單，原文見補充資料 S1），留言「動詞小抄」即可索取完整文章（留言索取需求，未驗證是否有效）。",
+      "keywords": [
+        "動詞小抄"
+      ]
+    }
+  ],
+  "video_type": "how-to",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
