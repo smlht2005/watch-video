@@ -58,10 +58,11 @@
 | 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
 | 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
 
-## 身心生活（10）
+## 身心生活（11）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-11 | Facebook | 每天十分鐘寫下五件事讓自己進步 | 01:30 (89.8s) | whisper (groq) | [開啟](./身心生活/2026-11-11_Facebook_每天十分鐘寫下五件事讓自己進步__1K5oJdZBoZ/) |
 | 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
 | 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/2026-10-25_Facebook_越活越順的人-每天都在用的8個正向暗示__1172561908430922/) |
 | 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ/) |
