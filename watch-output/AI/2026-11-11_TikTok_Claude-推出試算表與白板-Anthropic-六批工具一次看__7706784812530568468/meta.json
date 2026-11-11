@@ -1,0 +1,225 @@
+{
+  "url": "https://vt.tiktok.com/ZSpm6wBFV/",
+  "platform": "TikTok",
+  "video_id": "7706784812530568468",
+  "title": "Claude 推出試算表與白板：Anthropic 六批工具一次看",
+  "title_raw": "Anthropic 在 11 月 10 日推出 Claude Sheets 和 Claude Whiteboards，也就是試算表和白板，...",
+  "title_override": "Claude 推出試算表與白板：Anthropic 六批工具一次看",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "fox8899",
+  "duration": "02:13 (133.2s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-11",
+  "last_updated": "2026-11-11",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "CLAUDE／Cloud／CLAU",
+      "expected": "Claude（畫面字幕；「在 Excel 裡用 Cloud」「在 Cloud 裡開工」皆指 Claude）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:10",
+      "heard": "Entropic／Entropic55天",
+      "expected": "Anthropic／Anthropic 55 天（畫面「Anthropic 官方公告」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:07",
+      "heard": "Nexx上",
+      "expected": "X 上（畫面「X 上的說法」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:08",
+      "heard": "CLAUDATA,從測試版",
+      "expected": "Claude Data，從測試版（畫面「第二批的儀表板改名叫 Claude Data」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:11",
+      "heard": "CLAUMeetings,讓CLAU加入",
+      "expected": "Claude Meetings，讓 Claude 加入（畫面「Claude Meetings」預告）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:32",
+      "heard": "Mirror",
+      "expected": "Miro（畫面「白板 → Miro、Lucid」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:07",
+      "heard": "（原稿 01:01 一行含兩句）",
+      "expected": "把「同一天，第二批的儀表板改名…」拆成獨立一行；01:07 依畫面字幕「同一天」出現的時間（字幕與講話同步，時間仍屬估計）",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "儀表版／代辦事項",
+      "expected": "儀表板／待辦事項（畫面字幕）",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "claudecode",
+    "Claude Sheets",
+    "Claude Whiteboards",
+    "Anthropic",
+    "試算表",
+    "白板",
+    "Excel",
+    "微軟股價",
+    "Claude Data",
+    "Claude Meetings"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "微軟股價",
+      "RIP Excel"
+    ],
+    "00:25": [
+      "檔案",
+      "簡報",
+      "9/16"
+    ],
+    "00:37": [
+      "儀表板",
+      "動畫",
+      "10/8"
+    ],
+    "00:48": [
+      "試算表",
+      "白板",
+      "11/10"
+    ],
+    "01:07": [
+      "Claude Data",
+      "Claude Meetings"
+    ],
+    "01:16": [
+      "測試版",
+      "付費方案",
+      "匯出 Excel"
+    ],
+    "01:32": [
+      "Miro",
+      "Airtable",
+      "Notion",
+      "Adobe"
+    ],
+    "01:47": [
+      "不急著取代 Excel",
+      "熱門留言"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：Claude 宣布試算表與白板，微軟股價下跌",
+      "note": "講者說 Claude 宣布推出試算表和白板的那個中午，微軟股價半小時內一度跌約 3%，X 上有人喊「Excel 完了」；但 Anthropic 公告自己寫明試算表目前只有簡單功能，微軟在官方貼文前幾分鐘就開始跌、收盤跌 2.2%，沒有人能證明下跌是因為這個試算表（畫面圖表為講者／影片自製，數字未查證）。",
+      "keywords": [
+        "微軟股價",
+        "RIP Excel"
+      ]
+    },
+    {
+      "start": "00:25",
+      "frame": "slide_02.jpg",
+      "title": "第一批（9/16）：檔案與簡報",
+      "note": "試算表和白板是 Anthropic 55 天裡推出的第三批工具。第一批在 9 月 16 日，是檔案和簡報：把需求講給 Claude 聽，它直接交出一份檔案或一套投影片，你再接手修改（講者主張，未查證）。",
+      "keywords": [
+        "檔案",
+        "簡報",
+        "9/16"
+      ]
+    },
+    {
+      "start": "00:37",
+      "frame": "slide_03.jpg",
+      "title": "第二批（10/8）：儀表板與動畫",
+      "note": "第二批在 10 月 8 日，是儀表板和動畫。儀表板接上公司資料，用白話問一個問題，它就把圖表做好，資料更新圖表也跟著更新；動畫則把一份報告變成 30 秒的解說短片（講者主張，未查證）。",
+      "keywords": [
+        "儀表板",
+        "動畫",
+        "10/8"
+      ]
+    },
+    {
+      "start": "00:48",
+      "frame": "slide_04.jpg",
+      "title": "第三批（11/10）：試算表與白板",
+      "note": "第三批就是 11 月 10 日的試算表和白板。說要一份招募預算，它交出一張有分頁、有公式、有下拉選單的表，每改一格都會把那一格框出來；白板給開會用，大家貼上想法，Claude 幫忙分類並替每個人列出待辦事項（講者主張，未查證）。",
+      "keywords": [
+        "試算表",
+        "白板",
+        "11/10"
+      ]
+    },
+    {
+      "start": "01:07",
+      "frame": "slide_05.jpg",
+      "title": "同日更新：Claude Data 正式版、Claude Meetings 預告",
+      "note": "同一天，第二批的儀表板改名叫 Claude Data，從測試版變成正式版；另有一項只是預告的 Claude Meetings，讓 Claude 加入線上會議做筆記（講者主張，未查證）。",
+      "keywords": [
+        "Claude Data",
+        "Claude Meetings"
+      ]
+    },
+    {
+      "start": "01:16",
+      "frame": "slide_06.jpg",
+      "title": "六樣數下來：但都還是測試版、付費才有",
+      "note": "檔案、簡報、儀表板、動畫、試算表、白板六樣數下來，聽起來像要把 Office 整套換掉。但試算表和白板都還是測試版，付費方案才用得到；公告也寫需要完整功能時可匯出成 Excel 檔，或直接在 Excel 裡用 Claude（畫面為公告原文，見補充資料 S1）。",
+      "keywords": [
+        "測試版",
+        "付費方案",
+        "匯出 Excel"
+      ]
+    },
+    {
+      "start": "01:32",
+      "frame": "slide_07.jpg",
+      "title": "不把別的軟體關在門外",
+      "note": "白板做完可以帶去 Miro 這類白板軟體，試算表可以帶去 Airtable 接著做；同一天另一項更新，Notion、Adobe 等工具可以整個開在 Claude 的對話旁邊，自己改或叫 Claude 幫你改（畫面標示支援的工具清單，見補充資料 S2）。",
+      "keywords": [
+        "Miro",
+        "Airtable",
+        "Notion",
+        "Adobe"
+      ]
+    },
+    {
+      "start": "01:47",
+      "frame": "slide_08.jpg",
+      "title": "講者觀點：不急著取代 Excel",
+      "note": "講者的讀法是 Anthropic 沒有急著換掉 Excel，它要的是你先在 Claude 裡開工、做完再帶去別的軟體。官方貼文熱門留言說「這些年拒絕學 Excel、Word、PowerPoint 終於要有回報了」，講者認為 Excel 大概還是得學；最後問觀眾：檔案、簡報、試算表只能先教 AI 一樣，會先教哪一樣？",
+      "keywords": [
+        "不急著取代 Excel",
+        "熱門留言"
+      ]
+    }
+  ],
+  "video_type": "news",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
