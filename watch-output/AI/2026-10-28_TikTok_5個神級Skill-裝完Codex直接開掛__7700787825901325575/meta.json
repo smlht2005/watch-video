@@ -1,0 +1,115 @@
+{
+  "url": "https://vt.tiktok.com/ZSgpbTTbB/",
+  "platform": "TikTok",
+  "video_id": "7700787825901325575",
+  "title": "5個神級Skill，裝完Codex直接開掛！",
+  "title_raw": "5个神级Skill，装完Codex直接开挂！ #foryoupage #foryou #explore #mustwatch #viral...",
+  "title_override": "",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "foryoupage",
+    "foryou",
+    "explore",
+    "mustwatch",
+    "viral..."
+  ],
+  "uploader": "lestaridewi530",
+  "duration": "02:01 (121.1s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-10-28",
+  "last_updated": "2026-10-28",
+  "known_asr_errors": [],
+  "keywords": [
+    "ai-skill",
+    "Codex",
+    "Caveman",
+    "Taste Skill",
+    "Playwright",
+    "GSAP",
+    "Hypit",
+    "省 token",
+    "網頁動效",
+    "爆款影片拆解"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：5 個 Codex Skill",
+      "note": "講者開場說明：安裝這 5 個 Skill 後，Codex 能力大幅提升。後面逐一介紹，每個都附 GitHub 專案頁。",
+      "keywords": [
+        "Codex",
+        "Skill"
+      ]
+    },
+    {
+      "start": "00:02",
+      "frame": "slide_02.jpg",
+      "title": "1. Caveman：省 token",
+      "note": "同一問題，不裝約 63 個 token，裝了只要 20 個（講者主張，未查證）。它砍掉 AI 回覆中的客套、重複解釋與冗長總結，但完整保留程式碼、命令與修復方案。有三檔強度（含 Ultra、Mega），最低可壓到 13 個 token（講者主張）；講者稱 GitHub 星數已超 11 萬（講者主張）。",
+      "keywords": [
+        "Caveman",
+        "token"
+      ]
+    },
+    {
+      "start": "00:26",
+      "frame": "slide_03.jpg",
+      "title": "2. Taste Skill：去 AI 味的網站設計",
+      "note": "用 Codex 做網站最怕一眼 AI 味，這個設計類 Skill 專門解決。拿到需求後可先讓它定視覺方向：它從 247 個精選網站歸納出 20 種設計路線，每套各有視覺主張（講者主張）。講者稱 GitHub 星數逼近 10 萬（講者主張）。00:42–00:52 插入一段與主題無關的外部廣告畫面與英文語音，非影片內容。",
+      "keywords": [
+        "Taste Skill",
+        "設計"
+      ]
+    },
+    {
+      "start": "00:48",
+      "frame": "slide_04.jpg",
+      "title": "3. Playwright：精確操作瀏覽器",
+      "note": "講者稱 Playwright 被 OpenAI 收進官方 Skill 庫。與 Computer Use 同樣是操作瀏覽器，但 Computer Use 是看螢幕靠眼睛找，Playwright 直接鑽進頁面結構、讀資料並按程式碼驅動，每步確定且可重現。適合競品調研：檢索、逐頁開商品詳情、整理成表格並保留連結與截圖。",
+      "keywords": [
+        "Playwright",
+        "Computer Use"
+      ]
+    },
+    {
+      "start": "01:18",
+      "frame": "slide_05.jpg",
+      "title": "4. GSAP Skill：網頁動效",
+      "note": "講者稱這是蘋果發表會級別的網頁動效 Skill，找專業工作室報價 2 萬起（講者主張）。只要描述想要的感覺，一句話就能把普通網頁升級成有節奏、有敘事感的作品；講者稱完全免費、支援商用（講者主張，畫面上的 GSAP 頁面也有標示免費）。",
+      "keywords": [
+        "GSAP",
+        "動效"
+      ]
+    },
+    {
+      "start": "01:37",
+      "frame": "slide_06.jpg",
+      "title": "5. Hypit：拆解爆款影片＋結語",
+      "note": "專門拆解爆款影片的 Skill，講者稱上線不到三個月就 2.4 萬星（講者主張）。給它一條爆款影片，就能拆解腳本、字幕、素材、動效與節奏，產出可批次交付的工作流；產品、人物、語言可替換並保留節奏，也能衍生不同開場與多個版本。結語：想批次生產爆款影片的人必裝。",
+      "keywords": [
+        "Hypit",
+        "影片工作流"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}

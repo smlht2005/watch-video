@@ -29,7 +29,7 @@
 - 歸檔完成並 push 到分支後，用 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 產生連結給使用者確認；使用者確認前不開 PR、不 merge。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
-- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／佛學／商業理財／投資理財／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
+- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／AI/提示詞／佛學／商業理財／投資理財／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
 
 ## 已知限制（細節見 README「限制與風險」）
 
@@ -47,6 +47,10 @@
 ## Agent skills
 
 （`to-spec`／`to-tickets`／`implement` 等 mattpocock 技能的設定，由 `/setup-matt-pocock-skills` 產生；已設定好，新 session 不必重跑。）
+
+### 第三方技能：ppt-master
+
+`.claude/skills/ppt-master/`：自 https://github.com/hugohe3/ppt-master（MIT，v6.8.0，commit `82468e8`）原樣複製的 `skills/ppt-master`，產生可編輯 PPTX 簡報；新 session 用 `/ppt-master` 或說「做簡報」即可觸發。使用前在 session 內先 `pip install -r .claude/skills/ppt-master/requirements.txt`。不要修改此資料夾（技能內建 `attribution_guard.py` 完整性檢查）；升級時重新複製。注意使用者偏好簡報產生為 Google Slides，此技能產出 .pptx，使用前先確認。
 
 ### Issue tracker
 

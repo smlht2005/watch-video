@@ -1,0 +1,123 @@
+{
+  "url": "https://vt.tiktok.com/ZSgogGEH4/",
+  "platform": "TikTok",
+  "video_id": "7700148582044781830",
+  "title": "開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！",
+  "title_raw": "開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援局部編輯，音頻說錯的部分支援單獨更改！#聲音克隆...",
+  "title_override": "開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援局部編輯，音訊說錯的部分支援單獨更改！",
+  "category": "AI",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "聲音克隆..."
+  ],
+  "uploader": "gmivwyhc53177",
+  "duration": "01:46 (105.9s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-02",
+  "last_updated": "2026-11-02",
+  "known_asr_errors": [
+    {
+      "time": "00:14",
+      "heard": "VITO Vivoz",
+      "expected": "ViiTorVoice（畫面 README 標題寫 ViiTorVoice-NAR；已改）"
+    },
+    {
+      "time": "00:52",
+      "heard": "區域性編輯",
+      "expected": "局部編輯（畫面字幕與標題原文為「局部編輯」，簡轉繁詞彙誤轉；已改）"
+    },
+    {
+      "time": "00:29",
+      "heard": "遊哥／魚爵／Yugo",
+      "expected": "推測為「尤哥」（畫面浮水印「尤哥說AI電商」），未改逐字稿",
+      "status": "suspected"
+    },
+    {
+      "time": "00:41",
+      "heard": "오늘은全部半額寫",
+      "expected": "推測為韓語「오늘은 전부 반값입니다」，ASR 混入漢字，未改"
+    }
+  ],
+  "keywords": [
+    "聲音克隆",
+    "ViiTorVoice",
+    "TTS",
+    "開源",
+    "Apache 2.0",
+    "局部編輯",
+    "情緒標籤",
+    "多語言",
+    "CPU 推論",
+    "Windows 版"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0004.jpg",
+      "title": "開場：10 秒錄音克隆聲音的開源專案",
+      "note": "介紹 GitHub 開源專案 ViiTorVoice，講者稱 10 秒錄音、不需文字稿就能克隆聲音，說錯字改文字即可。授權為 Apache 2.0、可免費商用（講者主張，未查證）。",
+      "keywords": [
+        "ViiTorVoice",
+        "Apache 2.0",
+        "10 秒錄音"
+      ]
+    },
+    {
+      "start": "00:27",
+      "frame": "frame_0010.jpg",
+      "title": "多語言示範與情緒演出",
+      "note": "用克隆聲音示範中、英、日、韓四語自我介紹與「今天全部半價」，並能演出開心、生氣等情緒；後段用電商情境示範（庫存表改錯、訂單翻倍）。",
+      "keywords": [
+        "多語言",
+        "情緒"
+      ]
+    },
+    {
+      "start": "00:52",
+      "frame": "frame_0012.jpg",
+      "title": "局部編輯：只重做改動的部分",
+      "note": "口播唸錯價格時不必整段重錄，只改文字，系統只重做約 0.4 秒（講者主張，未查證），其餘部分原樣保留；示範把「今天直播間只要 490」改成「390」，改完仍是同一個聲音。",
+      "keywords": [
+        "局部編輯"
+      ]
+    },
+    {
+      "start": "01:15",
+      "frame": "frame_0014.jpg",
+      "title": "句中笑聲與嘆氣標籤",
+      "note": "畫面 README 顯示 <|nv-Laughter|> 笑、<|nv-Sigh|> 嘆氣等標籤，可讓聲音在句子中間笑出來或嘆氣；README 另列克隆、局部編輯、情感與副語言控制、低延遲推理（first block 約 60ms，畫面文字，未查證）。",
+      "keywords": [
+        "情緒標籤",
+        "nv-Laughter"
+      ]
+    },
+    {
+      "start": "01:28",
+      "frame": "frame_0017.jpg",
+      "title": "結語：Windows 版與 CPU 可跑",
+      "note": "講者稱官方只支援英偉達（NVIDIA）顯示卡，他已改好 Windows 版，CPU 也能跑，並打包成壓縮包、留言發送（講者主張，未查證）；片尾請觀眾關注。",
+      "keywords": [
+        "Windows 版",
+        "CPU"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "off"
+}

@@ -1,9 +1,12 @@
 # watch-output 索引
 
-## AI（13）
+## AI（16）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-02 | TikTok | 開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！ | 01:46 (105.9s) | whisper (groq) | [開啟](./AI/2026-11-02_TikTok_開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的__7700148582044781830/) |
+| 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610/) |
+| 2026-10-28 | TikTok | 5個神級Skill，裝完Codex直接開掛！ | 02:01 (121.1s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575/) |
 | 2026-10-27 | Threads | AI 時代為什麼 Obsidian 反而更重要？ | 10 頁（完整） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy/) |
 | 2026-10-26 | TikTok | 分享一段Claude的技術主管的ai指令，讓AI進行深度思考 | 02:44 (164.4s) | whisper (groq) | [開啟](./AI/2026-10-26_TikTok_分享一段Claude的技術主管的ai指令-讓AI進行深度思考__7700971611037404430/) |
 | 2026-10-21 | Instagram | 新模型來了，你的提示詞有一半該刪了：7 個改法 | 02:52 (171.6s) | whisper (groq) | [開啟](./AI/2026-10-21_Instagram_新模型來了-你的提示詞有一半該刪了-7-個改法__DejZRx-gtMG/) |
@@ -18,14 +21,21 @@
 | 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
 | 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
 
-## AI／claude-code（4）
+## AI／claude-code（5）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-09 | Instagram | CodeGraph 讓 Claude Code 查程式碼地圖 | 00:53 (53.5s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-09_Instagram_CodeGraph-讓-Claude-Code-查程式碼地圖__DfUMThQE3fc/) |
 | 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo/) |
 | 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
 | 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
 | 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
+
+## AI／提示詞（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-10-31 | X | Anthropic Prompting 101：用車禍報告範例逐步打造提示詞 | 24:47 (1487.3s) | captions (en, manual, original) | [開啟](./AI/提示詞/2026-10-31_X_Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞__2116346641838211440/) |
 
 ## 佛學（8）
 
@@ -54,10 +64,12 @@
 |---|---|---|---|---|---|
 | 2026-11-15 | YouTube | 五十歲退休後段班莫慌！「月存兩萬三」10年逆轉退休金！- 闕又上 劉寶傑《寶傑怎麼說》20261112-2 | 31:25 (1884.6s) | whisper (groq) | [開啟](./投資理財/2026-11-15_YouTube_五十歲退休後段班莫慌-月存兩萬三-10年逆轉退休金---闕又上-劉寶傑《寶傑怎麼__wlq6fpv-EN8/) |
 
-## 身心生活（9）
+## 身心生活（11）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-11 | Facebook | 每天十分鐘寫下五件事讓自己進步 | 01:30 (89.8s) | whisper (groq) | [開啟](./身心生活/2026-11-11_Facebook_每天十分鐘寫下五件事讓自己進步__1K5oJdZBoZ/) |
+| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
 | 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/2026-10-25_Facebook_越活越順的人-每天都在用的8個正向暗示__1172561908430922/) |
 | 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ/) |
 | 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
@@ -67,6 +79,19 @@
 | 2026-10-18 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/2026-10-18_TikTok_負債兩千萬到心想事成-完成式話術與謝謝__7696050866951867655/) |
 | 2026-10-17 | TikTok | 22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權 | 01:26 (85.5s) | whisper (groq) | [開啟](./身心生活/2026-10-17_TikTok_22歲谷愛凌大腦強大的秘密-頂級強者都在練的-元認知-思維-教你拿回人生掌控權__7697214960836873479/) |
 | 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
+
+## 瑜伽（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./瑜伽/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
+
+## 游泳／自由式（2）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-11-05 | TikTok | Сохраняйте и пробуйте новое упражнение для развития 2х ударного кроля... | 00:16 (15.9s) | whisper (groq) | [開啟](./游泳/自由式/2026-11-05_TikTok_Сохраняйте-и-пробуйте-новое-упражнение-д__7695091310620871969/) |
+| 2026-11-05 | TikTok | Kĩ thuật bơi sải nhẹ nhàng như đi bộ | 00:13 (12.5s) | whisper (groq) | [開啟](./游泳/自由式/2026-11-05_TikTok_Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ__7702446650920488210/) |
 
 ## 電子（1）
 

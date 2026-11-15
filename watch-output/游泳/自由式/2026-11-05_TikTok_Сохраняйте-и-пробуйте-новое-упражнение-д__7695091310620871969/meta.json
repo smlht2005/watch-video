@@ -1,0 +1,39 @@
+{
+  "url": "https://vt.tiktok.com/ZSpYUkxHN/",
+  "platform": "TikTok",
+  "video_id": "7695091310620871969",
+  "title": "Сохраняйте и пробуйте новое упражнение для развития 2х ударного кроля...",
+  "title_raw": "Сохраняйте и пробуйте новое упражнение для развития 2х ударного кроля...",
+  "title_override": "",
+  "category": "游泳/自由式",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "自由式、2 beat kick、6 beat kick、打腿、划手、入水、抱水、換氣、身體滾動、流線姿勢、bơi sải、bơi lội"
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [
+    "swimming"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "poseidon.swim",
+  "duration": "00:16 (15.9s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-05",
+  "last_updated": "2026-11-05",
+  "known_asr_errors": [],
+  "keywords": [],
+  "section_keywords": {},
+  "slides": [],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
