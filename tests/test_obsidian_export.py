@@ -1,8 +1,10 @@
 """Tests for scripts/obsidian_export.py. Run: python3 -m unittest discover -s tests -v"""
+import io
 import json
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
@@ -80,6 +82,52 @@ class MindMapText(Fixture):
         self.assertNotIn("## 摘要", text)
 
 
+class GalleryInNote(Fixture):
+    """影片筆記在思維導圖之後加入〈圖文對照〉：截圖縮圖進 _attachments，段落含逐字稿。"""
+
+    def note(self):
+        return next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
+
+    def test_gallery_after_mind_map_with_small_relative_pictures_and_transcript(self):
+        from PIL import Image
+        d = self.folder()
+        Image.new("RGB", (2000, 1000)).save(d / "frames" / "slide_01.jpg")
+        (d / "mindmap.md").write_text("- 中心\n", encoding="utf-8")
+        (d / "transcript.md").write_text("```\n[00:01] 第一句\n[00:03] 第二句\n```\n", encoding="utf-8")
+        (d / "knowledge.md").write_text("# 知識點\n## 已確認\n### 點一\n- 出處：00:01\n- 說明：x\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertLess(text.index("## 思維導圖"), text.index("## 圖文對照（畫面 + 逐字稿）"))
+        self.assertLess(text.index("## 圖文對照"), text.index("## 知識點"))
+        self.assertIn("### 投影片 1：第一頁", text)
+        self.assertIn("第一句，第二句。", text)
+        self.assertIn("![00:01](../_attachments/abc123/slide_01.jpg)", text)
+        pic = self.vault / "_attachments" / "abc123" / "slide_01.jpg"
+        self.assertLessEqual(max(Image.open(pic).size), 1024)
+
+    def test_without_slides_gallery_uses_frames(self):
+        from PIL import Image
+        d = self.folder()
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        meta.pop("slides")
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        Image.new("RGB", (20, 20)).save(d / "frames" / "frame_0001.jpg")
+        (d / "frames.json").write_text('[{"file": "frame_0001.jpg", "t": "00:00"}]', encoding="utf-8")
+        (d / "transcript.md").write_text("[00:02] 說話\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("### 畫面 00:00", text)
+        self.assertIn("../_attachments/abc123/frame_0001.jpg", text)
+
+    def test_missing_picture_is_left_out(self):
+        d = self.folder()
+        (d / "frames" / "slide_01.jpg").unlink()
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("## 圖文對照", text)
+        self.assertNotIn("slide_01.jpg", text)
+
+
 class Export(Fixture):
     def test_note_has_properties_links_and_safe_name(self):
         d = self.folder(links="# 連結\n## 已確認\n- [[知識管理]]｜上位概念：主題\n- [[雙向連結|link]]｜互補：機制\n- [[知識管理]]｜舉例：重複\n## 候選\n- [[未確認]]｜舉例：不匯出\n")
@@ -102,15 +150,15 @@ class Export(Fixture):
         self.assertNotIn("## 連結", text)
         self.assertNotIn("related:", text)
 
-    def test_carousel_pages_only_with_flag_and_relative_attachments(self):
+    def test_carousel_gallery_uses_pages_and_with_pages_only_warns(self):
         d = self.folder(carousel=True, cat="AI/claude-code")
-        oe.export(d, self.vault)
-        md = next((self.vault / "AI" / "claude-code").glob("*.md"))
-        self.assertNotIn("圖文原頁", md.read_text(encoding="utf-8"))
-        self.assertFalse((self.vault / "_attachments" / "abc123" / "slide_01.jpg").exists())
-        oe.export(d, self.vault, with_pages=True)
-        self.assertIn("![第 1 頁](../../_attachments/abc123/slide_01.jpg)", md.read_text(encoding="utf-8"))
-        self.assertTrue((self.vault / "_attachments" / "abc123" / "slide_01.jpg").exists())
+        with mock.patch("sys.stderr", new_callable=io.StringIO) as err:
+            oe.export(d, self.vault, with_pages=True)
+        md = next((self.vault / "AI" / "claude-code").glob("*.md")).read_text(encoding="utf-8")
+        self.assertNotIn("圖文原頁", md)
+        self.assertIn("### 第 1 頁：第一頁", md)
+        self.assertEqual(md.count("_attachments/abc123/slide_01.jpg"), 1)
+        self.assertIn("--with-pages", err.getvalue())
 
     def test_sop_note_copied_with_rewritten_images_and_linked(self):
         oe.export(self.folder(sop=True), self.vault)
@@ -310,9 +358,10 @@ class ReviewRegressions(Fixture):
         meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
         meta["slides"] = [{"start": "00:10", "frame": "b.jpg", "title": "後"}, {"start": "0:05", "frame": "a.jpg", "title": "前"}]
         (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
-        oe.export(d, self.vault, with_pages=True)
+        oe.export(d, self.vault)
         text = next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
-        self.assertIn("**第 1 頁：前**", text)
+        self.assertIn("### 第 1 頁：前", text)
+        self.assertLess(text.index("第 1 頁：前"), text.index("第 2 頁：後"))
 
 
 class CarouselReport(unittest.TestCase):
