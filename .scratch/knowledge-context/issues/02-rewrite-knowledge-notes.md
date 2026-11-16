@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: resolved
 Blocked by: 01
 
 # 02 補寫所有已確認知識點的說明＋更新規則
@@ -17,3 +17,5 @@ Spec：`.scratch/knowledge-context/spec.md`
 - 每篇知識點筆記的說明 2–4 句，匯出無警告。
 
 ## Comments
+
+- 2026-11-16 完成：27 個已確認知識點的說明改寫成 2–4 句（對照表 review-02.md），使用者全部確認；obsidian-4e.md 4f 加說明撰寫與出處／前後文規則；--all 重匯無警告。
