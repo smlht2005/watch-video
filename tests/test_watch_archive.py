@@ -133,6 +133,39 @@ class RemapSlideFrames(unittest.TestCase):
         self.assertEqual(out[0]["frame"], "a.jpg")
 
 
+class Gallery(unittest.TestCase):
+    """〈圖文對照〉段落：報告與 Obsidian 影片筆記共用的公開函式。"""
+
+    SEGS = [("00:01", "第一段話"), ("00:05", "第二段話"), ("00:12", "第三段話")]
+
+    def test_slides_give_heading_blocks_and_the_images_they_link(self):
+        meta = {"duration": "00:20 (20.0s)", "_zh": [],
+                "slides": [{"start": "00:00", "frame": "slide_01.jpg", "title": "開場", "note": "說明一"},
+                           {"start": "00:10", "frame": "slide_02.jpg", "title": "結語"}]}
+        lines, images = br.gallery(meta, self.SEGS, [])
+        md = "\n".join(lines)
+        self.assertTrue(lines[0].startswith("## 圖文對照（畫面 + 逐字稿）"))
+        self.assertIn("### 投影片 1：開場（00:00–00:10）", md)
+        self.assertIn("**重點：** 說明一", md)
+        self.assertIn("第一段話，第二段話。", md)
+        self.assertEqual(images, ["frames/slide_01.jpg", "frames/slide_02.jpg"])
+        self.assertEqual(images, re.findall(r"!\[[^\]]*\]\(([^)]+)\)", md))
+
+    def test_without_slides_uses_frames_and_skips_silent_ones(self):
+        meta = {"duration": "00:20 (20.0s)", "_zh": []}
+        frames = [{"file": "frame_0001.jpg", "t": "00:00"}, {"file": "frame_0002.jpg", "t": "00:03"},
+                  {"file": "frame_0003.jpg", "t": "00:04"}]
+        lines, images = br.gallery(meta, self.SEGS, frames)
+        self.assertEqual(images, ["frames/frame_0001.jpg", "frames/frame_0003.jpg"])  # 00:03 has no speech
+
+    def test_translation_marks_the_heading(self):
+        meta = {"duration": "00:20 (20.0s)", "_zh": [("00:01", "譯文")],
+                "slides": [{"start": "00:00", "frame": "slide_01.jpg"}]}
+        lines, _ = br.gallery(meta, self.SEGS, [])
+        self.assertEqual(lines[0], "## 圖文對照（畫面 + 逐字稿＋中譯）")
+        self.assertIn("**中譯：** 譯文", lines)
+
+
 class SupplementLines(unittest.TestCase):
     def run_sup(self, text):
         d = Path(tempfile.mkdtemp())

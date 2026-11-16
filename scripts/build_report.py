@@ -146,6 +146,21 @@ def frame_blocks(meta, segs, frames):
     return L
 
 
+IMG_RE = re.compile(r"^!\[[^\]]*\]\(([^)]+)\)$")
+
+
+def gallery(meta, segs, frames):
+    """〈圖文對照〉section shared by the report and the Obsidian video note.
+
+    Returns (lines, images): the Markdown lines, starting with the '## 圖文對照…' heading, and the relative image
+    paths (frames/…) they link, in order. Slides give one block per slide; without slides, one per frame with speech.
+    """
+    lines = ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
+    lines += slide_blocks(meta, segs) if meta.get("slides") else frame_blocks(meta, segs, frames)
+    images = [m.group(1) for m in map(IMG_RE.match, lines) if m]
+    return lines, images
+
+
 FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})")
 
 
@@ -249,11 +264,7 @@ def build_md(dest: Path, meta, summary, segs, frames, map_png=None) -> str:
     if has_map:
         L += ["## 思維導圖", "", "![思維導圖](mindmap.png)", "",
               "- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）", ""]
-    L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
-    if meta.get("slides"):
-        L += slide_blocks(meta, segs)
-    else:
-        L += frame_blocks(meta, segs, frames)
+    L += gallery(meta, segs, frames)[0]
     if meta.get("known_asr_errors"):
         L += ["## 已知轉錄錯誤", "", "| 時間 | 聽成 | 應為 |", "|---|---|---|"]
         for e in meta["known_asr_errors"]:
