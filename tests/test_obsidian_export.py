@@ -400,3 +400,83 @@ class CarouselReport(unittest.TestCase):
         self.assertIn("第二頁文字", md)
         self.assertNotIn("（00:01", md)
         self.assertIn("- 頁數：2 頁（圖文）", md)
+
+
+class PointSourceContext(Fixture):
+    """知識點的出處連到影片筆記的段落、附 YouTube 時間點，並帶前後 30 秒的逐字稿。"""
+
+    def make(self, url="https://www.youtube.com/watch?v=abc123", platform="YouTube", carousel=False,
+             transcript=None, zh=None, supplement="", quote="所以最後四個單位要順勢加碼", source="00:50"):
+        d = self.folder(carousel=carousel)
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        starts = ["00:01", "00:02", "00:03"] if carousel else ["00:00", "00:40", "01:30"]
+        meta.update(url=url, platform=platform, duration="02:00 (120.0s)",
+                    slides=[{"start": s, "frame": "slide_01.jpg", "title": f"第{i + 1}段"} for i, s in enumerate(starts)])
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        if transcript is None:
+            transcript = [(f"00:{s:02d}", f"第{s}秒的話") for s in range(0, 60, 2)] + [("00:51", "所以最後四個單位"), ("00:52", "要順勢加碼")]
+            transcript.sort()
+        (d / "transcript.md").write_text("# t\n\n```\n" + "\n".join(f"[{ts}] {t}" for ts, t in transcript) + "\n```\n", encoding="utf-8")
+        if zh:
+            (d / "transcript.zh.md").write_text("\n".join(f"[{ts}] {t}" for ts, t in zh) + "\n", encoding="utf-8")
+        if supplement:
+            (d / "supplement.md").write_text(supplement, encoding="utf-8")
+        (d / "knowledge.md").write_text(f"# 知識點\n## 已確認\n### 順勢加碼\n- 出處：{source}\n- 引文：「{quote}」\n- 說明：x\n## 候選\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        note = next((self.vault / "AI").glob("*.md")).stem
+        return note, (self.vault / "知識點" / "順勢加碼.md").read_text(encoding="utf-8")
+
+    def test_source_links_to_the_section_containing_the_time(self):
+        note, text = self.make()
+        self.assertIn(f"> — [[{note}#投影片 2：第2段（00:40–01:30）|00:50]]", text)
+        self.assertIn(f"- [[{note}#投影片 2：第2段（00:40–01:30）|{note}]]（00:50）", text)
+        video = (self.vault / "AI" / f"{note}.md").read_text(encoding="utf-8")
+        self.assertIn("### 投影片 2：第2段（00:40–01:30）\n", video)
+
+    def test_section_boundaries(self):
+        anchors = [(0, "a"), (40, "b"), (90, "c")]
+        self.assertEqual(oe.source_section("00:40", anchors, False), 1)
+        self.assertEqual(oe.source_section("01:29", anchors, False), 1)
+        self.assertEqual(oe.source_section("05:00", anchors, False), 2)
+        self.assertEqual(oe.source_section("沒有時間", anchors, False), None)
+        self.assertEqual(oe.source_section("00:10", [(30, "a")], False), 0)
+
+    def test_youtube_gets_a_time_link(self):
+        _, text = self.make()
+        self.assertIn("[▶ 原影片 00:50](https://www.youtube.com/watch?v=abc123&t=50s)", text)
+        self.assertEqual(oe.youtube_at("https://youtu.be/abc", 637), "https://youtu.be/abc?t=637s")
+        self.assertEqual(oe.youtube_at("https://www.youtube.com/watch?v=x&t=5s", 9), "https://www.youtube.com/watch?v=x&t=9s")
+
+    def test_other_platforms_get_no_time_link(self):
+        _, text = self.make(url="https://www.tiktok.com/@a/video/1", platform="TikTok")
+        self.assertNotIn("原影片", text)
+
+    def test_context_is_a_collapsed_callout_capped_and_centred(self):
+        _, text = self.make()
+        self.assertIn("> [!quote]- 前後文（", text)
+        rows = [l for l in text.splitlines() if l.startswith("> - ")]
+        self.assertEqual(len(rows), oe.CONTEXT_MAX)
+        self.assertIn("> - **[00:51] 所以最後四個單位**", text)  # quote across two lines: both bold
+        self.assertIn("> - **[00:52] 要順勢加碼**", text)
+        self.assertNotIn("[00:10]", text)  # outside ±30 s
+
+    def test_quote_only_in_supplement_has_no_context(self):
+        _, text = self.make(quote="畫面上的表格文字", supplement="# 補充\n\n畫面上的表格文字\n")
+        self.assertNotIn("[!quote]", text)
+        self.assertIn("#投影片 2：", text)  # still linked to the section
+
+    def test_foreign_video_context_uses_translation(self):
+        zh = [("00:48", "中譯一"), ("00:52", "中譯二")]
+        _, text = self.make(transcript=[("00:48", "first"), ("00:52", "second")], zh=zh, quote="second")
+        self.assertIn("前後文（中譯）（00:48–00:52）", text)
+        self.assertIn("> - [00:48] 中譯一", text)
+        self.assertNotIn("first", text.split("[!quote]")[1])
+
+    def test_carousel_page_links_to_page_and_shows_its_text(self):
+        transcript = [("00:01", "封面"), ("00:02", "第二頁第一句"), ("00:02", "第二頁第二句"), ("00:03", "第三頁")]
+        note, text = self.make(carousel=True, transcript=transcript, quote="第二頁第二句", source="第 2 頁")
+        self.assertIn(f"[[{note}#第 2 頁：第2段|第 2 頁]]", text)
+        self.assertIn("前後文（第 2 頁）", text)
+        self.assertIn("> - **[00:02] 第二頁第二句**", text)
+        self.assertNotIn("第三頁", text.split("[!quote]")[1])
+        self.assertNotIn("原影片", text)
