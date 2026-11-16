@@ -2,10 +2,10 @@
 """Export archived folders into one Obsidian vault (default: obsidian-vault/ at the repo root).
 
 For each watch-output/<領域>/<資料夾>/ it writes
-  <vault>/<領域>/<標題>.md          note: YAML properties + 摘要 + 思維導圖 + 知識點 + 連結 + 補充資料
+  <vault>/<領域>/<標題>.md          note: YAML properties + 思維導圖（文字） + 知識點 + 連結 + 補充資料
   <vault>/知識點/<知識點>.md        one atomic note per confirmed knowledge point (knowledge.md)
   <vault>/<領域>/<標題>_操作SOP.md  copy of kb/*_操作SOP.md when the folder has an SOP
-  <vault>/_attachments/<video_id>/ mindmap.png, carousel pages, SOP step images (relative links)
+  <vault>/_attachments/<video_id>/ 圖文對照 pictures (<=1024 px), knowledge-point pictures, SOP step images (relative links)
 and rebuilds <vault>/00-索引.md (notes by 領域, knowledge points, 待建立節點).
 
 Only what a human confirmed is exported, and links are never inferred from similarity:
@@ -30,7 +30,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from build_report import strip_h1 as _strip_h1, to_sec  # one copy of the time and heading helpers
+from build_report import IMG_RE, gallery, read_segs, strip_h1 as _strip_h1, to_sec  # one copy shared with the report
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_ROOT = ROOT / "watch-output"
@@ -224,6 +224,37 @@ def relation_lines(links) -> list:
     return [f"- [[{t}]]｜{rel}：{note}" for t, rel, note in links]
 
 
+def mind_map_text(dest: Path) -> str:
+    """The mind map as text (mindmap.md's outline): it replaces both the summary and the PNG in the video note.
+    HTML comments (the auto marker, also multi-line) and heading lines are dropped, and '•' bullets become '-' so
+    Obsidian renders a list; '' when there is no mindmap.md."""
+    text = re.sub(r"<!--.*?-->", "", read_text(dest / "mindmap.md"), flags=re.S)
+    lines = [re.sub(r"^(\s*)•\s*", r"\1- ", l) for l in text.splitlines() if not l.lstrip().startswith("#")]
+    return "\n".join(lines).strip("\n")
+
+
+def gallery_lines(dest: Path, meta: dict, attach) -> list:
+    """The report's 〈圖文對照〉 (build_report.gallery) with each picture copied through `attach` (a shrunk copy in
+    _attachments/) and relinked; a picture missing from frames/ is left out."""
+    tpath, zpath, fpath = dest / "transcript.md", dest / "transcript.zh.md", dest / "frames.json"
+    segs = read_segs(tpath) if tpath.exists() else []
+    frames = json.loads(read_text(fpath)) if fpath.exists() else []
+    lines, _ = gallery(dict(meta, _zh=read_segs(zpath) if zpath.exists() else []), segs, frames)
+    out = []
+    for line in lines:
+        m = IMG_RE.match(line)
+        if not m:
+            out.append(line)
+            continue
+        src = dest / m.group(1)
+        if src.is_file():
+            alt = line[2:line.index("](")]
+            out.append(f"![{alt}]({attach(src, src.name)})")
+        elif out and out[-1] == "":
+            out.pop()  # drop the picture and its blank line together
+    return out + [""]
+
+
 def demote(md: str) -> str:
     """Hand-written side files: their '# title' is dropped and '#'/'##' become '###' under our own '## heading'."""
     out = []
@@ -334,7 +365,6 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
         shrink_copy(src, out)
         return f"{rel_att}/{out.name}"
 
-    summary = read_text(dest / "summary.md")
     links_conf, links_cand, problems = read_links(read_text(dest / "links.md"))
     points, points_cand, p_problems = read_points(read_text(dest / "knowledge.md"))
     problems += p_problems
@@ -371,15 +401,14 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     front += ["---", ""]
 
     body = [f"# {title}", ""]
-    body += ["## 摘要", "", demote(summary), ""]
-    if (dest / "mindmap.png").exists():
-        body += ["## 思維導圖", "", f"![思維導圖]({attach(dest / 'mindmap.png', 'mindmap.png')})", ""]
-    if carousel and with_pages:
-        body += ["## 圖文原頁", ""]
-        for i, sl in enumerate(sorted(meta.get("slides", []), key=lambda sl: to_sec(sl["start"])), 1):
-            src = dest / "frames" / sl["frame"]
-            if src.exists():
-                body += [f"**第 {i} 頁：{sl.get('title', '')}**", "", f"![第 {i} 頁]({attach_small(src, sl['frame'])})", ""]
+    outline = mind_map_text(dest)
+    if outline:
+        body += ["## 思維導圖", "", outline, ""]
+    elif read_text(dest / "summary.md").strip():  # no mind map yet (older folders): the summary is all there is
+        body += ["## 摘要", "", demote(read_text(dest / "summary.md")), ""]
+    if with_pages:
+        print("WARNING: --with-pages 已停用：頁面圖已收在〈圖文對照〉", file=sys.stderr)
+    body += gallery_lines(dest, meta, attach_small)
     if point_paths:
         body += ["## 知識點", "", *[f"- [[{pp.stem}]]" for pp in point_paths.values()], ""]
     if links_conf:
@@ -497,7 +526,7 @@ def main():
     ap.add_argument("folder", nargs="?", help="watch-output/<領域>/<資料夾>")
     ap.add_argument("--all", action="store_true", help="export every archived folder")
     ap.add_argument("--with-pages", action="store_true",
-                    help="also put every page of an image post into its note (default: only the pictures knowledge points cite)")
+                    help="deprecated, no effect: every page/frame is now in the note's 圖文對照")
     ap.add_argument("--vault", default=None,
                     help="your own vault: everything goes into <vault>/watch-archive/ and nothing else in it is touched "
                          "(default: this repo's obsidian-vault/, a vault of its own)")

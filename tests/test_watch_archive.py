@@ -133,6 +133,39 @@ class RemapSlideFrames(unittest.TestCase):
         self.assertEqual(out[0]["frame"], "a.jpg")
 
 
+class Gallery(unittest.TestCase):
+    """〈圖文對照〉段落：報告與 Obsidian 影片筆記共用的公開函式。"""
+
+    SEGS = [("00:01", "第一段話"), ("00:05", "第二段話"), ("00:12", "第三段話")]
+
+    def test_slides_give_heading_blocks_and_the_images_they_link(self):
+        meta = {"duration": "00:20 (20.0s)", "_zh": [],
+                "slides": [{"start": "00:00", "frame": "slide_01.jpg", "title": "開場", "note": "說明一"},
+                           {"start": "00:10", "frame": "slide_02.jpg", "title": "結語"}]}
+        lines, images = br.gallery(meta, self.SEGS, [])
+        md = "\n".join(lines)
+        self.assertTrue(lines[0].startswith("## 圖文對照（畫面 + 逐字稿）"))
+        self.assertIn("### 投影片 1：開場（00:00–00:10）", md)
+        self.assertIn("**重點：** 說明一", md)
+        self.assertIn("第一段話，第二段話。", md)
+        self.assertEqual(images, ["frames/slide_01.jpg", "frames/slide_02.jpg"])
+        self.assertEqual(images, re.findall(r"!\[[^\]]*\]\(([^)]+)\)", md))
+
+    def test_without_slides_uses_frames_and_skips_silent_ones(self):
+        meta = {"duration": "00:20 (20.0s)", "_zh": []}
+        frames = [{"file": "frame_0001.jpg", "t": "00:00"}, {"file": "frame_0002.jpg", "t": "00:03"},
+                  {"file": "frame_0003.jpg", "t": "00:04"}]
+        lines, images = br.gallery(meta, self.SEGS, frames)
+        self.assertEqual(images, ["frames/frame_0001.jpg", "frames/frame_0003.jpg"])  # 00:03 has no speech
+
+    def test_translation_marks_the_heading(self):
+        meta = {"duration": "00:20 (20.0s)", "_zh": [("00:01", "譯文")],
+                "slides": [{"start": "00:00", "frame": "slide_01.jpg"}]}
+        lines, _ = br.gallery(meta, self.SEGS, [])
+        self.assertEqual(lines[0], "## 圖文對照（畫面 + 逐字稿＋中譯）")
+        self.assertIn("**中譯：** 譯文", lines)
+
+
 class SupplementLines(unittest.TestCase):
     def run_sup(self, text):
         d = Path(tempfile.mkdtemp())
@@ -242,10 +275,38 @@ class BuildWithSop(unittest.TestCase):
     def names(self, d, suffix):
         return sorted(d / p.name for p in d.iterdir() if p.is_file() and p.name.endswith(suffix))
 
+    def test_default_build_writes_markdown_only(self):
+        d = self.make(self.SOP)
+        outs = br.build(d)
+        self.assertEqual([p.suffix for p in outs], [".md", ".md"])
+        self.assertEqual(self.names(d, ".docx"), [])
+        self.assertTrue((d / "kb").is_dir())  # the SOP bundle for Obsidian/Notion does not depend on --docx
+
+    def test_docx_flag_writes_report_and_sop_word_files(self):
+        d = self.make(self.SOP)
+        outs = br.build(d, docx=True)
+        self.assertEqual(sorted(p.suffix for p in outs), [".docx", ".docx", ".md", ".md"])
+        self.assertEqual(len(self.names(d, "_report.docx")), 1)
+        self.assertEqual(len(self.names(d, "_操作SOP.docx")), 1)
+
+    def test_rebuild_keeps_existing_word_files_up_to_date(self):
+        d = self.make(self.SOP)
+        br.build(d, docx=True)
+        outs = br.build(d)  # no flag: the folder already has Word files, so they are rebuilt too
+        self.assertEqual(len(self.names(d, "_report.docx")), 1)
+        self.assertEqual(len(self.names(d, "_操作SOP.docx")), 1)
+        self.assertIn(".docx", [p.suffix for p in outs])
+
+    def test_no_docx_removes_existing_word_files(self):
+        d = self.make(self.SOP)
+        br.build(d, docx=True)
+        br.build(d, docx=False)
+        self.assertEqual(self.names(d, ".docx"), [])
+
     def test_sop_in_report_before_supplement_and_standalone_files(self):
         d = self.make(self.SOP)
         (d / "supplement.md").write_text("## S1\n- a\n", encoding="utf-8")
-        outs = br.build(d)
+        outs = br.build(d, docx=True)
         self.assertEqual(len(outs), 4)
         md = outs[0].read_text(encoding="utf-8")
         self.assertLess(md.index("## 摘要與名詞說明"), md.index("## 操作 SOP"))
@@ -264,18 +325,18 @@ class BuildWithSop(unittest.TestCase):
     def test_no_sop_file_means_no_section_and_no_sop_outputs(self):
         d = self.make(None)
         outs = br.build(d)
-        self.assertEqual(len(outs), 2)
+        self.assertEqual(len(outs), 1)
         self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
         self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
 
     def test_title_only_sop_means_nothing(self):
         d = self.make("# 操作 SOP\n\n")
-        self.assertEqual(len(br.build(d)), 2)
+        self.assertEqual(len(br.build(d)), 1)
 
     def test_sop_mode_off_skips_even_with_file(self):
         d = self.make(self.SOP, sop_mode="off")
         outs = br.build(d)
-        self.assertEqual(len(outs), 2)
+        self.assertEqual(len(outs), 1)
         self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
 
     def test_stale_sop_outputs_removed_when_sop_deleted(self):
@@ -673,6 +734,22 @@ class WhisperHints(unittest.TestCase):
         self.assertEqual(len(warnings), 1)
 
 
+class DocxFlag(unittest.TestCase):
+    """--docx：預設不產 Word，加旗標才產；不記進 meta.json。"""
+
+    def test_parser_default_auto_and_both_flags(self):
+        self.assertIsNone(wa.parser().parse_args(["https://example.com/v"]).docx)
+        self.assertTrue(wa.parser().parse_args(["https://example.com/v", "--docx"]).docx)
+        self.assertIs(wa.parser().parse_args(["https://example.com/v", "--no-docx"]).docx, False)
+
+    def test_threads_post_passes_flag_to_report_build(self):
+        with mock.patch.object(wa.threads_fetch, "is_threads", return_value=True), \
+             mock.patch.object(wa, "archive_threads_post", return_value=True) as post, \
+             mock.patch.object(sys, "argv", ["watch_archive.py", "https://www.threads.com/@a/post/x", "--docx"]):
+            wa.main()
+        self.assertTrue(post.call_args.kwargs.get("docx"))
+
+
 class Category(unittest.TestCase):
     CATS = ["AI", "佛學", "未分類"]
 
@@ -858,7 +935,7 @@ class MindMap(unittest.TestCase):
     def test_docx_links_only_real_local_files_and_shows_map(self):
         from docx import Document
         d = self.make()
-        outs = br.build(d)
+        outs = br.build(d, docx=True)
         doc = Document(str(outs[1]))
         targets = {r.target_ref for r in doc.part.rels.values() if r.reltype.endswith("/hyperlink")}
         self.assertIn("mindmap.png", targets)
