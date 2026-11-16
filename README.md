@@ -158,9 +158,9 @@ python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>        # �
 python3 scripts/obsidian_export.py <資料夾> --vault <你的 vault>       # 只寫進 <你的 vault>/watch-archive/，其他檔案不動
 ```
 
-- 筆記：屬性（YAML）、摘要、思維導圖、知識點清單、已確認連結、補充資料；`知識點/` 每個知識點一篇（引文、出處、出處圖、標示）；`00-索引.md` 列筆記、知識點、待建立節點。逐字稿不進筆記。
+- 筆記：屬性（YAML）、思維導圖（文字條列）、圖文對照（每段截圖＋說明＋逐字稿，截圖縮到 1024 px）、知識點清單、已確認連結、補充資料；不放摘要與思維導圖 PNG。`知識點/` 每個知識點一篇（引文、出處、出處圖、標示）；`00-索引.md` 列筆記、知識點、待建立節點。每次歸檔都匯出。
 - **只放你確認過的**：`links.md`、`knowledge.md` 分「已確認／候選」，Claude 只寫候選；連結每條要有關係類型與說明，不用相似度自動連。
-- 重匯只覆蓋帶 `generated_by: watch-archive` 的檔案，你自己的筆記與圖片不動；圖文貼文預設只放知識點引用的頁面圖，`--with-pages` 才放全部。
+- 重匯只覆蓋帶 `generated_by: watch-archive` 的檔案，你自己的筆記與圖片不動；圖文貼文的每一頁都在圖文對照裡（舊旗標 `--with-pages` 已停用）。
 - Threads 圖文貼文：貼網址即自動抓本文與全部頁面圖（只讀公開頁）；頁面文字由 Claude 看圖抄錄。
 - 開啟：`git pull` 後 Obsidian →「Open folder as vault」→ 選 `obsidian-vault/`。細節見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
 

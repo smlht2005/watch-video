@@ -6,7 +6,7 @@
    - 出現 `PermissionError` 寫不進 `*_report.docx`，代表使用者正在 Word 開著它（資料夾裡會有 `~$` 開頭的鎖定檔）：請使用者關掉 Word 再重建，不要強制結束 Word。`~$` 鎖定檔不要 commit。
    - Windows 轉 PDF：`soffice` 不在 PATH 時用 `"C:/Program Files/LibreOffice/program/soffice.com" --headless --convert-to pdf --outdir <暫存區> <docx>`。
 
-   - 有 `links.md` 或使用者要 Obsidian 時，接著跑 `python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>`（見 `.claude/skills/watch-archive/references/obsidian-4e.md`）。
+   - **每次歸檔都要跑 5b**（不論有沒有 `links.md`／`knowledge.md`；沒有時影片筆記 `status` 為 `unreviewed`，仍會產生）：`python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>`，把 `obsidian-vault/` 的變更一併 commit（見 `.claude/skills/watch-archive/references/obsidian-4e.md`）。2026-11-15 曾因只在有 `links.md` 時才跑而漏匯兩支影片。
 
 6. **交付**：預設貼報告 md 的連結（步驟 7 的 `review_links.py`）；使用者要 Word 檔時才用 `--docx` 重建，並用 SendUserFile 傳 `*_report.docx`（有 SOP 時一併傳 `*_操作SOP.docx`）；有 SOP 時提醒 `kb/` 可放進 Obsidian／Notion；回覆寫摘要重點，並說明逐字稿是 Groq 轉錄、本地 WhisperX 轉錄還是平台字幕（`meta.json.transcript_source`）；外語影片註明已附中譯（`transcript.zh.md`）。
 
