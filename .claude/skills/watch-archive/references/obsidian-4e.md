@@ -13,7 +13,7 @@
 - **只放使用者確認過的**：連結與知識點都分 `## 已確認`／`## 候選` 兩區。Claude 只能寫進候選區，使用者確認後才移到已確認區；匯出只取已確認區。檔案沒有這兩個標題時，整份視為候選（警告、不匯出）。
 - **連結由人選，不靠相似度**：不用 `keywords` 或語義相似度自動產生連結。每條概念連結要寫關係類型與說明；缺說明的行會被拒絕並警告。
 - **出處連結是機械的，自動產生**：知識點 ↔ 影片筆記、影片筆記 → SOP 筆記。
-- **逐字稿不進筆記**，只留在報告；筆記放摘要、思維導圖、知識點、已確認連結、補充資料。
+- **影片筆記的本文**：思維導圖（`mindmap.md` 的文字條列）→ 圖文對照（與報告相同：每段截圖、標題、說明、該段逐字稿與中譯；截圖縮到 1024 px 放 `_attachments/`）→ 知識點、已確認連結、操作 SOP、補充資料。不放〈摘要〉與思維導圖 PNG（摘要與思維導圖重複，PNG 在 Obsidian 搜尋不到）；逐字稿只在圖文對照裡，不另開檔。
 
 ## 4e 寫 `links.md`（選填，影片整體的概念連結；重跑歸檔不覆蓋）
 
@@ -59,15 +59,14 @@
 python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>      # 寫進 repo 內專用 vault：obsidian-vault/
 python3 scripts/obsidian_export.py --all                              # 全部重匯
 python3 scripts/obsidian_export.py <資料夾> --vault <你的 vault>       # 只寫進 <你的 vault>/watch-archive/
-python3 scripts/obsidian_export.py <資料夾> --with-pages              # 圖文貼文：把全部頁面圖放進影片筆記
 ```
 
 | 檔案 | 內容 |
 |---|---|
-| `<領域>/<標題>.md` | 屬性（title／type／source／platform／video_id／category／date／status／origin_folder／aliases／tags／related）、摘要、思維導圖、知識點清單、已確認連結、SOP 連結、補充資料 |
+| `<領域>/<標題>.md` | 屬性（title／type／source／platform／video_id／category／date／status／origin_folder／aliases／tags／related）、思維導圖（文字）、圖文對照（截圖＋說明＋逐字稿）、知識點清單、已確認連結、SOP 連結、補充資料 |
 | `知識點/<知識點>.md` | 說明、引文與出處、出處圖、標示、連結（含關係）、指回影片筆記 |
 | `<領域>/<標題>_操作SOP.md` | 有 SOP 時由 `kb/` 複製，圖片路徑改指向 `_attachments/` |
-| `_attachments/<video_id>/` | 思維導圖、知識點出處圖、SOP 步驟圖（相對路徑；原圖只保存在 `frames/`） |
+| `_attachments/<video_id>/` | 圖文對照截圖與知識點出處圖（縮到 1024 px）、SOP 步驟圖（相對路徑；原圖只保存在 `frames/`）；每次匯出整個資料夾重建 |
 | `00-索引.md` | 依領域列筆記、知識點（同名者標示）、待建立節點、來源資料夾已不存在的筆記 |
 
 - `status`：有已確認連結或知識點才是 `reviewed`，否則 `unreviewed`。

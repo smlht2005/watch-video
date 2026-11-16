@@ -5,7 +5,7 @@ Folder name: <date>_<platform>_<title>__<video-id>
 A folder whose name ends with __<video-id> is reused (updated in place), so one
 video always maps to exactly one folder.
 
-Outputs per video: meta.json, transcript.md (Traditional; transcript.raw.md if converted), summary.md, frames/, <stem>_report.md, <stem>_report.docx, media/<stem>_video.<ext> (--keep-media)
+Outputs per video: meta.json, transcript.md (Traditional; transcript.raw.md if converted), summary.md, frames/, <stem>_report.md (+ <stem>_report.docx with --docx), media/<stem>_video.<ext> (--keep-media)
 where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
 
 Usage:
@@ -442,7 +442,7 @@ def whisper_hints(backend: str, lang: str, prompt: str) -> tuple[dict, str, str,
     return ({"WATCH_WHISPERX_LANGUAGE": lang} if lang else {}), lang, "", warnings
 
 
-def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None, get_bytes=None) -> bool:
+def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None, get_bytes=None, docx=None) -> bool:
     """Threads image post (carousel): caption + every page image -> folder skeleton + report. True when archived.
 
     False (after a WARNING) means "not an image post or fetch failed": the caller continues with the video pipeline.
@@ -482,7 +482,7 @@ def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None
     if title_arg:
         meta["title"] = meta["title_override"] = title_arg
         (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    build_report.build(dest)
+    build_report.build(dest, docx=docx)
     update_index()
     print(f"archived -> {dest.relative_to(ROOT)}")
     print(f"carousel: {len(info['images'])} 頁圖已下載到 frames/slide_NN.jpg，貼文本文在 supplement.md。"
@@ -491,7 +491,7 @@ def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None
     return True
 
 
-def main():
+def parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--question", default="請摘要影片內容並附時間戳")
@@ -519,9 +519,17 @@ def main():
     fg = ap.add_mutually_exclusive_group()
     fg.add_argument("--clean-fillers", action="store_true", help="strip filler particles (呢、啊…) from the Chinese transcript; default for lectures (講座／講經: --glossary pure-land or video_type lecture); remembered")
     fg.add_argument("--keep-fillers", action="store_true", help="keep filler particles even for lectures; remembered")
-    args = ap.parse_args()
+    dg = ap.add_mutually_exclusive_group()
+    dg.add_argument("--docx", dest="docx", action="store_true", default=None,
+                    help="also write the Word copies (*_report.docx, *_操作SOP.docx); default: only if the folder already has them")
+    dg.add_argument("--no-docx", dest="docx", action="store_false", help="remove the Word copies and write Markdown only")
+    return ap
 
-    if threads_fetch.is_threads(args.url) and archive_threads_post(args.url, args.category, args.title or ""):
+
+def main():
+    args = parser().parse_args()
+
+    if threads_fetch.is_threads(args.url) and archive_threads_post(args.url, args.category, args.title or "", docx=args.docx):
         return
 
     platform, raw_id = platform_and_id(args.url)
@@ -695,7 +703,7 @@ def main():
             break
     shutil.rmtree(work, ignore_errors=True)
 
-    build_report.build(dest)
+    build_report.build(dest, docx=args.docx)
 
     update_index()
     print(f"archived -> {dest.relative_to(ROOT)}")

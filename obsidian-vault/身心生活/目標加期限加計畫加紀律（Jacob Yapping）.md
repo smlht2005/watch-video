@@ -46,6 +46,21 @@ tags:
 - 00:30 結尾 Whisper 誤轉為「you」，實為黑底字卡「You will make it」，已改為畫面字幕。
 - 原標題僅為「Video by jacob.yapping」，標題為自訂；原始標題在 `meta.json.title_raw`。講者原話含粗口，中譯保留語氣。
 
+## 圖文對照（畫面 + 逐字稿＋中譯）
+
+### 投影片 1：目標→期限→計畫→紀律（00:00–00:31）
+
+![00:00](../_attachments/DefvELKztAm/frame_0030.jpg)
+
+**重點：** 講者以遞進公式說明：只有目標是夢想；加期限成為 objective；加計畫成為 strategy；再加紀律才會成功（講者主張）。
+
+**標籤：** #目標 #紀律
+
+If you only have a goal, that means you're living in a dream. If you have a goal plus a deadline, that means you have an objective. If you have a goal plus a deadline plus a plan, that means you have a strategy. If you have a goal plus deadline plus a plan plus, most importantly, discipline, that means you're going to fucking make it. （畫面字幕：You will make it）.
+
+**中譯：** 如果你只有目標，那表示你活在夢裡。如果你有目標加上期限，那表示你有一個「目標（objective）」。如果你有目標加上期限再加上計畫，那表示你有一套「策略（strategy）」。如果你有目標加期限加計畫，再加上最重要的——紀律，那表示你他媽的一定會成功。（畫面字幕：You will make it，你一定會成功）
+
+
 ## 來源
 
 - 原始資料夾：`watch-output/身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm`
