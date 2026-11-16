@@ -2,7 +2,7 @@
 
 > 使用者確認前不開 PR、不 merge。
 
-5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；預設只產 md（`--docx` 才產 Word）。檢查報告 md 與 `mindmap.png`；有 `--docx` 時再把 docx 轉 PDF 目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
+5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；預設只產 md（`--docx` 才產 Word；資料夾已有 docx 時會沿用並更新，`--no-docx` 移除）。檢查報告 md 與 `mindmap.png`；有 `--docx` 時再把 docx 轉 PDF 目視檢查（中文、截圖、頁數；直式影片圖片已限高）。
    - 出現 `PermissionError` 寫不進 `*_report.docx`，代表使用者正在 Word 開著它（資料夾裡會有 `~$` 開頭的鎖定檔）：請使用者關掉 Word 再重建，不要強制結束 Word。`~$` 鎖定檔不要 commit。
    - Windows 轉 PDF：`soffice` 不在 PATH 時用 `"C:/Program Files/LibreOffice/program/soffice.com" --headless --convert-to pdf --outdir <暫存區> <docx>`。
 

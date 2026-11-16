@@ -540,9 +540,14 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9, diagrams=fr
     doc.save(str(out))
 
 
-def build(dest: Path, docx: bool = False):
-    """Write <stem>_report.md (and the SOP .md + kb/ when there is an SOP); the Word copies only with docx=True.
-    Stale outputs, old .docx included, are removed first, so a rebuild without docx leaves no out-of-date Word file."""
+def build(dest: Path, docx=None):
+    """Write <stem>_report.md (and the SOP .md + kb/ when there is an SOP), plus the Word copies when asked.
+
+    docx: True = write them; False = no Word copies (existing ones are removed); None (default) = keep what the
+    folder already has: the Word copies are rebuilt only if a *_report.docx is already there, so a committed docx
+    never silently disappears and never goes stale."""
+    if docx is None:
+        docx = any(dest.glob("*_report.docx"))
     meta, summary, segs, frames = load(dest)
     try:  # the map is optional: a font or drawing failure must not cost the whole report
         map_png = mindmap.ensure(dest, meta)
@@ -576,7 +581,10 @@ if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser(description="Rebuild the report of one archived folder.")
     ap.add_argument("folder")
-    ap.add_argument("--docx", action="store_true", help="also write the Word copies (*_report.docx, *_操作SOP.docx)")
+    g = ap.add_mutually_exclusive_group()
+    g.add_argument("--docx", dest="docx", action="store_true", default=None,
+                   help="also write the Word copies (*_report.docx, *_操作SOP.docx); default: only if the folder already has them")
+    g.add_argument("--no-docx", dest="docx", action="store_false", help="remove the Word copies and write Markdown only")
     args = ap.parse_args()
     for p in build(Path(args.folder), docx=args.docx):
         print("wrote", p)

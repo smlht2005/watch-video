@@ -226,9 +226,10 @@ def relation_lines(links) -> list:
 
 def mind_map_text(dest: Path) -> str:
     """The mind map as text (mindmap.md's outline): it replaces both the summary and the PNG in the video note.
-    The auto-generated marker comment and any heading lines are dropped; '' when there is no mindmap.md."""
-    lines = [l for l in read_text(dest / "mindmap.md").splitlines()
-             if not l.lstrip().startswith(("<!--", "#"))]
+    HTML comments (the auto marker, also multi-line) and heading lines are dropped, and '•' bullets become '-' so
+    Obsidian renders a list; '' when there is no mindmap.md."""
+    text = re.sub(r"<!--.*?-->", "", read_text(dest / "mindmap.md"), flags=re.S)
+    lines = [re.sub(r"^(\s*)•\s*", r"\1- ", l) for l in text.splitlines() if not l.lstrip().startswith("#")]
     return "\n".join(lines).strip("\n")
 
 
@@ -403,6 +404,8 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     outline = mind_map_text(dest)
     if outline:
         body += ["## 思維導圖", "", outline, ""]
+    elif read_text(dest / "summary.md").strip():  # no mind map yet (older folders): the summary is all there is
+        body += ["## 摘要", "", demote(read_text(dest / "summary.md")), ""]
     if with_pages:
         print("WARNING: --with-pages 已停用：頁面圖已收在〈圖文對照〉", file=sys.stderr)
     body += gallery_lines(dest, meta, attach_small)

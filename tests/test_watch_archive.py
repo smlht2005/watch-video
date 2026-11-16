@@ -289,10 +289,18 @@ class BuildWithSop(unittest.TestCase):
         self.assertEqual(len(self.names(d, "_report.docx")), 1)
         self.assertEqual(len(self.names(d, "_操作SOP.docx")), 1)
 
-    def test_rebuild_without_flag_removes_old_word_files(self):
+    def test_rebuild_keeps_existing_word_files_up_to_date(self):
         d = self.make(self.SOP)
         br.build(d, docx=True)
-        br.build(d)
+        outs = br.build(d)  # no flag: the folder already has Word files, so they are rebuilt too
+        self.assertEqual(len(self.names(d, "_report.docx")), 1)
+        self.assertEqual(len(self.names(d, "_操作SOP.docx")), 1)
+        self.assertIn(".docx", [p.suffix for p in outs])
+
+    def test_no_docx_removes_existing_word_files(self):
+        d = self.make(self.SOP)
+        br.build(d, docx=True)
+        br.build(d, docx=False)
         self.assertEqual(self.names(d, ".docx"), [])
 
     def test_sop_in_report_before_supplement_and_standalone_files(self):
@@ -729,9 +737,10 @@ class WhisperHints(unittest.TestCase):
 class DocxFlag(unittest.TestCase):
     """--docx：預設不產 Word，加旗標才產；不記進 meta.json。"""
 
-    def test_parser_default_off_and_flag_on(self):
-        self.assertFalse(wa.parser().parse_args(["https://example.com/v"]).docx)
+    def test_parser_default_auto_and_both_flags(self):
+        self.assertIsNone(wa.parser().parse_args(["https://example.com/v"]).docx)
         self.assertTrue(wa.parser().parse_args(["https://example.com/v", "--docx"]).docx)
+        self.assertIs(wa.parser().parse_args(["https://example.com/v", "--no-docx"]).docx, False)
 
     def test_threads_post_passes_flag_to_report_build(self):
         with mock.patch.object(wa.threads_fetch, "is_threads", return_value=True), \

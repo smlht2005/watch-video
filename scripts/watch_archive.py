@@ -442,7 +442,7 @@ def whisper_hints(backend: str, lang: str, prompt: str) -> tuple[dict, str, str,
     return ({"WATCH_WHISPERX_LANGUAGE": lang} if lang else {}), lang, "", warnings
 
 
-def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None, get_bytes=None, docx: bool = False) -> bool:
+def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None, get_bytes=None, docx=None) -> bool:
     """Threads image post (carousel): caption + every page image -> folder skeleton + report. True when archived.
 
     False (after a WARNING) means "not an image post or fetch failed": the caller continues with the video pipeline.
@@ -519,8 +519,10 @@ def parser() -> argparse.ArgumentParser:
     fg = ap.add_mutually_exclusive_group()
     fg.add_argument("--clean-fillers", action="store_true", help="strip filler particles (呢、啊…) from the Chinese transcript; default for lectures (講座／講經: --glossary pure-land or video_type lecture); remembered")
     fg.add_argument("--keep-fillers", action="store_true", help="keep filler particles even for lectures; remembered")
-    ap.add_argument("--docx", action="store_true",
-                    help="also write the Word copies (*_report.docx, *_操作SOP.docx); default Markdown only; not remembered")
+    dg = ap.add_mutually_exclusive_group()
+    dg.add_argument("--docx", dest="docx", action="store_true", default=None,
+                    help="also write the Word copies (*_report.docx, *_操作SOP.docx); default: only if the folder already has them")
+    dg.add_argument("--no-docx", dest="docx", action="store_false", help="remove the Word copies and write Markdown only")
     return ap
 
 

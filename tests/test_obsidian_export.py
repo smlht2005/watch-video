@@ -75,11 +75,19 @@ class MindMapText(Fixture):
         oe.export(d, self.vault)
         self.assertFalse(old.exists())
 
-    def test_no_mindmap_md_means_no_section(self):
+    def test_no_mindmap_md_falls_back_to_summary(self):
         oe.export(self.folder(), self.vault)
         text = self.note()
         self.assertNotIn("## 思維導圖", text)
-        self.assertNotIn("## 摘要", text)
+        self.assertIn("## 摘要\n\n內容", text)
+
+    def test_bullet_dots_and_multiline_comment_are_normalised(self):
+        d = self.folder()
+        (d / "mindmap.md").write_text("<!-- note\nsecond line -->\n• 中心\n  • 分支\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("## 思維導圖\n\n- 中心\n  - 分支\n", text)
+        self.assertNotIn("second line", text)
 
 
 class GalleryInNote(Fixture):
