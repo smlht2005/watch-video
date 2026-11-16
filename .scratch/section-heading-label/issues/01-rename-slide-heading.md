@@ -1,13 +1,18 @@
-Status: needs-info
+Status: ready-for-agent
 
-# 01 段落標題「投影片 N」對非投影片影片不自然
+# 01 程式：段落標題預設「主題 N」，支援 meta.section_label
 
-訪談、實拍、操作畫面的影片沒有投影片，但報告與 Obsidian 影片筆記的段落標題仍是「投影片 N：…」。
+Spec：`.scratch/section-heading-label/spec.md`
 
-## 待決定
-- 改成什麼：依 `video_type`／有無投影片分「投影片 N」「段落 N」？或一律「第 N 段」？
-- 影響：報告 md／docx、Obsidian 影片筆記標題與知識點的段落連結錨點（`.scratch/knowledge-context` 已讓錨點由同一函式產生，改名後重匯即可）。
+## 要做
+- `scripts/build_report.py` `slide_blocks`：carousel →「第 N 頁」；`meta.section_label` 有值 → 用它；否則「主題」。
+- 確認 `watch_archive.py` 重跑時保留 `section_label`（加進保留欄位）。
+- 測試：更新既有「投影片 N」斷言；新增 section_label、carousel、無 slides、知識點錨點案例。
+- 文件：`content.md` 4a 補 `section_label` 用法。
 
-來源：`.scratch/knowledge-context/spec.md` Out of Scope（2026-11-16 grill）。
+## 驗收
+- 全套測試通過。
 
 ## Comments
+
+- 2026-11-16 grill 結論：預設「主題」（使用者提議），真投影片影片以 `section_label: "投影片"` 保留，圖文貼文維持「第 N 頁」，保留編號。
