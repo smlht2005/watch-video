@@ -97,8 +97,8 @@
     {
       "time": "10:23",
       "heard": "UV的動作",
-      "expected": "聽不清，保留原文",
-      "status": "suspected"
+      "expected": "預備的動作（講者用日文「予備（よび）」；使用者確認）",
+      "status": "confirmed"
     },
     {
       "time": "18:29",
@@ -109,8 +109,8 @@
     {
       "time": "21:04",
       "heard": "大盤是剋輸的狀況／21:50 克出狀況",
-      "expected": "聽不清，保留原文",
-      "status": "suspected"
+      "expected": "特殊狀況（使用者確認）",
+      "status": "confirmed"
     },
     {
       "time": "19:09",
