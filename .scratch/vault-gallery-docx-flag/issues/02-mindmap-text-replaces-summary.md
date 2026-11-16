@@ -4,12 +4,14 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] 筆記有〈思維導圖〉且內容為 `mindmap.md` 的條列，不含 `<!-- auto` 註解
-- [ ] 筆記沒有〈摘要〉，也沒有 `mindmap.png` 圖片連結
-- [ ] 匯出後 `_attachments/<vid>/` 沒有 `mindmap.png`；先放一個舊 PNG 再重匯，它會被清掉
-- [ ] 沒有 `mindmap.md` 的資料夾照常匯出，省略此區塊、不報錯
-- [ ] 屬性、知識點、連結、SOP、索引、擁有權行為不變（既有測試通過；檢查摘要的斷言改寫為新行為）
+- [x] 筆記有〈思維導圖〉且內容為 `mindmap.md` 的條列，不含 `<!-- auto` 註解
+- [x] 筆記沒有〈摘要〉，也沒有 `mindmap.png` 圖片連結
+- [x] 匯出後 `_attachments/<vid>/` 沒有 `mindmap.png`；先放一個舊 PNG 再重匯，它會被清掉
+- [x] 沒有 `mindmap.md` 的資料夾照常匯出，省略此區塊、不報錯
+- [x] 屬性、知識點、連結、SOP、索引、擁有權行為不變（既有測試通過；檢查摘要的斷言改寫為新行為）
 
 ## Comments
+
+- 2026-11-16：完成。影片筆記以 `mindmap.md` 文字條列（去掉 auto 註解與標題行）取代〈摘要〉與 PNG；新增 3 項測試，全套通過。

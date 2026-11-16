@@ -45,6 +45,41 @@ class Fixture(unittest.TestCase):
 
 
 
+class MindMapText(Fixture):
+    """影片筆記用 mindmap.md 的文字條列取代〈摘要〉與思維導圖 PNG。"""
+
+    def note(self):
+        return next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
+
+    def test_text_mind_map_replaces_summary_and_png(self):
+        from PIL import Image
+        d = self.folder()
+        (d / "mindmap.md").write_text("<!-- auto: built from slides -->\n# 大綱\n- 中心\n  - 分支一\n    - 細節\n", encoding="utf-8")
+        Image.new("RGB", (10, 10)).save(d / "mindmap.png")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("## 思維導圖\n\n- 中心\n  - 分支一\n    - 細節\n", text)
+        self.assertNotIn("<!-- auto", text)
+        self.assertNotIn("# 大綱", text)
+        self.assertNotIn("## 摘要", text)
+        self.assertNotIn("mindmap.png", text)
+        self.assertFalse((self.vault / "_attachments" / "abc123" / "mindmap.png").exists())
+
+    def test_reexport_clears_an_old_png(self):
+        d = self.folder()
+        old = self.vault / "_attachments" / "abc123" / "mindmap.png"
+        old.parent.mkdir(parents=True)
+        old.write_bytes(b"png")
+        oe.export(d, self.vault)
+        self.assertFalse(old.exists())
+
+    def test_no_mindmap_md_means_no_section(self):
+        oe.export(self.folder(), self.vault)
+        text = self.note()
+        self.assertNotIn("## 思維導圖", text)
+        self.assertNotIn("## 摘要", text)
+
+
 class Export(Fixture):
     def test_note_has_properties_links_and_safe_name(self):
         d = self.folder(links="# 連結\n## 已確認\n- [[知識管理]]｜上位概念：主題\n- [[雙向連結|link]]｜互補：機制\n- [[知識管理]]｜舉例：重複\n## 候選\n- [[未確認]]｜舉例：不匯出\n")

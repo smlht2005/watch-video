@@ -2,7 +2,7 @@
 """Export archived folders into one Obsidian vault (default: obsidian-vault/ at the repo root).
 
 For each watch-output/<領域>/<資料夾>/ it writes
-  <vault>/<領域>/<標題>.md          note: YAML properties + 摘要 + 思維導圖 + 知識點 + 連結 + 補充資料
+  <vault>/<領域>/<標題>.md          note: YAML properties + 思維導圖（文字） + 知識點 + 連結 + 補充資料
   <vault>/知識點/<知識點>.md        one atomic note per confirmed knowledge point (knowledge.md)
   <vault>/<領域>/<標題>_操作SOP.md  copy of kb/*_操作SOP.md when the folder has an SOP
   <vault>/_attachments/<video_id>/ mindmap.png, carousel pages, SOP step images (relative links)
@@ -224,6 +224,14 @@ def relation_lines(links) -> list:
     return [f"- [[{t}]]｜{rel}：{note}" for t, rel, note in links]
 
 
+def mind_map_text(dest: Path) -> str:
+    """The mind map as text (mindmap.md's outline): it replaces both the summary and the PNG in the video note.
+    The auto-generated marker comment and any heading lines are dropped; '' when there is no mindmap.md."""
+    lines = [l for l in read_text(dest / "mindmap.md").splitlines()
+             if not l.lstrip().startswith(("<!--", "#"))]
+    return "\n".join(lines).strip("\n")
+
+
 def demote(md: str) -> str:
     """Hand-written side files: their '# title' is dropped and '#'/'##' become '###' under our own '## heading'."""
     out = []
@@ -334,7 +342,6 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
         shrink_copy(src, out)
         return f"{rel_att}/{out.name}"
 
-    summary = read_text(dest / "summary.md")
     links_conf, links_cand, problems = read_links(read_text(dest / "links.md"))
     points, points_cand, p_problems = read_points(read_text(dest / "knowledge.md"))
     problems += p_problems
@@ -371,9 +378,9 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     front += ["---", ""]
 
     body = [f"# {title}", ""]
-    body += ["## 摘要", "", demote(summary), ""]
-    if (dest / "mindmap.png").exists():
-        body += ["## 思維導圖", "", f"![思維導圖]({attach(dest / 'mindmap.png', 'mindmap.png')})", ""]
+    outline = mind_map_text(dest)
+    if outline:
+        body += ["## 思維導圖", "", outline, ""]
     if carousel and with_pages:
         body += ["## 圖文原頁", ""]
         for i, sl in enumerate(sorted(meta.get("slides", []), key=lambda sl: to_sec(sl["start"])), 1):
