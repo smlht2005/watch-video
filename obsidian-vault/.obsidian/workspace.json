@@ -1,0 +1,210 @@
+{
+  "main": {
+    "id": "9e75dff6fa8d1821",
+    "type": "split",
+    "children": [
+      {
+        "id": "30907bda9dc83ff0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "577caa5b6128de61",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "關聯圖檢視"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d5e19fb60bb0452c",
+    "type": "split",
+    "children": [
+      {
+        "id": "fe479193cebb9d2a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1331bf08fb90b2d3",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "檔案瀏覽器"
+            }
+          },
+          {
+            "id": "452669a3dfe03b15",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜尋"
+            }
+          },
+          {
+            "id": "1dbff31ebc9a22fd",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "書籤"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "363c7efc811d18bb",
+    "type": "split",
+    "children": [
+      {
+        "id": "23161c6b09638209",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a2e14e215f0eb7f3",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向連結"
+            }
+          },
+          {
+            "id": "7b86582191a4bab9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "對外連結"
+            }
+          },
+          {
+            "id": "91dbf0dce3235198",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "標籤"
+            }
+          },
+          {
+            "id": "d4b198dfcca21327",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "所有屬性"
+            }
+          },
+          {
+            "id": "066b129ce55736e9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大綱"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "canvas:建立新畫布": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
+      "bases:建立新的 base": false
+    }
+  },
+  "active": "577caa5b6128de61",
+  "lastOpenFiles": [
+    "知識點/市值型持有越久勝率越高.md",
+    "投資理財/'26.11.16【財經一路發】鍾國忠談「股市劇烈震盪  投資如何『一直盈』？」.md",
+    "_attachments/E1HcLnndFOU/slide_15.jpg",
+    "_attachments/E1HcLnndFOU/slide_14.jpg",
+    "_attachments/E1HcLnndFOU/slide_13.jpg",
+    "_attachments/E1HcLnndFOU/slide_12.jpg",
+    "_attachments/E1HcLnndFOU/slide_11.jpg",
+    "_attachments/E1HcLnndFOU/slide_10.jpg",
+    "_attachments/E1HcLnndFOU/slide_09.jpg",
+    "_attachments/E1HcLnndFOU/slide_08.jpg",
+    "_attachments/E1HcLnndFOU/slide_07.jpg",
+    "_attachments/E1HcLnndFOU/slide_06.jpg",
+    "_attachments/E1HcLnndFOU",
+    "知識點/加碼前先回測：跌下去會不會回來.md",
+    "知識點/看總報酬，不要只看股利.md",
+    "知識點/金字塔加碼法.md",
+    "知識點/產品沒有對錯，看是否理解並用對方式.md",
+    "投資理財/【兆華艾綸說】ETF逢低撿 金字塔加碼法 市值、正2、高息型 全都解｜李兆華、艾綸、股魚 2026.10.21 part2.md",
+    "知識點/別等回檔太深才加碼.md",
+    "知識點/先有投資哲學，再定策略與工具.md",
+    "投資理財/五十歲退休後段班莫慌！「月存兩萬三」10年逆轉退休金！- 闕又上 劉寶傑《寶傑怎麼說》20261112-2.md",
+    "知識點/每年再平衡一次，極端行情才動態平衡.md",
+    "知識點/把 AI 的產出重寫成自己的理解.md"
+  ]
+}
