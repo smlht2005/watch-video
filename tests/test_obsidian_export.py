@@ -325,11 +325,17 @@ class KnowledgePoints(Fixture):
 class ReviewRegressions(Fixture):
     """Findings of the 2026-10-27 code review."""
 
-    def test_long_titles_equal_in_first_60_chars_do_not_overwrite_each_other(self):
+    def test_title_up_to_the_limit_is_kept_whole(self):
+        title = "【兆華艾綸說】ETF逢低撿 金字塔加碼法 市值、正2、高息型 全都解｜李兆華、艾綸、股魚 2026.10.21 part2"
+        oe.export(self.folder(title=title), self.vault)
+        self.assertEqual(next((self.vault / "AI").glob("*.md")).stem, title)
+        self.assertEqual(oe.NAME_MAX, 100)
+
+    def test_long_titles_equal_in_first_n_chars_do_not_overwrite_each_other(self):
         import contextlib
         import io
         d = self.folder(carousel=True)
-        same = "長" * 60
+        same = "長" * oe.NAME_MAX
         (d / "knowledge.md").write_text(f"## 已確認\n### {same}甲\n- 說明：一\n### {same}乙\n- 說明：二\n", encoding="utf-8")
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
