@@ -421,5 +421,6 @@
   ],
   "video_type": "lecture",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "section_label": "投影片"
 }

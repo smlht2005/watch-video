@@ -64,9 +64,15 @@ Graft → Trail-code：一般做法 100%／用 Trail-code 40%／時間 −60%／
 - 補充直接寫明：留言關鍵字為 TOOLS。
 - 影片未呈現：領取方式、資料實際內容、兩天免費分享會的時間與報名連結。
 
+## 思維導圖
+
+![思維導圖](mindmap.png)
+
+- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
+
 ## 圖文對照（畫面 + 逐字稿）
 
-### 投影片 1：開場與第 1 個工具：Graft（現名 Trail-code）（00:00–00:12）
+### 主題 1：開場與第 1 個工具：Graft（現名 Trail-code）（00:00–00:12）
 
 ![00:00](frames/slide_01.jpg)
 
@@ -76,7 +82,7 @@ Graft → Trail-code：一般做法 100%／用 Trail-code 40%／時間 −60%／
 
 GitHub 上爆紅的4個AI Agent工具，第一個Graft,現在改名叫Trail-code，它可以把你自己做的AI自動化資料夾整理成一張地圖，這樣Claude Code馬上就找得到，官方測試時間省了6成。
 
-### 投影片 2：第 2 個工具：Agency Agents（00:12–00:19）
+### 主題 2：第 2 個工具：Agency Agents（00:12–00:19）
 
 ![00:12](frames/slide_02.jpg)
 
@@ -86,7 +92,7 @@ GitHub 上爆紅的4個AI Agent工具，第一個Graft,現在改名叫Trail-code
 
 第二個Agency Agents，裡面有十幾個部門，快300個AI員工，適合哪一個工作的就直接指派給他。
 
-### 投影片 3：第 3 個工具：Codebase Memory MCP（00:19–00:27）
+### 主題 3：第 3 個工具：Codebase Memory MCP（00:19–00:27）
 
 ![00:19](frames/slide_03.jpg)
 
@@ -96,7 +102,7 @@ GitHub 上爆紅的4個AI Agent工具，第一個Graft,現在改名叫Trail-code
 
 第三個Codebase Memory MCP，它會把你AI助理的程式碼整個記下來，如果只改一個部分就不會動到其他不相干的地方。
 
-### 投影片 4：第 4 個工具：OpenMontage（00:27–00:35）
+### 主題 4：第 4 個工具：OpenMontage（00:27–00:35）
 
 ![00:27](frames/slide_04.jpg)
 
@@ -106,7 +112,7 @@ GitHub 上爆紅的4個AI Agent工具，第一個Graft,現在改名叫Trail-code
 
 第四個OpenMontage，他會把Claude Code變成一個影片製作團隊，你只要丟一個主題進去，指令碼、圖片他自己全部做完。
 
-### 投影片 5：結尾：留言領資料與免費分享會（00:35–00:47）
+### 主題 5：結尾：留言領資料與免費分享會（00:35–00:47）
 
 ![00:35](frames/slide_05.jpg)
 
@@ -127,3 +133,4 @@ GitHub 上爆紅的4個AI Agent工具，第一個Graft,現在改名叫Trail-code
 ## 補充資料連結
 
 - 補充資料檔：[supplement.md](supplement.md)（與本報告同資料夾；內容已收錄於上方〈補充資料〉）
+- 思維導圖：[mindmap.png](mindmap.png)、文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）

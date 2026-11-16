@@ -52,7 +52,7 @@ tags:
 
 ## 圖文對照（畫面 + 逐字稿）
 
-### 投影片 1：開場：5 個 Codex Skill（00:00–00:02）
+### 主題 1：開場：5 個 Codex Skill（00:00–00:02）
 
 ![00:00](../_attachments/7700787825901325575/slide_01.jpg)
 
@@ -62,7 +62,7 @@ tags:
 
 5個神級skill,裝完codex直接開掛。
 
-### 投影片 2：1. Caveman：省 token（00:02–00:26）
+### 主題 2：1. Caveman：省 token（00:02–00:26）
 
 ![00:02](../_attachments/7700787825901325575/slide_02.jpg)
 
@@ -72,7 +72,7 @@ tags:
 
 1. Caveman，同樣問一個問題，不裝這個skill,要花63個token,裝了它只要20個，這就是Caveman,GitHub已超11萬新的省token skill，它專門給AI回覆去水分，客套化，重複解釋，冗長總結，直接砍掉，程式碼，命令和修復方案完整保留，想更狠還有Ultra Cave,Mega Cave,三檔強度可選，最低壓到13個token，如果你每天都在高頻使用codex,這就是一個實打實的省錢skill。
 
-### 投影片 3：2. Taste Skill：去 AI 味的網站設計（00:26–00:48）
+### 主題 3：2. Taste Skill：去 AI 味的網站設計（00:26–00:48）
 
 ![00:26](../_attachments/7700787825901325575/slide_03.jpg)
 
@@ -82,7 +82,7 @@ tags:
 
 2. Taste skill，用Codex做網站，最怕一眼AI味，這個Skill專門解決這個問題，它是目前設計類Skill裡的頂流，GitHub星數逼近10萬，拿到需求後，可以先讓它定視覺方向，它會從247個精選網站裡，總結出20種設計路線，每套都有自己的視覺主張，（廣告插播，非影片內容）My family，We've lost everything，Could you help me?。
 
-### 投影片 4：3. Playwright：精確操作瀏覽器（00:48–01:18）
+### 主題 4：3. Playwright：精確操作瀏覽器（00:48–01:18）
 
 ![00:48](../_attachments/7700787825901325575/slide_04.jpg)
 
@@ -92,7 +92,7 @@ tags:
 
 3. Playwright，Choose your AI girlfriend at sweetlove.ai，Playwright被OpenAI直接收進官方Skill庫同樣是操作瀏覽器它斷層領先Computer Use相比Computer Use看著螢幕憑眼睛找Play Right直接鑽進頁面結構讀資料按程式碼精確驅動每一步都確定可復現，像競品調研這種費時間磨人的活，比如檢索資訊，逐頁開啟商品詳情，整理成表格，保留連結和截圖，它都會從頭到尾替你幹完，複雜流程瞬間變簡單，你完成任務的速度會變得很快。
 
-### 投影片 5：4. GSAP Skill：網頁動效（01:18–01:37）
+### 主題 5：4. GSAP Skill：網頁動效（01:18–01:37）
 
 ![01:18](../_attachments/7700787825901325575/slide_05.jpg)
 
@@ -102,7 +102,7 @@ tags:
 
 4. GSAP Skill，一個蘋果釋出會級別的網頁動效Skill，找專業工作室報價2萬起步，現在裝上這個Skill，一句話就能實現，你只要描述清楚想要的感覺，普通網頁直接升級成有節奏，敘事感的數字作品，而且它現在完全免費，支援商用，等於白撿一個動效導演給你免費打工，用上直接開掛。
 
-### 投影片 6：5. Hypit：拆解爆款影片＋結語（01:37–02:01）
+### 主題 6：5. Hypit：拆解爆款影片＋結語（01:37–02:01）
 
 ![01:37](../_attachments/7700787825901325575/slide_06.jpg)
 
