@@ -1,0 +1,192 @@
+{
+  "url": "https://vm.tiktok.com/ZSpsroe8q/",
+  "platform": "TikTok",
+  "video_id": "7689439378036362509",
+  "title": "四步滾雪球：小資金三年從5萬做到80萬",
+  "title_raw": "#股票學習 #股票交易 #股市",
+  "title_override": "四步滾雪球：小資金三年從5萬做到80萬",
+  "category": "投資理財",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "股票學習",
+    "股票交易",
+    "股市"
+  ],
+  "uploader": "kiki84991",
+  "duration": "01:14 (74.0s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-16",
+  "last_updated": "2026-11-16",
+  "known_asr_errors": [
+    {
+      "time": "00:03",
+      "heard": "花裡無壽",
+      "expected": "花裡胡哨（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:05",
+      "heard": "就像我說的這四步走",
+      "expected": "就按我說的這四步走（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:06",
+      "heard": "漫漫過絕球",
+      "expected": "慢慢滾雪球（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:16",
+      "heard": "影片簡單收藏",
+      "expected": "影片點讚收藏（畫面字幕「視頻點贊收藏」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:24",
+      "heard": "也別聽訊息／小道訊息",
+      "expected": "也別聽消息／小道消息（字幕「消息」；OpenCC 轉成訊息）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:25",
+      "heard": "回菜",
+      "expected": "回踩（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:29",
+      "heard": "只遞一條線",
+      "expected": "只盯一條線（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:46",
+      "heard": "引力了",
+      "expected": "盈利了（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:52",
+      "heard": "全部行倉",
+      "expected": "全部清倉（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:55",
+      "heard": "收盤價跌回均線",
+      "expected": "如果收盤價跌破均線（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:02",
+      "heard": "重新占上均線",
+      "expected": "重新站上均線（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:04",
+      "heard": "這次股就是一套",
+      "expected": "這四步就是一套（畫面字幕）",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "滾雪球",
+    "交易紀律",
+    "MACD",
+    "零軸回踩",
+    "EMA20",
+    "20日均線",
+    "量價",
+    "分批停利",
+    "停損",
+    "散戶"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：小帳戶別折騰花俏戰法",
+      "note": "講者對帳戶只有幾萬元、還沒找到穩定方法的散戶喊話：別再折騰花裡胡哨的戰法，照這四步慢慢滾雪球。講者自述早年用 5 萬元帳戶反覆驗證這套方法，三年做到 80 多萬（講者主張，未查證）。強調方法越簡單越能堅持、越不會跑偏，建議收藏後交易時照著做。",
+      "keywords": [
+        "滾雪球",
+        "5萬到80萬",
+        "交易紀律"
+      ]
+    },
+    {
+      "start": "00:20",
+      "frame": "slide_02.jpg",
+      "title": "第一步：選股只看 MACD 回踩零軸",
+      "note": "選股只看一個訊號：日線 MACD 回踩零軸，其他都不看、也不聽消息。只做零軸上方的回踩（即 MACD 仍在零軸之上、回落靠近零軸後再轉強的型態）。講者主張技術指標擺在那，比任何小道消息都可靠。",
+      "keywords": [
+        "MACD",
+        "零軸回踩",
+        "選股"
+      ]
+    },
+    {
+      "start": "00:29",
+      "frame": "slide_03.jpg",
+      "title": "第二步：操作只盯 EMA20 一條線",
+      "note": "持股期間只盯一條線：EMA20，也就是 20 日均線。股價在線上就拿住，跌破就走。講者承認這個做法偏保守，但認為連保守都做不好的人，玩別的方法只是送錢。",
+      "keywords": [
+        "EMA20",
+        "20日均線",
+        "持股"
+      ]
+    },
+    {
+      "start": "00:40",
+      "frame": "slide_04.jpg",
+      "title": "第三步：進出時機看價格與成交量",
+      "note": "進場看兩件事：價格站穩均線、成交量同步放大，兩者同時成立才跟進。獲利後分批兌現：漲 10% 先出一部分、漲 30% 再出一部分；一旦價格跌破均線就全部清倉，回到第一步重新找標的。分批比例為講者個人做法，未查證效果。",
+      "keywords": [
+        "量價",
+        "分批停利",
+        "清倉"
+      ]
+    },
+    {
+      "start": "00:54",
+      "frame": "slide_05.jpg",
+      "title": "第四步：收盤跌破均線，隔天開盤就走",
+      "note": "如果收盤價跌破均線，第二天開盤直接出場，不要猶豫；講者說猶豫一秒都可能虧掉所有利潤。市場不會關門、機會永遠都有，等股價重新站上均線再買回來即可——用紀律取代對單一部位的執著。",
+      "keywords": [
+        "停損",
+        "收盤價",
+        "紀律"
+      ]
+    },
+    {
+      "start": "01:04",
+      "frame": "slide_06.jpg",
+      "title": "結語：簡單、穩、不激進的交易紀律",
+      "note": "講者總結這四步是一套簡單到不能再簡單的交易紀律，談不上聰明，但穩、不激進；對散戶來說，這才是最容易避開被收割、保住利潤的路子（講者主張，未查證）。",
+      "keywords": [
+        "散戶",
+        "避開收割",
+        "保住利潤"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}
