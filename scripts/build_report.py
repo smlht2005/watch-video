@@ -109,6 +109,19 @@ def strip_h1(md: str) -> str:
     return re.sub(r"\A# .*\n+", "", md)
 
 
+DEFAULT_SECTION_LABEL = "主題"  # most videos (interviews, talks, demos) have no slides; "投影片" only when set in meta
+
+
+def section_label(meta, n: int) -> str:
+    """Heading label of the n-th (1-based) section: '第 N 頁' for an image post, else '<label> N' where the label
+    is meta.section_label (e.g. "投影片" for a slide-deck recording) or 主題."""
+    if meta.get("media_type") == "carousel":
+        return f"第 {n} 頁"
+    label = meta.get("section_label")
+    label = label.strip() if isinstance(label, str) and label.strip() else DEFAULT_SECTION_LABEL
+    return f"{label} {n}"
+
+
 def slide_blocks(meta, segs):
     """One block per slide: one frame, optional note, then the transcript spoken while it is on screen."""
     slides = sorted(meta["slides"], key=lambda x: to_sec(x["start"]))
@@ -120,7 +133,7 @@ def slide_blocks(meta, segs):
         lo, hi = to_sec(sl["start"]), (to_sec(nxt) if nxt else 10 ** 9)
         title = f"：{sl['title']}" if sl.get("title") else ""
         span = "" if carousel else f"（{sl['start']}–{nxt}）"
-        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '投影片 %d' % (n + 1)}{title}{span}", "", f"![{sl['start']}](frames/{sl['frame']})", ""]
+        L += [f"### {section_label(meta, n + 1)}{title}{span}", "", f"![{sl['start']}](frames/{sl['frame']})", ""]
         if sl.get("note"):
             L += [f"**重點：** {sl['note']}", ""]
         if sl.get("keywords"):

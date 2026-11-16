@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: resolved
 
 # 01 程式：段落標題預設「主題 N」，支援 meta.section_label
 
@@ -16,3 +16,4 @@ Spec：`.scratch/section-heading-label/spec.md`
 ## Comments
 
 - 2026-11-16 grill 結論：預設「主題」（使用者提議），真投影片影片以 `section_label: "投影片"` 保留，圖文貼文維持「第 N 頁」，保留編號。
+- 2026-11-16 完成：build_report.section_label()（carousel→第 N 頁；meta.section_label；預設 主題）；watch_archive 重跑保留 section_label；content.md 4a 補用法；新增 3 測試，全套 337 通過。

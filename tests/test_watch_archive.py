@@ -145,11 +145,23 @@ class Gallery(unittest.TestCase):
         lines, images = br.gallery(meta, self.SEGS, [])
         md = "\n".join(lines)
         self.assertTrue(lines[0].startswith("## 圖文對照（畫面 + 逐字稿）"))
-        self.assertIn("### 投影片 1：開場（00:00–00:10）", md)
+        self.assertIn("### 主題 1：開場（00:00–00:10）", md)  # default label: most videos have no slides
         self.assertIn("**重點：** 說明一", md)
         self.assertIn("第一段話，第二段話。", md)
         self.assertEqual(images, ["frames/slide_01.jpg", "frames/slide_02.jpg"])
         self.assertEqual(images, re.findall(r"!\[[^\]]*\]\(([^)]+)\)", md))
+
+    def test_section_label_overrides_the_heading_label(self):
+        slides = [{"start": "00:00", "frame": "slide_01.jpg", "title": "開場"}]
+        md = "\n".join(br.gallery({"duration": "00:20 (20.0s)", "_zh": [], "section_label": "投影片", "slides": slides}, self.SEGS, [])[0])
+        self.assertIn("### 投影片 1：開場（00:00–00:20）", md)
+        md = "\n".join(br.gallery({"duration": "00:20 (20.0s)", "_zh": [], "section_label": "  ", "slides": slides}, self.SEGS, [])[0])
+        self.assertIn("### 主題 1：開場", md)  # blank label falls back to the default
+
+    def test_carousel_keeps_page_label_even_with_section_label(self):
+        slides = [{"start": "00:01", "frame": "slide_01.jpg", "title": "封面"}]
+        meta = {"_zh": [], "media_type": "carousel", "section_label": "投影片", "slides": slides}
+        self.assertIn("### 第 1 頁：封面", "\n".join(br.gallery(meta, self.SEGS, [])[0]))
 
     def test_without_slides_uses_frames_and_skips_silent_ones(self):
         meta = {"duration": "00:20 (20.0s)", "_zh": []}

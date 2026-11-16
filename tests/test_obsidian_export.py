@@ -107,7 +107,7 @@ class GalleryInNote(Fixture):
         text = self.note()
         self.assertLess(text.index("## 思維導圖"), text.index("## 圖文對照（畫面 + 逐字稿）"))
         self.assertLess(text.index("## 圖文對照"), text.index("## 知識點"))
-        self.assertIn("### 投影片 1：第一頁", text)
+        self.assertIn("### 主題 1：第一頁", text)
         self.assertIn("第一句，第二句。", text)
         self.assertIn("![00:01](../_attachments/abc123/slide_01.jpg)", text)
         pic = self.vault / "_attachments" / "abc123" / "slide_01.jpg"
@@ -428,10 +428,10 @@ class PointSourceContext(Fixture):
 
     def test_source_links_to_the_section_containing_the_time(self):
         note, text = self.make()
-        self.assertIn(f"> — [[{note}#投影片 2：第2段（00:40–01:30）|00:50]]", text)
-        self.assertIn(f"- [[{note}#投影片 2：第2段（00:40–01:30）|{note}]]（00:50）", text)
+        self.assertIn(f"> — [[{note}#主題 2：第2段（00:40–01:30）|00:50]]", text)
+        self.assertIn(f"- [[{note}#主題 2：第2段（00:40–01:30）|{note}]]（00:50）", text)
         video = (self.vault / "AI" / f"{note}.md").read_text(encoding="utf-8")
-        self.assertIn("### 投影片 2：第2段（00:40–01:30）\n", video)
+        self.assertIn("### 主題 2：第2段（00:40–01:30）\n", video)
 
     def test_section_boundaries(self):
         anchors = [(0, "a"), (40, "b"), (90, "c")]
@@ -463,7 +463,7 @@ class PointSourceContext(Fixture):
     def test_quote_only_in_supplement_has_no_context(self):
         _, text = self.make(quote="畫面上的表格文字", supplement="# 補充\n\n畫面上的表格文字\n")
         self.assertNotIn("[!quote]", text)
-        self.assertIn("#投影片 2：", text)  # still linked to the section
+        self.assertIn("#主題 2：", text)  # still linked to the section
 
     def test_foreign_video_context_uses_translation(self):
         zh = [("00:48", "中譯一"), ("00:52", "中譯二")]
@@ -480,3 +480,14 @@ class PointSourceContext(Fixture):
         self.assertIn("> - **[00:02] 第二頁第二句**", text)
         self.assertNotIn("第三頁", text.split("[!quote]")[1])
         self.assertNotIn("原影片", text)
+
+    def test_section_label_changes_the_link_anchor(self):
+        d = self.folder()
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        meta.update(section_label="投影片", slides=[{"start": "00:00", "frame": "slide_01.jpg", "title": "開場"}])
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        (d / "transcript.md").write_text("```\n[00:05] 開場白\n```\n", encoding="utf-8")
+        (d / "knowledge.md").write_text("# 知識點\n## 已確認\n### 開場\n- 出處：00:05\n- 引文：「開場白」\n- 說明：x\n## 候選\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = (self.vault / "知識點" / "開場.md").read_text(encoding="utf-8")
+        self.assertIn("#投影片 1：開場", text)
