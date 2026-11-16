@@ -44,7 +44,7 @@ flowchart LR
     C --> D[Claude 校稿與補內容<br/>summary / keywords / 校正<br/>非中文：寫 transcript.zh.md 繁中中譯]
     S[supplement.md<br/>影片未呈現的補充資料] -.-> E
     D --> E[build_report.py]
-    E --> F[report.docx / report.md]
+    E --> F[report.md（--docx 另產 report.docx）]
     D -. 穩定錯誤 .-> G[glossary/ 詞典]
     G -. 下次轉錄 .-> B3
 ```
@@ -96,7 +96,7 @@ watch-output/
 ├── index.md                                   # 所有影片索引：依領域分節（例 `## AI（12）`），節內由新到舊
 └── <領域>/                                    # 粗分類：AI（含子領域 claude-code）、佛學、商業理財、身心生活、電子、雲端、未分類…
     └── <日期>_<平台>_<標題>__<影片ID>/          # 同一影片 ID 只會有一個資料夾，重跑為更新
-        ├── <stem>_report.docx / <stem>_report.md  # 圖文報告（摘要 → 補充資料 → 思維導圖 → 畫面+逐字稿(+中譯) → 已知轉錄錯誤 → 補充資料連結）
+        ├── <stem>_report.md（--docx 另產 .docx）   # 圖文報告（摘要 → 補充資料 → 思維導圖 → 畫面+逐字稿(+中譯) → 已知轉錄錯誤 → 補充資料連結）
         ├── meta.json                              # 網址、標題、上傳者、轉錄來源、關鍵字、已知轉錄錯誤
         ├── transcript.md                          # 逐字稿（預設轉為繁體中文，時間戳不變）
         ├── transcript.raw.md                      # 轉繁體前的原始轉錄（僅在內容有變動時產生）
@@ -105,7 +105,7 @@ watch-output/
         ├── supplement.md                          # 選用：影片未呈現的補充資料（重跑保留，報告自動納入）
         ├── mindmap.md / mindmap.png               # 思維導圖：Claude 手寫的縮排大綱（重跑保留）→ build_report 畫成 PNG；沒有時由 slides 自動產生
         ├── sop.md                                 # 選用：電腦工具教學影片的操作 SOP（Claude 手寫，重跑保留）
-        ├── <影片標題>_操作SOP.docx / .md          # 只有 SOP 與截圖的版本（有 sop.md 時產生）
+        ├── <影片標題>_操作SOP.md（--docx 另產 .docx）# 只有 SOP 與截圖的版本（有 sop.md 時產生）
         ├── kb/                                    # 知識庫包：<影片標題>_操作SOP.md（YAML frontmatter）＋ attachments/ 圖片，可放進 Obsidian／Notion
         ├── frames/、frames.json                   # 截圖與其時間戳（小檔，進 git）
         └── media/<stem>_video.<ext>               # 僅 --keep-media；只存本機（gitignore）
@@ -134,7 +134,7 @@ watch-output/
 
 - **內容**：依任務分章，每章有前置條件、編號步驟（動作＋畫面按鈕原文＋預期結果＋影片時間）、注意事項；有示範錯誤時加排解表。只收可重現的操作；影片沒示範的標「影片未示範」或「推測」，價格與硬體需求標「講者主張，未查證」。
 - **截圖**：寫 `![說明](frame@MM:SS)`，建報告時換成最接近該時間的 `frames/` 截圖，重跑後重新編號也對得上。
-- **產出**：主報告多一節「操作 SOP」；另有 `<影片標題>_操作SOP.docx／.md`；以及 `kb/` 知識庫包（YAML frontmatter＋`attachments/step-MMSS.jpg`，相對路徑）。Obsidian：用「Open folder as vault」開 `kb/` 或複製進 vault；Notion：Import → Markdown & CSV，選 `kb/` 壓成的 zip。重建只會更新自己產生的檔（`*_操作SOP.md`、`attachments/step-*.jpg`），不會動你在 `kb/` 裡新增的筆記、圖片或 `.obsidian/` 設定。
+- **產出**：主報告多一節「操作 SOP」；另有 `<影片標題>_操作SOP.md`（`--docx` 另產 `.docx`）；以及 `kb/` 知識庫包（YAML frontmatter＋`attachments/step-MMSS.jpg`，相對路徑）。Obsidian：用「Open folder as vault」開 `kb/` 或複製進 vault；Notion：Import → Markdown & CSV，選 `kb/` 壓成的 zip。重建只會更新自己產生的檔（`*_操作SOP.md`、`attachments/step-*.jpg`），不會動你在 `kb/` 裡新增的筆記、圖片或 `.obsidian/` 設定。
 - 完整寫法見 `.claude/skills/watch-archive/references/sop-4d.md`。
 
 ### 補充資料（`supplement.md`）

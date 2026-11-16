@@ -43,9 +43,9 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 4c：畫面有、講者沒唸的原文，逐字抄進 `supplement.md`；影片數字與主張一律標「講者主張，未查證」。
    - 4d：電腦工具教學影片另寫 `sop.md`。
    - 4e／4f：選填，手寫 `links.md`（概念連結）與 `knowledge.md`（知識點），都分「已確認／候選」兩區，Claude 只寫候選、使用者確認後才移到已確認；連結要寫關係，不靠相似度自動產生。見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
-5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；docx 轉 PDF 目視檢查（中文、截圖、頁數）。
+5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；預設只產 md，要 Word 檔加 `--docx`，此時再轉 PDF 目視檢查（中文、截圖、頁數）。
    - 5b：`python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>` 匯成 `obsidian-vault/` 的筆記（影片筆記＋已確認知識點的原子筆記＋索引；`--vault <路徑>` 只寫進該 vault 的 `watch-archive/`）。Threads 圖文貼文網址會自動抓本文與全部頁面圖；其他圖文貼文的手動歸檔方式也在該參考檔。
-6. **交付**：SendUserFile 傳 `*_report.docx`；回覆說明逐字稿來源（`meta.json.transcript_source`）與外語中譯。
+6. **交付**：貼報告 md 連結；有 `--docx` 時 SendUserFile 傳 `*_report.docx`；回覆說明逐字稿來源（`meta.json.transcript_source`）與外語中譯。
 7. **提交並給確認連結**：commit、push 到 `claude/...` 分支，跑 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 貼連結（有 `waitConfirm/` 時會多印本機 `index.md` 路徑），並列出需使用者確認的判斷。**使用者確認前不開 PR、不 merge。**
 8. **確認後才開 PR 並 merge**：合併方式依使用者指示；沒說就先問。
 

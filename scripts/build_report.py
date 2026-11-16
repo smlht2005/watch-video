@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a readable report (<stem>_report.md + <stem>_report.docx) from an archived watch folder.
+"""Build a readable report (<stem>_report.md; + <stem>_report.docx with --docx) from an archived watch folder.
 
 Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg,
          transcript.zh.md (optional: Traditional Chinese translation of a foreign-language transcript,
@@ -540,7 +540,9 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9, diagrams=fr
     doc.save(str(out))
 
 
-def build(dest: Path):
+def build(dest: Path, docx: bool = False):
+    """Write <stem>_report.md (and the SOP .md + kb/ when there is an SOP); the Word copies only with docx=True.
+    Stale outputs, old .docx included, are removed first, so a rebuild without docx leaves no out-of-date Word file."""
     meta, summary, segs, frames = load(dest)
     try:  # the map is optional: a font or drawing failure must not cost the whole report
         map_png = mindmap.ensure(dest, meta)
@@ -554,18 +556,27 @@ def build(dest: Path):
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
     local = frozenset(p.name for p in dest.iterdir() if p.is_file())
-    md_to_docx(dest, md, out_docx, meta.get("keywords"), diagrams=frozenset({"mindmap.png"}), local=local)
-    outs = [out_md, out_docx]
+    outs = [out_md]
+    if docx:
+        md_to_docx(dest, md, out_docx, meta.get("keywords"), diagrams=frozenset({"mindmap.png"}), local=local)
+        outs.append(out_docx)
     standalone = sop_md(dest, meta, frames)
     if standalone:
         s_md, s_docx = dest / f"{sop_name(meta)}.md", dest / f"{sop_name(meta)}.docx"
         s_md.write_text(standalone, encoding="utf-8")
-        md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5, local=local)  # many step shots: keep them compact
-        outs += [s_md, s_docx]
+        outs.append(s_md)
+        if docx:
+            md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5, local=local)  # many step shots: keep them compact
+            outs.append(s_docx)
     build_kb(dest, meta, frames)  # also clears a stale kb/ when there is no SOP
     return tuple(outs)
 
 
 if __name__ == "__main__":
-    for p in build(Path(sys.argv[1])):
+    import argparse
+    ap = argparse.ArgumentParser(description="Rebuild the report of one archived folder.")
+    ap.add_argument("folder")
+    ap.add_argument("--docx", action="store_true", help="also write the Word copies (*_report.docx, *_操作SOP.docx)")
+    args = ap.parse_args()
+    for p in build(Path(args.folder), docx=args.docx):
         print("wrote", p)

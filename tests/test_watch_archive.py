@@ -275,10 +275,30 @@ class BuildWithSop(unittest.TestCase):
     def names(self, d, suffix):
         return sorted(d / p.name for p in d.iterdir() if p.is_file() and p.name.endswith(suffix))
 
+    def test_default_build_writes_markdown_only(self):
+        d = self.make(self.SOP)
+        outs = br.build(d)
+        self.assertEqual([p.suffix for p in outs], [".md", ".md"])
+        self.assertEqual(self.names(d, ".docx"), [])
+        self.assertTrue((d / "kb").is_dir())  # the SOP bundle for Obsidian/Notion does not depend on --docx
+
+    def test_docx_flag_writes_report_and_sop_word_files(self):
+        d = self.make(self.SOP)
+        outs = br.build(d, docx=True)
+        self.assertEqual(sorted(p.suffix for p in outs), [".docx", ".docx", ".md", ".md"])
+        self.assertEqual(len(self.names(d, "_report.docx")), 1)
+        self.assertEqual(len(self.names(d, "_操作SOP.docx")), 1)
+
+    def test_rebuild_without_flag_removes_old_word_files(self):
+        d = self.make(self.SOP)
+        br.build(d, docx=True)
+        br.build(d)
+        self.assertEqual(self.names(d, ".docx"), [])
+
     def test_sop_in_report_before_supplement_and_standalone_files(self):
         d = self.make(self.SOP)
         (d / "supplement.md").write_text("## S1\n- a\n", encoding="utf-8")
-        outs = br.build(d)
+        outs = br.build(d, docx=True)
         self.assertEqual(len(outs), 4)
         md = outs[0].read_text(encoding="utf-8")
         self.assertLess(md.index("## 摘要與名詞說明"), md.index("## 操作 SOP"))
@@ -297,18 +317,18 @@ class BuildWithSop(unittest.TestCase):
     def test_no_sop_file_means_no_section_and_no_sop_outputs(self):
         d = self.make(None)
         outs = br.build(d)
-        self.assertEqual(len(outs), 2)
+        self.assertEqual(len(outs), 1)
         self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
         self.assertEqual(self.names(d, "_操作SOP.md") + self.names(d, "_操作SOP.docx"), [])
 
     def test_title_only_sop_means_nothing(self):
         d = self.make("# 操作 SOP\n\n")
-        self.assertEqual(len(br.build(d)), 2)
+        self.assertEqual(len(br.build(d)), 1)
 
     def test_sop_mode_off_skips_even_with_file(self):
         d = self.make(self.SOP, sop_mode="off")
         outs = br.build(d)
-        self.assertEqual(len(outs), 2)
+        self.assertEqual(len(outs), 1)
         self.assertNotIn("操作 SOP", outs[0].read_text(encoding="utf-8"))
 
     def test_stale_sop_outputs_removed_when_sop_deleted(self):
@@ -706,6 +726,21 @@ class WhisperHints(unittest.TestCase):
         self.assertEqual(len(warnings), 1)
 
 
+class DocxFlag(unittest.TestCase):
+    """--docx：預設不產 Word，加旗標才產；不記進 meta.json。"""
+
+    def test_parser_default_off_and_flag_on(self):
+        self.assertFalse(wa.parser().parse_args(["https://example.com/v"]).docx)
+        self.assertTrue(wa.parser().parse_args(["https://example.com/v", "--docx"]).docx)
+
+    def test_threads_post_passes_flag_to_report_build(self):
+        with mock.patch.object(wa.threads_fetch, "is_threads", return_value=True), \
+             mock.patch.object(wa, "archive_threads_post", return_value=True) as post, \
+             mock.patch.object(sys, "argv", ["watch_archive.py", "https://www.threads.com/@a/post/x", "--docx"]):
+            wa.main()
+        self.assertTrue(post.call_args.kwargs.get("docx"))
+
+
 class Category(unittest.TestCase):
     CATS = ["AI", "佛學", "未分類"]
 
@@ -891,7 +926,7 @@ class MindMap(unittest.TestCase):
     def test_docx_links_only_real_local_files_and_shows_map(self):
         from docx import Document
         d = self.make()
-        outs = br.build(d)
+        outs = br.build(d, docx=True)
         doc = Document(str(outs[1]))
         targets = {r.target_ref for r in doc.part.rels.values() if r.reltype.endswith("/hyperlink")}
         self.assertIn("mindmap.png", targets)
