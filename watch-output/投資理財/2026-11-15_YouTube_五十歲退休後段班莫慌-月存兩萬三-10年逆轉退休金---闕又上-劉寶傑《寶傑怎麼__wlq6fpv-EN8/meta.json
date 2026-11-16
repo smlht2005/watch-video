@@ -19,7 +19,7 @@
   "glossary_applied": {},
   "source_hashtags": [],
   "uploader": "寶傑點兵／寶傑怎麼說",
-  "duration": "31:25 (1884.6s)",
+  "duration": "28:58 (1738.0s)",
   "detail": "balanced",
   "cue_timestamps": "",
   "resolution": null,
@@ -262,18 +262,14 @@
         "複利",
         "論壇大會"
       ]
-    },
-    {
-      "start": "28:58",
-      "frame": "slide_14.jpg",
-      "title": "觀眾留言互動",
-      "note": "節目結尾由主持人回覆觀眾留言：支持團隊、網購管制、節目福報、政論評論等，與投資主題無關。",
-      "keywords": [
-        "留言互動"
-      ]
     }
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "trimmed_tail": {
+    "from": "28:58",
+    "original_duration": "31:25 (1884.6s)",
+    "reason": "節目結尾主持人回覆觀眾留言，與投資無關；使用者要求移除（2026-11-16）。原話保留在 transcript.raw.md"
+  }
 }

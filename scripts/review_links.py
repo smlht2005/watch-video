@@ -48,7 +48,7 @@ def main():
     folder = Path(sys.argv[1])
     rel = folder.resolve().relative_to(Path.cwd().resolve()).as_posix()
     files = sorted(p.name for p in folder.iterdir()
-                   if p.name.endswith(("_report.md", "_report.docx", "_操作SOP.docx")) or p.name in REVIEW_FILES)
+                   if p.name.endswith(("_report.md", "_report.docx", "_操作SOP.md", "_操作SOP.docx")) or p.name in REVIEW_FILES)
     run = lambda *a: subprocess.run(a, capture_output=True, text=True, check=True).stdout.strip()
     for label, url in build_links(repo_slug(run("git", "remote", "get-url", "origin")), run("git", "branch", "--show-current"), rel, files):
         print(f"{label}: {url}")

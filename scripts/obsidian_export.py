@@ -2,10 +2,10 @@
 """Export archived folders into one Obsidian vault (default: obsidian-vault/ at the repo root).
 
 For each watch-output/<領域>/<資料夾>/ it writes
-  <vault>/<領域>/<標題>.md          note: YAML properties + 摘要 + 思維導圖 + 知識點 + 連結 + 補充資料
+  <vault>/<領域>/<標題>.md          note: YAML properties + 思維導圖（文字） + 知識點 + 連結 + 補充資料
   <vault>/知識點/<知識點>.md        one atomic note per confirmed knowledge point (knowledge.md)
   <vault>/<領域>/<標題>_操作SOP.md  copy of kb/*_操作SOP.md when the folder has an SOP
-  <vault>/_attachments/<video_id>/ mindmap.png, carousel pages, SOP step images (relative links)
+  <vault>/_attachments/<video_id>/ 圖文對照 pictures (<=1024 px), knowledge-point pictures, SOP step images (relative links)
 and rebuilds <vault>/00-索引.md (notes by 領域, knowledge points, 待建立節點).
 
 Only what a human confirmed is exported, and links are never inferred from similarity:
@@ -30,7 +30,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from build_report import strip_h1 as _strip_h1, to_sec  # one copy of the time and heading helpers
+from build_report import IMG_RE, gallery, read_segs, strip_h1 as _strip_h1, to_sec  # one copy shared with the report
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_ROOT = ROOT / "watch-output"
@@ -38,6 +38,7 @@ DEFAULT_VAULT = ROOT / "obsidian-vault"
 MARK = "generated_by: watch-archive"
 MANIFEST = ".watch-archive.json"  # {video_id: [vault-relative paths we wrote]}; the only proof a file is ours
 WIKI_RE = re.compile(r"\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]")
+NAME_MAX = 100  # note file names keep this many characters (60 cut real titles such as '…part2' to '…part')
 UNSAFE = re.compile(r'[\\/:*?"<>|#^\[\]]')  # characters Windows or Obsidian link names cannot hold
 
 
@@ -47,7 +48,7 @@ def q(v) -> str:
 
 
 def safe_name(title: str) -> str:
-    return UNSAFE.sub("", title).strip()[:60].strip() or "note"
+    return UNSAFE.sub("", title).strip()[:NAME_MAX].strip() or "note"
 
 
 def tag_of(word: str) -> str:
@@ -224,6 +225,37 @@ def relation_lines(links) -> list:
     return [f"- [[{t}]]｜{rel}：{note}" for t, rel, note in links]
 
 
+def mind_map_text(dest: Path) -> str:
+    """The mind map as text (mindmap.md's outline): it replaces both the summary and the PNG in the video note.
+    HTML comments (the auto marker, also multi-line) and heading lines are dropped, and '•' bullets become '-' so
+    Obsidian renders a list; '' when there is no mindmap.md."""
+    text = re.sub(r"<!--.*?-->", "", read_text(dest / "mindmap.md"), flags=re.S)
+    lines = [re.sub(r"^(\s*)•\s*", r"\1- ", l) for l in text.splitlines() if not l.lstrip().startswith("#")]
+    return "\n".join(lines).strip("\n")
+
+
+def gallery_lines(dest: Path, meta: dict, attach) -> list:
+    """The report's 〈圖文對照〉 (build_report.gallery) with each picture copied through `attach` (a shrunk copy in
+    _attachments/) and relinked; a picture missing from frames/ is left out."""
+    tpath, zpath, fpath = dest / "transcript.md", dest / "transcript.zh.md", dest / "frames.json"
+    segs = read_segs(tpath) if tpath.exists() else []
+    frames = json.loads(read_text(fpath)) if fpath.exists() else []
+    lines, _ = gallery(dict(meta, _zh=read_segs(zpath) if zpath.exists() else []), segs, frames)
+    out = []
+    for line in lines:
+        m = IMG_RE.match(line)
+        if not m:
+            out.append(line)
+            continue
+        src = dest / m.group(1)
+        if src.is_file():
+            alt = line[2:line.index("](")]
+            out.append(f"![{alt}]({attach(src, src.name)})")
+        elif out and out[-1] == "":
+            out.pop()  # drop the picture and its blank line together
+    return out + [""]
+
+
 def demote(md: str) -> str:
     """Hand-written side files: their '# title' is dropped and '#'/'##' become '###' under our own '## heading'."""
     out = []
@@ -282,13 +314,124 @@ def quote_found(dest: Path, quote: str) -> bool:
     return not q_ or q_ in norm(read_text(dest / "transcript.md") + read_text(dest / "supplement.md"))
 
 
+CONTEXT_SECS = 30   # 前後文: transcript lines within ±30 s of a knowledge point's 出處
+CONTEXT_MAX = 12    # …at most this many lines, centred on the 出處 time
+BAD_ANCHOR = re.compile(r"[#|^\[\]]")  # characters that break an Obsidian [[note#heading]] link
+
+
+def mmss(sec: int) -> str:
+    return f"{sec // 3600}:{sec % 3600 // 60:02d}:{sec % 60:02d}" if sec >= 3600 else f"{sec // 60:02d}:{sec % 60:02d}"
+
+
+def section_anchors(meta: dict, segs: list, frames: list) -> list:
+    """(start seconds, heading text) of every 〈圖文對照〉 section, taken from the same gallery() that writes the video
+    note, so a knowledge point's link always matches the heading actually written (whatever its label)."""
+    lines, _ = gallery(meta, segs, frames)
+    out = []
+    for i, line in enumerate(lines):
+        if not line.startswith("### "):
+            continue
+        img = next((m for m in (re.match(r"^!\[([^\]]*)\]\(", l) for l in lines[i + 1:i + 4]) if m), None)
+        alt = img.group(1) if img else ""
+        if re.fullmatch(r"\d{1,2}:\d{2}(?::\d{2})?", alt):
+            out.append((to_sec(alt), line[4:].strip()))
+    return sorted(out, key=lambda a: a[0])
+
+
+def source_section(source: str, anchors: list, carousel: bool):
+    """Index into `anchors` of the section a 出處 points at ('第 N 頁' -> page N; 'MM:SS' -> the section whose start
+    is the latest one at or before that time, or the first section), or None when the 出處 has neither."""
+    if not anchors:
+        return None
+    page = re.search(r"第\s*(\d+)\s*頁", source)
+    if page:
+        n = int(page.group(1))
+        return n - 1 if 1 <= n <= len(anchors) else None
+    tm = re.search(r"\b(\d{1,2}:\d{2}(?::\d{2})?)\b", source)
+    if not tm or carousel:
+        return None
+    t = to_sec(tm.group(1))
+    return max([i for i, (s, _) in enumerate(anchors) if s <= t] or [0])
+
+
+def youtube_at(url: str, sec: int) -> str:
+    """The YouTube URL opened at `sec`; '' for any other platform (no time parameter to rely on)."""
+    if not re.search(r"(youtube\.com|youtu\.be)/", url or ""):
+        return ""
+    url = re.sub(r"([?&])t=\d+s?&?", r"\1", url).rstrip("?&")
+    return f"{url}{'&' if '?' in url else '?'}t={sec}s"
+
+
+def context_lines(source: str, quote: str, segs: list, anchors: list, carousel: bool):
+    """(label, lines) for the 前後文 callout: transcript lines within ±CONTEXT_SECS of the 出處 time (at most
+    CONTEXT_MAX, centred on it), or a carousel page's whole text; lines carrying the quote (alone or across two
+    adjacent lines) are bold. None when the 出處 has no time/page or nothing falls in the window."""
+    norm = lambda t: re.sub(r"[\s，。、！？；：「」『』\"“”,.!?]+", "", t)  # noqa: E731
+    if carousel:
+        i = source_section(source, anchors, True)
+        if i is None:
+            return None
+        lo, hi = anchors[i][0], (anchors[i + 1][0] if i + 1 < len(anchors) else 10 ** 9)
+        win = [(ts, t) for ts, t in segs if lo <= to_sec(ts) < hi]
+        label = re.search(r"第\s*\d+\s*頁", source).group(0)
+    else:
+        tm = re.search(r"\b(\d{1,2}:\d{2}(?::\d{2})?)\b", source)
+        if not tm:
+            return None
+        t0 = to_sec(tm.group(1))
+        win = [(ts, t) for ts, t in segs if abs(to_sec(ts) - t0) <= CONTEXT_SECS]
+        if len(win) > CONTEXT_MAX:
+            mid = min(range(len(win)), key=lambda k: abs(to_sec(win[k][0]) - t0))
+            start = max(0, min(mid - CONTEXT_MAX // 2, len(win) - CONTEXT_MAX))
+            win = win[start:start + CONTEXT_MAX]
+        label = f"{win[0][0]}–{win[-1][0]}" if win else ""
+    if not win:
+        return None
+    q_ = norm(quote)
+    bold = set()
+    for k, (_, t) in enumerate(win):
+        if q_ and (q_ in norm(t) or (len(norm(t)) >= 2 and norm(t) in q_)):
+            bold.add(k)
+        if q_ and k + 1 < len(win) and q_ in norm(t + win[k + 1][1]) and q_ not in norm(t) and q_ not in norm(win[k + 1][1]):
+            bold |= {k, k + 1}
+    rows = [f"**[{ts}] {t.strip()}**" if k in bold else f"[{ts}] {t.strip()}" for k, (ts, t) in enumerate(win)]
+    return label, rows
+
+
+def point_context(dest: Path, meta: dict, pt: dict, note_stem: str, anchors: list, segs: list, zh: list) -> dict:
+    """Where a knowledge point's 出處 leads: the [[video note#section]] link target, a YouTube URL at that time, and
+    the 前後文 callout (translation when transcript.zh.md exists; none when the quote only comes from supplement.md)."""
+    carousel = meta.get("media_type") == "carousel"
+    i = source_section(pt["source"], anchors, carousel)
+    heading = anchors[i][1] if i is not None else ""
+    target = f"{note_stem}#{heading}" if heading and not BAD_ANCHOR.search(heading) else note_stem
+    tm = re.search(r"\b(\d{1,2}:\d{2}(?::\d{2})?)\b", pt["source"])
+    ext = youtube_at(meta.get("url", ""), to_sec(tm.group(1))) if tm and not carousel else ""
+    ctx = None
+    if pt["quote"]:
+        norm = lambda t: re.sub(r"[\s「」『』\"“”]+", "", t)  # noqa: E731
+        q_ = norm(pt["quote"])
+        only_supplement = (q_ and q_ not in norm(read_text(dest / "transcript.md"))
+                           and q_ in norm(read_text(dest / "supplement.md")))
+        if segs and not only_supplement:
+            ctx = context_lines(pt["source"], pt["quote"], zh or segs, anchors, carousel)
+    return {"target": target, "heading": heading, "ext": ext, "context": ctx, "zh": bool(zh)}
+
+
 def point_note_path(vault: Path, title: str, vid: str, manifest: dict, taken=()) -> Path:
     """<vault>/知識點/<title>.md; another video's (or the user's) note of that name is never overwritten."""
     return free_path(vault, vault / POINT_DIR, safe_name(title), vid, manifest, taken)
 
 
-def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: list, image_rel: str = "") -> str:
-    """One atomic note: the claim, its source quote and origin, a flag for unverified claims, relations chosen by a human."""
+def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: list, image_rel: str = "",
+             ctx: dict = None) -> str:
+    """One atomic note: the claim, its source quote and origin (linked to the video note's section, with the
+    transcript around it), a flag for unverified claims, relations chosen by a human."""
+    ctx = ctx or {"target": note_stem, "heading": "", "ext": "", "context": None, "zh": False}
+    src = pt["source"]
+    src_link = f"[[{ctx['target']}|{src}]]" if src else "出處未標"
+    if ctx["ext"]:
+        src_link += f" · [▶ 原影片 {src}]({ctx['ext']})"
     targets = list(dict.fromkeys([t for t, _, _ in pt["links"]] + [note_stem]))
     front = ["---", f"title: {q(pt['title'])}", "type: knowledge-point", f"video_id: {q(vid)}",
              f"source_note: {q('[[' + note_stem + ']]')}", f"origin: {q(pt['source'])}", f"claim: {q(pt['flag'] or DEFAULT_FLAG)}",
@@ -299,13 +442,16 @@ def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: lis
     if pt["note"]:
         body += [pt["note"], ""]
     if pt["quote"]:
-        body += [f"> {pt['quote']}", ">", f"> — {pt['source'] or '出處未標'}", ""]
+        body += [f"> {pt['quote']}", ">", f"> — {src_link}", ""]
+        if ctx["context"]:
+            label, rows = ctx["context"]
+            body += [f"> [!quote]- 前後文{'（中譯）' if ctx['zh'] else ''}（{label}）", *[f"> - {r}" for r in rows], ""]
     if image_rel:
         body += [f"![出處圖]({image_rel})", ""]
     body += [f"**標示：** {pt['flag'] or DEFAULT_FLAG}", ""]
     if pt["links"]:
         body += ["## 連結", "", *relation_lines(pt["links"]), ""]
-    body += ["## 出處", "", f"- [[{note_stem}]]" + (f"（{pt['source']}）" if pt["source"] else ""), ""]
+    body += ["## 出處", "", f"- [[{ctx['target']}|{note_stem}]]" + (f"（{src}）" if src else ""), ""]
     return "\n".join(front + body)
 
 
@@ -334,7 +480,6 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
         shrink_copy(src, out)
         return f"{rel_att}/{out.name}"
 
-    summary = read_text(dest / "summary.md")
     links_conf, links_cand, problems = read_links(read_text(dest / "links.md"))
     points, points_cand, p_problems = read_points(read_text(dest / "knowledge.md"))
     problems += p_problems
@@ -343,12 +488,12 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
             problems.append(f"知識點「{pt['title']}」的引文在 transcript.md／supplement.md 找不到，可能是轉述")
     targets = list(dict.fromkeys([t for t, _, _ in links_conf]))
     # note path per point, decided first so the video note can link to them; two titles that become the same file
-    # name (identical, or equal in their first 60 characters) would overwrite each other: keep the first only
+    # name (identical, or equal in their first NAME_MAX characters) would overwrite each other: keep the first only
     point_paths, by_name = {}, {}
     for pt in points:
         key = safe_name(pt["title"])
         if key in by_name:
-            problems.append(f"知識點「{pt['title']}」與「{by_name[key]}」的檔名相同（標題重複或前 60 字相同），已略過後者，請改名")
+            problems.append(f"知識點「{pt['title']}」與「{by_name[key]}」的檔名相同（標題重複或前 {NAME_MAX} 字相同），已略過後者，請改名")
             continue
         by_name[key] = pt["title"]
         point_paths[pt["title"]] = point_note_path(vault, pt["title"], vid, manifest, set(point_paths.values()))
@@ -371,15 +516,14 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
     front += ["---", ""]
 
     body = [f"# {title}", ""]
-    body += ["## 摘要", "", demote(summary), ""]
-    if (dest / "mindmap.png").exists():
-        body += ["## 思維導圖", "", f"![思維導圖]({attach(dest / 'mindmap.png', 'mindmap.png')})", ""]
-    if carousel and with_pages:
-        body += ["## 圖文原頁", ""]
-        for i, sl in enumerate(sorted(meta.get("slides", []), key=lambda sl: to_sec(sl["start"])), 1):
-            src = dest / "frames" / sl["frame"]
-            if src.exists():
-                body += [f"**第 {i} 頁：{sl.get('title', '')}**", "", f"![第 {i} 頁]({attach_small(src, sl['frame'])})", ""]
+    outline = mind_map_text(dest)
+    if outline:
+        body += ["## 思維導圖", "", outline, ""]
+    elif read_text(dest / "summary.md").strip():  # no mind map yet (older folders): the summary is all there is
+        body += ["## 摘要", "", demote(read_text(dest / "summary.md")), ""]
+    if with_pages:
+        print("WARNING: --with-pages 已停用：頁面圖已收在〈圖文對照〉", file=sys.stderr)
+    body += gallery_lines(dest, meta, attach_small)
     if point_paths:
         body += ["## 知識點", "", *[f"- [[{pp.stem}]]" for pp in point_paths.values()], ""]
     if links_conf:
@@ -397,13 +541,19 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
 
     keep = {path}
     note_stem = path.stem
+    tpath, zpath, fpath = dest / "transcript.md", dest / "transcript.zh.md", dest / "frames.json"
+    segs = read_segs(tpath) if tpath.exists() else []
+    zh = read_segs(zpath) if zpath.exists() else []
+    anchors = section_anchors(dict(meta, _zh=zh), segs, json.loads(read_text(fpath) or "[]") if fpath.exists() else [])
     for pt in points:
         pp = point_paths[pt["title"]]
         pp.parent.mkdir(parents=True, exist_ok=True)
         img = source_image(dest, meta, pt["source"])
         rel = os.path.relpath(att, pp.parent).replace(os.sep, "/")
         out_name = Path(attach_small(img, img.name)).name if img else ""
-        pp.write_text(point_md(pt, meta, vid, cat, note_stem, tags, f"{rel}/{out_name}" if out_name else ""), encoding="utf-8")
+        ctx = point_context(dest, meta, pt, note_stem, anchors, segs, zh)
+        pp.write_text(point_md(pt, meta, vid, cat, note_stem, tags, f"{rel}/{out_name}" if out_name else "", ctx),
+                      encoding="utf-8")
         keep.add(pp)
         written.append(pp)
     if sop_src:
@@ -497,7 +647,7 @@ def main():
     ap.add_argument("folder", nargs="?", help="watch-output/<領域>/<資料夾>")
     ap.add_argument("--all", action="store_true", help="export every archived folder")
     ap.add_argument("--with-pages", action="store_true",
-                    help="also put every page of an image post into its note (default: only the pictures knowledge points cite)")
+                    help="deprecated, no effect: every page/frame is now in the note's 圖文對照")
     ap.add_argument("--vault", default=None,
                     help="your own vault: everything goes into <vault>/watch-archive/ and nothing else in it is touched "
                          "(default: this repo's obsidian-vault/, a vault of its own)")

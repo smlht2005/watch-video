@@ -25,4 +25,5 @@
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
    - **講座／講經／演講（口語、有大量「呢」「啊」等語助詞）**：看標題或上傳者判斷是不是講座類影片，是的話歸檔時加 `--clean-fillers`（用 `--glossary pure-land` 的佛學講座會自動開啟，不必加）；之後可在 `meta.json` 寫 `"video_type": "lecture"`，重跑歸檔時 `auto` 模式也會去語助詞。不想去除加 `--keep-fillers`。選擇記在 `meta.json.clean_fillers`（`auto`／`on`／`off`），重跑沿用。
    - **電腦工具教學影片**（螢幕示範軟體／網頁／CLI／App 操作）→ 步驟 4d 會另寫操作 SOP；不想要時加 `--no-sop`，想強制時加 `--sop`（兩者擇一，記在 `meta.json.sop_mode`）。
+   - **Word 檔（`--docx`）**：預設只產 Markdown 報告；使用者要 Word 檔（給別人、印出）才加 `--docx`，同時產出報告與 SOP 的 docx。不記進 `meta.json`：資料夾已有 docx 時，不加旗標也會沿用並更新；要移除 docx 加 `--no-docx`。
    - **長的螢幕錄影／notebook／投影片影片** → 加 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024`。自動抽圖依畫面變化挑圖，緩慢捲動的 notebook 會被當成重複畫面丟掉，結果一段十幾分鐘只剩標題卡。做法：先跑一次讀逐字稿，找出各主題開始的時間，在每個時間點後約 20–40 秒放一個 cue（避開標題卡與轉場），再重跑；1024px 讓程式碼與小字可讀。兩個值會記在 `meta.json`（`cue_timestamps`、`resolution`），之後重跑自動沿用；重跑時 `slides` 的圖檔會依時間自動對到新截圖。

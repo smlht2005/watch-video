@@ -1,8 +1,10 @@
 """Tests for scripts/obsidian_export.py. Run: python3 -m unittest discover -s tests -v"""
+import io
 import json
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
@@ -45,6 +47,95 @@ class Fixture(unittest.TestCase):
 
 
 
+class MindMapText(Fixture):
+    """影片筆記用 mindmap.md 的文字條列取代〈摘要〉與思維導圖 PNG。"""
+
+    def note(self):
+        return next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
+
+    def test_text_mind_map_replaces_summary_and_png(self):
+        from PIL import Image
+        d = self.folder()
+        (d / "mindmap.md").write_text("<!-- auto: built from slides -->\n# 大綱\n- 中心\n  - 分支一\n    - 細節\n", encoding="utf-8")
+        Image.new("RGB", (10, 10)).save(d / "mindmap.png")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("## 思維導圖\n\n- 中心\n  - 分支一\n    - 細節\n", text)
+        self.assertNotIn("<!-- auto", text)
+        self.assertNotIn("# 大綱", text)
+        self.assertNotIn("## 摘要", text)
+        self.assertNotIn("mindmap.png", text)
+        self.assertFalse((self.vault / "_attachments" / "abc123" / "mindmap.png").exists())
+
+    def test_reexport_clears_an_old_png(self):
+        d = self.folder()
+        old = self.vault / "_attachments" / "abc123" / "mindmap.png"
+        old.parent.mkdir(parents=True)
+        old.write_bytes(b"png")
+        oe.export(d, self.vault)
+        self.assertFalse(old.exists())
+
+    def test_no_mindmap_md_falls_back_to_summary(self):
+        oe.export(self.folder(), self.vault)
+        text = self.note()
+        self.assertNotIn("## 思維導圖", text)
+        self.assertIn("## 摘要\n\n內容", text)
+
+    def test_bullet_dots_and_multiline_comment_are_normalised(self):
+        d = self.folder()
+        (d / "mindmap.md").write_text("<!-- note\nsecond line -->\n• 中心\n  • 分支\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("## 思維導圖\n\n- 中心\n  - 分支\n", text)
+        self.assertNotIn("second line", text)
+
+
+class GalleryInNote(Fixture):
+    """影片筆記在思維導圖之後加入〈圖文對照〉：截圖縮圖進 _attachments，段落含逐字稿。"""
+
+    def note(self):
+        return next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
+
+    def test_gallery_after_mind_map_with_small_relative_pictures_and_transcript(self):
+        from PIL import Image
+        d = self.folder()
+        Image.new("RGB", (2000, 1000)).save(d / "frames" / "slide_01.jpg")
+        (d / "mindmap.md").write_text("- 中心\n", encoding="utf-8")
+        (d / "transcript.md").write_text("```\n[00:01] 第一句\n[00:03] 第二句\n```\n", encoding="utf-8")
+        (d / "knowledge.md").write_text("# 知識點\n## 已確認\n### 點一\n- 出處：00:01\n- 說明：x\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertLess(text.index("## 思維導圖"), text.index("## 圖文對照（畫面 + 逐字稿）"))
+        self.assertLess(text.index("## 圖文對照"), text.index("## 知識點"))
+        self.assertIn("### 投影片 1：第一頁", text)
+        self.assertIn("第一句，第二句。", text)
+        self.assertIn("![00:01](../_attachments/abc123/slide_01.jpg)", text)
+        pic = self.vault / "_attachments" / "abc123" / "slide_01.jpg"
+        self.assertLessEqual(max(Image.open(pic).size), 1024)
+
+    def test_without_slides_gallery_uses_frames(self):
+        from PIL import Image
+        d = self.folder()
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        meta.pop("slides")
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        Image.new("RGB", (20, 20)).save(d / "frames" / "frame_0001.jpg")
+        (d / "frames.json").write_text('[{"file": "frame_0001.jpg", "t": "00:00"}]', encoding="utf-8")
+        (d / "transcript.md").write_text("[00:02] 說話\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("### 畫面 00:00", text)
+        self.assertIn("../_attachments/abc123/frame_0001.jpg", text)
+
+    def test_missing_picture_is_left_out(self):
+        d = self.folder()
+        (d / "frames" / "slide_01.jpg").unlink()
+        oe.export(d, self.vault)
+        text = self.note()
+        self.assertIn("## 圖文對照", text)
+        self.assertNotIn("slide_01.jpg", text)
+
+
 class Export(Fixture):
     def test_note_has_properties_links_and_safe_name(self):
         d = self.folder(links="# 連結\n## 已確認\n- [[知識管理]]｜上位概念：主題\n- [[雙向連結|link]]｜互補：機制\n- [[知識管理]]｜舉例：重複\n## 候選\n- [[未確認]]｜舉例：不匯出\n")
@@ -67,15 +158,15 @@ class Export(Fixture):
         self.assertNotIn("## 連結", text)
         self.assertNotIn("related:", text)
 
-    def test_carousel_pages_only_with_flag_and_relative_attachments(self):
+    def test_carousel_gallery_uses_pages_and_with_pages_only_warns(self):
         d = self.folder(carousel=True, cat="AI/claude-code")
-        oe.export(d, self.vault)
-        md = next((self.vault / "AI" / "claude-code").glob("*.md"))
-        self.assertNotIn("圖文原頁", md.read_text(encoding="utf-8"))
-        self.assertFalse((self.vault / "_attachments" / "abc123" / "slide_01.jpg").exists())
-        oe.export(d, self.vault, with_pages=True)
-        self.assertIn("![第 1 頁](../../_attachments/abc123/slide_01.jpg)", md.read_text(encoding="utf-8"))
-        self.assertTrue((self.vault / "_attachments" / "abc123" / "slide_01.jpg").exists())
+        with mock.patch("sys.stderr", new_callable=io.StringIO) as err:
+            oe.export(d, self.vault, with_pages=True)
+        md = next((self.vault / "AI" / "claude-code").glob("*.md")).read_text(encoding="utf-8")
+        self.assertNotIn("圖文原頁", md)
+        self.assertIn("### 第 1 頁：第一頁", md)
+        self.assertEqual(md.count("_attachments/abc123/slide_01.jpg"), 1)
+        self.assertIn("--with-pages", err.getvalue())
 
     def test_sop_note_copied_with_rewritten_images_and_linked(self):
         oe.export(self.folder(sop=True), self.vault)
@@ -234,11 +325,17 @@ class KnowledgePoints(Fixture):
 class ReviewRegressions(Fixture):
     """Findings of the 2026-10-27 code review."""
 
-    def test_long_titles_equal_in_first_60_chars_do_not_overwrite_each_other(self):
+    def test_title_up_to_the_limit_is_kept_whole(self):
+        title = "【兆華艾綸說】ETF逢低撿 金字塔加碼法 市值、正2、高息型 全都解｜李兆華、艾綸、股魚 2026.10.21 part2"
+        oe.export(self.folder(title=title), self.vault)
+        self.assertEqual(next((self.vault / "AI").glob("*.md")).stem, title)
+        self.assertEqual(oe.NAME_MAX, 100)
+
+    def test_long_titles_equal_in_first_n_chars_do_not_overwrite_each_other(self):
         import contextlib
         import io
         d = self.folder(carousel=True)
-        same = "長" * 60
+        same = "長" * oe.NAME_MAX
         (d / "knowledge.md").write_text(f"## 已確認\n### {same}甲\n- 說明：一\n### {same}乙\n- 說明：二\n", encoding="utf-8")
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
@@ -275,9 +372,10 @@ class ReviewRegressions(Fixture):
         meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
         meta["slides"] = [{"start": "00:10", "frame": "b.jpg", "title": "後"}, {"start": "0:05", "frame": "a.jpg", "title": "前"}]
         (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
-        oe.export(d, self.vault, with_pages=True)
+        oe.export(d, self.vault)
         text = next((self.vault / "AI").glob("*.md")).read_text(encoding="utf-8")
-        self.assertIn("**第 1 頁：前**", text)
+        self.assertIn("### 第 1 頁：前", text)
+        self.assertLess(text.index("第 1 頁：前"), text.index("第 2 頁：後"))
 
 
 class CarouselReport(unittest.TestCase):
@@ -302,3 +400,83 @@ class CarouselReport(unittest.TestCase):
         self.assertIn("第二頁文字", md)
         self.assertNotIn("（00:01", md)
         self.assertIn("- 頁數：2 頁（圖文）", md)
+
+
+class PointSourceContext(Fixture):
+    """知識點的出處連到影片筆記的段落、附 YouTube 時間點，並帶前後 30 秒的逐字稿。"""
+
+    def make(self, url="https://www.youtube.com/watch?v=abc123", platform="YouTube", carousel=False,
+             transcript=None, zh=None, supplement="", quote="所以最後四個單位要順勢加碼", source="00:50"):
+        d = self.folder(carousel=carousel)
+        meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
+        starts = ["00:01", "00:02", "00:03"] if carousel else ["00:00", "00:40", "01:30"]
+        meta.update(url=url, platform=platform, duration="02:00 (120.0s)",
+                    slides=[{"start": s, "frame": "slide_01.jpg", "title": f"第{i + 1}段"} for i, s in enumerate(starts)])
+        (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+        if transcript is None:
+            transcript = [(f"00:{s:02d}", f"第{s}秒的話") for s in range(0, 60, 2)] + [("00:51", "所以最後四個單位"), ("00:52", "要順勢加碼")]
+            transcript.sort()
+        (d / "transcript.md").write_text("# t\n\n```\n" + "\n".join(f"[{ts}] {t}" for ts, t in transcript) + "\n```\n", encoding="utf-8")
+        if zh:
+            (d / "transcript.zh.md").write_text("\n".join(f"[{ts}] {t}" for ts, t in zh) + "\n", encoding="utf-8")
+        if supplement:
+            (d / "supplement.md").write_text(supplement, encoding="utf-8")
+        (d / "knowledge.md").write_text(f"# 知識點\n## 已確認\n### 順勢加碼\n- 出處：{source}\n- 引文：「{quote}」\n- 說明：x\n## 候選\n", encoding="utf-8")
+        oe.export(d, self.vault)
+        note = next((self.vault / "AI").glob("*.md")).stem
+        return note, (self.vault / "知識點" / "順勢加碼.md").read_text(encoding="utf-8")
+
+    def test_source_links_to_the_section_containing_the_time(self):
+        note, text = self.make()
+        self.assertIn(f"> — [[{note}#投影片 2：第2段（00:40–01:30）|00:50]]", text)
+        self.assertIn(f"- [[{note}#投影片 2：第2段（00:40–01:30）|{note}]]（00:50）", text)
+        video = (self.vault / "AI" / f"{note}.md").read_text(encoding="utf-8")
+        self.assertIn("### 投影片 2：第2段（00:40–01:30）\n", video)
+
+    def test_section_boundaries(self):
+        anchors = [(0, "a"), (40, "b"), (90, "c")]
+        self.assertEqual(oe.source_section("00:40", anchors, False), 1)
+        self.assertEqual(oe.source_section("01:29", anchors, False), 1)
+        self.assertEqual(oe.source_section("05:00", anchors, False), 2)
+        self.assertEqual(oe.source_section("沒有時間", anchors, False), None)
+        self.assertEqual(oe.source_section("00:10", [(30, "a")], False), 0)
+
+    def test_youtube_gets_a_time_link(self):
+        _, text = self.make()
+        self.assertIn("[▶ 原影片 00:50](https://www.youtube.com/watch?v=abc123&t=50s)", text)
+        self.assertEqual(oe.youtube_at("https://youtu.be/abc", 637), "https://youtu.be/abc?t=637s")
+        self.assertEqual(oe.youtube_at("https://www.youtube.com/watch?v=x&t=5s", 9), "https://www.youtube.com/watch?v=x&t=9s")
+
+    def test_other_platforms_get_no_time_link(self):
+        _, text = self.make(url="https://www.tiktok.com/@a/video/1", platform="TikTok")
+        self.assertNotIn("原影片", text)
+
+    def test_context_is_a_collapsed_callout_capped_and_centred(self):
+        _, text = self.make()
+        self.assertIn("> [!quote]- 前後文（", text)
+        rows = [l for l in text.splitlines() if l.startswith("> - ")]
+        self.assertEqual(len(rows), oe.CONTEXT_MAX)
+        self.assertIn("> - **[00:51] 所以最後四個單位**", text)  # quote across two lines: both bold
+        self.assertIn("> - **[00:52] 要順勢加碼**", text)
+        self.assertNotIn("[00:10]", text)  # outside ±30 s
+
+    def test_quote_only_in_supplement_has_no_context(self):
+        _, text = self.make(quote="畫面上的表格文字", supplement="# 補充\n\n畫面上的表格文字\n")
+        self.assertNotIn("[!quote]", text)
+        self.assertIn("#投影片 2：", text)  # still linked to the section
+
+    def test_foreign_video_context_uses_translation(self):
+        zh = [("00:48", "中譯一"), ("00:52", "中譯二")]
+        _, text = self.make(transcript=[("00:48", "first"), ("00:52", "second")], zh=zh, quote="second")
+        self.assertIn("前後文（中譯）（00:48–00:52）", text)
+        self.assertIn("> - [00:48] 中譯一", text)
+        self.assertNotIn("first", text.split("[!quote]")[1])
+
+    def test_carousel_page_links_to_page_and_shows_its_text(self):
+        transcript = [("00:01", "封面"), ("00:02", "第二頁第一句"), ("00:02", "第二頁第二句"), ("00:03", "第三頁")]
+        note, text = self.make(carousel=True, transcript=transcript, quote="第二頁第二句", source="第 2 頁")
+        self.assertIn(f"[[{note}#第 2 頁：第2段|第 2 頁]]", text)
+        self.assertIn("前後文（第 2 頁）", text)
+        self.assertIn("> - **[00:02] 第二頁第二句**", text)
+        self.assertNotIn("第三頁", text.split("[!quote]")[1])
+        self.assertNotIn("原影片", text)
