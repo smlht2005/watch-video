@@ -5,3 +5,6 @@ watch-output/**/media/
 
 # watch-output: waitConfirm/ (audio clips + screenshots cut from someone else's video) stays local, not committed
 watch-output/**/waitConfirm/
+
+# 本機歸檔執行紀錄
+.archive_*.log

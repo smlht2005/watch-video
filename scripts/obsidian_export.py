@@ -38,6 +38,7 @@ DEFAULT_VAULT = ROOT / "obsidian-vault"
 MARK = "generated_by: watch-archive"
 MANIFEST = ".watch-archive.json"  # {video_id: [vault-relative paths we wrote]}; the only proof a file is ours
 WIKI_RE = re.compile(r"\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]")
+NAME_MAX = 100  # note file names keep this many characters (60 cut real titles such as '…part2' to '…part')
 UNSAFE = re.compile(r'[\\/:*?"<>|#^\[\]]')  # characters Windows or Obsidian link names cannot hold
 
 
@@ -47,7 +48,7 @@ def q(v) -> str:
 
 
 def safe_name(title: str) -> str:
-    return UNSAFE.sub("", title).strip()[:60].strip() or "note"
+    return UNSAFE.sub("", title).strip()[:NAME_MAX].strip() or "note"
 
 
 def tag_of(word: str) -> str:
@@ -373,12 +374,12 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
             problems.append(f"知識點「{pt['title']}」的引文在 transcript.md／supplement.md 找不到，可能是轉述")
     targets = list(dict.fromkeys([t for t, _, _ in links_conf]))
     # note path per point, decided first so the video note can link to them; two titles that become the same file
-    # name (identical, or equal in their first 60 characters) would overwrite each other: keep the first only
+    # name (identical, or equal in their first NAME_MAX characters) would overwrite each other: keep the first only
     point_paths, by_name = {}, {}
     for pt in points:
         key = safe_name(pt["title"])
         if key in by_name:
-            problems.append(f"知識點「{pt['title']}」與「{by_name[key]}」的檔名相同（標題重複或前 60 字相同），已略過後者，請改名")
+            problems.append(f"知識點「{pt['title']}」與「{by_name[key]}」的檔名相同（標題重複或前 {NAME_MAX} 字相同），已略過後者，請改名")
             continue
         by_name[key] = pt["title"]
         point_paths[pt["title"]] = point_note_path(vault, pt["title"], vid, manifest, set(point_paths.values()))
