@@ -664,6 +664,8 @@ def main():
         "clean_fillers": fillers_mode,
         "sop_mode": resolve_sop_mode(args.sop, args.no_sop, prev.get("sop_mode", early_meta.get("sop_mode", ""))),
     }
+    if prev.get("section_label"):  # hand-curated: "投影片" for a slide-deck recording (default heading label is 主題)
+        meta["section_label"] = prev["section_label"]
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dest / "transcript.md").write_text(f"# {title}\n\n{transcript}\n", encoding="utf-8")
     raw_path = dest / "transcript.raw.md"  # untouched ASR output, kept only if conversion changed it

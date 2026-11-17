@@ -49,7 +49,7 @@ tags:
 
 ## 圖文對照（畫面 + 逐字稿）
 
-### 投影片 1：開場：M3E Canvas 與 Vibe Coding 的痛點（00:00–00:16）
+### 主題 1：開場：M3E Canvas 與 Vibe Coding 的痛點（00:00–00:16）
 
 ![00:00](../../_attachments/DddPhkuxDUo/frame_0004.jpg)
 
@@ -59,7 +59,7 @@ tags:
 
 這個工具上線到現在兩個禮拜的時間，在Github上已經超過了7000顆星，今天帶你看一個工具，今天的主題是M3E Canvas，現在Vibe Coding是讓我們把腦袋裡抽象的畫面，用自然語言的方式告訴AI，但現在這個工具可以讓你用更直接、更精準的方式來完成它。
 
-### 投影片 2：瀏覽器拖拉畫面，連線成 App 流程（00:16–00:32）
+### 主題 2：瀏覽器拖拉畫面，連線成 App 流程（00:16–00:32）
 
 ![00:16](../../_attachments/DddPhkuxDUo/frame_0007.jpg)
 
@@ -69,7 +69,7 @@ tags:
 
 你可以直接在瀏覽器裡面用拖拉的方式把畫面畫出來，按鈕、導航列、卡片、清單、對話方塊，全部都是Google Material 3 Expressive的真實元件，絕對不是隨便亂畫的方塊，你只需要將畫面跟畫面連線起來，它會幫你畫出整個app的流程箭頭。
 
-### 投影片 3：一鍵轉 prompt 貼給 Claude Code／Codex，免費開源（00:32–01:02）
+### 主題 3：一鍵轉 prompt 貼給 Claude Code／Codex，免費開源（00:32–01:02）
 
 ![00:32](../../_attachments/DddPhkuxDUo/frame_0010.jpg)
 

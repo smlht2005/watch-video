@@ -26,9 +26,15 @@
 - 00:30 結尾 Whisper 誤轉為「you」，實為黑底字卡「You will make it」，已改為畫面字幕。
 - 原標題僅為「Video by jacob.yapping」，標題為自訂；原始標題在 `meta.json.title_raw`。講者原話含粗口，中譯保留語氣。
 
+## 思維導圖
+
+![思維導圖](mindmap.png)
+
+- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
+
 ## 圖文對照（畫面 + 逐字稿＋中譯）
 
-### 投影片 1：目標→期限→計畫→紀律（00:00–00:31）
+### 主題 1：目標→期限→計畫→紀律（00:00–00:31）
 
 ![00:00](frames/frame_0030.jpg)
 
@@ -45,3 +51,7 @@ If you only have a goal, that means you're living in a dream. If you have a goal
 | 時間 | 聽成 | 應為 |
 |---|---|---|
 | 00:30 | you | 片尾黑底字卡「You will make it」，Whisper 誤轉為「you」（已改為畫面字幕） |
+
+## 補充資料連結
+
+- 思維導圖：[mindmap.png](mindmap.png)、文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）

@@ -32,9 +32,15 @@
 - 英文影片，已附繁體中譯 `transcript.zh.md`；無語助詞清理（非中文）。
 - 影片中所有主張與研究說法（含「研究者常建議」）皆為講者主張，未查證。
 
+## 思維導圖
+
+![思維導圖](mindmap.png)
+
+- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
+
 ## 圖文對照（畫面 + 逐字稿＋中譯）
 
-### 投影片 1：動力不在行動之前，而在行動之後（00:00–00:33）
+### 主題 1：動力不在行動之前，而在行動之後（00:00–00:33）
 
 ![00:00](frames/frame_0004.jpg)
 
@@ -46,7 +52,7 @@ In simple terms, procrastinators believe that motivation must come before action
 
 **中譯：** 簡單說，愛拖延的人以為必須先有動力，才能行動。他們覺得得先受到激勵、想做了，才會開始。比較不拖延的人，看法正好相反：他們明白是先行動，動力隨後才來。換句話說，你先開始，靈感常常就追上來了。
 
-### 投影片 2：5 分鐘起飛策略（00:33–01:12）
+### 主題 2：5 分鐘起飛策略（00:33–01:12）
 
 ![00:33](frames/frame_0008.jpg)
 
@@ -58,7 +64,7 @@ As an antidote to procrastination, researchers often recommend the five-minute t
 
 **中譯：** 作為拖延的解藥，研究者常建議「5 分鐘起飛」策略。做法很簡單：開始做你一直拖著不做的事，哪怕只做幾分鐘。這會產生動能。五分鐘常常會變成下一個五分鐘，再下一個，形成向上的行動螺旋。我自己也常用這招。不想寫作的日子，我就靠「5 分鐘起飛」。多半時候，一旦開始，我就找到節奏，能做得久很多。
 
-### 投影片 3：5 秒法則與漸進式改變（01:12–01:50）
+### 主題 3：5 秒法則與漸進式改變（01:12–01:50）
 
 ![01:12](frames/frame_0012.jpg)
 
@@ -75,3 +81,7 @@ Mel Robbins takes this idea a step further with what she calls the five-second r
 | 時間 | 聽成 | 應為 |
 |---|---|---|
 | 01:32 | Jim Lohr | Jim Loehr（畫面字幕 01:33 為 Jim Loehr；已在 transcript.md 修正） |
+
+## 補充資料連結
+
+- 思維導圖：[mindmap.png](mindmap.png)、文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
