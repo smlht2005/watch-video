@@ -42,7 +42,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 4a／4b：寫 `slides`（每段 2–4 分鐘、不超過約 5 分鐘，每段一張對到重點的截圖；**影片明說步驟時改為一步驟一段一張圖一段說明**，見 `.claude/skills/watch-archive/references/content.md` 4a）、`summary.md`、`meta.json`；截圖用 `pick_frames.py sheet` 逐秒挑、**自己看圖確認**再 `apply`；外語影片寫 `transcript.zh.md`；手寫 `mindmap.md`（思維導圖，放在圖文對照之前）。
    - 4c：畫面有、講者沒唸的原文，逐字抄進 `supplement.md`；影片數字與主張一律標「講者主張，未查證」。
    - 4d：電腦工具教學影片另寫 `sop.md`。
-   - 4e／4f：選填，手寫 `links.md`（概念連結）與 `knowledge.md`（知識點），都分「已確認／候選」兩區，Claude 只寫候選、使用者確認後才移到已確認；連結要寫關係，不靠相似度自動產生。見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
+   - 4e／4f：**每次歸檔後，4f 一律先寫 `knowledge.md` 的「候選」**（約 5–8 則，內容太少可略過並在回覆說明理由；用腳本比對引文與出處時間），回覆列出候選請使用者確認，確認後才移到「已確認」再匯出；`links.md`（概念連結）仍選填。兩個檔都分「已確認／候選」兩區，Claude 只寫候選；連結要寫關係，不靠相似度自動產生。見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
 5. **重建與檢查**：`python3 scripts/build_report.py watch-output/<領域>/<資料夾>`；預設只產 md，要 Word 檔加 `--docx`（已有 docx 的資料夾重建會沿用），此時再轉 PDF 目視檢查（中文、截圖、頁數）。
    - 5b：`python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>` 匯成 `obsidian-vault/` 的筆記（影片筆記＋已確認知識點的原子筆記＋索引；`--vault <路徑>` 只寫進該 vault 的 `watch-archive/`）。Threads 圖文貼文網址會自動抓本文與全部頁面圖；其他圖文貼文的手動歸檔方式也在該參考檔。
 6. **交付**：貼報告 md 連結；有 `--docx` 時 SendUserFile 傳 `*_report.docx`；回覆說明逐字稿來源（`meta.json.transcript_source`）與外語中譯。
