@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 from urllib.parse import quote
 
-REVIEW_FILES = ("summary.md", "transcript.zh.md", "supplement.md", "sop.md", "mindmap.md", "mindmap.png")
+REVIEW_FILES = ("summary.md", "transcript.zh.md", "supplement.md", "sop.md", "mindmap.md", "mindmap.png", "knowledge.md", "links.md")
 
 
 def repo_slug(remote_url: str) -> str:
@@ -42,6 +42,20 @@ def wait_confirm_lines(folder: Path) -> list:
     return [f"待確認音檔（本機）: {index}", "  GitHub 上看不到這些音檔，要在本機打開 index.md 點 ▶ 重聽"]
 
 
+def candidate_lines(folder: Path) -> list:
+    """列出 knowledge.md「## 候選」區的知識點標題（編號），供使用者用編號確認。"""
+    f = folder / "knowledge.md"
+    if not f.exists():
+        return []
+    out, in_cand = [], False
+    for line in f.read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            in_cand = line.strip() == "## 候選"
+        elif in_cand and line.startswith("### "):
+            out.append(f"  {len(out) + 1}. {line[4:].strip()}")
+    return ["知識點候選（請用編號回覆：確認 1,3／刪 2／改 4）："] + out if out else []
+
+
 def main():
     if len(sys.argv) != 2:
         sys.exit(__doc__)
@@ -53,6 +67,8 @@ def main():
     for label, url in build_links(repo_slug(run("git", "remote", "get-url", "origin")), run("git", "branch", "--show-current"), rel, files):
         print(f"{label}: {url}")
     for line in wait_confirm_lines(folder):
+        print(line)
+    for line in candidate_lines(folder):
         print(line)
 
 
