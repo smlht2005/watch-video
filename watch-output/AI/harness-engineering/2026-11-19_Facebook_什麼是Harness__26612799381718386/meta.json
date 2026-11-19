@@ -24,7 +24,14 @@
     "調題試詞": "調提示詞",
     "往回搗": "往回倒",
     "當前繪畫": "當前會話",
-    "執行股價": "執行骨架"
+    "執行股價": "執行骨架",
+    "几": "幾",
+    "工程正規化": "工程範式",
+    "新正規化": "新範式",
+    "提示詞加下文": "提示詞加上下文",
+    "如果的agent": "如果你的agent",
+    "亂為資訊": "雜亂資訊",
+    "資訊質量": "資訊品質"
   },
   "source_hashtags": [],
   "uploader": "AI/GitHub-實驗室",
@@ -68,10 +75,40 @@
       "status": "suspected"
     },
     {
+      "time": "00:06",
+      "heard": "几",
+      "expected": "幾（漏轉繁體，第二輪發現）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:15/00:30",
+      "heard": "工程正規化／新正規化",
+      "expected": "工程範式／新範式（OpenCC s2twp 把「范式」轉成「正規化」，與摘要用語一致；第二輪發現）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:33",
+      "heard": "提示詞加下文",
+      "expected": "提示詞加上下文（推測，漏字）",
+      "status": "suspected"
+    },
+    {
+      "time": "05:42",
+      "heard": "如果的agent",
+      "expected": "如果你的agent（推測，漏字）",
+      "status": "suspected"
+    },
+    {
       "time": "05:01",
       "heard": "亂為資訊",
-      "expected": "雜亂資訊（推測，原句保留）",
+      "expected": "雜亂資訊（推測）",
       "status": "suspected"
+    },
+    {
+      "time": "01:03",
+      "heard": "資訊質量",
+      "expected": "資訊品質（台灣用語）",
+      "status": "confirmed"
     }
   ],
   "keywords": [
