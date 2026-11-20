@@ -7,7 +7,7 @@ video_id: "26612799381718386"
 uploader: "AI/GitHub-實驗室"
 category: "AI/harness-engineering"
 date: "2026-11-19"
-status: unreviewed
+status: reviewed
 origin_folder: "watch-output/AI/harness-engineering/2026-11-19_Facebook_什麼是Harness__26612799381718386"
 generated_by: watch-archive
 aliases:
@@ -23,6 +23,15 @@ tags:
   - "獨立評估"
   - "雙Agent"
   - "OpenAI"
+related:
+  - "[[Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼]]"
+  - "[[Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構]]"
+  - "[[上下文工程：在正確的時間給正確的資訊]]"
+  - "[[成熟上下文工程的三件事：召回、壓縮、組裝]]"
+  - "[[三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩]]"
+  - "[[模型負責想，Harness 負責管：AI Agent＝大模型＋Harness]]"
+  - "[[Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估]]"
+  - "[[雙 Agent 模式：一個幹活，一個獨立檢查]]"
 ---
 
 # 什麼是Harness
@@ -195,6 +204,17 @@ tags:
 
 最後一句話總結，提示詞工程讓AI聽懂你，上下文工程讓AI看到該看的資訊，Harness工程讓AI在真實世界裡持續可靠的把事幹成，三層遞進，缺一不可，而最容易被忽視，最決定成敗的，恰恰是最後這一層，誰先把harness這套東西搞明白，搭起來，誰就能在AI agent這波浪潮裡，真正拿到結果。
 
+
+## 知識點
+
+- [[Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼]]
+- [[Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構]]
+- [[上下文工程：在正確的時間給正確的資訊]]
+- [[成熟上下文工程的三件事：召回、壓縮、組裝]]
+- [[三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩]]
+- [[模型負責想，Harness 負責管：AI Agent＝大模型＋Harness]]
+- [[Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估]]
+- [[雙 Agent 模式：一個幹活，一個獨立檢查]]
 
 ## 來源
 

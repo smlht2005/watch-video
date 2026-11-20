@@ -86,7 +86,15 @@
   "知識點/逆向思考：先想怎麼會失敗.md"
  ],
  "26612799381718386": [
-  "AI/harness-engineering/什麼是Harness.md"
+  "AI/harness-engineering/什麼是Harness.md",
+  "知識點/Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構.md",
+  "知識點/Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估.md",
+  "知識點/Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼.md",
+  "知識點/三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩.md",
+  "知識點/上下文工程：在正確的時間給正確的資訊.md",
+  "知識點/成熟上下文工程的三件事：召回、壓縮、組裝.md",
+  "知識點/模型負責想，Harness 負責管：AI Agent＝大模型＋Harness.md",
+  "知識點/雙 Agent 模式：一個幹活，一個獨立檢查.md"
  ],
  "4Lhp2A1kiZw": [
   "佛學/淨土安心法門(四).md"
