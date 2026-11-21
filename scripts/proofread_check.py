@@ -35,7 +35,9 @@ TERMS = {
     "程序": "程式", "內存": "記憶體", "硬盤": "硬碟", "鼠標": "滑鼠", "激活": "啟用",
 }
 # 已知 OpenCC s2twp 誤轉
-MISCONVERT = {"正規化": "範式（若原意為 范式）", "連接符": "連接符號", "重新整理": "刷新（若指創新高／刷新紀錄）"}
+MISCONVERT = {"正規化": "範式（若原意為 范式）", "連接符": "連接符號"}
+# 「重新整理」只在後接「…最高／新高／紀錄」時才疑似「刷新」誤轉（重新整理頁面／包裝是對的）
+REFRESH_RE = re.compile(r"重新整理[^，。\s]{0,6}(最高|新高|紀錄|記錄)")
 # 台灣也通用、但 OpenCC 會當成簡體的字
 TW_OK = set("台")
 # 隻 後接這些字多半是「只」
@@ -88,6 +90,8 @@ def check(folder: Path):
         for w, s in MISCONVERT.items():
             if w in text:
                 findings.append((no, t, "誤轉", f"「{w}」→「{s}」"))
+        if REFRESH_RE.search(text):
+            findings.append((no, t, "誤轉", "「重新整理…最高／新高」疑似「刷新」（OpenCC 誤轉）"))
         for m in re.finditer(r"隻([%s])" % ZHI_NEXT, text):
             findings.append((no, t, "疑似錯字", f"「隻{m.group(1)}」應為「只{m.group(1)}」"))
         for m in re.finditer(r"\b([A-Za-z]{2,})\s+\1\b", text):
