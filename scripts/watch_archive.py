@@ -713,6 +713,10 @@ def main():
 
     update_index()
     print(f"archived -> {dest.relative_to(ROOT)}")
+    try:  # 第二輪校稿的機械檢查（只列清單；逐行重讀仍要人／Claude 做）
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "proofread_check.py"), str(dest)], check=False)
+    except Exception as exc:  # pragma: no cover
+        print(f"WARNING: proofread_check 未執行：{exc}", file=sys.stderr)
     if forced_language(lang):
         print(f"WARNING: --lang {forced_language(lang)} was forced to Whisper, so a wrong language would NOT be caught; "
               "if the audio is another language the transcript will be garbage. Rerun without --lang if unsure.", file=sys.stderr)
