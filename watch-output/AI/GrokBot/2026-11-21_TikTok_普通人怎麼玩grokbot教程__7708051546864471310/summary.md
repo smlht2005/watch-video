@@ -37,5 +37,5 @@
 - 逐字稿為 Groq Whisper（中文，已轉繁體）；畫面有燒入簡體＋英文字幕，可對照。
 - 確定（畫面字幕佐證）：Glock／Globot／Grobot／Growth Bot→Grok Bot、Cloud→Claude、Node, Atlas→Notion, Atlassian、指令碼→腳本、元件→組件、連線→連接（OpenCC 誤轉）。
 - 推測：一號元→一號員工、研究報款→研究爆款、三板→三版、中版→終版、爆破了→突破了、MOD模板→Bot 模板。
-- 保留原句待確認：「Codex 跟那個 Cop」、「這個叫 AppBot」、「加七個員工進行打分」（語句不通）。
+- 使用者確認：「這個叫 AppBot」→「這個叫 Eggbot」、「Codex 跟那個 Cop」→「Codex 跟那個 Claude Code」；「加七個員工進行打分」依使用者回覆（as your word）採用建議措辭「再加七個評委，對這三版做一個打分」。
 - 第二輪：全文 312 行已逐行重讀（修 38 處）。

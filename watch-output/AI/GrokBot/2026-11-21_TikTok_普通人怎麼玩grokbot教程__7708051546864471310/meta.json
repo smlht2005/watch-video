@@ -37,7 +37,10 @@
     "釋出": "發布",
     "指令碼": "腳本",
     "元件": "組件",
-    "連線": "連接"
+    "連線": "連接",
+    "AppBot": "Eggbot",
+    "那個Cop": "那個Claude Code",
+    "加七個員工進行": "再加七個評委，對這三版做一個"
   },
   "source_hashtags": [
     "grokbot",
@@ -117,20 +120,20 @@
     {
       "time": "06:06",
       "heard": "一個是Codex跟那個Cop",
-      "expected": "「Cop」身份不明，保留原句（待確認）",
-      "status": "suspected"
+      "expected": "一個是Codex跟那個 Claude Code（使用者確認）",
+      "status": "confirmed"
     },
     {
       "time": "07:29",
       "heard": "那我就讓這些個員工加七個員工進行對這三版的做一個打分",
-      "expected": "語句不通，可能是「加七個評委」，保留原句（待確認）",
-      "status": "suspected"
+      "expected": "那我就讓這些個員工再加七個評委，對這三版做一個打分（依使用者回覆「as your word」採用建議措辭）",
+      "status": "confirmed"
     },
     {
       "time": "03:38",
       "heard": "這個叫AppBot",
-      "expected": "名稱無法核對，保留原句（待確認）",
-      "status": "suspected"
+      "expected": "這個叫 Eggbot（使用者確認）",
+      "status": "confirmed"
     }
   ],
   "keywords": [
