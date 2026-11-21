@@ -54,16 +54,21 @@ def load_lines(folder: Path):
     return rows
 
 
+_CC = None
+
+
 def simplified_residue(text: str):
+    global _CC
     try:
         import opencc
     except ImportError:
         return []
-    cc = opencc.OpenCC("s2tw")
+    if _CC is None:  # 建一次就好（每字重建會慢幾十倍）
+        _CC = opencc.OpenCC("s2tw")
     out = []
-    for i, ch in enumerate(text):
-        if "一" <= ch <= "鿿" and ch not in TW_OK:
-            t = cc.convert(ch)
+    for ch in text:
+        if "\u4e00" <= ch <= "\u9fff" and ch not in TW_OK:
+            t = _CC.convert(ch)
             if t != ch:
                 out.append((ch, t))
     return out
