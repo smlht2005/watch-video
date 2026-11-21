@@ -45,8 +45,8 @@
     {
       "time": "00:15",
       "heard": "主力城堡",
-      "expected": "主力進場（推測，發音相近）",
-      "status": "suspected"
+      "expected": "主力進場（推測，發音相近）；使用者同意",
+      "status": "confirmed"
     },
     {
       "time": "00:15",
@@ -57,20 +57,20 @@
     {
       "time": "00:11",
       "heard": "你才能夠利息",
-      "expected": "你才能夠低吸（推測；與結尾「低吸機會」對應）",
-      "status": "suspected"
+      "expected": "你才能夠低吸（推測；與結尾「低吸機會」對應）；使用者同意",
+      "status": "confirmed"
     },
     {
       "time": "00:29",
       "heard": "阻力入場後",
-      "expected": "主力入場後（推測）",
-      "status": "suspected"
+      "expected": "主力入場後（推測）；使用者同意",
+      "status": "confirmed"
     },
     {
       "time": "00:38",
       "heard": "第二個天線／第三天線",
-      "expected": "第二個K線／第三個K線（畫面字幕「第二个k线跌3个点」確認第二個；第三個為對仗推測）",
-      "status": "suspected"
+      "expected": "第二個K線／第三個K線（畫面字幕「第二个k线跌3个点」確認第二個；第三個為對仗推測）；使用者同意",
+      "status": "confirmed"
     },
     {
       "time": "00:57",
@@ -81,8 +81,8 @@
     {
       "time": "01:32",
       "heard": "最安全的路程機會／低息機會",
-      "expected": "最安全的入場機會／低吸機會（推測）",
-      "status": "suspected"
+      "expected": "最安全的入場機會／低吸機會（推測）；使用者同意",
+      "status": "confirmed"
     },
     {
       "time": "00:18",
