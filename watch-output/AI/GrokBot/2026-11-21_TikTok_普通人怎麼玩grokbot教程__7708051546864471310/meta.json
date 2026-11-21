@@ -1,0 +1,348 @@
+{
+  "url": "https://vm.tiktok.com/ZSpo5aGKk/",
+  "platform": "TikTok",
+  "video_id": "7708051546864471310",
+  "title": "普通人怎麼玩grokbot教程",
+  "title_raw": "普通人怎么玩grokbot教程 #grokbot #AI #aiagent",
+  "title_override": "",
+  "category": "AI/GrokBot",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {
+    "Glock": "Grok Bot",
+    "Growth Bot": "Grok Bot",
+    "Globot": "Grok Bot",
+    "Grobot": "Grok Bot",
+    "Grog": "Grok",
+    "Cloud": "Claude",
+    "GPD": "GPT",
+    "Node, Atlas": "Notion, Atlassian",
+    "一號元": "一號員工",
+    "三板": "三版",
+    "研究報款": "研究爆款",
+    "報款": "爆款",
+    "中版": "終版",
+    "這個Vote": "這個 Bot",
+    "一個Bot模$": "一個 Bot 模板",
+    "MOD模板": "Bot 模板",
+    "爆破了60萬": "突破了 60 萬",
+    "釋出": "發布",
+    "指令碼": "腳本",
+    "元件": "組件",
+    "連線": "連接"
+  },
+  "source_hashtags": [
+    "grokbot",
+    "AI",
+    "aiagent"
+  ],
+  "uploader": "zekechen2026",
+  "duration": "10:07 (607.3s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-21",
+  "last_updated": "2026-11-21",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "Glock／Globot／Grobot／Growth Bot／Grog",
+      "expected": "Grok Bot／Grok（畫面字幕「Grok Bot」確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "Cloud／GPD",
+      "expected": "Claude／GPT（畫面字幕「Claude Code」確認 Claude；GPT 為推測）",
+      "status": "confirmed"
+    },
+    {
+      "time": "03:00",
+      "heard": "Node, Atlas",
+      "expected": "Notion, Atlassian（畫面字幕確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "指令碼／元件／連線（OpenCC 誤轉）",
+      "expected": "腳本／組件／連接（畫面字幕「连接外面的一些组件」確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:52",
+      "heard": "一號元",
+      "expected": "一號員工（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "04:09",
+      "heard": "研究報款",
+      "expected": "研究爆款（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "07:29",
+      "heard": "三板的編輯",
+      "expected": "三版的編輯（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "08:40",
+      "heard": "中版",
+      "expected": "終版（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:07",
+      "heard": "爆破了60萬",
+      "expected": "突破了 60 萬（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:25",
+      "heard": "MOD模板／Bot模",
+      "expected": "Bot 模板（畫面「Bot 模板」，MOD 為推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "06:06",
+      "heard": "一個是Codex跟那個Cop",
+      "expected": "「Cop」身份不明，保留原句（待確認）",
+      "status": "suspected"
+    },
+    {
+      "time": "07:29",
+      "heard": "那我就讓這些個員工加七個員工進行對這三版的做一個打分",
+      "expected": "語句不通，可能是「加七個評委」，保留原句（待確認）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:38",
+      "heard": "這個叫AppBot",
+      "expected": "名稱無法核對，保留原句（待確認）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "Grok Bot",
+    "GrokBot",
+    "一人公司",
+    "OPC",
+    "AI Agent",
+    "遠端執行",
+    "Claude Code",
+    "Codex",
+    "Bot模板"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：Grok Bot 爆紅",
+      "note": "講者（zekechen2026）說 Grok Bot 要趕緊用起來：產品推出才不久，日活已突破 60 萬，馬斯克自己說增速前所未見（畫面為達沃斯世界經濟論壇的馬斯克談話，字幕「現在是六倍的增速」）（以上為講者轉述，未查證）。",
+      "keywords": [
+        "Grok Bot",
+        "馬斯克",
+        "日活"
+      ]
+    },
+    {
+      "start": "00:14",
+      "frame": "slide_02.jpg",
+      "title": "痛點一：Claude 的程式設計能力強",
+      "note": "講者說 Grok Bot 主要解決幾個痛點。第一個是想用 Claude 的原因：它的程式設計能力與作品效果比 Codex 好太多（講者主張）。",
+      "keywords": [
+        "Claude",
+        "Codex",
+        "程式設計"
+      ]
+    },
+    {
+      "start": "00:30",
+      "frame": "slide_03.jpg",
+      "title": "痛點二：OPC（一人公司）的解決方案",
+      "note": "第二個是如果玩 OPC（一人公司），她認為現階段 Grok Bot 能幫你做到；以往的 Codex 和 Claude 沒辦法提供 OPC 的整體解決方案，很多工作流要自己搭，而 Grok Bot 解決了這問題（講者主張）。",
+      "keywords": [
+        "OPC",
+        "一人公司",
+        "工作流"
+      ]
+    },
+    {
+      "start": "00:53",
+      "frame": "slide_04.jpg",
+      "title": "痛點三：不用再替筆電綁安全帶，任務在遠端執行",
+      "note": "第三個是網路上常看到有人在停車空間把筆電轉過來、綁安全帶，讓 Codex／Claude Code 繼續跑；有了 Grok Bot 就不需要，因為它提供遠端服務，任務可以脫離本機、電腦關機也能執行。",
+      "keywords": [
+        "遠端執行",
+        "電腦關機",
+        "安全帶"
+      ]
+    },
+    {
+      "start": "01:28",
+      "frame": "slide_05.jpg",
+      "title": "遠端伺服器規格",
+      "note": "講者說 Grok Bot 給每個使用者一台遠端電腦：8 核 CPU、16G 記憶體、128G 儲存空間，完全運行在 Linux 環境（講者所述，未查證）。",
+      "keywords": [
+        "8核",
+        "16G",
+        "Linux"
+      ]
+    },
+    {
+      "start": "01:38",
+      "frame": "slide_06.jpg",
+      "title": "主入口：你的私人助理就是一號員工",
+      "note": "接著從 0 到 1 介紹。Grok Bot 內有一個「新私人助理」，可理解成所有機器人的總入口、你的一號員工：要下達任何任務都跟這位員工對話，在組織架構裡它是直接向你彙報的人，其他業務部門再依分工與它對話。",
+      "keywords": [
+        "私人助理",
+        "主入口",
+        "組織架構"
+      ]
+    },
+    {
+      "start": "02:19",
+      "frame": "slide_07.jpg",
+      "title": "功能：像 Codex／Claude Code 一樣可接 MCP 與插件",
+      "note": "Grok Bot 與 Codex、Claude Code 有很多相似處：可用 MCP 或插件連接外部組件，例如 Google 郵箱、Outlook 郵箱、行事曆天然就支援；可請它把重要郵件整理彙報、直接忽略垃圾郵件；效率類還可連 Notion、Atlassian 等專案管理工具。",
+      "keywords": [
+        "MCP",
+        "插件",
+        "郵箱",
+        "Notion"
+      ]
+    },
+    {
+      "start": "03:07",
+      "frame": "slide_08.jpg",
+      "title": "第一步：新增核心機器人，用 Bot 模板更完整",
+      "note": "她認為先要新增一個核心機器人。這裡有 Bot 模板，別人已把較完善的模板建好；自己新增也可以，但模板內建了非常多提示，建出來的機器人功能更完整。新增後主入口就有了，之後要增加的其他員工分組都交給它統一分配。",
+      "keywords": [
+        "Bot模板",
+        "核心機器人",
+        "分配"
+      ]
+    },
+    {
+      "start": "03:54",
+      "frame": "slide_09.jpg",
+      "title": "示範：組建讀書影片團隊",
+      "note": "她舉例要做讀書類短影片，就對主入口的 Bot 說：需要組建一支團隊，包含研究熱門讀書影片、拆解影片結構、確認每日短影片資料；Bot 會拆解需要哪幾個步驟與人員、定下角色，確認後再請它把角色建出來。",
+      "keywords": [
+        "讀書影片",
+        "組建團隊",
+        "角色"
+      ]
+    },
+    {
+      "start": "04:33",
+      "frame": "slide_10.jpg",
+      "title": "四個角色＝四個員工",
+      "note": "它建了四個角色：負責研究爆款、研究策劃、編導、資料覆盤；她發現沒有人負責做影片，一問才又建了一位影片編劇。",
+      "keywords": [
+        "爆款研究",
+        "策劃",
+        "編導",
+        "覆盤"
+      ]
+    },
+    {
+      "start": "04:58",
+      "frame": "slide_11.jpg",
+      "title": "也可以把 Claude Code 或 Codex 當成做影片的員工",
+      "note": "若想用現有的 Codex 或 Claude Code，建立員工時直接說要建哪幾個員工（例如一個用 Claude Code 做影片、另一個用 Codex 做影片），只需和 Claude 對話，它會把意思轉達給 Claude Code。",
+      "keywords": [
+        "Claude Code",
+        "Codex",
+        "員工"
+      ]
+    },
+    {
+      "start": "05:23",
+      "frame": "slide_12.jpg",
+      "title": "讓組織運作：先出一支 60 秒試看",
+      "note": "組織搭好後就讓它開始運作：問「今天要發布的影片與腳本是什麼」，秘書會給整體腳本與故事線；因為她先要求做 60 秒的預告試看，可減省後續 token（講者主張），可直接點開觀看。",
+      "keywords": [
+        "試看",
+        "腳本",
+        "token"
+      ]
+    },
+    {
+      "start": "06:05",
+      "frame": "slide_13.jpg",
+      "title": "第一版不滿意：用對話下需求，由專案主管往下傳達",
+      "note": "第一版可能不符合審美，她又加了兩個（Codex 與另一個）做對比，並提出：語速太慢要加快、參考原作品選相似節奏的背景音。她說只需跟一個專案主管（PM）溝通，需求會被帶給所有員工同時幹活，結果再回傳。",
+      "keywords": [
+        "迭代",
+        "專案PM",
+        "需求傳達"
+      ]
+    },
+    {
+      "start": "07:23",
+      "frame": "slide_14.jpg",
+      "title": "三版對比與七位評委打分",
+      "note": "她讓三個 Agent 各做一版，再讓十來個員工中加入七位評委從七個維度（如開頭勾子）打分、投票；有趣的是 AI 說自己做的那版最好，七位評委加權後也選了自己那版；她個人覺得 Claude 做的最好、GPT 做的不如 Grok 的（講者主觀）。",
+      "keywords": [
+        "評分",
+        "七個維度",
+        "主觀審美"
+      ]
+    },
+    {
+      "start": "08:25",
+      "frame": "slide_15.jpg",
+      "title": "終版與產量：前期不必整條流水線",
+      "note": "重做完後讓它們再做一分鐘試片，效果仍不夠好就繼續調；拿到終版後，因為前期產量不多，可先自己做，沒必要讓整條流水線都跑起來（講者主張）。",
+      "keywords": [
+        "試片",
+        "產量",
+        "流水線"
+      ]
+    },
+    {
+      "start": "08:50",
+      "frame": "slide_16.jpg",
+      "title": "為大量 Bot 分組：右鍵移動到",
+      "note": "她一次建了很多 Bot，可以人工分組：沒有直接的分組功能，要在機器人上按右鍵、選「移動到」，建立想要的分組並命名，依自己想要的組織形態加入。",
+      "keywords": [
+        "分組",
+        "右鍵",
+        "移動到"
+      ]
+    },
+    {
+      "start": "09:16",
+      "frame": "slide_17.jpg",
+      "title": "一人公司的雛形與結語",
+      "note": "這就是一人公司的雛形：把所有訴求告訴你的大內總管（私人秘書），它會拆解並分派任務——先請研究員拆解爆款影片，秘書可能請你決策是否合適，再往下做策劃、編劇，由你稽核後做影片試看，確定後整體流程就通了；影片結尾邀請在評論區討論（講者主張）。",
+      "keywords": [
+        "一人公司",
+        "流程",
+        "稽核"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 38,
+    "note": "全文 312 行逐行重讀（對照畫面字幕）"
+  }
+}
