@@ -7,13 +7,13 @@ video_id: "2123611684690641296"
 source_note: "[[永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？]]"
 origin: "02:40"
 claim: "講者主張，未查證"
-category: "AI/Agent"
+category: "AI/GrokBot"
 date: "2026-11-20"
 status: confirmed
 generated_by: watch-archive
 tags:
   - "knowledge-point"
-  - "AI/Agent"
+  - "AI/GrokBot"
   - "AI-Agent"
   - "建立Agent"
   - "Lauren-Tan"

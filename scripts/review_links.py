@@ -67,10 +67,11 @@ def second_pass_status(folder: Path):
     """回傳 (done, enforced)。"""
     try:
         meta = json.loads((folder / "meta.json").read_text(encoding="utf-8"))
-    except Exception:
-        return True, False
+    except Exception as exc:  # 讀不到 meta.json 就不能判斷閘門，不要悄悄放行
+        sys.exit(f"ERROR: 讀不到 {folder}/meta.json，無法檢查第二輪校稿閘門：{exc}")
     done = bool((meta.get("second_pass") or {}).get("done"))
-    enforced = (meta.get("first_archived") or "") >= GATE_FROM
+    first = meta.get("first_archived") or ""
+    enforced = first == "" or first >= GATE_FROM  # 沒有 first_archived 視為新影片，照樣把關
     return done, enforced
 
 

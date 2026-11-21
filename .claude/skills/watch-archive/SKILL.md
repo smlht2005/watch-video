@@ -47,6 +47,7 @@ description: 看影片並歸檔成圖文報告。使用者給影片網址（Face
    - 5b：`python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>` 匯成 `obsidian-vault/` 的筆記（影片筆記＋已確認知識點的原子筆記＋索引；`--vault <路徑>` 只寫進該 vault 的 `watch-archive/`）。Threads 圖文貼文網址會自動抓本文與全部頁面圖；其他圖文貼文的手動歸檔方式也在該參考檔。
 6. **交付**：貼報告 md 連結；有 `--docx` 時 SendUserFile 傳 `*_report.docx`；回覆說明逐字稿來源（`meta.json.transcript_source`）與外語中譯。
 7. **提交並給確認連結**（含 `knowledge.md` 連結與編號的知識點候選清單，請使用者用編號確認）：commit、push 到 `claude/...` 分支，跑 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 貼連結（有 `waitConfirm/` 時會多印本機 `index.md` 路徑），並列出需使用者確認的判斷。**使用者確認前不開 PR、不 merge。**
+9. **改領域（搬單支影片、領域改名、合併）**：不要手動搬資料夾或用 `organize.py`（它會改到別支 `meta.json` 的換行）。用 `python3 scripts/move_category.py --video <資料夾> --to <領域>` 或 `--from <舊領域> --to <新領域>`：**先 dry-run 列清單給使用者看**，使用者說「搬」之後才加 `--apply`；完成後回覆三件事（搬了哪些影片、Obsidian 知識點筆記改名幾篇、有沒有新壞連結），commit 但**不自動開 PR**。細節見 `.claude/skills/watch-archive/references/params.md`「改領域」。
 8. **確認後才開 PR 並 merge**：合併方式依使用者指示；沒說就先問。
 
 失敗時回報錯誤類別與原因（網路／下載／轉錄／權限），不要印出 key。
