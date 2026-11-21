@@ -1,0 +1,285 @@
+{
+  "url": "https://x.com/huxlab/status/2120782676676542488/video/1?a=Mu-8mSTF4xDvfMWE-Fk&s=19",
+  "platform": "X",
+  "video_id": "2120782676676542488",
+  "title": "Hux - 今晚別刷Netflix了。  去看這個SpaceX AI工程師1小時的課程。  這是我見過最清晰、端到端講透GrokBot到底該怎麼真正用...",
+  "title_raw": "Hux - 今晚别刷Netflix了。  去看这个SpaceX AI工程师1小时的课程。  这是我见过最清晰、端到端讲透GrokBot到底该怎么真正用...",
+  "title_override": "",
+  "category": "AI/GrokBot",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "en",
+  "language_source": "heuristic",
+  "forced_lang": "",
+  "needs_zh_translation": true,
+  "glossaries": [],
+  "glossary_applied": {
+    "Rockbot": "Grokbot",
+    "GraphBot": "Grokbot",
+    "in Robot is": "in Grokbot is",
+    "email playbook": "eval playbook",
+    "PSAT": "PStack",
+    "P stack": "PStack",
+    "P-Stack": "PStack",
+    "P-stack": "PStack",
+    "Pstack": "PStack",
+    "bugba": "BugBot",
+    "Gary": "Garry"
+  },
+  "source_hashtags": [],
+  "uploader": "Hux",
+  "duration": "56:09 (3368.9s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "captions (en, manual, original)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-21",
+  "last_updated": "2026-11-21",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "Rockbot／GraphBot／in Robot（英文字幕）",
+      "expected": "Grokbot",
+      "status": "confirmed"
+    },
+    {
+      "time": "20:26",
+      "heard": "email playbook",
+      "expected": "eval playbook（上文「eval playbook」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "29:21",
+      "heard": "PSAT／P stack／Pstack",
+      "expected": "PStack（統一寫法）",
+      "status": "confirmed"
+    },
+    {
+      "time": "45:31",
+      "heard": "bugba",
+      "expected": "BugBot",
+      "status": "confirmed"
+    },
+    {
+      "time": "14:13",
+      "heard": "Gary Tan／GaryStack",
+      "expected": "Garry Tan／GarryStack（Y Combinator CEO 的正確拼法）",
+      "status": "confirmed"
+    },
+    {
+      "time": "21:11",
+      "heard": "DSAC",
+      "expected": "工具名不明，保留原文（待確認）",
+      "status": "suspected"
+    },
+    {
+      "time": "51:23",
+      "heard": "fable size",
+      "expected": "模型級別名稱，保留原文（待確認）",
+      "status": "suspected"
+    },
+    {
+      "time": "全片",
+      "heard": "英文字幕（平台人工字幕）",
+      "expected": "另寫繁體中文中譯 transcript.zh.md；標題稱「SpaceX AI 工程師」，內容為 Lauren（任職 Cursor／SpaceX AI）談 Cursor 與 Grokbot",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "Grokbot",
+    "Cursor",
+    "PStack",
+    "驗證 skill",
+    "eval",
+    "Dune 架構",
+    "信任曲線",
+    "Lauren Tan"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：AI 是結對夥伴，不是取代思考",
+      "note": "講者 Lauren（任職 Cursor／SpaceX AI，Grokbot 團隊）認為使用 AI 最好的方式是把它當結對編程的夥伴，而不是取代寫程式、甚至外包思考的工具；她觀察到用 AI 雖省寫碼時間，卻花更多時間審查與修正 AI 的產出（講者主張）。",
+      "keywords": [
+        "結對編程",
+        "vibe coding",
+        "審查"
+      ]
+    },
+    {
+      "start": "01:25",
+      "frame": "slide_02.jpg",
+      "title": "核心問題：如何信任 agent？信任曲線",
+      "note": "她說最大的主題是如何信任 agent：不信任時就像不信任團隊的主管只能微觀管理、無法平行化。她畫了一條「信任曲線」：過去五個月她逐步爬升，現在讓 agent 自動合併 PR，醒來常有約 20 個 PR 已合併（講者主張，未查證）。",
+      "keywords": [
+        "信任曲線",
+        "自動合併",
+        "微觀管理"
+      ]
+    },
+    {
+      "start": "04:18",
+      "frame": "slide_03.jpg",
+      "title": "成績與信心：一個月交付 1000 個 PR",
+      "note": "她稱這條曲線與自己在 Cursor 合併的貢獻量呈反向對應：五個月前加入，第一個月幾乎沒產出，信心上升後上月交付 1000 個 PR、本月 12 號已近 800 個；她坦言程式碼品質值得質疑，但相信設定好 agent 就能達到類似水準（講者主張，未查證）。 畫面投影片寫「i shipped 3000+ PRs in 5 months」。",
+      "keywords": [
+        "1000 PR",
+        "生產力",
+        "信心"
+      ]
+    },
+    {
+      "start": "06:03",
+      "frame": "slide_04.jpg",
+      "title": "最重要的技能：驗證（verification）",
+      "note": "她說與 agent 合作最重要的技能是驗證：讓 agent 能真的執行程式、取得 CPU 追蹤、heap snapshot、開 iOS 模擬器，實際測試並驗證自己的工作；它不保證程式碼好，但能讓 agent 至少寫出「正確」的程式碼，這是信任 agent 的一大步（講者主張）。",
+      "keywords": [
+        "驗證",
+        "閉環",
+        "正確"
+      ]
+    },
+    {
+      "start": "07:02",
+      "frame": "slide_05.jpg",
+      "title": "實例：Cursor agent 視窗、control glass skill 與功能地圖",
+      "note": "她加入 Cursor 第一週要在緊迫期限內做效能調校，agent 看不懂追蹤檔只會信心滿滿亂猜，人成了瓶頸、無法平行化；於是她做了 control glass skill（讓 agent 用 Chrome DevTools 協定等操作應用），並加入「功能地圖」教 agent 如何走到各個功能，讓模糊的使用者回報也能對應到功能（講者所述）。",
+      "keywords": [
+        "control glass",
+        "功能地圖",
+        "DevTools",
+        "瓶頸"
+      ]
+    },
+    {
+      "start": "13:46",
+      "frame": "slide_06.jpg",
+      "title": "PStack：從一個個 skill 長出來的外掛",
+      "note": "PStack 的 P 是 potato（馬鈴薯），調侃 Garry Tan 的 GStack；她從 control glass skill 與 HAL 等 skill 開始，觀察 agent 的失敗模式（信心滿滿卻沒讀該讀的程式碼），每次失敗就做成 skill。她用「新人主管」類比：skill 就是 markdown，編碼資訊與指示，可把 agent 拉到更高品質的「潛在空間」（講者主張）。",
+      "keywords": [
+        "PStack",
+        "skill",
+        "潛在空間"
+      ]
+    },
+    {
+      "start": "17:26",
+      "frame": "slide_07.jpg",
+      "title": "如何維護 skill：把 eval 當作 agent 的單元測試",
+      "note": "被問到如何維護 skill 與如何知道驗證夠好：她把 eval 當作「agent 的單元測試」，PStack 有 eval playbook：主協調 agent 先訂評分標準、再產生多個子 agent（目錄命名刻意不讓它們知道在被評估，因為 agent 看得出來會改變行為）；可跨多個模型評估；維護 skill 需要品味與觀察，要像結對編程的「後座駕駛」（講者主張）。",
+      "keywords": [
+        "eval",
+        "子agent",
+        "後座駕駛"
+      ]
+    },
+    {
+      "start": "21:36",
+      "frame": "slide_08.jpg",
+      "title": "用評審 agent 與 hill climbing 迭代驗證 skill",
+      "note": "驗證 skill 的方法也是迭代：eval 可產生分數，用另一個模型當評審 agent 交叉比對避免偏頗，並用 Cursor 的 slash loop 持續爬山直到滿分；她就是這樣放手做出 control skill 及其 CLI，但一開始並不順。她的比喻：工程師現在像餐廳主廚，要設計廚房環境、分配任務（講者主張）。",
+      "keywords": [
+        "hill climb",
+        "評審agent",
+        "主廚"
+      ]
+    },
+    {
+      "start": "23:50",
+      "frame": "slide_09.jpg",
+      "title": "從本機驗證走到雲端 agent：Benny 的例子",
+      "note": "建議從本機開始，才看得到 agent 如何與應用互動；她自己則幾乎全押雲端 agent：設定好環境後，驗證 skill 讓整個團隊受益。例如 Benny agent 自動接 bug 回報、在雲端開桌機跑 Cursor 重現 bug，結果常能直接確認「已修好」；但要先建立信任，不要直接叫出成百上千個雲端 agent，否則浪費 token（講者主張）。",
+      "keywords": [
+        "雲端agent",
+        "Benny",
+        "本機"
+      ]
+    },
+    {
+      "start": "27:32",
+      "frame": "slide_10.jpg",
+      "title": "主持人回顧：從驗證到自動合併的旅程",
+      "note": "主持人整理路徑：先做驗證與 skill 確保 agent 產出正確程式碼；本機信任後擴展到雲端、讓 agent 自己撿 bug 回報等訊號；最後才是自動合併。Lauren 補充這條路沒有捷徑，取決於個人對 agent 的信任；PStack 等外掛可加速但不建議盲信，鼓勵 fork 成自己的版本，把各自的工程標準編碼成 skill（講者主張）。",
+      "keywords": [
+        "回顧",
+        "沒有捷徑",
+        "fork"
+      ]
+    },
+    {
+      "start": "29:56",
+      "frame": "slide_11.jpg",
+      "title": "重構與重寫：既有 vs 全新應用，護欄先行",
+      "note": "她主張在 agent 時代值得重新考慮重寫：Brownfield 應用若護欄完善，agent 本來就做得不錯；Greenfield／vibe code 的原型（如 Grokbot 初版）完全沒有護欄，agent 會用最方便的方式解題、久而久之失控。她為此用 600+ 個 PR 把 Grokbot 重構成新架構，如今「不再看程式碼」，並讓 PM、設計師、GTM 都能加功能（講者主張，未查證）。",
+      "keywords": [
+        "重寫",
+        "護欄",
+        "vibe coding",
+        "新架構"
+      ]
+    },
+    {
+      "start": "36:05",
+      "frame": "slide_12.jpg",
+      "title": "PR 大小與 CI：Dune 架構的硬性規則",
+      "note": "PR 大小沒有硬上限，從幾十行到上千行，但鼓勵 agent 拆成原子性 PR，讓 Git 歷史成為脈絡並方便回復。CI 很嚴：Dune 是給 Electron 應用用的「Next.js」，禁用 useEffect、禁止程式碼註解（agent 常寫無關的歷史註解）、用 import CI 檢查 main 與 renderer 目錄的相依，避免卡頓；由 CI、BugBot 等強制（講者所述）。",
+      "keywords": [
+        "Dune",
+        "CI",
+        "禁用useEffect",
+        "BugBot"
+      ]
+    },
+    {
+      "start": "42:42",
+      "frame": "slide_13.jpg",
+      "title": "多層約束：硬強制優先，軟規則輔助",
+      "note": "好程式碼庫有多層：最強是架構與慣例（agent 愛複製既有模式，feature 共置在單一目錄、「最短路徑就是最好路徑」）；其次是靜態分析、CI、lint、編譯器診斷（硬性，讓 CI 變紅）；最後才是 BugBot 規則與 skill（軟性、agent 可能忘記）。技術堆疊也重要（如 Rust 的嚴格編譯器）；若要靠人在審查時反覆糾正，就該把它變成 lint 或 CI 規則（講者主張）。",
+      "keywords": [
+        "分層約束",
+        "靜態分析",
+        "Rust",
+        "code smell"
+      ]
+    },
+    {
+      "start": "48:25",
+      "frame": "slide_14.jpg",
+      "title": "Q&A：token 成本與 ROI；Grok 4.6",
+      "note": "被問到一般人 token 有限是否可行：她承認在 AI 實驗室有無限 token，但認為這是 ROI 取捨：前期花很多 token 重構，換來讓最笨的 agent 也能做好、PM 與設計師也能貢獻；相對於雇人或膨脹成萬人團隊更精實。她並提到當天宣布 Grok 4.6，稱每 token 成本與 4.5 相同但更聰明，Cursor 與 SpaceX AI 追求成本對智慧的帕雷托前緣（講者主張，未查證）。",
+      "keywords": [
+        "token",
+        "ROI",
+        "Grok 4.6",
+        "帕雷托前緣"
+      ]
+    },
+    {
+      "start": "53:26",
+      "frame": "slide_15.jpg",
+      "title": "Grokbot 與非工程團隊：PM、設計師也能交付",
+      "note": "最後一題：產品團隊如何跟上？她說 Grokbot 是非技術人員的「Cursor 時刻」：介面像 iMessage、可給 agent 取名、一人一個 agent 管理帳號、用 agent 總結她昨晚的工作；PM 甚至自己修 bug 提 PR，她審查後直接蓋章，證明 Dune 的嚴格約束讓非工程專家也能高水準貢獻（講者主張，未查證）。",
+      "keywords": [
+        "Grokbot",
+        "非技術人員",
+        "iMessage",
+        "PM"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 22,
+    "note": "1561 行英文字幕：機械檢查＋全文通讀；另寫中譯"
+  }
+}
