@@ -27,7 +27,14 @@
     "連公牌都發了": "連工牌都發了",
     "反攻也少了": "返工也少了",
     "要不要收場起來": "要不要收藏起來",
-    "找一期咱繼續挖": "下一期咱繼續挖"
+    "找一期咱繼續挖": "下一期咱繼續挖",
+    "隻要你": "只要你",
+    "平臺賬號": "平台帳號",
+    "的不錯的那一次對話": "做得不錯的那一次對話",
+    "把剛才知道方法": "把剛才的方法",
+    "用語音聽 AI 說": "用語音跟 AI 說",
+    "還不關上一波": "還不關注一波",
+    "指稱 Lauren Tan 的他／它": "她"
   },
   "source_hashtags": [],
   "uploader": "永動之初",
@@ -99,6 +106,48 @@
       "heard": "平台字幕（翻譯字幕，非 Whisper）；人名 Lauren Tan 與 Grokbot 來自畫面",
       "expected": "保留",
       "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "字幕以「他／它」稱呼 Lauren Tan（女性）",
+      "expected": "改為「她」（第二輪；僅限指稱本人處，指 AI 的「他」保留）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:45",
+      "heard": "隻要你",
+      "expected": "只要你",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:26",
+      "heard": "平臺賬號",
+      "expected": "平台帳號（台灣用字）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:58",
+      "heard": "的不錯的那一次對話",
+      "expected": "做得不錯的那一次對話（推測，漏字）",
+      "status": "suspected"
+    },
+    {
+      "time": "02:03",
+      "heard": "把剛才知道方法",
+      "expected": "把剛才的方法（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:01",
+      "heard": "用語音聽 AI 說",
+      "expected": "用語音跟 AI 說（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:55",
+      "heard": "還不關上一波",
+      "expected": "還不關注一波（推測）",
+      "status": "suspected"
     }
   ],
   "keywords": [
