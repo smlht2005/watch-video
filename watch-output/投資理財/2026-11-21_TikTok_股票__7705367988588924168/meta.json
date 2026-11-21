@@ -1,0 +1,179 @@
+{
+  "url": "https://vt.tiktok.com/ZSpoFQDJq/",
+  "platform": "TikTok",
+  "video_id": "7705367988588924168",
+  "title": "股票",
+  "title_raw": "#股票",
+  "title_override": "",
+  "category": "投資理財",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "股市、本益比、殖利率、ETF、台積電、加權指數、融資、融券、停損、停利、當沖、外資、投信、財報、EPS、技術分析、K線、均線、選擇權、做空、籌碼峰、籌碼真空、錨定效應、抄底"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "stock-investing"
+  ],
+  "glossary_applied": {
+    "主力城堡": "主力進場",
+    "大洋線": "大陽線",
+    "你才能夠利息": "你才能夠低吸",
+    "阻力入場後": "主力入場後",
+    "第二個天線": "第二個K線",
+    "第三天線": "第三個K線",
+    "摔跌": "衰竭",
+    "最安全的路程機會": "最安全的入場機會",
+    "最安全的低息機會": "最安全的低吸機會"
+  },
+  "source_hashtags": [
+    "股票"
+  ],
+  "uploader": "linconpltsd",
+  "duration": "01:45 (104.7s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-21",
+  "last_updated": "2026-11-21",
+  "known_asr_errors": [
+    {
+      "time": "00:15",
+      "heard": "主力城堡",
+      "expected": "主力進場（推測，發音相近）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:15",
+      "heard": "大洋線",
+      "expected": "大陽線（畫面字幕「大阳线」確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:11",
+      "heard": "你才能夠利息",
+      "expected": "你才能夠低吸（推測；與結尾「低吸機會」對應）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:29",
+      "heard": "阻力入場後",
+      "expected": "主力入場後（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:38",
+      "heard": "第二個天線／第三天線",
+      "expected": "第二個K線／第三個K線（畫面字幕「第二个k线跌3个点」確認第二個；第三個為對仗推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:57",
+      "heard": "摔跌",
+      "expected": "衰竭（畫面字幕「这叫真正的衰竭」「衰竭之后最理想的还是什么」確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:32",
+      "heard": "最安全的路程機會／低息機會",
+      "expected": "最安全的入場機會／低吸機會（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:18",
+      "heard": "最理想的是轉平板",
+      "expected": "可能是「接近漲停板」之類，語意不清，保留原句（待確認）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "股票",
+    "技術分析",
+    "抄底",
+    "縮量",
+    "價漲量增",
+    "主力",
+    "衰竭",
+    "K線"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：下跌途中不參與，等下跌尾聲的三個條件",
+      "note": "講者（畫面標示為證券從業者，附「歷史案例僅供教學、不作投資依據」字樣）說下跌途中不能參與股票，因為你永遠不知道底在哪裡；要等到下跌尾聲出現三個核心條件才能低吸（講者主張，未查證）。",
+      "keywords": [
+        "下跌",
+        "抄底",
+        "三個條件"
+      ]
+    },
+    {
+      "start": "00:12",
+      "frame": "slide_02.jpg",
+      "title": "條件一：主力進場——一根價量齊升的放量大陽線",
+      "note": "第一個條件是主力進場的訊號：一根放量的大陽線，最理想的是接近漲停板；必須同時有價（大陽線）、有量（放量）。講者說如果連一根大陽線都沒出來，就要問主力資金到底有沒有進場（講者主張）。",
+      "keywords": [
+        "主力",
+        "放量大陽線"
+      ]
+    },
+    {
+      "start": "00:29",
+      "frame": "slide_03.jpg",
+      "title": "條件二（一）：主力入場後，價格連續收縮",
+      "note": "第二個條件是主力入場後看到空方力量衰竭，必須有兩點。第一，價格連續收縮：例如第一根 K 線跌 5 個點、第二根跌 3 個點、第三根可能只跌 1 個點，跌幅越來越小（講者舉例，非實際數據）。",
+      "keywords": [
+        "空方衰竭",
+        "價格收縮",
+        "K線"
+      ]
+    },
+    {
+      "start": "00:48",
+      "frame": "slide_04.jpg",
+      "title": "條件二（二）：成交量同步收縮，出現最低量與最低價",
+      "note": "第二點是成交量也要逐步下降：價格連續縮、量也連續縮，說明真正的空方力量開始衰竭、沒有人賣了；這個位置出現一個最低的量、同時有個最低的價，說明賣的人已經沒有力量再往下拋，講者稱這叫真正的衰竭（講者主張，未查證）。",
+      "keywords": [
+        "縮量",
+        "最低量",
+        "衰竭"
+      ]
+    },
+    {
+      "start": "01:14",
+      "frame": "slide_05.jpg",
+      "title": "條件三：衰竭之後要等確認訊號",
+      "note": "第三個條件是衰竭之後最理想的還是出現一個確認的訊號；講者問「這一天能不能直接進場」，答案是原則上可以。",
+      "keywords": [
+        "確認訊號"
+      ]
+    },
+    {
+      "start": "01:19",
+      "frame": "slide_06.jpg",
+      "title": "進場時機：第二天價漲量增的陽線最安全",
+      "note": "講者說最安全的機會是第二天出現一根確認的陽線，而且是價漲量增的陽線；當這根陽線出現時再買，他稱是最安全的低吸機會（講者主張，未查證；非投資建議）。",
+      "keywords": [
+        "價漲量增",
+        "低吸",
+        "陽線"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 14,
+    "note": "全文 29 行逐行重讀"
+  }
+}
