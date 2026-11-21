@@ -3,7 +3,7 @@
 
 For each watch-output/<領域>/<資料夾>/ it writes
   <vault>/<領域>/<標題>.md          note: YAML properties + 思維導圖（文字） + 知識點 + 連結 + 補充資料
-  <vault>/知識點/<知識點>.md        one atomic note per confirmed knowledge point (knowledge.md)
+  <vault>/知識點/<子領域或領域>_<知識點>.md  one atomic note per confirmed knowledge point (knowledge.md); prefix = sub-domain, else domain
   <vault>/<領域>/<標題>_操作SOP.md  copy of kb/*_操作SOP.md when the folder has an SOP
   <vault>/_attachments/<video_id>/ 圖文對照 pictures (<=1024 px), knowledge-point pictures, SOP step images (relative links)
 and rebuilds <vault>/00-索引.md (notes by 領域, knowledge points, 待建立節點).
@@ -418,9 +418,18 @@ def point_context(dest: Path, meta: dict, pt: dict, note_stem: str, anchors: lis
     return {"target": target, "heading": heading, "ext": ext, "context": ctx, "zh": bool(zh)}
 
 
-def point_note_path(vault: Path, title: str, vid: str, manifest: dict, taken=()) -> Path:
-    """<vault>/知識點/<title>.md; another video's (or the user's) note of that name is never overwritten."""
-    return free_path(vault, vault / POINT_DIR, safe_name(title), vid, manifest, taken)
+def domain_prefix(cat: str) -> str:
+    """Knowledge-point file prefix: the sub-domain if the category has one (AI/harness-engineering → harness-engineering),
+    else the domain (投資理財). Keeps notes from different domains apart in the flat 知識點/ folder."""
+    return safe_name(cat.rpartition("/")[2] or cat)
+
+
+def point_note_path(vault: Path, title: str, vid: str, manifest: dict, taken=(), cat: str = "") -> Path:
+    """<vault>/知識點/<domain-or-subdomain>_<title>.md; another video's (or the user's) note of that name is never overwritten."""
+    base = safe_name(title)
+    if cat:
+        base = f"{domain_prefix(cat)}_{base}"
+    return free_path(vault, vault / POINT_DIR, base, vid, manifest, taken)
 
 
 def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: list, image_rel: str = "",
@@ -433,7 +442,7 @@ def point_md(pt: dict, meta: dict, vid: str, cat: str, note_stem: str, tags: lis
     if ctx["ext"]:
         src_link += f" · [▶ 原影片 {src}]({ctx['ext']})"
     targets = list(dict.fromkeys([t for t, _, _ in pt["links"]] + [note_stem]))
-    front = ["---", f"title: {q(pt['title'])}", "type: knowledge-point", f"video_id: {q(vid)}",
+    front = ["---", f"title: {q(pt['title'])}", "aliases:", f"  - {q(pt['title'])}", "type: knowledge-point", f"video_id: {q(vid)}",
              f"source_note: {q('[[' + note_stem + ']]')}", f"origin: {q(pt['source'])}", f"claim: {q(pt['flag'] or DEFAULT_FLAG)}",
              f"category: {q(cat)}", f"date: {q(meta.get('last_updated', ''))}", "status: confirmed", MARK,
              "tags:"] + [f"  - {q(t)}" for t in dict.fromkeys(["knowledge-point", *tags[1:]])]
@@ -496,7 +505,7 @@ def export(dest: Path, vault: Path, with_pages: bool = False) -> list:
             problems.append(f"知識點「{pt['title']}」與「{by_name[key]}」的檔名相同（標題重複或前 {NAME_MAX} 字相同），已略過後者，請改名")
             continue
         by_name[key] = pt["title"]
-        point_paths[pt["title"]] = point_note_path(vault, pt["title"], vid, manifest, set(point_paths.values()))
+        point_paths[pt["title"]] = point_note_path(vault, pt["title"], vid, manifest, set(point_paths.values()), cat)
     points = [pt for pt in points if pt["title"] in point_paths and by_name.get(safe_name(pt["title"])) == pt["title"]]
     sop_src = next(iter(sorted((dest / "kb").glob("*_操作SOP.md"))), None) if (dest / "kb").is_dir() else None
     targets_sop = [sop_src.stem] if sop_src else []
