@@ -22,7 +22,8 @@
     "籌碼風": "籌碼峰",
     "滯滿": "自滿",
     "三角到山頂": "山腳到山頂",
-    "過度籌碼": "過渡籌碼"
+    "過度籌碼": "過渡籌碼",
+    "馬上要釋出": "馬上要發布"
   },
   "source_hashtags": [],
   "uploader": "LEI",
@@ -63,6 +64,12 @@
       "time": "全片",
       "heard": "平台字幕（翻譯字幕）；用語為中國用法（英偉達＝輝達、止損＝停損）",
       "expected": "保留原用語，不強改",
+      "status": "confirmed"
+    },
+    {
+      "time": "06:07",
+      "heard": "馬上要釋出的財報",
+      "expected": "馬上要發布的財報（第二輪；其餘行重讀無誤）",
       "status": "confirmed"
     }
   ],
@@ -182,5 +189,11 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 1,
+    "note": "第二輪逐行重讀（2026-11-21）"
+  }
 }

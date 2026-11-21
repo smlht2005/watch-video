@@ -26,7 +26,10 @@
     "時日線": "10 日線",
     "亮出來": "量出來",
     "堅定這一筆": "限定這一筆",
-    "叫選股": "教選股"
+    "叫選股": "教選股",
+    "又又以": "又以",
+    "多質量差": "多品質差",
+    "再買一直股價股票": "再買一隻股票"
   },
   "source_hashtags": [],
   "uploader": "投機實驗室",
@@ -86,6 +89,30 @@
       "heard": "馬克·米納威尼",
       "expected": "保留字幕譯名（即 Mark Minervini，畫面英文為 Minervini）",
       "status": "confirmed"
+    },
+    {
+      "time": "00:28",
+      "heard": "又又以 252.3%",
+      "expected": "又以 252.3%（第一輪替換「為免用→又以」時留下的重複「又」，第二輪修正）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:53",
+      "heard": "質量差",
+      "expected": "品質差（台灣用語）",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "字幕以「它」稱呼 J Law／米納威尼等人",
+      "expected": "指人處改為「他」，指股票處保留「它」（第二輪）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:59",
+      "heard": "再買一直股價股票漲了一大段",
+      "expected": "再買一隻股票漲了一大段（推測，句子語病）",
+      "status": "suspected"
     }
   ],
   "keywords": [
@@ -225,5 +252,11 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 14,
+    "note": "第二輪逐行重讀（2026-11-21）"
+  }
 }

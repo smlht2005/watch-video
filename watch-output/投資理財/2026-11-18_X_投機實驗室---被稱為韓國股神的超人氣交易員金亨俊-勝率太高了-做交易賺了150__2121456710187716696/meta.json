@@ -26,7 +26,9 @@
     "Celetrion": "Celltrion",
     "拉搭上去": "拉上去",
     "賬戶": "帳戶",
-    "看盤軟件": "看盤軟體"
+    "看盤軟件": "看盤軟體",
+    "股價重新整理了": "股價刷新了",
+    "最多隻放": "最多只放"
   },
   "source_hashtags": [],
   "uploader": "投機實驗室",
@@ -55,6 +57,24 @@
       "time": "全片",
       "heard": "平台字幕為翻譯字幕，非 Whisper 轉錄；已修石盤／自旋股／含元／Celetrion 等字幕錯字",
       "expected": "以畫面字幕核對",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:57",
+      "heard": "股價重新整理了",
+      "expected": "股價刷新了（OpenCC 把「刷新」轉成「重新整理」；第二輪發現）",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "字幕以「它」「他」混稱金亨俊／股票",
+      "expected": "指金亨俊處統一為「他」、指股票處用「它」（第二輪）",
+      "status": "confirmed"
+    },
+    {
+      "time": "06:07",
+      "heard": "最多隻放",
+      "expected": "最多只放（第二輪發現）",
       "status": "confirmed"
     }
   ],
@@ -176,5 +196,11 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 10,
+    "note": "第二輪逐行重讀（2026-11-21）"
+  }
 }
