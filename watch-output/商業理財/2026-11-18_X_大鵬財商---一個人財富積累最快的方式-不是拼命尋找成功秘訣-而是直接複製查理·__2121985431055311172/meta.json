@@ -24,7 +24,10 @@
     "報復捷徑": "暴富捷徑",
     "這十條歷你": "這十條裡你",
     "第一股": "低谷",
-    "低估來了": "低谷來了"
+    "低估來了": "低谷來了",
+    "篩選不是勢力": "篩選不是勢利",
+    "對抗他的第一步": "對抗它的第一步",
+    "想象": "想像"
   },
   "source_hashtags": [],
   "uploader": "大鵬財商",
@@ -78,6 +81,24 @@
       "heard": "第一股",
       "expected": "低谷（推測）",
       "status": "suspected"
+    },
+    {
+      "time": "04:09",
+      "heard": "篩選不是勢力",
+      "expected": "篩選不是勢利（第二輪；同音誤字）",
+      "status": "confirmed"
+    },
+    {
+      "time": "03:18",
+      "heard": "對抗他的第一步",
+      "expected": "對抗它的第一步（指過度自信與自我欺騙，第二輪）",
+      "status": "confirmed"
+    },
+    {
+      "time": "04:38",
+      "heard": "想象",
+      "expected": "想像（台灣用字）",
+      "status": "confirmed"
     }
   ],
   "keywords": [
@@ -223,5 +244,11 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 3,
+    "note": "第二輪逐行重讀（2026-11-21）"
+  }
 }
