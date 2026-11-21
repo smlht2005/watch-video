@@ -87,6 +87,12 @@
       "heard": "英文字幕（平台人工字幕）",
       "expected": "另寫繁體中文中譯 transcript.zh.md；標題稱「SpaceX AI 工程師」，內容為 Lauren（任職 Cursor／SpaceX AI）談 Cursor 與 Grokbot",
       "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "中譯（口語英文→繁體中文）第二輪再校",
+      "expected": "逐行對照英文字幕檢查語意；修正 smoking gun（確鑿證據→鐵證）、slop artist、line cook（線廚）、主持人 27:32 一句語序（自動合併→在 main 上審查），並統一台灣用語「配對程式設計」（原「結對編程」）、「有點俏皮的代號」",
+      "status": "confirmed"
     }
   ],
   "keywords": [
@@ -104,10 +110,10 @@
     {
       "start": "00:00",
       "frame": "slide_01.jpg",
-      "title": "開場：AI 是結對夥伴，不是取代思考",
-      "note": "講者 Lauren（任職 Cursor／SpaceX AI，Grokbot 團隊）認為使用 AI 最好的方式是把它當結對編程的夥伴，而不是取代寫程式、甚至外包思考的工具；她觀察到用 AI 雖省寫碼時間，卻花更多時間審查與修正 AI 的產出（講者主張）。",
+      "title": "開場：AI 是配對夥伴，不是取代思考",
+      "note": "講者 Lauren（任職 Cursor／SpaceX AI，Grokbot 團隊）認為使用 AI 最好的方式是把它當配對程式設計的夥伴，而不是取代寫程式、甚至外包思考的工具；她觀察到用 AI 雖省寫碼時間，卻花更多時間審查與修正 AI 的產出（講者主張）。",
       "keywords": [
-        "結對編程",
+        "配對程式設計",
         "vibe coding",
         "審查"
       ]
@@ -172,7 +178,7 @@
       "start": "17:26",
       "frame": "slide_07.jpg",
       "title": "如何維護 skill：把 eval 當作 agent 的單元測試",
-      "note": "被問到如何維護 skill 與如何知道驗證夠好：她把 eval 當作「agent 的單元測試」，PStack 有 eval playbook：主協調 agent 先訂評分標準、再產生多個子 agent（目錄命名刻意不讓它們知道在被評估，因為 agent 看得出來會改變行為）；可跨多個模型評估；維護 skill 需要品味與觀察，要像結對編程的「後座駕駛」（講者主張）。",
+      "note": "被問到如何維護 skill 與如何知道驗證夠好：她把 eval 當作「agent 的單元測試」，PStack 有 eval playbook：主協調 agent 先訂評分標準、再產生多個子 agent（目錄命名刻意不讓它們知道在被評估，因為 agent 看得出來會改變行為）；可跨多個模型評估；維護 skill 需要品味與觀察，要像配對程式設計的「後座駕駛」（講者主張）。",
       "keywords": [
         "eval",
         "子agent",
