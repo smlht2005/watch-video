@@ -5,16 +5,16 @@ source: "https://x.com/NohupAlpha/status/2123611684690641296/video/1?a=yrkLubF8s
 platform: "X"
 video_id: "2123611684690641296"
 uploader: "永動之初"
-category: "AI/Agent"
+category: "AI/GrokBot"
 date: "2026-11-20"
 status: reviewed
-origin_folder: "watch-output/AI/Agent/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296"
+origin_folder: "watch-output/AI/GrokBot/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296"
 generated_by: watch-archive
 aliases:
   - "永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？"
 tags:
   - "watch-archive"
-  - "AI/Agent"
+  - "AI/GrokBot"
   - "AI-Agent"
   - "建立Agent"
   - "Lauren-Tan"
@@ -24,14 +24,14 @@ tags:
   - "自動化"
   - "語音指令"
 related:
-  - "[[Agent_把 AI 當員工，它才開始動腦子]]"
-  - "[[Agent_讓 AI 造 AI：先造一個 AI 設計師]]"
-  - "[[Agent_AI 不在多、在精]]"
-  - "[[Agent_帶 AI 像帶實習生：先自我介紹，再問怎麼合作]]"
-  - "[[Agent_把成功的對話存成技能，等於 AI 寫的操作手冊]]"
-  - "[[Agent_給 AI 獨立身份：AI 的東西和你的東西分開]]"
-  - "[[Agent_別當 AI 的排程員和傳話筒：手動搬資訊就改成自動流程]]"
-  - "[[Agent_用語音下指令，說完請 AI 用自己的話複述]]"
+  - "[[GrokBot_把 AI 當員工，它才開始動腦子]]"
+  - "[[GrokBot_讓 AI 造 AI：先造一個 AI 設計師]]"
+  - "[[GrokBot_AI 不在多、在精]]"
+  - "[[GrokBot_帶 AI 像帶實習生：先自我介紹，再問怎麼合作]]"
+  - "[[GrokBot_把成功的對話存成技能，等於 AI 寫的操作手冊]]"
+  - "[[GrokBot_給 AI 獨立身份：AI 的東西和你的東西分開]]"
+  - "[[GrokBot_別當 AI 的排程員和傳話筒：手動搬資訊就改成自動流程]]"
+  - "[[GrokBot_用語音下指令，說完請 AI 用自己的話複述]]"
 ---
 
 # 永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？
@@ -168,16 +168,16 @@ related:
 
 ## 知識點
 
-- [[Agent_把 AI 當員工，它才開始動腦子]]
-- [[Agent_讓 AI 造 AI：先造一個 AI 設計師]]
-- [[Agent_AI 不在多、在精]]
-- [[Agent_帶 AI 像帶實習生：先自我介紹，再問怎麼合作]]
-- [[Agent_把成功的對話存成技能，等於 AI 寫的操作手冊]]
-- [[Agent_給 AI 獨立身份：AI 的東西和你的東西分開]]
-- [[Agent_別當 AI 的排程員和傳話筒：手動搬資訊就改成自動流程]]
-- [[Agent_用語音下指令，說完請 AI 用自己的話複述]]
+- [[GrokBot_把 AI 當員工，它才開始動腦子]]
+- [[GrokBot_讓 AI 造 AI：先造一個 AI 設計師]]
+- [[GrokBot_AI 不在多、在精]]
+- [[GrokBot_帶 AI 像帶實習生：先自我介紹，再問怎麼合作]]
+- [[GrokBot_把成功的對話存成技能，等於 AI 寫的操作手冊]]
+- [[GrokBot_給 AI 獨立身份：AI 的東西和你的東西分開]]
+- [[GrokBot_別當 AI 的排程員和傳話筒：手動搬資訊就改成自動流程]]
+- [[GrokBot_用語音下指令，說完請 AI 用自己的話複述]]
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/Agent/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296`
+- 原始資料夾：`watch-output/AI/GrokBot/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296`
 - 逐字稿來源：captions (zh, manual, original)
