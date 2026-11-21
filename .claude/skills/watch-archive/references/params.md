@@ -3,7 +3,7 @@
 > 領域判斷（`AI/claude-code`、新增領域門檻）與 `watch_archive.py` 旗標選擇。
 
 - **第一個參數**：影片網址（必填）。
-- **第二個參數（選填）**：先對照白名單 `glossary/categories.json`（目前 AI／AI/claude-code／AI/提示詞／AI/TTS／AI/harness-engineering／AI/Agent／佛學／商業理財／投資理財／身心生活／電子／雲端／未分類；寫簡體會自動轉繁體，英文只差大小寫會校正）：
+- **第二個參數（選填）**：先對照白名單 `glossary/categories.json`（目前 AI／AI/claude-code／AI/提示詞／AI/TTS／AI/harness-engineering／AI/Agent／AI/GrokBot／佛學／商業理財／投資理財／身心生活／電子／雲端／未分類；寫簡體會自動轉繁體，英文只差大小寫會校正）：
   - **對得上白名單 → 當成領域**：傳給 `watch_archive.py --category <領域>`，不必再推測。
   - **對不上 → 當成主題詞（例如「自律」）**：不報錯、不中斷。把它存進這支影片的 `meta.json.keywords`（步驟 4b 補內容時一起寫），領域則改由詞典或影片內容判斷（見下一點）。**回覆必須明講三件事**：這個詞沒有對應到任何領域；實際歸到哪個領域、依據是什麼；想指定領域時可用的值有哪些（這樣領域打錯字也不會悄悄歸錯，使用者看得出來）。
 - **沒有指定領域時**：先看影片內容與所選詞典（`--glossary`）能否明確判斷（詞典檔的 `category` 欄位會自動推測）。能明確判斷就照該領域歸檔，並在回覆註明是推測；**沒把握就不要自行決定，建議使用者先跑 `/grill-me`** 釐清領域，不要悄悄放進「未分類」。
@@ -11,6 +11,7 @@
 - **子領域 `AI/TTS`（語音合成，使用者 2026-11 指定）**：收文字轉語音、語音克隆、聲音生成模型與工具的影片；歸檔用 `--category AI/TTS`。
 - **子領域 `AI/harness-engineering`（使用者 2026-11 指定）**：收 AI 代理的 harness 工程（代理外圍的工具、記憶、上下文、評測與迴圈設計）；歸檔用 `--category AI/harness-engineering`。
 - **子領域 `AI/Agent`（使用者 2026-11 指定）**：收如何建立、設計與部署 AI Agent 的影片（框架、工作流程、工具接入）；代理外圍的 harness 工程歸 `AI/harness-engineering`，只用 Claude Code 的歸 `AI/claude-code`；歸檔用 `--category AI/Agent`。
+- **子領域 `AI/GrokBot`（使用者 2026-11 指定）**：收 xAI 的 Grok／GrokBot 相關影片（產品、功能、使用與討論）；一般性的建立 Agent 方法歸 `AI/Agent`；歸檔用 `--category AI/GrokBot`。
 - **新增領域的規則**：同時符合 (a) 至少 5 支影片屬於同一個新主題、(b) 放在現有領域裡找不到合適位置，才新增；沒達標前，主題只用 `keywords` 標記，不開新資料夾（例：自律 → 歸 `身心生活`＋關鍵字「自律」；同一關鍵字累積到 5 支且有需要時再討論是否獨立）。要新增領域、或不確定新影片該歸哪個領域時，用 `/grill-me <要決定的事>`，結論寫進 `glossary/categories.json`（必要時再補詞典檔的 `category`）。
 - **按關鍵字找影片**：目前不另建索引，搜尋各 `meta.json` 的 `keywords` 欄位即可。
 
