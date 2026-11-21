@@ -270,5 +270,11 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 16,
+    "note": "AI/Agent 影片第二輪（2026-11-21）"
+  }
 }
