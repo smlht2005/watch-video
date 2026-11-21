@@ -7,7 +7,7 @@ video_id: "2120782676676542488"
 uploader: "Hux"
 category: "AI/GrokBot"
 date: "2026-11-21"
-status: unreviewed
+status: reviewed
 origin_folder: "watch-output/AI/GrokBot/2026-11-21_X_Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課__2120782676676542488"
 generated_by: watch-archive
 aliases:
@@ -23,6 +23,15 @@ tags:
   - "Dune-架構"
   - "信任曲線"
   - "Lauren-Tan"
+related:
+  - "[[GrokBot_信任是使用 agent 的核心問題：不信任就只能微觀管理]]"
+  - "[[GrokBot_驗證不保證程式碼好，但能保證「正確」]]"
+  - "[[GrokBot_沒有驗證 skill 時，你自己就是瓶頸]]"
+  - "[[GrokBot_功能地圖：教 agent 如何走到應用的每個功能]]"
+  - "[[GrokBot_eval 是 agent 的單元測試]]"
+  - "[[GrokBot_最短路徑就是最好路徑：讓捷徑成為正解]]"
+  - "[[GrokBot_靠人在審查時糾正，就該把它變成硬規則]]"
+  - "[[GrokBot_評估時別讓子 agent 知道自己在被評估]]"
 ---
 
 # Hux - 今晚別刷Netflix了。  去看這個SpaceX AI工程師1小時的課程。  這是我見過最清晰、端到端講透GrokBot到底該怎麼真正用...
@@ -238,6 +247,17 @@ one last question before we wrap up Now, this one is for the people in product o
 
 **中譯：** （主持人最後一題，給產品人員：如果我們有許多像 Lauren 這樣在交付的工程師，產品團隊或公司其他職能怎麼跟得上？他們是否也更常用 AI 做事？）我覺得這正是 Grokbot 真正強大之處：在 Grokbot 之前，Cursor 只有 Cursor——我們只有 agent 視窗、CLI、IDE，這些都是為開發者設計的「重度使用者工具」，非常以開發者為中心；你能在裡面做知識工作，但 UI 沒有為此最佳化。許多 GTM、產品的人或許用 Cursor 做事，但絕對不是愉快的體驗。現在有了 Grokbot，對非技術人員來說，它就像是他們的「Cursor 時刻」：它是非常容易上手、非常舒適、熟悉的介面來使用 agent——長得像 iMessage，很有趣：你可以給 agent 取個有趣的名字，用很自然的方式做協調，每個 agent 像一個人，你就有一支 agent 團隊，例如每個你管理的帳號一個 agent；或者如果你是 PM，可以有個 agent 幫你總結 Lauren 昨晚做的所有工作，這樣你就知道我做了什麼。我們的 PM 大量利用這點，而且他們也在交付程式碼：常常他們會說「這裡有個 bug，我修好了，你可以看一下嗎？」我去審查，結果完美、直接蓋「OK」章。這顯示 Dune 架構撐得住：那些非常嚴格的約束，讓不是工程專家的人也能高水準貢獻。我已經看到這很有回報：設計師和 PM 能直接交付功能，這讓 Grokbot 團隊超快，我們有很多計畫，我很興奮能交付更多東西。
 
+
+## 知識點
+
+- [[GrokBot_信任是使用 agent 的核心問題：不信任就只能微觀管理]]
+- [[GrokBot_驗證不保證程式碼好，但能保證「正確」]]
+- [[GrokBot_沒有驗證 skill 時，你自己就是瓶頸]]
+- [[GrokBot_功能地圖：教 agent 如何走到應用的每個功能]]
+- [[GrokBot_eval 是 agent 的單元測試]]
+- [[GrokBot_最短路徑就是最好路徑：讓捷徑成為正解]]
+- [[GrokBot_靠人在審查時糾正，就該把它變成硬規則]]
+- [[GrokBot_評估時別讓子 agent 知道自己在被評估]]
 
 ## 來源
 
