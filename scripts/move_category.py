@@ -96,7 +96,14 @@ def main():
     try:
         if args.video:
             target = norm(args.to, cats)  # 搬單支：目標必須已在白名單
-            folders = [Path(args.video).resolve()]
+            vd = Path(args.video).resolve()
+            if not (vd / "meta.json").is_file():
+                sys.exit(f"不是影片資料夾（找不到 meta.json）：{args.video}")
+            try:
+                vd.relative_to(wa.OUT_ROOT.resolve())
+            except ValueError:
+                sys.exit(f"--video 必須在 watch-output/ 底下：{args.video}")
+            folders = [vd]
         else:
             old = norm(args.src, cats)
             folders = [d for d in all_folders() if (read_meta(d)[0].get("category") or "") == old]
@@ -128,6 +135,10 @@ def main():
         plan.append((d, meta, nl, cur))
     if not plan:
         sys.exit("沒有需要搬的影片")
+    conflicts = [d for d, _, _, _ in plan if (wa.OUT_ROOT / target / d.name).exists()]
+    if conflicts:  # shutil.move 遇到同名目標會把來源塞進去變成 X/X，並覆寫到目標原有的 meta.json
+        sys.exit(f"目標領域「{target}」已有同名資料夾，未搬任何東西（請先處理重複，例如刪掉較舊的那份）：\n  "
+                 + "\n  ".join(d.name for d in conflicts))
 
     verb = {"move": "搬移", "rename": "領域改名", "merge": "合併領域"}[mode]
     print(f"{verb}：{'(dry-run，加 --apply 才執行)' if not args.apply else '執行中'}")
@@ -160,15 +171,21 @@ def main():
             old_dir.rmdir()  # 舊領域資料夾空了就刪（非空會失敗，忽略）
         except OSError:
             pass
-    if new_whitelist is not None:
-        cats_doc["categories"] = new_whitelist
-        CATS_PATH.write_text(json.dumps(cats_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    wa.update_index()
-    for d, *_ in plan:
-        dest = wa.OUT_ROOT / target / d.name
-        for p in oe.export(dest, vault, False):
-            pass
-    oe.write_index(vault)
+    try:
+        if new_whitelist is not None:
+            cats_doc["categories"] = new_whitelist
+            CATS_PATH.write_text(json.dumps(cats_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        wa.update_index()
+        for d, *_ in plan:
+            dest = wa.OUT_ROOT / target / d.name
+            for p in oe.export(dest, vault, False):
+                pass
+        oe.write_index(vault)
+    except Exception as exc:  # 資料夾已搬、後續步驟失敗：給復原指令，不要留在半套狀態而無提示
+        print(f"ERROR：資料夾已搬到「{target}」，但後續步驟失敗：{exc}", file=sys.stderr)
+        print("復原：git checkout -- . && git clean -fd watch-output obsidian-vault glossary；或修好原因後對各資料夾重跑 "
+              "python3 scripts/obsidian_export.py <資料夾>，並檢查 glossary/categories.json 與 watch-output/index.md", file=sys.stderr)
+        sys.exit(1)
     bad = [b for b in broken_links(vault) if b not in before]
     print(f"完成：搬了 {len(plan)} 支影片；Obsidian 知識點筆記改檔名 {pts} 則；搬移造成的新壞連結 {len(bad)} 條")
     for path, link in bad[:20]:
