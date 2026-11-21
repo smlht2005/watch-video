@@ -142,6 +142,10 @@ def platform_and_id(url: str):
                 return "Facebook", parts[parts.index(key) + 1]
         if parts:
             return "Facebook", parts[-1]
+    if host.removeprefix("www.") in ("x.com", "twitter.com", "mobile.twitter.com") and "status" in parts:
+        i = parts.index("status")  # /<user>/status/<id>[/video/1]: the tweet id, not the trailing /video/1
+        if i + 1 < len(parts):
+            return "X", parts[i + 1]
     if "drive.google.com" in host:  # /file/d/<id>/view or open?id=<id>
         if "d" in parts and parts.index("d") + 1 < len(parts):
             return "GoogleDrive", parts[parts.index("d") + 1]
