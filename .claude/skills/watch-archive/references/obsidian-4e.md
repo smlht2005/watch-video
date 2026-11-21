@@ -69,7 +69,7 @@ python3 scripts/obsidian_export.py <資料夾> --vault <你的 vault>       # �
 | 檔案 | 內容 |
 |---|---|
 | `<領域>/<標題>.md` | 屬性（title／type／source／platform／video_id／category／date／status／origin_folder／aliases／tags／related）、思維導圖（文字）、圖文對照（截圖＋說明＋逐字稿）、知識點清單、已確認連結、SOP 連結、補充資料 |
-| `知識點/<知識點>.md` | 說明、引文與出處、出處圖、標示、連結（含關係）、指回影片筆記 |
+| `知識點/<子領域或領域>_<知識點>.md` | 說明、引文與出處、出處圖、標示、連結（含關係）、指回影片筆記 |
 | `<領域>/<標題>_操作SOP.md` | 有 SOP 時由 `kb/` 複製，圖片路徑改指向 `_attachments/` |
 | `_attachments/<video_id>/` | 圖文對照截圖與知識點出處圖（縮到 1024 px）、SOP 步驟圖（相對路徑；原圖只保存在 `frames/`）；每次匯出整個資料夾重建 |
 | `00-索引.md` | 依領域列筆記、知識點（同名者標示）、待建立節點、來源資料夾已不存在的筆記 |

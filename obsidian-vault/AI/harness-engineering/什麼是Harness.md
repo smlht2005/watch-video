@@ -24,14 +24,14 @@ tags:
   - "雙Agent"
   - "OpenAI"
 related:
-  - "[[Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼]]"
-  - "[[Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構]]"
-  - "[[上下文工程：在正確的時間給正確的資訊]]"
-  - "[[成熟上下文工程的三件事：召回、壓縮、組裝]]"
-  - "[[三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩]]"
-  - "[[模型負責想，Harness 負責管：AI Agent＝大模型＋Harness]]"
-  - "[[Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估]]"
-  - "[[雙 Agent 模式：一個幹活，一個獨立檢查]]"
+  - "[[harness-engineering_Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼]]"
+  - "[[harness-engineering_Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構]]"
+  - "[[harness-engineering_上下文工程：在正確的時間給正確的資訊]]"
+  - "[[harness-engineering_成熟上下文工程的三件事：召回、壓縮、組裝]]"
+  - "[[harness-engineering_三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩]]"
+  - "[[harness-engineering_模型負責想，Harness 負責管：AI Agent＝大模型＋Harness]]"
+  - "[[harness-engineering_Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估]]"
+  - "[[harness-engineering_雙 Agent 模式：一個幹活，一個獨立檢查]]"
 ---
 
 # 什麼是Harness
@@ -207,14 +207,14 @@ related:
 
 ## 知識點
 
-- [[Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼]]
-- [[Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構]]
-- [[上下文工程：在正確的時間給正確的資訊]]
-- [[成熟上下文工程的三件事：召回、壓縮、組裝]]
-- [[三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩]]
-- [[模型負責想，Harness 負責管：AI Agent＝大模型＋Harness]]
-- [[Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估]]
-- [[雙 Agent 模式：一個幹活，一個獨立檢查]]
+- [[harness-engineering_Harness Engineering：工程師設計環境與反饋迴路，而不是寫程式碼]]
+- [[harness-engineering_Agent 能否靠譜，關鍵不在模型多強，而在模型外的工程架構]]
+- [[harness-engineering_上下文工程：在正確的時間給正確的資訊]]
+- [[harness-engineering_成熟上下文工程的三件事：召回、壓縮、組裝]]
+- [[harness-engineering_三層分工：提示詞管聽懂、上下文管看到、Harness 管跑得穩]]
+- [[harness-engineering_模型負責想，Harness 負責管：AI Agent＝大模型＋Harness]]
+- [[harness-engineering_Agent 自己給自己打分幾乎永遠過於樂觀，需要獨立評估]]
+- [[harness-engineering_雙 Agent 模式：一個幹活，一個獨立檢查]]
 
 ## 來源
 
