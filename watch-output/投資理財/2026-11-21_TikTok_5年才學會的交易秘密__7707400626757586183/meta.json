@@ -1,0 +1,139 @@
+{
+  "url": "https://vm.tiktok.com/ZSpovWFc2/",
+  "platform": "TikTok",
+  "video_id": "7707400626757586183",
+  "title": "5年才學會的交易秘密",
+  "title_raw": "5年才学会的交易秘密#交易#外汇#外汇策略#期货#ICT",
+  "title_override": "",
+  "category": "投資理財",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "股市、本益比、殖利率、ETF、台積電、加權指數、融資、融券、停損、停利、當沖、外資、投信、財報、EPS、技術分析、K線、均線、選擇權、做空、籌碼峰、籌碼真空、錨定效應、抄底"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "stock-investing"
+  ],
+  "glossary_applied": {
+    "相體": "箱體",
+    "頂部說明買方掌控市場": "賣方"
+  },
+  "source_hashtags": [
+    "交易",
+    "外汇",
+    "外汇策略",
+    "期货",
+    "ICT"
+  ],
+  "uploader": "caijun167",
+  "duration": "01:21 (80.6s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-21",
+  "last_updated": "2026-11-21",
+  "known_asr_errors": [
+    {
+      "time": "00:12",
+      "heard": "相體理論／相體",
+      "expected": "箱體理論／箱體（畫面字幕「箱体理论」確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:29",
+      "heard": "（箱體頂部）說明買方掌控市場",
+      "expected": "說明賣方掌控市場（頂部→只做空，語意推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:59",
+      "heard": "雙維candle",
+      "expected": "名稱無法確定（描述為「小陽線帶很長下影線」），保留原句待確認",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "箱體理論",
+    "日線",
+    "15分鐘圖",
+    "期貨",
+    "進場訊號",
+    "止損",
+    "機構方向",
+    "技術分析"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0011.jpg",
+      "title": "開場：5 年才掌握的「箱體理論」",
+      "note": "講者說她花了整整 5 年才真正掌握這套策略，會在 60 秒內講清楚；這是她最大一筆交易背後的核心秘密，穩定到每天都在用，並稱靠它每天從期貨市場提取 1000 美金，名字叫「箱體理論」（講者主張，未查證）。",
+      "keywords": [
+        "箱體理論",
+        "期貨",
+        "核心秘密"
+      ]
+    },
+    {
+      "start": "00:15",
+      "frame": "frame_0013.jpg",
+      "title": "步驟一：日線畫出前一日高低點的箱體與中線",
+      "note": "先開日線圖，把前一天的高點和低點畫成一個箱體，中間再畫一條中線，不需要絕對精準、目測即可；這個箱體會告訴你當前市場到底是誰在掌控（講者主張）。",
+      "keywords": [
+        "日線",
+        "箱體",
+        "中線"
+      ]
+    },
+    {
+      "start": "00:25",
+      "frame": "frame_0025.jpg",
+      "title": "步驟二：切到 15 分鐘圖，依價格位置決定多空",
+      "note": "價格運行在箱體頂部，說明賣方掌控市場，只考慮做空、目標看向箱體底部；運行在箱體底部，說明買方掌控，只考慮做多、目標看向箱體頂部；處於箱體中間就什麼都別做。這樣交易的就是機構方向，而不是隨便亂進場（講者主張，未查證）。",
+      "keywords": [
+        "15分鐘圖",
+        "做多做空",
+        "機構方向"
+      ]
+    },
+    {
+      "start": "00:46",
+      "frame": "frame_0036.jpg",
+      "title": "步驟三：箱體底部的強勢下跌往往是陷阱",
+      "note": "重點來了：價格到箱體底部時，等待市場出現一波強勢下跌；多數交易者此時會恐慌、以為要崩盤，但她說這只是個陷阱（講者主張，未查證）。",
+      "keywords": [
+        "陷阱",
+        "恐慌",
+        "箱體底部"
+      ]
+    },
+    {
+      "start": "00:59",
+      "frame": "frame_0058.jpg",
+      "title": "進場訊號、止損與目標",
+      "note": "如何確認是陷阱：觀察一根帶很長下影線的小陽線（逐字稿寫「雙維 candle」，名稱待確認），意味著流動性已被製造出來、買方開始進場；隨後等價格突破前一根 K 線高點，就是「狙擊進場位」，止損放在低點下方，目標直接看向箱體頂部。結語：把策略存下來，自己復盤、測試並實踐（講者主張；非投資建議）。",
+      "keywords": [
+        "長下影線",
+        "突破前高",
+        "止損",
+        "復盤"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 4,
+    "note": "全文 22 行逐行重讀"
+  }
+}
