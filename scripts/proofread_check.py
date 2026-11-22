@@ -113,7 +113,11 @@ def mark_done(folder: Path, fixes: int, note: str):
     meta = json.loads(mp.read_text(encoding="utf-8"))
     meta["second_pass"] = {"done": True, "date": datetime.date.today().isoformat(), "fixes": fixes, "note": note}
     mp.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    left = [e for e in meta.get("known_asr_errors", []) if e.get("status") == "suspected"]
     print(f"second_pass: done（修正 {fixes} 處）已寫入 {mp}")
+    if left:  # 不是硬閘門：只提醒還剩幾項推測／待確認，影片有燒入字幕就先跑 scripts/subtitle_check.py
+        print(f"提醒：known_asr_errors 還有 {len(left)} 項 status=suspected。影片有燒入字幕時先跑 "
+              f"python3 scripts/subtitle_check.py {mp.parent}（見 proofread.md 3b），能確認的改 confirmed，其餘請使用者確認。")
 
 
 def main():
