@@ -33,7 +33,7 @@
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
 - 改領域（搬單支影片、領域改名、合併）一律用 `python3 scripts/move_category.py`（先 dry-run 給使用者看、說「搬」才 `--apply`；不自動開 PR；不要用 `organize.py` 或手動搬）；見 `.claude/skills/watch-archive/references/params.md`「改領域」。
-- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／AI/提示詞／AI/TTS／AI/harness-engineering／AI/Agent／AI/GrokBot／佛學／佛學/臨終關懷助念／商業理財／投資理財／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
+- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／AI/提示詞／AI/TTS／AI/harness-engineering／AI/Agent／AI/GrokBot／佛學／佛學/臨終關懷助念／商業理財／投資理財／投資理財/期貨／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
 
 ## 已知限制（細節見 README「限制與風險」）
 
