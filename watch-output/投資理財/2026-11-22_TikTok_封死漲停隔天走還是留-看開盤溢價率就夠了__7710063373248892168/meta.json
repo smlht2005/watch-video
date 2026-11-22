@@ -1,0 +1,166 @@
+{
+  "url": "https://vt.tiktok.com/ZSsJwdEQr/",
+  "platform": "TikTok",
+  "video_id": "7710063373248892168",
+  "title": "封死漲停隔天走還是留：看開盤溢價率就夠了",
+  "title_raw": "TikTok video #7710063373248892168",
+  "title_override": "封死漲停隔天走還是留：看開盤溢價率就夠了",
+  "category": "投資理財",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "7710063373248892168"
+  ],
+  "uploader": "vanfleetmoravek",
+  "duration": "02:13 (133.0s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-22",
+  "last_updated": "2026-11-22",
+  "known_asr_errors": [
+    {
+      "time": "00:05",
+      "heard": "山姐",
+      "expected": "珊姐（畫面字幕；02:10 同）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:22",
+      "heard": "比任何舊形態都來的直接",
+      "expected": "比任何技術形態都來得直接（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:01",
+      "heard": "（01:01–01:12 連成一行）",
+      "expected": "依字幕拆成 01:01／01:08／01:10／01:11 四行",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:14",
+      "heard": "點贊",
+      "expected": "點讚（畫面字幕「點贊收藏」，台灣用字）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:29",
+      "heard": "弱時訊號",
+      "expected": "弱勢訊號（規則卡「弱势信号」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:32",
+      "heard": "放量上工",
+      "expected": "放量上攻（規則卡）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:01",
+      "heard": "連返",
+      "expected": "連板（規則卡「连板」）",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "開盤溢價率",
+    "漲停板",
+    "封死漲停",
+    "隔日沖",
+    "開盤價",
+    "主力出貨",
+    "搶籌",
+    "放量上攻",
+    "落袋為安",
+    "連板"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：封死漲停，第二天走還是留？",
+      "note": "講者（自稱「珊姐」）提出問題：股票封死漲停後，第二天該走還是留？講者主張不必用複雜指標，只要在 9 點 25 分開盤價（集合競價結果）出來時算一個數字，就能判斷主力隔天是想拉還是想跑，比任何技術形態都直接（講者主張，未查證）。",
+      "keywords": [
+        "封死漲停",
+        "9:25 開盤價",
+        "主力意圖"
+      ]
+    },
+    {
+      "start": "00:35",
+      "frame": "slide_02.jpg",
+      "title": "原理：開盤溢價率怎麼算",
+      "note": "開盤溢價率＝（當天開盤價−昨日收盤價）÷昨日收盤價×100%。畫面範例：今天開盤價 38.98、昨天收盤價 39.25，算出約 −0.7%。講者說這個數字「簡單到令人髮指」，接著給出四段區間的參考框架（結合講者幾年的看盤心得）。",
+      "keywords": [
+        "開盤溢價率",
+        "公式",
+        "−0.7%"
+      ]
+    },
+    {
+      "start": "01:17",
+      "frame": "slide_03.jpg",
+      "title": "第一：溢價率 < 0%，開盤就跑",
+      "note": "漲停隔天開盤溢價率為負（低開），講者解讀為主力已經在出貨。建議別猶豫、開盤就賣，再不走大機率會被套（講者主張，未查證）。",
+      "keywords": [
+        "低開",
+        "主力出貨",
+        "開盤就跑"
+      ]
+    },
+    {
+      "start": "01:25",
+      "frame": "slide_04.jpg",
+      "title": "第二：1%–3%，弱勢訊號",
+      "note": "開盤溢價率在 1% 到 3% 之間，講者視為弱勢訊號。觀察開盤後半小時：如果不能放量上攻，就直接走人，別抱幻想。注意影片沒有談 0%–1% 這一段。",
+      "keywords": [
+        "弱勢訊號",
+        "放量上攻",
+        "半小時"
+      ]
+    },
+    {
+      "start": "01:38",
+      "frame": "slide_05.jpg",
+      "title": "第三：3%–5%，健康走勢，衝高 6% 減半",
+      "note": "開盤溢價率在 3% 到 5% 之間仍屬健康走勢，可以續抱。但若盤中衝高到 6% 以上，講者建議減一半倉位、落袋為安。",
+      "keywords": [
+        "健康走勢",
+        "減半倉位",
+        "落袋為安"
+      ]
+    },
+    {
+      "start": "01:51",
+      "frame": "slide_06.jpg",
+      "title": "第四：> 5%，主力搶籌（含結語）",
+      "note": "開盤溢價率大於 5%，講者解讀為主力搶籌意願強烈；開盤後只要不快速跌破 3%，大機率還有衝高甚至連板的可能（講者主張，未查證）。最後請觀眾點讚、反覆觀看。",
+      "keywords": [
+        "搶籌",
+        "連板",
+        "跌破 3%"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-22",
+    "fixes": 10,
+    "note": "依燒入字幕與規則卡逐句核對；拆 01:01 長行"
+  }
+}
