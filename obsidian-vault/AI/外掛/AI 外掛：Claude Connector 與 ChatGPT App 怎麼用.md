@@ -7,7 +7,7 @@ video_id: "1E68sTQniE"
 uploader: "泛科學院"
 category: "AI/外掛"
 date: "2026-11-22"
-status: unreviewed
+status: reviewed
 origin_folder: "watch-output/AI/外掛/2026-11-22_Facebook_AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用__1E68sTQniE"
 generated_by: watch-archive
 aliases:
@@ -23,6 +23,13 @@ tags:
   - "授權"
   - "代操"
   - "泛科學院"
+related:
+  - "[[外掛_外掛：讓 AI 操作外部服務（Claude Connector／ChatGPT App）]]"
+  - "[[外掛_外掛把多個 App 的任務集中到對話框]]"
+  - "[[外掛_Claude 連接外掛的路徑：Settings → Customize → Connectors → Discover]]"
+  - "[[外掛_ChatGPT 連接外掛的路徑：左上角外掛程式／Apps]]"
+  - "[[外掛_串好外掛後只要說情境，AI 自己判斷呼叫哪個]]"
+  - "[[外掛_模糊需求可讓 AI 轉成具體指令代操 App]]"
 ---
 
 # AI 外掛：Claude Connector 與 ChatGPT App 怎麼用
@@ -101,6 +108,15 @@ ChatGPT 就比較好找一點，在左上角點外掛程式或是Apps，就是�
 
 如果你有些比較模糊的需求，像是要請它規劃長輩好走的旅行路線，也可以讓AI幫我們把需求轉換成具體可以操作的指令代操APP，省下我們去熟悉APP想關鍵字的時間，想看其他外掛推薦、留言外掛，我就把影片連結傳給你。
 
+
+## 知識點
+
+- [[外掛_外掛：讓 AI 操作外部服務（Claude Connector／ChatGPT App）]]
+- [[外掛_外掛把多個 App 的任務集中到對話框]]
+- [[外掛_Claude 連接外掛的路徑：Settings → Customize → Connectors → Discover]]
+- [[外掛_ChatGPT 連接外掛的路徑：左上角外掛程式／Apps]]
+- [[外掛_串好外掛後只要說情境，AI 自己判斷呼叫哪個]]
+- [[外掛_模糊需求可讓 AI 轉成具體指令代操 App]]
 
 ## 來源
 

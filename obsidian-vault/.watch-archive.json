@@ -30,7 +30,13 @@
   "電子/想要學好電路板一定搞透電流電壓電阻.md"
  ],
  "1E68sTQniE": [
-  "AI/外掛/AI 外掛：Claude Connector 與 ChatGPT App 怎麼用.md"
+  "AI/外掛/AI 外掛：Claude Connector 與 ChatGPT App 怎麼用.md",
+  "知識點/外掛_ChatGPT 連接外掛的路徑：左上角外掛程式／Apps.md",
+  "知識點/外掛_Claude 連接外掛的路徑：Settings → Customize → Connectors → Discover.md",
+  "知識點/外掛_串好外掛後只要說情境，AI 自己判斷呼叫哪個.md",
+  "知識點/外掛_外掛把多個 App 的任務集中到對話框.md",
+  "知識點/外掛_外掛：讓 AI 操作外部服務（Claude Connector／ChatGPT App）.md",
+  "知識點/外掛_模糊需求可讓 AI 轉成具體指令代操 App.md"
  ],
  "1EIhyh60imHgwatjkElA-8di38oYtiv0T": [
   "AI/MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成.md"
