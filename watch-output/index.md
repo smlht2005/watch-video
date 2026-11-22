@@ -1,9 +1,10 @@
 # watch-output 索引
 
-## AI（15）
+## AI（16）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-07 | TikTok | 上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go... | 15:55 (955.0s) | whisper (groq) | [開啟](./AI/2026-11-07_TikTok_上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod__7673187275961912597/) |
 | 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610/) |
 | 2026-10-28 | TikTok | 5個神級Skill，裝完Codex直接開掛！ | 02:01 (121.1s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575/) |
 | 2026-10-27 | Threads | AI 時代為什麼 Obsidian 反而更重要？ | 10 頁（完整） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy/) |
@@ -20,10 +21,11 @@
 | 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
 | 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
 
-## AI／claude-code（5）
+## AI／claude-code（6）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-11 | TikTok | Claude 推出試算表與白板：Anthropic 六批工具一次看 | 02:13 (133.2s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-11_TikTok_Claude-推出試算表與白板-Anthropic-六批工具一次看__7706784812530568468/) |
 | 2026-11-09 | Instagram | CodeGraph 讓 Claude Code 查程式碼地圖 | 00:53 (53.5s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-09_Instagram_CodeGraph-讓-Claude-Code-查程式碼地圖__DfUMThQE3fc/) |
 | 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo/) |
 | 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
@@ -70,6 +72,12 @@
 | 2026-10-13 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./佛學/2026-10-13_YouTube_會性法師-大佛頂首楞嚴經-第103集__kvsrMirvdDQ/) |
 | 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
 | 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
+
+## 佛學／臨終關懷助念（1）
+
+| 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
+|---|---|---|---|---|---|
+| 2026-11-08 | GoogleDrive | 葉福財老師往生見聞記（師母分享）第二版 | 24:59 (1498.7s) | whisper (groq) | [開啟](./佛學/臨終關懷助念/2026-11-08_GoogleDrive_葉福財老師往生見聞記-第二版__1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/) |
 
 ## 商業理財（4）
 
