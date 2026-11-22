@@ -463,6 +463,18 @@
       "heard": "大理元聖，",
       "expected": "（移除）",
       "status": "confirmed"
+    },
+    {
+      "time": "11:25",
+      "heard": "共就是敲",
+      "expected": "拱就是敲",
+      "status": "confirmed"
+    },
+    {
+      "time": "11:28",
+      "heard": "喜咖是什麼？",
+      "expected": "四腳是什麼？",
+      "status": "confirmed"
     }
   ],
   "keywords": [
