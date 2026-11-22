@@ -7,7 +7,7 @@ video_id: "7673187275961912597"
 uploader: "one.ai186"
 category: "AI"
 date: "2026-11-07"
-status: unreviewed
+status: reviewed
 origin_folder: "watch-output/AI/2026-11-07_TikTok_上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod__7673187275961912597"
 generated_by: watch-archive
 aliases:
@@ -25,6 +25,14 @@ tags:
   - "長時間任務"
   - "評審"
   - "Anthropic"
+related:
+  - "[[AI_講者主張：AI 中途停下來源自 Context Anxiety]]"
+  - "[[AI_goal 的雙角色循環：實作者＋評審]]"
+  - "[[AI_沒有邊界的目標會讓 AI 草草收工]]"
+  - "[[AI_完成的定義是 goal 提示詞的核心]]"
+  - "[[AI_關鍵是 Evaluation，不是 Prompt Engineering]]"
+  - "[[AI_Rubric 要寫具體可檢查的規則，不寫抽象描述]]"
+  - "[[AI_寫 rubric 是把腦中的品味寫成文字]]"
 ---
 
 # 上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go...
@@ -355,6 +363,16 @@ Anthropic用以上的評估架構，去做了一個美術館的網站，跑到�
 
 還有領取提示詞，看完這支影片後，我給你的小練習是，挑一件你最常做，又最需要你個人品味的任務，可能是寫貼文，回客戶email，做行銷圖，寫產品文案，又或者是影片剪輯，靜下心來，花30分鐘去跑以上6個步驟，試試看能不能讓AI的產出更穩定，更貼近你的預期，那以上就是今天的內容，各位喜歡的話，記得幫我按贊追蹤加分享。
 
+
+## 知識點
+
+- [[AI_講者主張：AI 中途停下來源自 Context Anxiety]]
+- [[AI_goal 的雙角色循環：實作者＋評審]]
+- [[AI_沒有邊界的目標會讓 AI 草草收工]]
+- [[AI_完成的定義是 goal 提示詞的核心]]
+- [[AI_關鍵是 Evaluation，不是 Prompt Engineering]]
+- [[AI_Rubric 要寫具體可檢查的規則，不寫抽象描述]]
+- [[AI_寫 rubric 是把腦中的品味寫成文字]]
 
 ## 補充資料
 
