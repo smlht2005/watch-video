@@ -37,6 +37,12 @@
 - 附完整中譯 `transcript.zh.md`（時間戳沿用英文原文）。
 - 影片來源為 Google Drive 檔案（`videoplayback (2).mp4`），無平台字幕與作者資訊。
 
+## 思維導圖
+
+![思維導圖](mindmap.png)
+
+- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）
+
 ## 圖文對照（畫面 + 逐字稿＋中譯）
 
 ### 投影片 1：Kind：Kubernetes in Docker（00:00–00:30）
@@ -172,3 +178,7 @@ Kind is incredibly versatile and serves multiple important use cases in the Kube
 | 02:40 | kindcreatecluster / kindversion / KindGetClusters / kubectlGetNodes | kind create cluster / kind version / kind get clusters / kubectl get nodes（指令空格被吞，已由詞典修正） |
 | 06:20 | kubectl config use context / current context | use-context / current-context（連字號，已由詞典修正） |
 | 05:47 | …building and testing container images Understanding kubectl contexts… | 兩句被合併、缺標點，內容無誤 |
+
+## 補充資料連結
+
+- 思維導圖：[mindmap.png](mindmap.png)、文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）

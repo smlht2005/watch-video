@@ -3,13 +3,33 @@
 > 領域判斷（`AI/claude-code`、新增領域門檻）與 `watch_archive.py` 旗標選擇。
 
 - **第一個參數**：影片網址（必填）。
-- **第二個參數（選填）**：先對照白名單 `glossary/categories.json`（目前 AI／AI/claude-code／AI/提示詞／佛學／佛學/臨終關懷助念／商業理財／身心生活／電子／雲端／未分類；寫簡體會自動轉繁體，英文只差大小寫會校正）：
+- **第二個參數（選填）**：先對照白名單 `glossary/categories.json`（目前 AI／AI/claude-code／AI/提示詞／AI/TTS／AI/harness-engineering／AI/Agent／AI/GrokBot／佛學／佛學/臨終關懷助念／商業理財／投資理財／身心生活／電子／雲端／未分類；寫簡體會自動轉繁體，英文只差大小寫會校正）：
   - **對得上白名單 → 當成領域**：傳給 `watch_archive.py --category <領域>`，不必再推測。
   - **對不上 → 當成主題詞（例如「自律」）**：不報錯、不中斷。把它存進這支影片的 `meta.json.keywords`（步驟 4b 補內容時一起寫），領域則改由詞典或影片內容判斷（見下一點）。**回覆必須明講三件事**：這個詞沒有對應到任何領域；實際歸到哪個領域、依據是什麼；想指定領域時可用的值有哪些（這樣領域打錯字也不會悄悄歸錯，使用者看得出來）。
 - **沒有指定領域時**：先看影片內容與所選詞典（`--glossary`）能否明確判斷（詞典檔的 `category` 欄位會自動推測）。能明確判斷就照該領域歸檔，並在回覆註明是推測；**沒把握就不要自行決定，建議使用者先跑 `/grill-me`** 釐清領域，不要悄悄放進「未分類」。
 - **子領域 `AI/claude-code`（使用者的學習主題）**：只收以 Claude Code 為主角的影片（用法、額度／token、CLAUDE.md、MCP、Agent 工具）；只是提到 Claude 的影片（例：ComfyUI 接 Claude）仍歸 `AI`。載入 `--glossary claude-code` 會自動歸入，也可明講 `--category AI/claude-code`。巢狀領域只限一層，寫成「父/子」；`index.md` 小節顯示為「AI／claude-code」。
+- **子領域 `AI/TTS`（語音合成，使用者 2026-11 指定）**：收文字轉語音、語音克隆、聲音生成模型與工具的影片；歸檔用 `--category AI/TTS`。
+- **子領域 `AI/harness-engineering`（使用者 2026-11 指定）**：收 AI 代理的 harness 工程（代理外圍的工具、記憶、上下文、評測與迴圈設計）；歸檔用 `--category AI/harness-engineering`。
+- **子領域 `AI/Agent`（使用者 2026-11 指定）**：收如何建立、設計與部署 AI Agent 的影片（框架、工作流程、工具接入）；代理外圍的 harness 工程歸 `AI/harness-engineering`，只用 Claude Code 的歸 `AI/claude-code`；歸檔用 `--category AI/Agent`。
+- **子領域 `AI/GrokBot`（使用者 2026-11 指定）**：收 xAI 的 Grok／GrokBot 相關影片（產品、功能、使用與討論）；一般性的建立 Agent 方法歸 `AI/Agent`；歸檔用 `--category AI/GrokBot`。
 - **新增領域的規則**：同時符合 (a) 至少 5 支影片屬於同一個新主題、(b) 放在現有領域裡找不到合適位置，才新增；沒達標前，主題只用 `keywords` 標記，不開新資料夾（例：自律 → 歸 `身心生活`＋關鍵字「自律」；同一關鍵字累積到 5 支且有需要時再討論是否獨立）。要新增領域、或不確定新影片該歸哪個領域時，用 `/grill-me <要決定的事>`，結論寫進 `glossary/categories.json`（必要時再補詞典檔的 `category`）。
 - **按關鍵字找影片**：目前不另建索引，搜尋各 `meta.json` 的 `keywords` 欄位即可。
+
+## 改領域（搬影片、領域改名、合併）
+
+用 `scripts/move_category.py`，不要手動搬、也不要用 `organize.py`（會改到別支影片 `meta.json` 的結尾換行）：
+
+```bash
+python3 scripts/move_category.py --video watch-output/<領域>/<資料夾> --to <領域>      # (a) 搬單支；目標必須已在白名單
+python3 scripts/move_category.py --from <舊領域> --to <新領域>                          # (b) 整個領域改名；目標已存在則 (c) 合併
+# 以上都是 dry-run（只列清單）；使用者說「搬」之後才加 --apply
+```
+
+- **dry-run 先給使用者看**：會列出每支影片的 `舊領域 → 新領域`、已確認知識點數、白名單怎麼變、哪些文件仍寫著舊名。
+- **`--apply` 做的事**：改 `meta.json.category`（只動被搬的影片，保留原本結尾換行）、搬資料夾、更新 `glossary/categories.json`（改名：舊名換新名；合併：移除舊名；搬單支：目標必須已在白名單，不在就拒絕，請先走新增領域）、重建 `watch-output/index.md`、重匯 Obsidian（影片筆記移位、知識點檔名前綴隨領域改變、舊檔由 manifest 清掉），並掃描搬移造成的新壞連結。
+- **不自動做**：`CLAUDE.md`／`params.md` 的領域清單文字（腳本只提醒，請手動改）、使用者自己的筆記裡指向舊檔名的連結（只列出）、commit 之外的動作（不自動開 PR）。
+- **空掉的舊領域**：改名／合併時舊名從白名單移除；搬單支造成舊領域變空時預設保留在白名單，並提醒使用者是否移除。
+- **完成後回覆三件事**：搬了哪些影片、Obsidian 知識點筆記改名幾篇、有沒有新壞連結。
 
 ## 步驟 1：選參數
 
@@ -25,4 +45,5 @@
    - 人名、術語只在這支影片出現 → `--terms "詞1,詞2"`。
    - **講座／講經／演講（口語、有大量「呢」「啊」等語助詞）**：看標題或上傳者判斷是不是講座類影片，是的話歸檔時加 `--clean-fillers`（用 `--glossary pure-land` 的佛學講座會自動開啟，不必加）；之後可在 `meta.json` 寫 `"video_type": "lecture"`，重跑歸檔時 `auto` 模式也會去語助詞。不想去除加 `--keep-fillers`。選擇記在 `meta.json.clean_fillers`（`auto`／`on`／`off`），重跑沿用。
    - **電腦工具教學影片**（螢幕示範軟體／網頁／CLI／App 操作）→ 步驟 4d 會另寫操作 SOP；不想要時加 `--no-sop`，想強制時加 `--sop`（兩者擇一，記在 `meta.json.sop_mode`）。
+   - **Word 檔（`--docx`）**：預設只產 Markdown 報告；使用者要 Word 檔（給別人、印出）才加 `--docx`，同時產出報告與 SOP 的 docx。不記進 `meta.json`：資料夾已有 docx 時，不加旗標也會沿用並更新；要移除 docx 加 `--no-docx`。
    - **長的螢幕錄影／notebook／投影片影片** → 加 `--timestamps "MM:SS,…,H:MM:SS" --resolution 1024`。自動抽圖依畫面變化挑圖，緩慢捲動的 notebook 會被當成重複畫面丟掉，結果一段十幾分鐘只剩標題卡。做法：先跑一次讀逐字稿，找出各主題開始的時間，在每個時間點後約 20–40 秒放一個 cue（避開標題卡與轉場），再重跑；1024px 讓程式碼與小字可讀。兩個值會記在 `meta.json`（`cue_timestamps`、`resolution`），之後重跑自動沿用；重跑時 `slides` 的圖檔會依時間自動對到新截圖。

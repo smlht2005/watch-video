@@ -1,0 +1,280 @@
+{
+  "url": "https://x.com/NohupAlpha/status/2123611684690641296/video/1?a=yrkLubF8snUwKmYEA5o&s=19",
+  "platform": "X",
+  "video_id": "2123611684690641296",
+  "title": "永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？",
+  "title_raw": "永动之初 - 这个讲的太好了 一个不会写代码的女生，凭什么当上马斯克AI团队负责人？",
+  "title_override": "",
+  "category": "AI/GrokBot",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "heuristic",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {
+    "我是征服了外網全看傻了呀": "我是真服了，外網全看傻了呀",
+    "普通人造抄就行": "普通人照抄就行",
+    "抄快利單": "抄快遞單",
+    "AI AI 造 AI": "AI 造 AI",
+    "AI 不再多再精": "AI 不在多、在精",
+    "一上來見十幾個 AI": "一上來建十幾個 AI",
+    "頂一隻雜牌軍": "頂一支雜牌軍",
+    "連公牌都發了": "連工牌都發了",
+    "反攻也少了": "返工也少了",
+    "要不要收場起來": "要不要收藏起來",
+    "找一期咱繼續挖": "下一期咱繼續挖",
+    "隻要你": "只要你",
+    "平臺賬號": "平台帳號",
+    "的不錯的那一次對話": "做得不錯的那一次對話",
+    "把剛才知道方法": "把剛才的方法",
+    "用語音聽 AI 說": "用語音跟 AI 說",
+    "還不關上一波": "還不關注一波",
+    "指稱 Lauren Tan 的他／它": "她"
+  },
+  "source_hashtags": [],
+  "uploader": "永動之初",
+  "duration": "03:58 (238.1s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "captions (zh, manual, original)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-20",
+  "last_updated": "2026-11-20",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "我是征服了外網全看傻了呀",
+      "expected": "我是真服了（對照畫面字幕「兄弟們，我是真服了」；畫面標題為「馬斯克公司這姐們用 AI 的方法，外網全看傻了呀」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:23",
+      "heard": "普通人造抄就行",
+      "expected": "普通人照抄就行（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:46",
+      "heard": "抄快利單",
+      "expected": "抄快遞單（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:21",
+      "heard": "AI 不再多再精",
+      "expected": "AI 不在多、在精（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "01:23",
+      "heard": "見十幾個 AI",
+      "expected": "建十幾個 AI（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "02:36",
+      "heard": "公牌",
+      "expected": "工牌（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:33",
+      "heard": "反攻也少了",
+      "expected": "返工也少了（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:48",
+      "heard": "收場起來",
+      "expected": "收藏起來（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:56",
+      "heard": "找一期咱繼續挖",
+      "expected": "下一期咱繼續挖（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "全片",
+      "heard": "平台字幕（翻譯字幕，非 Whisper）；人名 Lauren Tan 與 Grokbot 來自畫面",
+      "expected": "保留",
+      "status": "confirmed"
+    },
+    {
+      "time": "全片",
+      "heard": "字幕以「他／它」稱呼 Lauren Tan（女性）",
+      "expected": "改為「她」（第二輪；僅限指稱本人處，指 AI 的「他」保留）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:45",
+      "heard": "隻要你",
+      "expected": "只要你",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:26",
+      "heard": "平臺賬號",
+      "expected": "平台帳號（台灣用字）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:58",
+      "heard": "的不錯的那一次對話",
+      "expected": "做得不錯的那一次對話（推測，漏字）",
+      "status": "suspected"
+    },
+    {
+      "time": "02:03",
+      "heard": "把剛才知道方法",
+      "expected": "把剛才的方法（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:01",
+      "heard": "用語音聽 AI 說",
+      "expected": "用語音跟 AI 說（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "03:55",
+      "heard": "還不關上一波",
+      "expected": "還不關注一波（推測）",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "AI Agent",
+    "建立Agent",
+    "Lauren Tan",
+    "AI當員工",
+    "AI造AI",
+    "技能",
+    "自動化",
+    "語音指令"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：不會寫程式碼的女生如何帶 50 個 AI",
+      "note": "畫面標示 Lauren Tan，講者說她是馬斯克 Grokbot 的工程負責人，自己爆料以前一行程式碼都不會寫，現在一個人指揮五十多個 AI、幹二十多個工程師的活，90% 的 SpaceX 同事偷偷抄她的作業，馬斯克本人也在 X 上與她互動二十多回，並公開了帶 AI 團隊的七條方法（以上為講者主張，未查證）。",
+      "keywords": [
+        "Lauren Tan",
+        "Grokbot",
+        "SpaceX"
+      ]
+    },
+    {
+      "start": "00:25",
+      "frame": "slide_02.jpg",
+      "title": "核心觀念：把 AI 當員工，不當工具",
+      "note": "講者說她根本沒把 AI 當工具，而是一個一個當員工在帶。她的比喻：把 AI 當工具，等於僱了個博士回來抄快遞單，抄一萬遍也只是個抄單的；把 AI 當員工，它才開始動腦子（講者轉述，未查證）。",
+      "keywords": [
+        "AI當員工",
+        "工具思維"
+      ]
+    },
+    {
+      "start": "00:52",
+      "frame": "slide_03.jpg",
+      "title": "方法一：讓 AI 造 AI——先造「AI 設計師」",
+      "note": "她第一個做的是用 AI 造 AI，且造出的第一個不是幹活的，而是造 AI 的「AI 設計師」。設計師會先問：你是幹什麼的、哪些活最耗時、要不要定時幹活、主要跟誰對接，問完就依你的場景與需求列出職責清楚的 AI 員工，還會定期查崗考核、依問題升級調整，等於給自己捏了個人事總監（講者轉述）。",
+      "keywords": [
+        "AI造AI",
+        "AI設計師",
+        "考核"
+      ]
+    },
+    {
+      "start": "01:19",
+      "frame": "slide_04.jpg",
+      "title": "方法二：AI 不在多、在精",
+      "note": "講者轉述她的忠告：很多人一上來建十幾個 AI（寫文案、做表格、剪影片），最後每個都是半吊子；幾個調教好的頂一支雜牌軍（講者轉述）。",
+      "keywords": [
+        "精不在多",
+        "調教"
+      ]
+    },
+    {
+      "start": "01:32",
+      "frame": "slide_05.jpg",
+      "title": "方法三：像帶實習生一樣帶 AI 團隊",
+      "note": "帶法有講究：別一上來就甩一句「幫我寫個方案」，先告訴它你是誰、做什麼、每天最煩哪些活，再反過來問它「咱倆怎麼合作、從哪開始」；講者說它提的點子經常比你自己想的還多，把 AI 當成能力超強但剛入職的實習生來帶（講者主張）。",
+      "keywords": [
+        "帶團隊",
+        "先自我介紹",
+        "實習生"
+      ]
+    },
+    {
+      "start": "01:52",
+      "frame": "slide_06.jpg",
+      "title": "方法四：把成功的對話存成技能",
+      "note": "AI 幹完活就忘、下回還得重教，所以她把做得不錯的那次對話存成技能：每回 AI 幹成一件事就跟它說「把剛才的方法存成技能」，就像 AI 寫 AI 的操作手冊。例如花一小時教它按你的格式整理會議紀要，存成技能後下次只要說一句「整理會議紀要」它就照做；技能還要備份到 GitHub，攢成公司資產（講者轉述）。",
+      "keywords": [
+        "技能",
+        "操作手冊",
+        "GitHub"
+      ]
+    },
+    {
+      "start": "02:20",
+      "frame": "slide_07.jpg",
+      "title": "方法五：給 AI 身份——專屬郵箱與帳號",
+      "note": "員工要有身份：她給 AI 配專屬郵箱，讓 AI 自己註冊工作要用的公司內部平台帳號，幹完活直接提交；AI 的東西和你的東西分開，出了問題也好查，講者說這是真把 AI 當員工在用，甚至連工牌都發了（講者轉述）。",
+      "keywords": [
+        "專屬郵箱",
+        "帳號分離",
+        "工牌"
+      ]
+    },
+    {
+      "start": "02:37",
+      "frame": "slide_08.jpg",
+      "title": "方法六：別當 AI 的調度員和傳話筒",
+      "note": "講者說多數人用 AI 的通病是把自己當成 AI 的排程員和傳話筒。她的建議：只要還在手動把一段資訊從這兒挪到那兒，立刻停下，反問 AI「這一步你怎麼幫我解決」，要麼搭自動流程、要麼建技能、要麼建機器人。例：讓抓資訊的 AI 直接把原文交給研究的 AI、再交給創作的 AI；郵件來了用語音說回信大概思路，AI 自己就回了（講者轉述）。",
+      "keywords": [
+        "自動化流程",
+        "不當傳話筒"
+      ]
+    },
+    {
+      "start": "03:04",
+      "frame": "slide_09.jpg",
+      "title": "方法七：用語音下指令，並要求 AI 複述",
+      "note": "最後讓效率再翻十倍的事是安排任務時直接開語音：一打字就想省話、三兩句交代完，一開口就會把客戶是誰、手上有什麼資料、要注意什麼細節、腦子裡的想法一口氣倒出來；說完一定再補一句「用你自己的話複述一遍」，就能知道 AI 有沒有聽懂、要不要補充，不但快還能一次把來龍去脈餵給 AI，返工也少（講者主張，效率翻十倍為講者說法，未查證）。",
+      "keywords": [
+        "語音指令",
+        "複述確認"
+      ]
+    },
+    {
+      "start": "03:35",
+      "frame": "slide_10.jpg",
+      "title": "結論：把 AI 當人用",
+      "note": "講者總結：把 AI 當工具，AI 就給你幹活；把 AI 當員工，AI 就給你幹事業，並說反正 90% 的 SpaceX 同事已經抄完了，預告下一期介紹另一位大佬更特別的方法（講者主張）。",
+      "keywords": [
+        "把AI當人用",
+        "結論"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 16,
+    "note": "AI/Agent 影片第二輪（2026-11-21）"
+  }
+}

@@ -1,0 +1,127 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "first-frame"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "01:20",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0003.jpg",
+    "t": "07:12",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0004.jpg",
+    "t": "07:14",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "07:18",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "18:31",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0007.jpg",
+    "t": "18:52",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "26:23",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0009.jpg",
+    "t": "26:57",
+    "reason": "scene-change"
+  },
+  {
+    "file": "frame_0010.jpg",
+    "t": "27:09",
+    "reason": "scene-change"
+  },
+  {
+    "file": "slide_01.jpg",
+    "t": "00:30",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_02.jpg",
+    "t": "02:30",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "05:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "06:40",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_05.jpg",
+    "t": "08:30",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_06.jpg",
+    "t": "14:30",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_07.jpg",
+    "t": "19:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_08.jpg",
+    "t": "22:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_09.jpg",
+    "t": "25:30",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_10.jpg",
+    "t": "28:30",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_11.jpg",
+    "t": "32:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_12.jpg",
+    "t": "39:40",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_13.jpg",
+    "t": "44:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_14.jpg",
+    "t": "51:00",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_15.jpg",
+    "t": "54:40",
+    "reason": "clean-slide"
+  }
+]

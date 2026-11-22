@@ -162,7 +162,7 @@ def main():
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{sec}.5", "-i", str(video), "-frames:v", "1",
                             "-vf", "scale=1024:-2", str(folder / "frames" / f"slide_{i:02d}.jpg")], check=True)
         register_slides(folder, picks)
-        print(f"{len(picks)} slide frames written; now run build_report.py and look at the PDF")
+        print(f"{len(picks)} slide frames written; now run build_report.py and check the report md")
         return
 
     out = Path(args.out or tempfile.mkdtemp(prefix="pick_frames_"))

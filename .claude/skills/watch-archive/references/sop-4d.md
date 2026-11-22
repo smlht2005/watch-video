@@ -7,5 +7,5 @@
      - **每個步驟**：動作＋畫面上的按鈕或欄位**原文**（以截圖為準，不憑逐字稿）＋預期結果＋影片時間（括號）。關鍵步驟（設定畫面、錯誤提示、參數欄位）附 `![說明](frame@MM:SS)`：建報告時會換成最接近該時間的截圖，所以重跑後 `frames/` 重新編號也對得上；缺圖時補 `--timestamps` cue 重跑。
      - **只收可重現的操作**，講者的觀點與評價不收。影片沒示範的標「影片未示範」，Claude 補的標「推測」；價格、硬體需求、版本、效果一律標「講者主張，未查證」。
      - 影片有示範錯誤時，最後加「錯誤排解」表（現象／原因／做法／影片時間）。
-     - **產出**（`build_report.py`）：主報告在「摘要」之後多一節「操作 SOP」；另輸出 `<影片標題>_操作SOP.docx／.md`（只有 SOP 與截圖）；以及 `kb/`（`<影片標題>_操作SOP.md`＋`attachments/`）：檔頭有 YAML frontmatter（title／type／source／date／tags），圖片依影片時間命名 `step-MMSS.jpg`、用相對路徑，整個資料夾可直接放進 Obsidian vault 或用 Notion 匯入（Markdown zip），當 AI 知識庫素材。
+     - **產出**（`build_report.py`）：主報告在「摘要」之後多一節「操作 SOP」；另輸出 `<影片標題>_操作SOP.md`（只有 SOP 與截圖；加 `--docx` 另有 `.docx`）；以及 `kb/`（`<影片標題>_操作SOP.md`＋`attachments/`）：檔頭有 YAML frontmatter（title／type／source／date／tags），圖片依影片時間命名 `step-MMSS.jpg`、用相對路徑，整個資料夾可直接放進 Obsidian vault 或用 Notion 匯入（Markdown zip），當 AI 知識庫素材。
      - 規模參考：ComfyUI 影片（15 分鐘、7 章）約 14 頁、19 張圖，這個規模可以接受。

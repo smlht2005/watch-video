@@ -27,29 +27,73 @@ tags:
 
 # GitHub 爆紅 4 個 AI Agent 工具
 
-## 摘要
+## 思維導圖
 
-**一句話重點**：講者（iamlily.genai／佳佳）用 47 秒快速介紹 4 個「GitHub 上爆紅」的 AI Agent 工具：Graft（現名 Trail-code）、Agency Agents、Codebase Memory MCP、OpenMontage，並引導觀眾留言 TOOLS 領資料、參加免費分享會。
+- GitHub 爆紅 4 個 AI Agent 工具
+  - 開場與第 1 個工具：Gra…
+    - Graft
+    - Trail-code
+  - 第 2 個工具：Agency…
+    - Agency Agents
+  - 第 3 個工具：Codeba…
+    - Codebase Memor…
+  - 第 4 個工具：OpenMo…
+    - OpenMontage
+  - 結尾：留言領資料與免費分享會
+    - 留言 TOOLS
 
-| 時間 | 重點 |
-|---|---|
-| 00:00 | 開場：GitHub 上爆紅的 4 個 AI Agent 工具 |
-| 00:02 | 第 1 個 Graft，現改名 Trail-code：把自己做的 AI 自動化資料夾整理成一張地圖，Claude Code 就能馬上找到；講者稱官方測試省 6 成時間（講者主張，未查證） |
-| 00:12 | 第 2 個 Agency Agents：十幾個部門、快 300 個 AI 員工，依工作直接指派 |
-| 00:19 | 第 3 個 Codebase Memory MCP：把程式碼整個記下來，只改一處不會動到其他不相干的地方 |
-| 00:27 | 第 4 個 OpenMontage：把 Claude Code 變成影片製作團隊，丟一個主題，腳本、圖片自動做完 |
-| 00:35 | 結尾：留言 TOOLS 領整理資料；講者主頁有兩天免費分享會，目標是接外國客戶案子 |
+## 圖文對照（畫面 + 逐字稿）
 
-### 名詞與縮寫
-- **MCP**：Model Context Protocol，讓 AI 助理連接外部工具／資料的協定。
-- **Claude Code**：Anthropic 的命令列 AI 寫程式工具。
-- 其餘 4 個工具名稱以畫面為準；功能描述皆為講者說法，未逐一查證。
+### 主題 1：開場與第 1 個工具：Graft（現名 Trail-code）（00:00–00:12）
 
-### 轉錄校正備註
-- 逐字稿來源：Groq Whisper（自動偵測語言＝中文）；整支 47 秒，無重複幻覺或漏轉。
-- 三處誤聽已依畫面直接寫明校正（見 `meta.json.known_asr_errors`）：「Dhub上包紅的」→ GitHub 上爆紅的、「直派給他」→ 指派給他、「留言to us」→ 留言 TOOLS。
-- 星數、時間節省 60%、工具功能均為「講者主張，未查證」；畫面上的數字見 `supplement.md`。
-- 本片屬導流型短影音（結尾導向付費／免費分享會的行銷），內容為重點條列，細節需自行到各 GitHub repo 查證。
+![00:00](../../_attachments/DehA7RfTkaN/slide_01.jpg)
+
+**重點：** GitHub 上爆紅的 4 個 AI Agent 工具；Graft 改名 Trail-code，把 AI 自動化資料夾整理成地圖，官方測試省 6 成時間
+
+**標籤：** #Graft #Trail-code
+
+GitHub 上爆紅的4個AI Agent工具，第一個Graft,現在改名叫Trail-code，它可以把你自己做的AI自動化資料夾整理成一張地圖，這樣Claude Code馬上就找得到，官方測試時間省了6成。
+
+### 主題 2：第 2 個工具：Agency Agents（00:12–00:19）
+
+![00:12](../../_attachments/DehA7RfTkaN/slide_02.jpg)
+
+**重點：** 十幾個部門、近 300 個 AI 員工，依工作直接指派
+
+**標籤：** #Agency Agents
+
+第二個Agency Agents，裡面有十幾個部門，快300個AI員工，適合哪一個工作的就直接指派給他。
+
+### 主題 3：第 3 個工具：Codebase Memory MCP（00:19–00:27）
+
+![00:19](../../_attachments/DehA7RfTkaN/slide_03.jpg)
+
+**重點：** 記住整個程式碼庫，只改一處不會動到無關部分
+
+**標籤：** #Codebase Memory MCP
+
+第三個Codebase Memory MCP，它會把你AI助理的程式碼整個記下來，如果只改一個部分就不會動到其他不相干的地方。
+
+### 主題 4：第 4 個工具：OpenMontage（00:27–00:35）
+
+![00:27](../../_attachments/DehA7RfTkaN/slide_04.jpg)
+
+**重點：** 把 Claude Code 變成影片製作團隊，丟主題即自動產出腳本、圖片
+
+**標籤：** #OpenMontage
+
+第四個OpenMontage，他會把Claude Code變成一個影片製作團隊，你只要丟一個主題進去，指令碼、圖片他自己全部做完。
+
+### 主題 5：結尾：留言領資料與免費分享會（00:35–00:47）
+
+![00:35](../../_attachments/DehA7RfTkaN/slide_05.jpg)
+
+**重點：** 留言 TOOLS 領整理資料；導流到講者的兩天免費分享會
+
+**標籤：** #留言 TOOLS
+
+這四個工具內容我整理很久，資料有點多，留言 TOOLS,我把它送給你，為了學了這麼多想用這些工具接外國客戶的案子，我主頁有兩天免費分享會，我是佳佳，在曼谷經營藝人公司。
+
 
 ## 補充資料
 

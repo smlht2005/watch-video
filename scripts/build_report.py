@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a readable report (<stem>_report.md + <stem>_report.docx) from an archived watch folder.
+"""Build a readable report (<stem>_report.md; + <stem>_report.docx with --docx) from an archived watch folder.
 
 Reads  : meta.json, summary.md, transcript.md, frames.json, frames/*.jpg,
          transcript.zh.md (optional: Traditional Chinese translation of a foreign-language transcript,
@@ -109,19 +109,31 @@ def strip_h1(md: str) -> str:
     return re.sub(r"\A# .*\n+", "", md)
 
 
+DEFAULT_SECTION_LABEL = "主題"  # most videos (interviews, talks, demos) have no slides; "投影片" only when set in meta
+
+
+def section_label(meta, n: int) -> str:
+    """Heading label of the n-th (1-based) section: '第 N 頁' for an image post, else '<label> N' where the label
+    is meta.section_label (e.g. "投影片" for a slide-deck recording) or 主題."""
+    if meta.get("media_type") == "carousel":
+        return f"第 {n} 頁"
+    label = meta.get("section_label")
+    label = label.strip() if isinstance(label, str) and label.strip() else DEFAULT_SECTION_LABEL
+    return f"{label} {n}"
+
+
 def slide_blocks(meta, segs):
     """One block per slide: one frame, optional note, then the transcript spoken while it is on screen."""
     slides = sorted(meta["slides"], key=lambda x: to_sec(x["start"]))
     carousel = meta.get("media_type") == "carousel"  # image post: page N sits at 00:0N, no real timeline
     end = "" if carousel else meta.get("duration", "").split(" ")[0]
-    seg_label = "投影片" if any(x.get("frame") for x in slides) else "段落"  # no frames (audio-only) -> not slides
     L = []
     for n, sl in enumerate(slides):
         nxt = slides[n + 1]["start"] if n + 1 < len(slides) else end
         lo, hi = to_sec(sl["start"]), (to_sec(nxt) if nxt else 10 ** 9)
         title = f"：{sl['title']}" if sl.get("title") else ""
         span = "" if carousel else f"（{sl['start']}–{nxt}）"
-        L += [f"### {'第 %d 頁' % (n + 1) if carousel else '%s %d' % (seg_label, n + 1)}{title}{span}", ""] + ([f"![{sl['start']}](frames/{sl['frame']})", ""] if sl.get("frame") else [])
+        L += [f"### {section_label(meta, n + 1)}{title}{span}", ""] + ([f"![{sl['start']}](frames/{sl['frame']})", ""] if sl.get("frame") else [])  # audio-only: no frame
         if sl.get("note"):
             L += [f"**重點：** {sl['note']}", ""]
         if sl.get("keywords"):
@@ -145,6 +157,21 @@ def frame_blocks(meta, segs, frames):
         hi = to_sec(nxt) if frame and nxt else 10 ** 9
         L += text_lines(meta, segs, lo, hi)
     return L
+
+
+IMG_RE = re.compile(r"^!\[[^\]]*\]\(([^)]+)\)$")
+
+
+def gallery(meta, segs, frames):
+    """〈圖文對照〉section shared by the report and the Obsidian video note.
+
+    Returns (lines, images): the Markdown lines, starting with the '## 圖文對照…' heading, and the relative image
+    paths (frames/…) they link, in order. Slides give one block per slide; without slides, one per frame with speech.
+    """
+    lines = ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
+    lines += slide_blocks(meta, segs) if meta.get("slides") else frame_blocks(meta, segs, frames)
+    images = [m.group(1) for m in map(IMG_RE.match, lines) if m]
+    return lines, images
 
 
 FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})")
@@ -250,11 +277,7 @@ def build_md(dest: Path, meta, summary, segs, frames, map_png=None) -> str:
     if has_map:
         L += ["## 思維導圖", "", "![思維導圖](mindmap.png)", "",
               "- 原圖：[mindmap.png](mindmap.png)；文字大綱：[mindmap.md](mindmap.md)（與本報告同資料夾）", ""]
-    L += ["## 圖文對照（畫面 + 逐字稿" + ("＋中譯）" if meta.get("_zh") else "）"), ""]
-    if meta.get("slides"):
-        L += slide_blocks(meta, segs)
-    else:
-        L += frame_blocks(meta, segs, frames)
+    L += gallery(meta, segs, frames)[0]
     if meta.get("known_asr_errors"):
         L += ["## 已知轉錄錯誤", "", "| 時間 | 聽成 | 應為 |", "|---|---|---|"]
         for e in meta["known_asr_errors"]:
@@ -530,7 +553,14 @@ def md_to_docx(dest: Path, md: str, out: Path, kw=None, max_img_h=9, diagrams=fr
     doc.save(str(out))
 
 
-def build(dest: Path):
+def build(dest: Path, docx=None):
+    """Write <stem>_report.md (and the SOP .md + kb/ when there is an SOP), plus the Word copies when asked.
+
+    docx: True = write them; False = no Word copies (existing ones are removed); None (default) = keep what the
+    folder already has: the Word copies are rebuilt only if a *_report.docx is already there, so a committed docx
+    never silently disappears and never goes stale."""
+    if docx is None:
+        docx = any(dest.glob("*_report.docx"))
     meta, summary, segs, frames = load(dest)
     try:  # the map is optional: a font or drawing failure must not cost the whole report
         map_png = mindmap.ensure(dest, meta)
@@ -544,18 +574,30 @@ def build(dest: Path):
     out_md, out_docx = dest / f"{stem}_report.md", dest / f"{stem}_report.docx"
     out_md.write_text(md, encoding="utf-8")
     local = frozenset(p.name for p in dest.iterdir() if p.is_file())
-    md_to_docx(dest, md, out_docx, meta.get("keywords"), diagrams=frozenset({"mindmap.png"}), local=local)
-    outs = [out_md, out_docx]
+    outs = [out_md]
+    if docx:
+        md_to_docx(dest, md, out_docx, meta.get("keywords"), diagrams=frozenset({"mindmap.png"}), local=local)
+        outs.append(out_docx)
     standalone = sop_md(dest, meta, frames)
     if standalone:
         s_md, s_docx = dest / f"{sop_name(meta)}.md", dest / f"{sop_name(meta)}.docx"
         s_md.write_text(standalone, encoding="utf-8")
-        md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5, local=local)  # many step shots: keep them compact
-        outs += [s_md, s_docx]
+        outs.append(s_md)
+        if docx:
+            md_to_docx(dest, standalone, s_docx, meta.get("keywords"), max_img_h=6.5, local=local)  # many step shots: keep them compact
+            outs.append(s_docx)
     build_kb(dest, meta, frames)  # also clears a stale kb/ when there is no SOP
     return tuple(outs)
 
 
 if __name__ == "__main__":
-    for p in build(Path(sys.argv[1])):
+    import argparse
+    ap = argparse.ArgumentParser(description="Rebuild the report of one archived folder.")
+    ap.add_argument("folder")
+    g = ap.add_mutually_exclusive_group()
+    g.add_argument("--docx", dest="docx", action="store_true", default=None,
+                   help="also write the Word copies (*_report.docx, *_操作SOP.docx); default: only if the folder already has them")
+    g.add_argument("--no-docx", dest="docx", action="store_false", help="remove the Word copies and write Markdown only")
+    args = ap.parse_args()
+    for p in build(Path(args.folder), docx=args.docx):
         print("wrote", p)

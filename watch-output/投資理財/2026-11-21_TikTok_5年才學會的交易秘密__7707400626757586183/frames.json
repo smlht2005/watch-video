@@ -1,0 +1,72 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "00:01",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "00:05",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0011.jpg",
+    "t": "00:13",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0013.jpg",
+    "t": "00:16",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0021.jpg",
+    "t": "00:27",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0025.jpg",
+    "t": "00:32",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0027.jpg",
+    "t": "00:35",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0030.jpg",
+    "t": "00:39",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0031.jpg",
+    "t": "00:40",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0032.jpg",
+    "t": "00:42",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0034.jpg",
+    "t": "00:44",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0036.jpg",
+    "t": "00:47",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0058.jpg",
+    "t": "01:17",
+    "reason": "uniform"
+  }
+]

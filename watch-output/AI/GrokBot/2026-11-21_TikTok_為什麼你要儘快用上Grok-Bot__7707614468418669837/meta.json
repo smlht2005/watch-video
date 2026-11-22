@@ -1,0 +1,193 @@
+{
+  "url": "https://vm.tiktok.com/ZSpo36Cad/",
+  "platform": "TikTok",
+  "video_id": "7707614468418669837",
+  "title": "為什麼你要儘快用上Grok Bot",
+  "title_raw": "为什么你要尽快用上Grok Bot #ai #grokbot #马斯克",
+  "title_override": "",
+  "category": "AI/GrokBot",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": ""
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [],
+  "glossary_applied": {
+    "Cloud Code": "Claude Code",
+    "Globalt": "Grok Bot",
+    "Globot": "Grok Bot",
+    "Global": "Grok Bot",
+    "成能": "程度",
+    "資料油": "資料庫",
+    "質量": "品質",
+    "一個人只會50多個AI": "一個人指揮50多個AI",
+    "快點一步": "快進一步",
+    "實時文字資料庫": "實時文本數據流",
+    "真安通適": "真按同事",
+    "黑口話": "客製化"
+  },
+  "source_hashtags": [
+    "ai",
+    "grokbot",
+    "马斯克"
+  ],
+  "uploader": "yangzhujun1",
+  "duration": "02:08 (128.3s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-21",
+  "last_updated": "2026-11-21",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "Globot／Global／Globalt",
+      "expected": "Grok Bot／Grok（對照標題與畫面「Grok Bot」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:00",
+      "heard": "Cloud Code",
+      "expected": "Claude Code",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:32",
+      "heard": "成能",
+      "expected": "程度（推測）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:38",
+      "heard": "實時文字資料油",
+      "expected": "實時文本數據流（使用者確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:00",
+      "heard": "一個人只會50多個AI",
+      "expected": "一個人指揮50多個AI（推測；與前一支影片同一說法對照）",
+      "status": "suspected"
+    },
+    {
+      "time": "02:06",
+      "heard": "快點一步",
+      "expected": "快進一步（推測，口號）",
+      "status": "suspected"
+    },
+    {
+      "time": "00:54",
+      "heard": "他真安通適這個思路來設計",
+      "expected": "就是他真按「同事」這個思路來設計（使用者確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:30",
+      "heard": "他可以更加的黑口話",
+      "expected": "他可以更加的客製化（使用者確認）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:58",
+      "heard": "土豆女神",
+      "expected": "講者對 Lauren Tan 的暱稱（推測，與另一支影片所指人物相同），保留原稱",
+      "status": "suspected"
+    }
+  ],
+  "keywords": [
+    "Grok Bot",
+    "GrokBot",
+    "X",
+    "Bot市場",
+    "Skill",
+    "把AI當同事",
+    "資訊差",
+    "土豆女神"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "開場：用不上 Claude Code／Codex，就用 Grok Bot",
+      "note": "講者（竹子，帳號 yangzhujun1）說如果用不上 Claude Code、Codex，強烈建議用 Grok Bot：可用支付寶支付、不需要魔法；有人說用 Codex 已超過 80% 的人，用 Grok Bot 則 AI 體驗超過 99% 的人。今天講它背後的三大優勢與最快上手方法，結尾還提到用資訊差賺錢（以上為講者主張，未查證）。",
+      "keywords": [
+        "Grok Bot",
+        "Codex",
+        "支付寶",
+        "資訊差"
+      ]
+    },
+    {
+      "start": "00:24",
+      "frame": "frame_0008.jpg",
+      "title": "優勢一：背後的 X——全球最大的實時文本數據流",
+      "note": "第一個先天優勢是背後的 X：講者說馬斯克當年買下 X 很多人覺得貴，現在判斷開始體現；智慧達到一定程度後，資料的品質和時效是最重要的資產，X 就是全球最大的實時文本數據流，是 Grok 最獨特、最不可替代的核心資產，可以讓它實時分析 X 上正在發生的討論、快速準確掌握最新科技動態（講者主張，未查證）。",
+      "keywords": [
+        "X",
+        "實時資料",
+        "核心資產"
+      ]
+    },
+    {
+      "start": "00:53",
+      "frame": "frame_0010.jpg",
+      "title": "優勢二：按「同事」思路設計，可加入做 Bot 的 Bot",
+      "note": "第二個優勢是它按「把 AI 當同事」的思路設計：講者引馬斯克原話（僱傭 Grok Bot、把它當同事、交給它最艱難的任務），並提到前幾天馬斯克重用的華人女孩「土豆女神」也是這個理念——一個人指揮 50 多個 AI、幹 20 多個工程師的活；可以把「土豆女神」這個做 Bot 的 Bot 加進來，讓它幫你設計更多 Bot 同事（講者轉述，未查證）。",
+      "keywords": [
+        "把AI當同事",
+        "做Bot的Bot",
+        "土豆女神"
+      ]
+    },
+    {
+      "start": "01:13",
+      "frame": "frame_0015.jpg",
+      "title": "優勢三：Bot 市場——公司要僱人直接到市場找 Bot",
+      "note": "第三個優勢是 Grok Bot 正在做機器人市場：以後公司要僱人可以直接到 Bot 市場找人；講者說市場已對部分創作者有獎勵，未來可能進一步商業化，讓使用者直接付費給 Bot 製作人（講者主張，未查證）。",
+      "keywords": [
+        "Bot市場",
+        "創作者獎勵",
+        "商業化"
+      ]
+    },
+    {
+      "start": "01:28",
+      "frame": "frame_0058.jpg",
+      "title": "Bot 與 Skill 的最大區別：可封裝、可出售",
+      "note": "講者說 Skill 的流程是文字固定的，複製成本幾乎為零，一個人買了瞬間能轉發給上百、上千人，所以行業裡真正懂的人不太有動力公開最厲害的 Skill；Bot 則像一個封裝好的作品或員工，可以拿到市場上出售、持續盈利（講者主張，未查證）。",
+      "keywords": [
+        "Bot",
+        "Skill",
+        "封裝",
+        "出售"
+      ]
+    },
+    {
+      "start": "01:49",
+      "frame": "frame_0112.jpg",
+      "title": "結論：Skill 的時代結束、Bot 的時代開始？",
+      "note": "有人斷言 Skill 的時代結束、屬於 Bot 的時代正式開始，講者覺得有一定道理，至少目前這個資訊差可以賺錢，不妨試一試；最快上手的方法放在結尾，邀請在評論區討論更多教程與技巧（講者主張）。",
+      "keywords": [
+        "Skill時代",
+        "資訊差",
+        "上手"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-21",
+    "fixes": 16,
+    "note": "全文 71 行逐行重讀"
+  }
+}
