@@ -1,0 +1,227 @@
+{
+  "url": "https://www.instagram.com/reel/DfUMThQE3fc/",
+  "platform": "Instagram",
+  "video_id": "DfUMThQE3fc",
+  "title": "CodeGraph 讓 Claude Code 查程式碼地圖",
+  "title_raw": "Video by ai.lanrenbao",
+  "title_override": "CodeGraph 讓 Claude Code 查程式碼地圖",
+  "category": "AI/claude-code",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "AI懶人報",
+  "duration": "00:53 (53.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-09",
+  "last_updated": "2026-11-09",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "CLAUDE",
+      "expected": "Claude（畫面字幕「Claude 找程式碼」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:08",
+      "heard": "Cograph",
+      "expected": "CodeGraph（畫面標題）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:16",
+      "heard": "cograph install／cograph init",
+      "expected": "codegraph install／codegraph init（畫面指令）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:27",
+      "heard": "每一樁要翻12個檔案跑2分多鐘",
+      "expected": "沒裝要翻12個檔案，跑2分多鐘（畫面字幕 00:28「沒裝要翻 12 個檔案」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:31",
+      "heard": "Excaladra",
+      "expected": "Excalidraw（畫面標題）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:36",
+      "heard": "RUS的Tokyo",
+      "expected": "Rust的Tokio（畫面「Tokio・Rust」）",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "claudecode",
+    "CodeGraph",
+    "程式碼知識圖譜",
+    "MCP",
+    "token 節省",
+    "Claude Code",
+    "Codex",
+    "Cursor",
+    "本機執行",
+    "開源工具"
+  ],
+  "section_keywords": {
+    "00:00": [
+      "43 趟",
+      "2 趟"
+    ],
+    "00:03": [
+      "搜尋",
+      "開檔",
+      "燒 token"
+    ],
+    "00:08": [
+      "呼叫關係",
+      "專案地圖",
+      "GitHub 星數"
+    ],
+    "00:15": [
+      "codegraph install",
+      "codegraph init"
+    ],
+    "00:24": [
+      "VS Code",
+      "2.2x faster"
+    ],
+    "00:31": [
+      "Excalidraw",
+      "$2.43→$0.54"
+    ],
+    "00:36": [
+      "Tokio",
+      "Rust",
+      "2.6x faster"
+    ],
+    "00:40": [
+      "Token −62%",
+      "花費 −44%"
+    ],
+    "00:43": [
+      "100% local",
+      "Claude Code",
+      "Codex",
+      "Cursor",
+      "Gemini"
+    ]
+  },
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：找程式碼 43 趟 → 2 趟",
+      "note": "開場用對比吸睛：同一題，Claude 找程式碼原本要呼叫工具 43 趟，裝了 CodeGraph 只要 2 趟（講者主張，未查證；畫面引自 DevsKingdom）。",
+      "keywords": [
+        "43 趟",
+        "2 趟"
+      ]
+    },
+    {
+      "start": "00:03",
+      "frame": "slide_02.jpg",
+      "title": "問題：AI 在大專案裡反覆搜尋",
+      "note": "叫 AI 看大專案時，它會「搜尋→開檔→再搜尋」不斷循環，光找東西就在燒 token，使用者只能乾等。",
+      "keywords": [
+        "搜尋",
+        "開檔",
+        "燒 token"
+      ]
+    },
+    {
+      "start": "00:08",
+      "frame": "slide_03.jpg",
+      "title": "CodeGraph 原理：先畫一張專案地圖",
+      "note": "CodeGraph 先把整個專案「誰呼叫誰」建成一張地圖（程式碼關係圖），AI 要找東西時直接查地圖，不必一路翻檔。講者說開源不到 10 個月破 7.5 萬顆星（畫面字卡「7.5 萬★」，GitHub 截圖顯示 Star 76k；講者主張，未查證）。",
+      "keywords": [
+        "呼叫關係",
+        "專案地圖",
+        "GitHub 星數"
+      ]
+    },
+    {
+      "start": "00:15",
+      "frame": "slide_04.jpg",
+      "title": "用法：install 接上 AI、init 建圖",
+      "note": "兩個指令：先 `codegraph install` 接上你的 AI 工具，再到專案資料夾 `codegraph init` 建索引；示範 3,251 個檔案約 33 秒建好。之後照平常跟 Claude 講話，它會自己去查地圖。",
+      "keywords": [
+        "codegraph install",
+        "codegraph init"
+      ]
+    },
+    {
+      "start": "00:24",
+      "frame": "slide_05.jpg",
+      "title": "實測一：VS Code 架構問題",
+      "note": "官方拿 7 個開源專案實測。問 VS Code 一個架構問題：沒裝要讀 12 個檔、2 分 10 秒；裝了 58 秒、0 次讀檔（官方 README 數據，講者主張，未查證）。",
+      "keywords": [
+        "VS Code",
+        "2.2x faster"
+      ]
+    },
+    {
+      "start": "00:31",
+      "frame": "slide_06.jpg",
+      "title": "實測二：Excalidraw 花費",
+      "note": "白板工具 Excalidraw 同一題花費從 2.43 美元降到 0.54 美元（講者主張，未查證）。",
+      "keywords": [
+        "Excalidraw",
+        "$2.43→$0.54"
+      ]
+    },
+    {
+      "start": "00:36",
+      "frame": "slide_07.jpg",
+      "title": "實測三：Rust 的 Tokio",
+      "note": "Rust 非同步框架 Tokio：本來要等 2 分 43 秒，裝了 1 分 3 秒（2.6 倍快；講者主張，未查證）。",
+      "keywords": [
+        "Tokio",
+        "Rust",
+        "2.6x faster"
+      ]
+    },
+    {
+      "start": "00:40",
+      "frame": "slide_08.jpg",
+      "title": "7 個專案平均",
+      "note": "7 個專案平均下來 token 少 62%、花費少 44%（講者主張，未查證）。",
+      "keywords": [
+        "Token −62%",
+        "花費 −44%"
+      ]
+    },
+    {
+      "start": "00:43",
+      "frame": "slide_09.jpg",
+      "title": "100% 本機、多種 AI 工具都能接",
+      "note": "CodeGraph 整個在本機執行，不用另外申請 API key；Claude Code、Codex、Cursor、Gemini 都接得上。片尾為頻道「AI 懶人報」的追蹤呼籲。",
+      "keywords": [
+        "100% local",
+        "Claude Code",
+        "Codex",
+        "Cursor",
+        "Gemini"
+      ]
+    }
+  ],
+  "video_type": "tool-intro",
+  "clean_fillers": "auto",
+  "sop_mode": "auto"
+}

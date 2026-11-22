@@ -170,5 +170,6 @@
   ],
   "detected_language": "en",
   "needs_zh_translation": true,
-  "category": "雲端"
+  "category": "雲端",
+  "section_label": "投影片"
 }

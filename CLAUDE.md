@@ -10,6 +10,8 @@
 - 先看截圖核對逐字稿；穩定的校正進 `glossary/domains/`，只對單支影片成立或不確定的記在 `known_asr_errors`，標明「推測」。
 - 標為存疑的逐字稿行，先對照投影片再決定保留：`supplement.md` 寫好後跑 `python3 scripts/slide_text_check.py watch-output/<領域>/<資料夾>`，列出投影片子句與逐字稿近似但不同的行（引文、經句、人名以投影片為準；只是提示，要人工判斷）；見 `.claude/skills/watch-archive/references/proofread.md`。
 - 講座／講經的口吃與標點：口音讓逐字稿有重複字（「逢人 逢人」）和停頓空格；`clean_fillers.py` 自動合併行內口吃、字間空格改「，」，跨行重複用 `python3 scripts/stutter_check.py watch-output/<領域>/<資料夾>` 列出後人工判斷（刻意強調的保留）；見 `.claude/skills/watch-archive/references/proofread.md`。
+- 第二輪校稿有閘門（2026-11-21 起）：`watch_archive.py` 歸檔結尾會自動跑 `scripts/proofread_check.py` 列出機械提示（簡體殘留、台灣用語、OpenCC 誤轉、隻要／口吃、他／她混用、重複行）；Claude 逐行重讀修完後執行 `python3 scripts/proofread_check.py watch-output/<領域>/<資料夾> --mark-done --fixes N`，在 `meta.json` 寫 `second_pass.done`；沒標記的新影片 `review_links.py` 會拒絕給確認連結（`--skip-second-pass` 可略過）。
+- 字幕核對（第二輪的 3b）：第二輪留下 `suspected` 項目且影片有燒入字幕時，只針對這些項目跑 `python3 scripts/subtitle_check.py <資料夾>`（取該秒前後的字幕帶放大截圖，Read 看圖判斷；`--ocr` 備用；`--at` 可手動指定時間點）；字幕只確認用字、專有名詞與數字，不整句覆蓋逐字稿，確認後改 `confirmed` 並註明「來源：畫面字幕 MM:SS」；字幕空白就維持待確認並把時間點交給使用者；見 `.claude/skills/watch-archive/references/proofread.md` 3b。
 - 校稿分兩輪：第一輪批次替換後，第二輪用 Read 從頭到尾逐行重讀全文（片頭標題、接縫句、相鄰行的同一錯字最常漏），再在 PDF 搜尋改過的錯字確認不剩。
 - 影片沒呈現的資訊（被截斷的畫面文字、貼文／留言內容、連結）放同資料夾的 `supplement.md`（重跑不覆蓋），並更新原本的推測。
 - 影片中的數字與主張一律標「講者主張，未查證」，不當成事實。
@@ -21,15 +23,17 @@
 - 每段截圖要對到該段重點：用 `scripts/pick_frames.py sheet` 逐秒產生縮圖表與建議，**自己看圖確認對到 `note`** 再 `apply`；畫面上講者沒唸的提示詞／程式碼／對照表，用 `pick_frames.py text` 取原始解析度截圖與同時段逐字稿比對後，逐字抄進 `supplement.md`（`.claude/skills/watch-archive/references/content.md` 4a、`.claude/skills/watch-archive/references/supplement-4c.md`）。
 - 影片在帶讀某份講稿時，用原講稿做二次校對；原稿沒有的內容是影片主講者的延伸，不能用原稿去改。
 - 講座／講經（口語演講）：歸檔時加 `--clean-fillers`（`--glossary pure-land` 自動開啟，`meta.json.video_type: "lecture"` 重跑也會開），自動去除逐字稿的「呢」「啊」等語助詞；`--keep-fillers` 保留，`transcript.raw.md` 保留原話；見 `.claude/skills/watch-archive/references/proofread.md`。
-- 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.docx` 與可放進 Obsidian／Notion 的 `kb/`；見 `.claude/skills/watch-archive/references/sop-4d.md`。
-- Obsidian 知識庫：重建報告後，若有手寫 `links.md`（概念連結）或 `knowledge.md`（知識點），跑 `python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>` 匯進 `obsidian-vault/`（`--vault <路徑>` 只寫進該 vault 的 `watch-archive/`）。兩個檔都分 `## 已確認`／`## 候選`：Claude 只寫候選，使用者確認後才移到已確認，匯出只取已確認；連結每條要有關係類型與說明，**不用相似度自動產生**；知識點引文要是原文，影片主張一律標「講者／作者主張，未查證」；重匯只覆蓋帶 `generated_by: watch-archive` 的檔案。Threads 圖文貼文網址會自動歸檔成 `meta.json.media_type: "carousel"`（本文＋全部頁面圖），頁面文字仍由 Claude 看圖抄錄；見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
+- 電腦工具教學影片（螢幕操作示範）：消化報告後另寫 `sop.md`（依任務分章、編號步驟、按鈕名稱照畫面原文、截圖寫 `![說明](frame@MM:SS)`、沒示範的標「影片未示範」／「推測」），重建後有 `*_操作SOP.md`（加 `--docx` 另有 `.docx`）與可放進 Obsidian／Notion 的 `kb/`；見 `.claude/skills/watch-archive/references/sop-4d.md`。
+- 知識點候選（預設必做，2026-11 起）：每次歸檔完，Claude 一律先寫 `knowledge.md` 的 `## 候選`（約 5–8 則，引文須是逐字稿原文、單行內找得到），回覆貼 `review_links.py` 印出的 `knowledge.md` 連結與編號候選清單，請使用者用編號確認（「確認 1,3,5／刪 2／改 4」）；確認前不移到已確認、不匯出知識點筆記。只有內容過少才可略過並說明。
+- Obsidian 知識庫：每次重建報告後都跑 `python3 scripts/obsidian_export.py watch-output/<領域>/<資料夾>` 匯進 `obsidian-vault/`（`--vault <路徑>` 只寫進該 vault 的 `watch-archive/`），`obsidian-vault/` 變更一併 commit；知識點筆記檔名＝「子領域（沒有就用領域）_知識點標題」（如 `harness-engineering_…`、`投資理財_…`），原標題存在 `aliases`。影片筆記本文是思維導圖（文字）＋圖文對照（截圖＋說明＋逐字稿），不放摘要與思維導圖 PNG。可另寫 `links.md`（概念連結）與 `knowledge.md`（知識點）。兩個檔都分 `## 已確認`／`## 候選`：Claude 只寫候選，使用者確認後才移到已確認，匯出只取已確認；連結每條要有關係類型與說明，**不用相似度自動產生**；知識點引文要是原文，影片主張一律標「講者／作者主張，未查證」；重匯只覆蓋帶 `generated_by: watch-archive` 的檔案。Threads 圖文貼文網址會自動歸檔成 `meta.json.media_type: "carousel"`（本文＋全部頁面圖），頁面文字仍由 Claude 看圖抄錄；見 `.claude/skills/watch-archive/references/obsidian-4e.md`。
 - 字幕 OCR 很費時（74 分鐘的影片約一小時），**只用在佛經講解／講經座，且畫面有逐句燒入字幕**的影片，其他影片不用（先 `probe` 確認有字幕才 `run`）。用 OCR 抽字幕與逐字稿逐行比對校稿，專有名詞（人名、書名、術語）以字幕為準，不靠上下文推測；字幕是書面語、不是原話，只取差異處用字，不整句覆蓋（**例外**：佛學字幕經編修，涵蓋 ≥ 95%、簡體雜訊 < 1%、Whisper 可對齊 ≥ 90% 時整份以字幕為底稿，Whisper 借時間戳並留 `transcript.whisper.md`；條件與做法見 `docs/subtitle-ocr-vs-whisper.md`「字幕為底稿」）；預設 `--model v5`（PP-OCRv5 mobile，讀得出繁體且快；`v5-server` 較慢；舊 v4 會把繁體字認成相似字），OCR 仍有同音雜訊，每處人工判斷。先 `scripts/subtitle_ocr.py probe` 確認有字幕，再 `run`／`compare`；影片超過 30 分鐘時 `run` 自動每 10 分鐘分段、可續跑，建議加 `--background --workers 1 --every 3`，用 `status` 看進度；用法與比較見 `docs/subtitle-ocr-vs-whisper.md`。
 - 佛學／講經的推測詞：`known_asr_errors` 標「推測」的項目要寫 `status: "suspected"`，校稿後跑 `python3 scripts/clip_check.py watch-output/<領域>/<資料夾> --wait-confirm` 剪出待確認音檔（`waitConfirm/`，不入庫），請使用者點 `index.md` 聽音確認；定案後改 `status: "confirmed"`；見 `.claude/skills/watch-archive/references/proofread.md`、用語見 `GLOSSARY.md`。
-- 交付前把 docx 轉 PDF 目視檢查（中文、截圖、頁數）。
+- 報告預設只產 Markdown（`*_report.md`、SOP 的 md、`kb/`）；要 Word 檔才在 `watch_archive.py`／`build_report.py` 加 `--docx`；資料夾已有 docx 時，不加旗標重建也會一併更新（不會被刪），要移除才加 `--no-docx`。交付前看報告 md 與 `mindmap.png`；有 `--docx` 時再轉 PDF 目視檢查（中文、截圖、頁數）。
 - 歸檔完成並 push 到分支後，用 `python3 scripts/review_links.py watch-output/<領域>/<資料夾>` 產生連結給使用者確認；使用者確認前不開 PR、不 merge。
 - 他人影片檔不入庫，只存報告與截圖（`media/` 已 gitignore）。
 
-- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／AI/提示詞／佛學／商業理財／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
+- 改領域（搬單支影片、領域改名、合併）一律用 `python3 scripts/move_category.py`（先 dry-run 給使用者看、說「搬」才 `--apply`；不自動開 PR；不要用 `organize.py` 或手動搬）；見 `.claude/skills/watch-archive/references/params.md`「改領域」。
+- 歸檔結果在 `watch-output/<領域>/<資料夾>/`；新影片歸檔時用 `--category` 指定領域，只能用白名單 `glossary/categories.json` 的值（AI／AI/claude-code／AI/提示詞／AI/TTS／AI/harness-engineering／AI/Agent／AI/GrokBot／佛學／商業理財／投資理財／身心生活／電子／雲端／未分類；收錄範圍、子領域與新增領域門檻見 `.claude/skills/watch-archive/references/params.md`）；沒指定會依詞典檔的 `category` 推測或落入「未分類」（印 WARNING），交付前確認。新增領域要先改白名單；領域名稱有中文時一律用繁體，不用簡體（輸入簡體會自動轉繁）。
 
 ## 已知限制（細節見 README「限制與風險」）
 

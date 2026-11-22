@@ -358,5 +358,11 @@
   ],
   "video_type": "",
   "clean_fillers": "auto",
-  "sop_mode": "auto"
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-22",
+    "fixes": 4,
+    "note": ""
+  }
 }

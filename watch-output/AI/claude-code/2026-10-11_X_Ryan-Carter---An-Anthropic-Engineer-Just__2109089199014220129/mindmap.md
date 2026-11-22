@@ -1,0 +1,40 @@
+<!-- auto: 由 meta.json slides 自動產生；要手改請刪除這一行，重建報告就不會覆蓋 -->
+# 思維導圖
+
+- Ryan Carter - An Anthropic En…
+  - 開場與主旨
+    - token
+    - 心智模型
+  - It's never jus…
+    - 上下文視窗
+    - 工具呼叫
+  - 三種 token
+    - 輸入
+    - 輸出
+    - 快取
+  - 價格頁與為何價格不同
+    - 價格
+    - 輸出最貴
+  - 提示快取（Prompt ca…
+    - prompt cache
+    - 前綴
+    - 選對模型
+  - 精簡上下文：CLAUDE.m…
+    - CLAUDE.md
+    - skill
+    - MCP
+  - 快取從第一個 token 開…
+    - prefix
+    - 快取失效
+  - /compact 與 /cl…
+    - compact
+    - TTL
+    - 換模型
+  - In practice：實務…
+    - sub-agent
+    - compact
+    - resume
+  - 給團隊管理者：managed…
+    - managed settin…
+    - OpenTelemetry
+    - 三原則

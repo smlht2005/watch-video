@@ -52,6 +52,12 @@
       "time": "02:21",
       "heard": "一聲令一下",
       "expected": "一聲令下"
+    },
+    {
+      "time": "全片",
+      "heard": "電路里→電路裡",
+      "expected": "批次機械修正（2026-11-21，未逐行重讀）：電路里→電路裡×4",
+      "status": "confirmed"
     }
   ],
   "keywords": [

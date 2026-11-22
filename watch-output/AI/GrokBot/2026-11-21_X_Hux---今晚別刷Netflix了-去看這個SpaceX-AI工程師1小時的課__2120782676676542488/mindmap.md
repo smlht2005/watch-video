@@ -1,0 +1,26 @@
+- 信任 agent 的方法
+  - 開場
+    - AI 是配對夥伴
+    - 別外包思考
+  - 信任曲線（講者主張）
+    - 高度介入→平行化
+    - 自動合併 PR
+  - 驗證 verification
+    - 讓 agent 真的執行
+    - 功能地圖
+  - Skill 與 PStack
+    - 把失敗做成 skill
+    - eval 是單元測試
+    - 評審 agent、爬山
+  - 雲端 agent
+    - 先本機再雲端
+    - Benny 重現 bug
+  - 重寫與護欄
+    - 原型要護欄
+    - Dune 嚴格架構
+  - 硬性約束
+    - CI、lint、編譯器
+    - 軟規則只輔助
+  - ROI 與團隊
+    - 前期花 token
+    - PM／設計師也能交付
