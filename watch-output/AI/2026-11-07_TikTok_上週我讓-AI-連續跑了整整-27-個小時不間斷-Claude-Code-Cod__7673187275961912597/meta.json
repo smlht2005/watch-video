@@ -43,38 +43,38 @@
     {
       "time": "04:14",
       "heard": "沒什麼大災問",
-      "expected": "沒什麼大學問（推測）",
-      "status": "suspected"
+      "expected": "沒什麼大學問（推測）｜使用者確認",
+      "status": "confirmed"
     },
     {
       "time": "09:26",
       "heard": "創意月籤",
-      "expected": "創意躍遷（推測，字幕畫面出現「躍遷」意涵）",
-      "status": "suspected"
+      "expected": "創意躍遷（推測，字幕畫面出現「躍遷」意涵）｜使用者確認",
+      "status": "confirmed"
     },
     {
       "time": "06:46",
       "heard": "偏向直化的工作",
-      "expected": "偏向主觀／質化的工作（推測，投影片為「質化」）",
-      "status": "suspected"
+      "expected": "偏向主觀／質化的工作（推測，投影片為「質化」）｜使用者確認",
+      "status": "confirmed"
     },
     {
       "time": "07:11",
       "heard": "滿滿的機油味",
-      "expected": "滿滿的 AI 味（推測）",
-      "status": "suspected"
+      "expected": "滿滿的 AI 味（推測）｜使用者確認",
+      "status": "confirmed"
     },
     {
       "time": "07:46",
       "heard": "兼具",
-      "expected": "間距（推測，依上下文與投影片）",
-      "status": "suspected"
+      "expected": "間距（推測，依上下文與投影片）｜使用者確認",
+      "status": "confirmed"
     },
     {
       "time": "11:03",
       "heard": "AI採購的地雷",
-      "expected": "AI 踩的地雷（推測）",
-      "status": "suspected"
+      "expected": "AI 踩的地雷（推測）｜使用者確認",
+      "status": "confirmed"
     },
     {
       "time": "12:03",
@@ -85,8 +85,8 @@
     {
       "time": "09:19",
       "heard": "反骨復生",
-      "expected": "反骨附身（推測，投影片為「梵谷附身」類比）",
-      "status": "suspected"
+      "expected": "反骨附身（推測，投影片為「梵谷附身」類比）｜使用者確認",
+      "status": "confirmed"
     }
   ],
   "keywords": [
