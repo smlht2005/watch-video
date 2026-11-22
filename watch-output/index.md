@@ -76,7 +76,7 @@
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-08 | GoogleDrive | 葉福財老師往生見聞記（師母分享） | 24:59 (1498.7s) | whisper (groq) | [開啟](./佛學/臨終關懷助念/2026-11-08_GoogleDrive_葉福財老師往生見聞記-m4a__1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/) |
+| 2026-11-08 | GoogleDrive | 葉福財老師往生見聞記（師母分享）初版 | 24:59 (1498.7s) | whisper (groq) | [開啟](./佛學/臨終關懷助念/2026-11-08_GoogleDrive_葉福財老師往生見聞記-初版__1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/) |
 
 ## 商業理財（4）
 

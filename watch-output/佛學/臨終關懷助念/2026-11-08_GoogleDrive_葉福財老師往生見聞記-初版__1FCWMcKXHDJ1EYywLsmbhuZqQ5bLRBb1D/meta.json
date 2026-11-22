@@ -2,9 +2,9 @@
   "url": "https://drive.google.com/file/d/1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/view?usp=drivesdk",
   "platform": "GoogleDrive",
   "video_id": "1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D",
-  "title": "葉福財老師往生見聞記（師母分享）",
+  "title": "葉福財老師往生見聞記（師母分享）初版",
   "title_raw": "葉福財老師往生見聞記.m4a",
-  "title_override": "葉福財老師往生見聞記",
+  "title_override": "葉福財老師往生見聞記（師母分享）初版",
   "category": "佛學/臨終關懷助念",
   "whisper_hints": {
     "language": "auto",
@@ -429,5 +429,11 @@
   "video_type": "lecture",
   "clean_fillers": "auto",
   "sop_mode": "auto",
-  "section_label": "段落"
+  "section_label": "段落",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-22",
+    "fixes": 30,
+    "note": ""
+  }
 }
