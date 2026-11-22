@@ -409,6 +409,18 @@
       "heard": "無可指引",
       "expected": "不可思議（推測，Claude 建議）",
       "status": "suspected"
+    },
+    {
+      "time": "19:11",
+      "heard": "孃家",
+      "expected": "娘家",
+      "status": "confirmed"
+    },
+    {
+      "time": "15:52",
+      "heard": "劉德海",
+      "expected": "劉得海",
+      "status": "confirmed"
     }
   ],
   "keywords": [
