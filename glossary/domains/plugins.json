@@ -1,0 +1,19 @@
+{
+  "_說明": "AI 外掛領域（2026-11 由使用者要求新增）。用 --glossary plugins 載入，category 歸 AI/外掛。目前只有提示詞（terms），尚無實際觀察到的轉錄錯誤，所以 replace 留空；遇到穩定錯誤再補（key 用繁體、至少 3 字或帶上下文）。",
+  "category": "AI/外掛",
+  "terms": [
+    "外掛",
+    "插件",
+    "擴充功能",
+    "Plugin",
+    "Extension",
+    "MCP",
+    "Skill",
+    "Claude Code",
+    "Chrome 擴充",
+    "VS Code",
+    "安裝",
+    "API"
+  ],
+  "replace": {}
+}

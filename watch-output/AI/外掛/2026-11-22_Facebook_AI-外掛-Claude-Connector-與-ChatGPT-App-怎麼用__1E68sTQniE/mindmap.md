@@ -1,0 +1,19 @@
+- AI外掛怎麼用
+  - 外掛是什麼
+    - Claude叫Connector
+    - ChatGPT叫App
+    - 操作外部服務
+  - Claude設定
+    - Settings→Customize
+    - Connectors→Discover
+    - 點進去按授權
+  - ChatGPT設定
+    - 左上角外掛程式或Apps
+    - 分類瀏覽
+    - 同意授權
+  - 自動判斷
+    - 說情境不必指定工具
+    - Claude較會自動選（講者主張）
+  - 模糊需求
+    - 需求轉具體指令代操
+    - 導流留言外掛

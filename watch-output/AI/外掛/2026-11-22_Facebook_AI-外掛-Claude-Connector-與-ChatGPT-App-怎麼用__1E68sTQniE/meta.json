@@ -1,0 +1,125 @@
+{
+  "url": "https://www.facebook.com/share/v/1E68sTQniE/",
+  "platform": "Facebook",
+  "video_id": "1E68sTQniE",
+  "title": "AI 外掛：Claude Connector 與 ChatGPT App 怎麼用",
+  "title_raw": "65K views · 493 reactions | 打開 Claude 或 ChatGPT，你還只拿來聊天嗎？ 外掛在 Claude 叫 Connector、在 ChatGPT 叫 App，能讓 AI 直接幫你查資料、下單、訂位，不用再開好幾個 App 來回切換。 串好之後也不用特別指定工具，只要說「我想訂房」「幫我做簡報」，AI 就會自己判斷該叫哪個外掛。 就連「幫長輩規劃好走的旅行路線」這種模糊需求，AI 也能幫你轉成具體指令、直接代操。 這集我們實測了 14 款外掛，想觀看完整的影片，留言「外掛」，我把影片連結傳送給你！ | 泛科學院",
+  "title_override": "AI 外掛：Claude Connector 與 ChatGPT App 怎麼用",
+  "category": "AI/外掛",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "外掛、插件、擴充功能、Plugin、Extension、MCP、Skill、Claude Code、Chrome 擴充、VS Code、安裝、API"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "plugins"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "泛科學院",
+  "duration": "01:46 (105.5s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-22",
+  "last_updated": "2026-11-22",
+  "known_asr_errors": [
+    {
+      "time": "01:03",
+      "heard": "Plugin打槓查",
+      "expected": "推測：原句不通，疑為「用 Plugin、打斜線（/）查詢」之類；保留原文未改",
+      "status": "suspected"
+    },
+    {
+      "time": "00:09",
+      "heard": "定位（已改為訂位）",
+      "expected": "來源：貼文標題「訂位」",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:42",
+      "heard": "Check GPT（已改為 ChatGPT）",
+      "expected": "品牌名",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "外掛",
+    "Connector",
+    "ChatGPT App",
+    "Claude",
+    "MCP",
+    "授權",
+    "代操",
+    "泛科學院"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0001.jpg",
+      "title": "外掛是什麼",
+      "note": "講者說外掛在 Claude 叫 Connector、在 ChatGPT 叫 App，讓 AI 去操作外部服務，例如查資料、下單、訂位。以前要開好幾個 App 來回切換才能完成的任務，現在可全部在對話框裡完成。",
+      "keywords": [
+        "Connector",
+        "App"
+      ]
+    },
+    {
+      "start": "00:18",
+      "frame": "frame_0008.jpg",
+      "title": "Claude 怎麼設定外掛",
+      "note": "依畫面示範：點左下角 Settings → Customize → Connectors，會列出已連的 Connectors；再點 Discover 可看到外掛目錄，右邊有 Filter 可依類型篩選。想連哪一個就點進去，跳出的畫面按授權即可（介面為影片拍攝當時的樣子，可能已變動）。",
+      "keywords": [
+        "Settings",
+        "Customize",
+        "Discover"
+      ]
+    },
+    {
+      "start": "00:42",
+      "frame": "frame_0011.jpg",
+      "title": "ChatGPT 怎麼設定外掛",
+      "note": "ChatGPT 比較好找：左上角點「外掛程式」（中文模式）或 Apps（英文模式），App 已分門別類，可點分類看更多。操作一樣是點進去，跳授權畫面按同意即可。",
+      "keywords": [
+        "Apps",
+        "授權"
+      ]
+    },
+    {
+      "start": "01:00",
+      "frame": "frame_0013.jpg",
+      "title": "串好後讓 AI 自己選外掛",
+      "note": "串好之後不用特別喊「用 Plugin 查」或「連 Gamma 做簡報」，只要說出想訂房、做簡報這類情境，講者主張 Claude 會自己判斷呼叫哪個外掛，ChatGPT 還沒那麼聰明，需要自己再選一下（講者主張，未查證）。外掛的方便在於把散落各 App 的服務接到同一個入口。",
+      "keywords": [
+        "自動判斷",
+        "入口"
+      ]
+    },
+    {
+      "start": "01:25",
+      "frame": "frame_0014.jpg",
+      "title": "模糊需求與結語",
+      "note": "對模糊的需求（例如規劃長輩好走的旅行路線），AI 可把需求轉成具體指令並代操 App，省下熟悉 App、想關鍵字的時間。結尾邀請留言「外掛」領取其他外掛推薦的影片連結（導流）。",
+      "keywords": [
+        "代操",
+        "導流"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-22",
+    "fixes": 2,
+    "note": "整支逐行重讀"
+  }
+}
