@@ -1,0 +1,189 @@
+{
+  "url": "https://vt.tiktok.com/ZSse1Sdsy/",
+  "platform": "TikTok",
+  "video_id": "7710093946218695956",
+  "title": "一根線五句話 短線跑贏90%散戶",
+  "title_raw": "一根线五句话 短线跑赢90%散户 #股票",
+  "title_override": "",
+  "category": "投資理財",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "股市、本益比、殖利率、ETF、台積電、加權指數、融資、融券、停損、停利、當沖、外資、投信、財報、EPS、技術分析、K線、均線、選擇權、做空、籌碼峰、籌碼真空、錨定效應、抄底、量柱、縮量柱、梯量柱、高量柱、低量柱、倍量柱、平量柱、主升浪、洗盤、吸籌、放量上攻、連板、開盤溢價率、封死漲停"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "stock-investing"
+  ],
+  "glossary_applied": {
+    "大洋線": 1
+  },
+  "source_hashtags": [
+    "股票"
+  ],
+  "uploader": "juliapitts9502wg9q",
+  "duration": "02:31 (151.3s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-22",
+  "last_updated": "2026-11-22",
+  "known_asr_errors": [
+    {
+      "time": "00:00",
+      "heard": "沙爹",
+      "expected": "殺跌（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:04",
+      "heard": "釘一根線",
+      "expected": "盯一根線（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:11",
+      "heard": "悶心自問",
+      "expected": "捫心自問（畫面字幕「扪心自问」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:31",
+      "heard": "潛套／神套",
+      "expected": "淺套／深套（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:56",
+      "heard": "太出級了",
+      "expected": "太初級了（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:00",
+      "heard": "大道之解",
+      "expected": "大道至簡（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:24",
+      "heard": "滑走",
+      "expected": "劃走（畫面字幕「划走」；01:39 同）",
+      "status": "confirmed"
+    },
+    {
+      "time": "01:48",
+      "heard": "浮酬",
+      "expected": "浮籌（畫面字幕「浮筹」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:05",
+      "heard": "回財／借貨",
+      "expected": "回踩／接貨（畫面字幕）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:10",
+      "heard": "50線",
+      "expected": "5日線（畫面字幕「5日线」）",
+      "status": "confirmed"
+    },
+    {
+      "time": "02:16",
+      "heard": "回貪",
+      "expected": "回彈（畫面字幕「回弹」；此處指股價回到均線）",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:00",
+      "heard": "（00:00、01:09、01:41–02:21 長行連寫）",
+      "expected": "依字幕時間拆行並加標點",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "五日均線",
+    "均線拐頭",
+    "短線",
+    "放量陽線",
+    "回踩",
+    "浮籌",
+    "落袋為安",
+    "技術指標",
+    "散戶",
+    "上集"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：指標越多越下不了手",
+      "note": "講者以「科技這一輪殺跌」開場，主張散戶做短線不必用一堆指標，盯一根線就夠了。MACD、KDJ、RSI 不是沒用，但看越多越下不了手：跌破支撐時等 MACD 死叉、死叉了又等 RSI 超賣反彈，每個指標都成了不賣的藉口，一路從淺套扛到深套。關鍵是找到一根信得過的線反覆用到底。",
+      "keywords": [
+        "MACD",
+        "RSI",
+        "淺套深套"
+      ]
+    },
+    {
+      "start": "00:44",
+      "frame": "slide_02.jpg",
+      "title": "原理：五日均線一句話",
+      "note": "講者選五日均線，核心一句話：均線拐頭向上就找機會上車，拐頭向下寧可踏空也別伸手。講者自述原本嫌這方法太初級，市場摸爬滾打 15 年後發現大道至簡，它或許不能每次都賺，但能讓你虧的時候不至於爬不起來（講者主張，未查證）。接著預告「五句話」，請觀眾每天盤前看一遍。",
+      "keywords": [
+        "五日均線",
+        "拐頭",
+        "大道至簡"
+      ]
+    },
+    {
+      "start": "01:21",
+      "frame": "slide_03.jpg",
+      "title": "第一句：沒有放量陽線的票直接劃走",
+      "note": "很長一段時間連一根像樣、有力度的放量陽線都擠不出來的股票，講者解讀為沒有資金在認真做、主力根本沒進來；沒有主力參與，你進去賺不到誰的錢。不管形態多好看都直接劃走，不要浪費時間。",
+      "keywords": [
+        "放量陽線",
+        "主力",
+        "選股"
+      ]
+    },
+    {
+      "start": "01:41",
+      "frame": "slide_04.jpg",
+      "title": "第二句：放量啟動後回踩五日線不破",
+      "note": "放量啟動後回踩五日均線、踩住不破，就是要盯的位置。講者說底部放量的第一根大陽線之後，主力很少直接連拉，大機率借回踩洗一波浮籌；只要五日線沒被有效跌破，這裡就是重新找入場機會的地方。口訣十個字：「放量看方向，回踩找位置」。",
+      "keywords": [
+        "回踩",
+        "浮籌",
+        "入場位置"
+      ]
+    },
+    {
+      "start": "02:10",
+      "frame": "slide_05.jpg",
+      "title": "第三句：遠離五日線時先落袋一部分（影片在此中斷）",
+      "note": "股價加速拉升、遠遠甩開五日線時不要貪，先落袋一部分。講者比喻偏離均線太遠像橡皮筋拉到極限，回到均線是遲早的事；可先兌現部分利潤，不怕賣飛，因為還留有倉位。本片標示「1/2」，講到「如果你非要去賺預期之外的那一段」就結束，第四、五句在下集。",
+      "keywords": [
+        "乖離",
+        "分批停利",
+        "賣飛"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-22",
+    "fixes": 19,
+    "note": "依燒入字幕逐句核對並重新拆行；賣飛賣飛為非口吃"
+  }
+}
