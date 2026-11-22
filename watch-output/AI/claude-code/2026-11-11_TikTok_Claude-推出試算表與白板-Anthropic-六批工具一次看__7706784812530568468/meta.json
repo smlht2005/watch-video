@@ -5,7 +5,7 @@
   "title": "Claude 推出試算表與白板：Anthropic 六批工具一次看",
   "title_raw": "Anthropic 在 11 月 10 日推出 Claude Sheets 和 Claude Whiteboards，也就是試算表和白板，...",
   "title_override": "Claude 推出試算表與白板：Anthropic 六批工具一次看",
-  "category": "AI",
+  "category": "AI/claude-code",
   "whisper_hints": {
     "language": "auto",
     "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"

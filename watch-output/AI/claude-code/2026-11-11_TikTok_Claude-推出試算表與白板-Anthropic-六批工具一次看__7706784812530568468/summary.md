@@ -4,7 +4,7 @@
 
 - 來源：TikTok 短影音，上傳者 `fox8899`（畫面頻道名「狐說八道」），約 2 分 13 秒。
 - 逐字稿：Groq Whisper 轉錄（自動偵測中文），依畫面字幕校正多處產品名與公司名（見下）。
-- 領域：`AI`。使用者給的「claudecode」已存為關鍵字；本片談 Claude 的文件／簡報／試算表等產品，不是以 Claude Code 為主角，所以沒有歸入 `AI/claude-code`。
+- 領域：`AI/claude-code`（依使用者指定；影片談 Claude 的文件／簡報／試算表等產品，Claude Code 本身不是主角）。
 
 ## 重點表
 

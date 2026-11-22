@@ -20,10 +20,11 @@
 | 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
 | 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
 
-## AI／claude-code（5）
+## AI／claude-code（6）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
+| 2026-11-11 | TikTok | Claude 推出試算表與白板：Anthropic 六批工具一次看 | 02:13 (133.2s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-11_TikTok_Claude-推出試算表與白板-Anthropic-六批工具一次看__7706784812530568468/) |
 | 2026-11-09 | Instagram | CodeGraph 讓 Claude Code 查程式碼地圖 | 00:53 (53.5s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-09_Instagram_CodeGraph-讓-Claude-Code-查程式碼地圖__DfUMThQE3fc/) |
 | 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo/) |
 | 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
