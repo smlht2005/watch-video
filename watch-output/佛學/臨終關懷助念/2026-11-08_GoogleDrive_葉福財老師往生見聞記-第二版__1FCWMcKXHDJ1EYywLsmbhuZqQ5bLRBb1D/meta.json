@@ -421,6 +421,30 @@
       "heard": "劉德海",
       "expected": "劉得海",
       "status": "confirmed"
+    },
+    {
+      "time": "23:17",
+      "heard": "阿敏骨幹塊",
+      "expected": "麵龜",
+      "status": "confirmed"
+    },
+    {
+      "time": "15:10",
+      "heard": "沒有人理照顧你",
+      "expected": "沒有能力照顧你",
+      "status": "confirmed"
+    },
+    {
+      "time": "15:56",
+      "heard": "桃園念慈會",
+      "expected": "桃園蓮池念佛會",
+      "status": "confirmed"
+    },
+    {
+      "time": "12:21",
+      "heard": "葉老師說他要減食早餐就照常中餐那個吃非常的少晚餐就煮蔬菜湯",
+      "expected": "葉老師說：他要減食，早餐就照常，中餐那個吃非常的少，晚餐就煮蔬菜湯",
+      "status": "confirmed"
     }
   ],
   "keywords": [
