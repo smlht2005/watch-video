@@ -7,7 +7,7 @@ video_id: "7710796109655887122"
 uploader: "daojiemarketing"
 category: "AI/claude-code"
 date: "2026-11-22"
-status: unreviewed
+status: reviewed
 origin_folder: "watch-output/AI/claude-code/2026-11-22_TikTok_照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的__7710796109655887122"
 generated_by: watch-archive
 aliases:
@@ -23,6 +23,11 @@ tags:
   - "Shopify-CLI"
   - "電商"
   - "AI-建站"
+related:
+  - "[[claude-code_學下單結構，不抄 logo 與文案]]"
+  - "[[claude-code_先截下整條購買路徑]]"
+  - "[[claude-code_用截圖要求 Claude Code 拆 section 並換成自己的品牌]]"
+  - "[[claude-code_本地預覽並並排對比，讓 AI 自己逐條修]]"
 ---
 
 # 照著別人的爆款店，三步搭出你自己的 Shopify 店。 先說清楚：不是抄人家的 logo 和文案，是學人家怎麼讓客人下單。 Claude...
@@ -99,6 +104,13 @@ Claude 這次把 Claude Design放進了每個對話，連 Claude Code 都能用�
 
 我們幫電商客戶看店的時候呢，最先看的就是這條購買路徑，如果你也在做電商，想用AI把店做起來，記得關注刀姐。
 
+
+## 知識點
+
+- [[claude-code_學下單結構，不抄 logo 與文案]]
+- [[claude-code_先截下整條購買路徑]]
+- [[claude-code_用截圖要求 Claude Code 拆 section 並換成自己的品牌]]
+- [[claude-code_本地預覽並並排對比，讓 AI 自己逐條修]]
 
 ## 補充資料
 
