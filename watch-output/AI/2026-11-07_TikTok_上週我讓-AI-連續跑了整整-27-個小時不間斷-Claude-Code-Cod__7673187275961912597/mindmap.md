@@ -1,0 +1,33 @@
+- /goal 與 Rubric：讓 AI 長時間工作
+  - 開場與自動化
+    - 連跑 27 小時（講者主張）
+    - 解放注意力
+  - /goal 功能
+    - 三家同時推出
+    - 前身 Ralph Loop
+  - AI 為何偷懶
+    - Context Anxiety
+    - 下班心態
+  - /goal 原理
+    - 實作者＋評審
+    - 評審沒過就繼續
+  - 好 goal 提示詞 5 要素
+    - Outcome／Verification
+    - Constraints
+    - Iteration／Error handling
+  - 主觀工作的難題
+    - 沒有單元測試
+  - Anthropic 網頁實驗
+    - 漂亮拆成 4 維度
+    - 加重弱項權重
+    - 評審看真實畫面
+  - 核心：Evaluation
+    - 定義清楚什麼叫好
+  - 六步驟 SOP
+    - 先跑 baseline
+    - 寫皺眉理由並分類
+    - 具體＋多樣化案例
+    - 交評審實跑並修正
+  - 結語與練習
+    - 寫 rubric 逼你寫下品味
+    - 30 分鐘小練習
