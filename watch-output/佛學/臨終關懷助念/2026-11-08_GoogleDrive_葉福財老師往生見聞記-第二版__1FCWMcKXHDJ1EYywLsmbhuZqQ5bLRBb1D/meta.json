@@ -445,6 +445,36 @@
       "heard": "葉老師說他要減食早餐就照常中餐那個吃非常的少晚餐就煮蔬菜湯",
       "expected": "葉老師說：他要減食，早餐就照常，中餐那個吃非常的少，晚餐就煮蔬菜湯",
       "status": "confirmed"
+    },
+    {
+      "time": "12:50",
+      "heard": "人家按摩的",
+      "expected": "人家癌末的",
+      "status": "confirmed"
+    },
+    {
+      "time": "11:23",
+      "heard": "共喜咖",
+      "expected": "拱四腳",
+      "status": "confirmed"
+    },
+    {
+      "time": "09:58",
+      "heard": "大理元聖，",
+      "expected": "（移除）",
+      "status": "confirmed"
+    },
+    {
+      "time": "11:25",
+      "heard": "共就是敲",
+      "expected": "拱就是敲",
+      "status": "confirmed"
+    },
+    {
+      "time": "11:28",
+      "heard": "喜咖是什麼？",
+      "expected": "四腳是什麼？",
+      "status": "confirmed"
     }
   ],
   "keywords": [
