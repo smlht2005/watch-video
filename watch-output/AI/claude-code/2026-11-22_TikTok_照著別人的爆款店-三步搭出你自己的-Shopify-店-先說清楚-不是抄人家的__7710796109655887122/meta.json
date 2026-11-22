@@ -1,0 +1,122 @@
+{
+  "url": "https://vt.tiktok.com/ZSseUcUfS/",
+  "platform": "TikTok",
+  "video_id": "7710796109655887122",
+  "title": "照著別人的爆款店，三步搭出你自己的 Shopify 店。 先說清楚：不是抄人家的 logo 和文案，是學人家怎麼讓客人下單。 Claude...",
+  "title_raw": "照着别人的爆款店，三步搭出你自己的 Shopify 店。 先说清楚：不是抄人家的 logo 和文案，是学人家怎么让客人下单。 Claude...",
+  "title_override": "",
+  "category": "AI/claude-code",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "Claude、Claude Code、CLAUDE.md、Opus 5.5、Sub Agent、額度、prompt cache、sub-agent、compact、managed settings、Fable 5.1"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "claude-code"
+  ],
+  "glossary_applied": {
+    "CLAUDE Code": 1
+  },
+  "source_hashtags": [],
+  "uploader": "daojiemarketing",
+  "duration": "01:14 (73.7s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-22",
+  "last_updated": "2026-11-22",
+  "known_asr_errors": [
+    {
+      "time": "01:11",
+      "heard": "刀姐",
+      "expected": "來源：畫面「關注刀姐／@DAOJIE」",
+      "status": "confirmed"
+    },
+    {
+      "time": "00:00",
+      "heard": "CLAUDE（已改為 Claude）",
+      "expected": "品牌大小寫統一",
+      "status": "confirmed"
+    }
+  ],
+  "keywords": [
+    "Claude Code",
+    "Claude Design",
+    "Shopify",
+    "截圖轉頁面",
+    "購買路徑",
+    "Shopify CLI",
+    "電商",
+    "AI 建站"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "frame_0002.jpg",
+      "title": "開場：照著爆款店搭自己的店",
+      "note": "講者主張：Claude 把 Claude Design 放進每個對話，連 Claude Code 也能用，能照著幾張截圖幫你搭出店鋪頁面，已有人照著別人的爆款店搭出自己的店。她先聲明不是抄人家的 logo 和文案，而是學人家怎麼讓客人下單，並預告三步做法。",
+      "keywords": [
+        "Claude Design",
+        "Claude Code"
+      ]
+    },
+    {
+      "start": "00:25",
+      "frame": "frame_0008.jpg",
+      "title": "第一步：截下整條購買路徑",
+      "note": "把想參考的店的整條購買路徑都截圖，包含首頁、商品頁、購物車與手機版。重點是完整的下單流程，而不是單一頁面，讓 AI 看得懂結構。",
+      "keywords": [
+        "購買路徑",
+        "截圖"
+      ]
+    },
+    {
+      "start": "00:30",
+      "frame": "frame_0014.jpg",
+      "title": "第二步：在 Claude Code 開主題並丟截圖",
+      "note": "在 Claude Code 開啟你的 Shopify 主題，把截圖丟進去，指示它照這個結構拆成 section、換成自己的品牌與商品。畫面示範它把賣點、評價、FAQ 一塊一塊搭出來。",
+      "keywords": [
+        "Claude Code",
+        "section",
+        "主題"
+      ]
+    },
+    {
+      "start": "00:45",
+      "frame": "frame_0018.jpg",
+      "title": "第三步：本地預覽並自我對比修正",
+      "note": "用 Shopify CLI 在本地預覽，不會動到線上的店。把成品和原店並排截圖，讓 Claude 自己比對間距、字型與手機版差異並逐條修改，改兩三輪就成為自己的店。",
+      "keywords": [
+        "Shopify CLI",
+        "本地預覽",
+        "對比"
+      ]
+    },
+    {
+      "start": "01:02",
+      "frame": "frame_0022.jpg",
+      "title": "結語：先看購買路徑",
+      "note": "講者說她們幫電商客戶看店時最先看購買路徑，並邀請做電商、想用 AI 把店做起來的人關注她（刀姐，畫面標示）。",
+      "keywords": [
+        "電商",
+        "結語"
+      ]
+    }
+  ],
+  "video_type": "",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-22",
+    "fixes": 6,
+    "note": "一塊一塊、一條一條為正確用字"
+  }
+}
