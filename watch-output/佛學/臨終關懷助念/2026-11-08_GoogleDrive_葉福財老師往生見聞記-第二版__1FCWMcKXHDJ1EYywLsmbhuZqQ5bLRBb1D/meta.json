@@ -2,9 +2,9 @@
   "url": "https://drive.google.com/file/d/1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/view?usp=drivesdk",
   "platform": "GoogleDrive",
   "video_id": "1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D",
-  "title": "葉福財老師往生見聞記（師母分享）初版",
+  "title": "葉福財老師往生見聞記（師母分享）第二版",
   "title_raw": "葉福財老師往生見聞記.m4a",
-  "title_override": "葉福財老師往生見聞記（師母分享）初版",
+  "title_override": "葉福財老師往生見聞記（師母分享）第二版",
   "category": "佛學/臨終關懷助念",
   "whisper_hints": {
     "language": "auto",
@@ -301,6 +301,114 @@
       "heard": "三藏四合部",
       "expected": "三藏十二部",
       "status": "confirmed"
+    },
+    {
+      "time": "01:39",
+      "heard": "腹腱無效",
+      "expected": "復健無效",
+      "status": "confirmed"
+    },
+    {
+      "time": "07:03",
+      "heard": "隨溫馨念佛",
+      "expected": "隨息念佛",
+      "status": "confirmed"
+    },
+    {
+      "time": "09:20",
+      "heard": "這個項鍊",
+      "expected": "這個相片",
+      "status": "confirmed"
+    },
+    {
+      "time": "08:37",
+      "heard": "三藏十二部的正法",
+      "expected": "三藏十二部的正音",
+      "status": "confirmed"
+    },
+    {
+      "time": "12:12",
+      "heard": "往生祭祠",
+      "expected": "往生記事",
+      "status": "confirmed"
+    },
+    {
+      "time": "03:36",
+      "heard": "三段座右銘案",
+      "expected": "三段座右銘（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "05:46",
+      "heard": "覆不再藏、不要再作",
+      "expected": "不覆藏、不再作（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "06:07",
+      "heard": "身不再作人苦不在照人",
+      "expected": "身不再作、口不再造，（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "06:32",
+      "heard": "佛念一起才能引佛感應道交嗎？",
+      "expected": "佛念一起，才能與佛感應道交（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "13:46",
+      "heard": "也好要看電動氣墊床",
+      "expected": "也訂好了電動氣墊床（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "14:10",
+      "heard": "完全不能治",
+      "expected": "完全不能動（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "15:46",
+      "heard": "很緊接",
+      "expected": "很緊張（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "18:36",
+      "heard": "臨盛的那個助念的助念帶",
+      "expected": "蓮社的那個助念帶（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "19:52",
+      "heard": "看看暗示無面，",
+      "expected": "按壓看看，（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "20:16",
+      "heard": "暗宿",
+      "expected": "按壓（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "22:13",
+      "heard": "念在迴向",
+      "expected": "念佛迴向（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "23:48",
+      "heard": "兇總了",
+      "expected": "消腫了（推測，Claude 建議）",
+      "status": "suspected"
+    },
+    {
+      "time": "24:40",
+      "heard": "無可指引",
+      "expected": "不可思議（推測，Claude 建議）",
+      "status": "suspected"
     }
   ],
   "keywords": [
@@ -433,7 +541,7 @@
   "second_pass": {
     "done": true,
     "date": "2026-11-22",
-    "fixes": 30,
+    "fixes": 18,
     "note": ""
   }
 }
