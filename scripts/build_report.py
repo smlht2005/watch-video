@@ -77,12 +77,41 @@ def join_text(parts):
     return text.rstrip("，") + ("" if text.rstrip("，")[-1] in "。？！" else "。")
 
 
+def carousel_lines(parts):
+    """Image-post pages keep the original layout: one transcript line = one paragraph, bullet ('• ') or nested
+    bullet ('○ '); nothing is joined or re-punctuated (the pages were transcribed paragraph by paragraph)."""
+    L, in_list = [], False
+    for p in (x.strip() for x in parts):
+        if not p:
+            continue
+        if p.startswith("○ "):
+            item = "  - " + p[2:].strip()
+        elif p.startswith("• "):
+            item = "- " + p[2:].strip()
+        else:
+            item = None
+        if item is not None:
+            L.append(item)
+            in_list = True
+        else:
+            if in_list:
+                L.append("")
+            L += [p, ""]
+            in_list = False
+    if in_list:
+        L.append("")
+    return L
+
+
 def text_lines(meta, segs, lo, hi):
     """Original text for [lo, hi) seconds, plus its translation from transcript.zh.md if present."""
     L = []
-    text = join_text(t for ts, t in segs if lo <= to_sec(ts) < hi)
-    if text:
-        L += [text, ""]
+    if meta.get("media_type") == "carousel":
+        L += carousel_lines(t for ts, t in segs if lo <= to_sec(ts) < hi)
+    else:
+        text = join_text(t for ts, t in segs if lo <= to_sec(ts) < hi)
+        if text:
+            L += [text, ""]
     zh = "".join(t.strip() for ts, t in meta.get("_zh", []) if lo <= to_sec(ts) < hi)
     if zh:
         L += [f"**中譯：** {zh}", ""]
