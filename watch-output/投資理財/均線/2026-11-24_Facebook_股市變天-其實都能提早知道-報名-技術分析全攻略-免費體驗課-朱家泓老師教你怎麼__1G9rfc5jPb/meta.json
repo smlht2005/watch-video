@@ -1,0 +1,173 @@
+{
+  "url": "https://www.facebook.com/share/r/1G9rfc5jPb/",
+  "platform": "Facebook",
+  "video_id": "1G9rfc5jPb",
+  "title": "股市變天 其實都能提早知道？報名【技術分析全攻略】免費體驗課，朱家泓老師教你怎麼看",
+  "title_raw": "股市變天 其實都能提早知道？報名【技術分析全攻略】免費體驗課，朱家泓老師教你怎麼看",
+  "title_override": "",
+  "category": "投資理財/均線",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "股市、本益比、殖利率、ETF、台積電、加權指數、融資、融券、停損、停利、當沖、外資、投信、財報、EPS、技術分析、K線、均線、選擇權、做空、籌碼峰、籌碼真空、錨定效應、抄底、量柱、縮量柱、梯量柱、高量柱、低量柱、倍量柱、平量柱、主升浪、洗盤、吸籌、放量上攻、連板、開盤溢價率、封死漲停"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "stock-investing"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "ShiFu｜讓大師成為你的師父",
+  "duration": "01:25 (85.3s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-24",
+  "last_updated": "2026-11-24",
+  "known_asr_errors": [
+    {
+      "time": "00:29",
+      "heard": "出現了背影／指標的背影",
+      "expected": "出現了背離／指標的背離",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 01:22「這個是我們叫做高檔的背離」；背離為技術分析名詞"
+    },
+    {
+      "time": "01:02",
+      "heard": "高漲的背景",
+      "expected": "高檔的背離",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 01:22"
+    },
+    {
+      "time": "00:49",
+      "heard": "技術分析引數",
+      "expected": "技術分析參數",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 00:50"
+    },
+    {
+      "time": "01:14",
+      "heard": "變貼",
+      "expected": "變天",
+      "status": "confirmed",
+      "note": "標題「股市變天」；字幕未核對"
+    },
+    {
+      "time": "01:20",
+      "heard": "體驗者",
+      "expected": "體驗課",
+      "status": "confirmed",
+      "note": "標題「免費體驗課」"
+    },
+    {
+      "time": "00:14",
+      "heard": "長上一些",
+      "expected": "長上影線",
+      "status": "confirmed",
+      "note": "來源：畫面疊字標籤 00:16「2. 股票高檔出現爆大量長黑/長上影線」"
+    },
+    {
+      "time": "00:12",
+      "heard": "而特別的小心",
+      "expected": "要特別小心",
+      "status": "confirmed",
+      "note": "語意；字幕未核對"
+    }
+  ],
+  "keywords": [
+    "均線",
+    "10均",
+    "20均",
+    "60均",
+    "爆大量",
+    "長黑",
+    "長上影",
+    "指標背離",
+    "MACD",
+    "KD",
+    "高檔背離",
+    "出貨",
+    "變天",
+    "技術分析"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：股票出現三個訊號要提高警覺",
+      "note": "講者（畫面標示「飆股上校 朱家泓」）開場說股票出現下面這三個訊號一定要提高警覺；畫面疊字依序列出三個訊號（講者主張，未查證）。",
+      "keywords": [
+        "警覺"
+      ]
+    },
+    {
+      "start": "00:03",
+      "frame": "slide_02.jpg",
+      "title": "第一個訊號：跌破關鍵均線或均線下彎",
+      "note": "股票跌破 10 均、20 均、60 均，或均線開始下彎，講者說代表股票越走越弱，局勢可能改變，要特別小心（講者主張，未查證）。",
+      "keywords": [
+        "10均",
+        "20均",
+        "60均"
+      ]
+    },
+    {
+      "start": "00:14",
+      "frame": "slide_03.jpg",
+      "title": "第二個訊號：高檔爆大量長黑／長上影線",
+      "note": "股票走到高檔出現爆大量的長黑或長上影，代表當天有大量賣壓。講者說若還抱著，隔天不漲或下跌就要趕快脫手，因為這是有人出貨的訊號（講者主張，未查證）。",
+      "keywords": [
+        "爆大量",
+        "長黑",
+        "出貨"
+      ]
+    },
+    {
+      "start": "00:29",
+      "frame": "slide_04.jpg",
+      "title": "第三個訊號：高檔指標背離",
+      "note": "股價一個頭比一個頭高，但 MACD 或 KD 的頭卻越來越低、方向相反，稱為高檔的指標背離；講者說這時要注意股價會不會下跌（講者主張，未查證）。",
+      "keywords": [
+        "MACD",
+        "KD",
+        "背離"
+      ]
+    },
+    {
+      "start": "00:48",
+      "frame": "slide_05.jpg",
+      "title": "為什麼會背離：指標反映動能跟不上",
+      "note": "講者解釋指標是用技術分析參數設計成公式，背離反映的是動能跟不上：股價還在漲，但指標的動能越來越弱，所以指標越來越低（講者主張，未查證）。",
+      "keywords": [
+        "動能",
+        "參數"
+      ]
+    },
+    {
+      "start": "01:04",
+      "frame": "slide_06.jpg",
+      "title": "結語：先看訊號再確認，多個訊號一起研判",
+      "note": "看到以上三個訊號，要注意手上股票的股價走勢，先看到訊號、後面確認判斷對不對，判斷對了就要趕快離開；判斷市場是否真的變天，要把不同訊號一起研判。結尾為免費體驗課招生（講者主張，未查證，不構成投資建議）。",
+      "keywords": [
+        "研判",
+        "確認"
+      ]
+    }
+  ],
+  "video_type": "short-talk",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-24",
+    "fixes": 8,
+    "note": "畫面字幕與疊字核對"
+  }
+}
