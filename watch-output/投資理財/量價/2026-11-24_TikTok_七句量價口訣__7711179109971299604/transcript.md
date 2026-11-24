@@ -1,4 +1,4 @@
-# 投資
+# 七句量價口訣
 
 _Source: whisper (groq)._
 
