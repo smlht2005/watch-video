@@ -8,7 +8,7 @@ uploader: "yangzhujun1"
 category: "AI/GrokBot"
 date: "2026-11-21"
 status: reviewed
-origin_folder: "watch-output/AI/GrokBot/2026-11-21_TikTok_為什麼你要儘快用上Grok-Bot__7707614468418669837"
+origin_folder: "watch-output/AI/GrokBot/為什麼你要儘快用上Grok-Bot_2026-11-21_TikTok__7707614468418669837"
 generated_by: watch-archive
 aliases:
   - "為什麼你要儘快用上Grok Bot"
@@ -130,5 +130,5 @@ Grok Bot其實有三大先天優勢，第一個就是它背後的X，當年馬�
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/GrokBot/2026-11-21_TikTok_為什麼你要儘快用上Grok-Bot__7707614468418669837`
+- 原始資料夾：`watch-output/AI/GrokBot/為什麼你要儘快用上Grok-Bot_2026-11-21_TikTok__7707614468418669837`
 - 逐字稿來源：whisper (groq)

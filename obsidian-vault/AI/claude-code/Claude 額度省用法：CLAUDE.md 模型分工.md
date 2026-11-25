@@ -8,7 +8,7 @@ uploader: "S的 AI 研究所"
 category: "AI/claude-code"
 date: "2026-10-11"
 status: unreviewed
-origin_folder: "watch-output/AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U"
+origin_folder: "watch-output/AI/claude-code/Claude-額度省用法-CLAUDE-md-模型分工_2026-10-11_Instagram__DeUPXT1s44U"
 generated_by: watch-archive
 aliases:
   - "Claude 額度省用法：CLAUDE.md 模型分工"
@@ -146,5 +146,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U`
+- 原始資料夾：`watch-output/AI/claude-code/Claude-額度省用法-CLAUDE-md-模型分工_2026-10-11_Instagram__DeUPXT1s44U`
 - 逐字稿來源：whisper (groq)

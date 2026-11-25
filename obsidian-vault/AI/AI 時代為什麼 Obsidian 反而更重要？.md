@@ -8,7 +8,7 @@ uploader: "王啟樺（@chihua.wang.3）"
 category: "AI"
 date: "2026-10-27"
 status: reviewed
-origin_folder: "watch-output/AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy"
+origin_folder: "watch-output/AI/AI時代為什麼Obsidian反而更重要_2026-10-27_Threads__De9qij5FKBy"
 generated_by: watch-archive
 aliases:
   - "AI 時代為什麼 Obsidian 反而更重要？"
@@ -341,5 +341,5 @@ Obsidian 的核心價值不是儲存筆記，而是守住你和知識之間的�
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy`
+- 原始資料夾：`watch-output/AI/AI時代為什麼Obsidian反而更重要_2026-10-27_Threads__De9qij5FKBy`
 - 逐字稿來源：圖片文字（逐頁人工抄錄，非語音轉錄）

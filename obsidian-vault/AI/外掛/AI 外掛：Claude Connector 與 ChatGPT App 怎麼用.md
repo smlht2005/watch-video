@@ -8,7 +8,7 @@ uploader: "泛科學院"
 category: "AI/外掛"
 date: "2026-11-22"
 status: reviewed
-origin_folder: "watch-output/AI/外掛/2026-11-22_Facebook_AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用__1E68sTQniE"
+origin_folder: "watch-output/AI/外掛/AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用_2026-11-22_Facebook__1E68sTQniE"
 generated_by: watch-archive
 aliases:
   - "AI 外掛：Claude Connector 與 ChatGPT App 怎麼用"
@@ -120,5 +120,5 @@ ChatGPT 就比較好找一點，在左上角點外掛程式或是Apps，就是�
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/外掛/2026-11-22_Facebook_AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用__1E68sTQniE`
+- 原始資料夾：`watch-output/AI/外掛/AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用_2026-11-22_Facebook__1E68sTQniE`
 - 逐字稿來源：whisper (groq)

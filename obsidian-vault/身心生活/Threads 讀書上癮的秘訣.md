@@ -8,7 +8,7 @@ uploader: "abingbuleng（Threads）"
 category: "身心生活"
 date: "2026-10-21"
 status: unreviewed
-origin_folder: "watch-output/身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ"
+origin_folder: "watch-output/身心生活/Threads-讀書上癮的秘訣_2026-10-21_Web__Det4Ya3EyqQ"
 generated_by: watch-archive
 aliases:
   - "Threads 讀書上癮的秘訣"
@@ -189,5 +189,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ`
+- 原始資料夾：`watch-output/身心生活/Threads-讀書上癮的秘訣_2026-10-21_Web__Det4Ya3EyqQ`
 - 逐字稿來源：whisper (groq)

@@ -8,7 +8,7 @@ uploader: "P & H"
 category: "AI"
 date: "2026-10-14"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos"
+origin_folder: "watch-output/AI/為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了_2026-10-14_YouTube__nmzKH9t4Zos"
 generated_by: watch-archive
 aliases:
   - "為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了?"
@@ -105,5 +105,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos`
+- 原始資料夾：`watch-output/AI/為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了_2026-10-14_YouTube__nmzKH9t4Zos`
 - 逐字稿來源：captions (zh, manual, original)

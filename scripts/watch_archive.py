@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Run the watch skill and archive the result into watch-output/.
 
-Folder name: <date>_<platform>_<title>__<video-id>
+Folder name: <title>_<date>_<platform>__<video-id>  (legacy folders named <date>_<platform>_<title>__<video-id> are still recognised)
 A folder whose name ends with __<video-id> is reused (updated in place), so one
 video always maps to exactly one folder.
 
 Outputs per video: meta.json, transcript.md (Traditional; transcript.raw.md if converted), summary.md, frames/, <stem>_report.md (+ <stem>_report.docx with --docx), media/<stem>_video.<ext> (--keep-media)
-where <stem> = <date>_<platform>_<title 20 chars>__<video-id>
+where <stem> = <title 20 chars>_<date>_<platform>__<video-id>
 
 Usage:
   python3 scripts/watch_archive.py URL [--question Q] [--local | --whisper groq|openai|whisperx] [--detail balanced] [--keep-media]
@@ -478,7 +478,7 @@ def archive_threads_post(url: str, category_arg: str, title_arg: str, fetch=None
         if moved != dest and not moved.exists():
             dest = Path(shutil.move(str(dest), str(moved)))
     else:
-        dest = cat_dir / f"{dt.date.today():%Y-%m-%d}_Threads_{clean_title(title)}__{vid}"[:NAME_MAX]
+        dest = cat_dir / build_report.make_folder_name(f"{dt.date.today():%Y-%m-%d}", "Threads", clean_title(title), vid)
     try:
         meta = threads_fetch.scaffold(dest, info, url, title, category, get_bytes)
     except threads_fetch.ThreadsError as e:
@@ -625,12 +625,11 @@ def main():
     if existing:
         # keep the original date prefix but follow title changes (e.g. Simplified -> Traditional) and category changes
         dest = existing[0]
-        renamed = cat_dir / f"{dest.name.split('_')[0]}_{platform}_{clean_title(title)}__{vid}"[:NAME_MAX]
+        renamed = cat_dir / build_report.make_folder_name(build_report.parse_folder_name(dest.name)[1], platform, clean_title(title), vid)
         if renamed != dest and not renamed.exists():
             dest = dest.rename(renamed)
     else:
-        name = f"{dt.date.today():%Y-%m-%d}_{platform}_{clean_title(title)}__{vid}"
-        dest = cat_dir / name[:NAME_MAX]
+        dest = cat_dir / build_report.make_folder_name(f"{dt.date.today():%Y-%m-%d}", platform, clean_title(title), vid)
     dest.mkdir(exist_ok=True)
 
     prev = json.loads((dest / "meta.json").read_text(encoding="utf-8")) if (dest / "meta.json").exists() else {}

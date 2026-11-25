@@ -8,7 +8,7 @@ uploader: "LEI"
 category: "投資理財"
 date: "2026-11-18"
 status: reviewed
-origin_folder: "watch-output/投資理財/2026-11-18_X_LEI---這麼多人看好-$NVDA-這下麻煩了-你需要理解市場情緒週期-Psy__2120720742681825713"
+origin_folder: "watch-output/投資理財/LEI---這麼多人看好-$NVDA-這下麻煩了-你需要理解市場情緒週期-Psy_2026-11-18_X__2120720742681825713"
 generated_by: watch-archive
 aliases:
   - "LEI - 這麼多人看好 $NVDA ，這下麻煩了！ 你需要理解市場情緒週期 Psychology of market cycle"
@@ -172,5 +172,5 @@ related:
 
 ## 來源
 
-- 原始資料夾：`watch-output/投資理財/2026-11-18_X_LEI---這麼多人看好-$NVDA-這下麻煩了-你需要理解市場情緒週期-Psy__2120720742681825713`
+- 原始資料夾：`watch-output/投資理財/LEI---這麼多人看好-$NVDA-這下麻煩了-你需要理解市場情緒週期-Psy_2026-11-18_X__2120720742681825713`
 - 逐字稿來源：captions (zh, manual, original)

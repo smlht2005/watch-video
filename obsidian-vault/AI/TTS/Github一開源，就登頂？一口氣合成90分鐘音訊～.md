@@ -8,7 +8,7 @@ uploader: "fikriansyah2628"
 category: "AI/TTS"
 date: "2026-11-19"
 status: reviewed
-origin_folder: "watch-output/AI/TTS/2026-11-19_TikTok_Github一開源-就登頂-一口氣合成90分鐘音訊～__7708724085718715669"
+origin_folder: "watch-output/AI/TTS/Github一開源-就登頂-一口氣合成90分鐘音訊～_2026-11-19_TikTok__7708724085718715669"
 generated_by: watch-archive
 aliases:
   - "Github一開源，就登頂？一口氣合成90分鐘音訊～"
@@ -123,5 +123,5 @@ related:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/TTS/2026-11-19_TikTok_Github一開源-就登頂-一口氣合成90分鐘音訊～__7708724085718715669`
+- 原始資料夾：`watch-output/AI/TTS/Github一開源-就登頂-一口氣合成90分鐘音訊～_2026-11-19_TikTok__7708724085718715669`
 - 逐字稿來源：whisper (groq)

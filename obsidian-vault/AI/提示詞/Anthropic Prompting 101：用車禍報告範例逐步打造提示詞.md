@@ -8,7 +8,7 @@ uploader: "Hux"
 category: "AI/提示詞"
 date: "2026-10-31"
 status: unreviewed
-origin_folder: "watch-output/AI/提示詞/2026-10-31_X_Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞__2116346641838211440"
+origin_folder: "watch-output/AI/提示詞/Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞_2026-10-31_X__2116346641838211440"
 generated_by: watch-archive
 aliases:
   - "Anthropic Prompting 101：用車禍報告範例逐步打造提示詞"
@@ -247,5 +247,5 @@ and with that said I think I'd like to thank all of you for coming today We'll b
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/提示詞/2026-10-31_X_Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞__2116346641838211440`
+- 原始資料夾：`watch-output/AI/提示詞/Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞_2026-10-31_X__2116346641838211440`
 - 逐字稿來源：captions (en, manual, original)

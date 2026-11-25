@@ -8,7 +8,7 @@ uploader: "ztwtqgpmnbc"
 category: "AI"
 date: "2026-10-11"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237"
+origin_folder: "watch-output/AI/中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了_2026-10-11_TikTok__7686440557509545237"
 generated_by: watch-archive
 aliases:
   - "中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了"
@@ -224,5 +224,5 @@ DeepSeek V4的發布絕不只是價效比的突破，它是從硬體架構到運
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237`
+- 原始資料夾：`watch-output/AI/中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了_2026-10-11_TikTok__7686440557509545237`
 - 逐字稿來源：whisper (groq)

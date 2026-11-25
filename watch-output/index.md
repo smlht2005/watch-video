@@ -4,194 +4,194 @@
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-07 | TikTok | 上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go... | 15:55 (955.0s) | whisper (groq) | [開啟](./AI/2026-11-07_TikTok_上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod__7673187275961912597/) |
-| 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610/) |
-| 2026-10-28 | TikTok | 5個神級Skill，裝完Codex直接開掛！ | 02:01 (121.1s) | whisper (groq) | [開啟](./AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575/) |
-| 2026-10-27 | Threads | AI 時代為什麼 Obsidian 反而更重要？ | 10 頁（完整） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./AI/2026-10-27_Threads_AI時代為什麼Obsidian反而更重要__De9qij5FKBy/) |
-| 2026-10-26 | TikTok | 分享一段Claude的技術主管的ai指令，讓AI進行深度思考 | 02:44 (164.4s) | whisper (groq) | [開啟](./AI/2026-10-26_TikTok_分享一段Claude的技術主管的ai指令-讓AI進行深度思考__7700971611037404430/) |
-| 2026-10-21 | Instagram | 新模型來了，你的提示詞有一半該刪了：7 個改法 | 02:52 (171.6s) | whisper (groq) | [開啟](./AI/2026-10-21_Instagram_新模型來了-你的提示詞有一半該刪了-7-個改法__DejZRx-gtMG/) |
-| 2026-10-19 | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./AI/2026-10-19_Facebook_學了10遍還不會-可能從第1步就錯了__1461324902567196/) |
-| 2026-10-14 | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./AI/2026-10-14_YouTube_為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了__nmzKH9t4Zos/) |
-| 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc/) |
-| 2026-10-13 | Instagram | Video by good_job_ai | 00:56 (56.4s) | whisper (groq) | [開啟](./AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR/) |
-| 2026-10-12 | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211/) |
-| 2026-10-12 | GoogleDrive | MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成 | 09:17 (557.4s) | whisper (groq) | [開啟](./AI/2026-10-12_GoogleDrive_MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成__1EIhyh60imHgwatjkElA-8di38oYtiv0T/) |
-| 2026-10-11 | X | AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司... | 02:40 (160.2s) | captions (en, manual, unknown) | [開啟](./AI/2026-10-11_X_AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa__2109141804620619953/) |
-| 2026-10-11 | TikTok | 中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了 | 05:29 (329.3s) | whisper (groq) | [開啟](./AI/2026-10-11_TikTok_中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了__7686440557509545237/) |
-| 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs/) |
-| 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/2026-10-11_Facebook_AI逐字稿怎麼驗收不偷工_2小時免費體驗課__1Er8dLDmTU/) |
+| 2026-11-07 | TikTok | 上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go... | 15:55 (955.0s) | whisper (groq) | [開啟](./AI/上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod_2026-11-07_TikTok__7673187275961912597/) |
+| 2026-10-28 | TikTok | A super simple Codex setup guide, no sign-up needed. Get it installed... | 03:29 (208.9s) | whisper (groq) | [開啟](./AI/A-super-simple-Codex-setup-guide-no-sign_2026-10-28_TikTok__7701528602084494610/) |
+| 2026-10-28 | TikTok | 5個神級Skill，裝完Codex直接開掛！ | 02:01 (121.1s) | whisper (groq) | [開啟](./AI/5個神級Skill-裝完Codex直接開掛_2026-10-28_TikTok__7700787825901325575/) |
+| 2026-10-27 | Threads | AI 時代為什麼 Obsidian 反而更重要？ | 10 頁（完整） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./AI/AI時代為什麼Obsidian反而更重要_2026-10-27_Threads__De9qij5FKBy/) |
+| 2026-10-26 | TikTok | 分享一段Claude的技術主管的ai指令，讓AI進行深度思考 | 02:44 (164.4s) | whisper (groq) | [開啟](./AI/分享一段Claude的技術主管的ai指令-讓AI進行深度思考_2026-10-26_TikTok__7700971611037404430/) |
+| 2026-10-21 | Instagram | 新模型來了，你的提示詞有一半該刪了：7 個改法 | 02:52 (171.6s) | whisper (groq) | [開啟](./AI/新模型來了-你的提示詞有一半該刪了-7-個改法_2026-10-21_Instagram__DejZRx-gtMG/) |
+| 2026-10-19 | Facebook | 學了10遍還不會？ 可能從第1步就錯了 | 00:51 (50.6s) | whisper (groq) | [開啟](./AI/學了10遍還不會-可能從第1步就錯了_2026-10-19_Facebook__1461324902567196/) |
+| 2026-10-14 | YouTube | 為什麼整個 GitHub 都在瘋傳 REA？別人的程式碼，現在是你的了? | 08:27 (506.6s) | captions (zh, manual, original) | [開啟](./AI/為什麼整個-GitHub-都在瘋傳-REA-別人的程式碼-現在是你的了_2026-10-14_YouTube__nmzKH9t4Zos/) |
+| 2026-10-13 | YouTube | 免費製作 AI 影片：ComfyUI 接上 Claude（MCP） | 15:03 (903.3s) | whisper (groq) | [開啟](./AI/免費製作-AI-影片-ComfyUI-接上-Claude-MCP_2026-10-13_YouTube__fAWliYuOiuc/) |
+| 2026-10-13 | Instagram | Video by good_job_ai | 00:56 (56.4s) | whisper (groq) | [開啟](./AI/Video-by-good_job_ai_2026-10-13_Instagram__DeJhY7PAMrR/) |
+| 2026-10-12 | GoogleDrive | MiniMax H3 最開放模型！本地無限制，越獄解鎖更多玩法！想生成什麼就生成 | 09:17 (557.4s) | whisper (groq) | [開啟](./AI/MiniMax-H3-最開放模型-本地無限制-越獄解鎖更多玩法-想生成什麼就生成_2026-10-12_GoogleDrive__1EIhyh60imHgwatjkElA-8di38oYtiv0T/) |
+| 2026-10-12 | X | DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理） | 1:04:46 (3885.8s) | captions (en, manual, unknown) | [開啟](./AI/DeepLearning-AI-×-Neo4j-Agentic-Knowledg_2026-10-12_X__2108904705854411211/) |
+| 2026-10-11 | TikTok | 中國芯 黃仁勳最怕中國AI的事 DeepSeek剛剛做到了 | 05:29 (329.3s) | whisper (groq) | [開啟](./AI/中國芯-黃仁勳最怕中國AI的事-DeepSeek剛剛做到了_2026-10-11_TikTok__7686440557509545237/) |
+| 2026-10-11 | Facebook | 不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座 | 03:01 (181.3s) | whisper (groq) | [開啟](./AI/不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座_2026-10-11_Facebook__1Bggy9HRKs/) |
+| 2026-10-11 | X | AYi - Scale 創始人，現在在 Meta 帶超級智慧實驗室的 Alexandr Wang，說了句很顛覆的話，他說現在是人類歷史上建十億美元公司... | 02:40 (160.2s) | captions (en, manual, unknown) | [開啟](./AI/AYi---Scale-創始人-現在在-Meta-帶超級智慧實驗室的-Alexa_2026-10-11_X__2109141804620619953/) |
+| 2026-10-11 | Facebook | AI逐字稿怎麼驗收不偷工_2小時免費體驗課 | 01:26 (86.4s) | whisper (groq) | [開啟](./AI/AI逐字稿怎麼驗收不偷工_2小時免費體驗課_2026-10-11_Facebook__1Er8dLDmTU/) |
 
 ## AI／claude-code（7）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-22 | TikTok | 照著別人的爆款店，三步搭出你自己的 Shopify 店。 先說清楚：不是抄人家的 logo 和文案，是學人家怎麼讓客人下單。 Claude... | 01:14 (73.7s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-22_TikTok_照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的__7710796109655887122/) |
-| 2026-11-11 | TikTok | Claude 推出試算表與白板：Anthropic 六批工具一次看 | 02:13 (133.2s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-11_TikTok_Claude-推出試算表與白板-Anthropic-六批工具一次看__7706784812530568468/) |
-| 2026-11-09 | Instagram | CodeGraph 讓 Claude Code 查程式碼地圖 | 00:53 (53.5s) | whisper (groq) | [開啟](./AI/claude-code/2026-11-09_Instagram_CodeGraph-讓-Claude-Code-查程式碼地圖__DfUMThQE3fc/) |
-| 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo/) |
-| 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN/) |
-| 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129/) |
-| 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/2026-10-11_Instagram_Claude-額度省用法-CLAUDE-md-模型分工__DeUPXT1s44U/) |
+| 2026-11-22 | TikTok | 照著別人的爆款店，三步搭出你自己的 Shopify 店。 先說清楚：不是抄人家的 logo 和文案，是學人家怎麼讓客人下單。 Claude... | 01:14 (73.7s) | whisper (groq) | [開啟](./AI/claude-code/照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的_2026-11-22_TikTok__7710796109655887122/) |
+| 2026-11-11 | TikTok | Claude 推出試算表與白板：Anthropic 六批工具一次看 | 02:13 (133.2s) | whisper (groq) | [開啟](./AI/claude-code/Claude-推出試算表與白板-Anthropic-六批工具一次看_2026-11-11_TikTok__7706784812530568468/) |
+| 2026-11-09 | Instagram | CodeGraph 讓 Claude Code 查程式碼地圖 | 00:53 (53.5s) | whisper (groq) | [開啟](./AI/claude-code/CodeGraph-讓-Claude-Code-查程式碼地圖_2026-11-09_Instagram__DfUMThQE3fc/) |
+| 2026-10-21 | Instagram | Video by jarrenpoh | 01:02 (62.1s) | whisper (groq) | [開啟](./AI/claude-code/Video-by-jarrenpoh_2026-10-21_Instagram__DddPhkuxDUo/) |
+| 2026-10-21 | Instagram | GitHub 爆紅 4 個 AI Agent 工具 | 00:47 (47.4s) | whisper (groq) | [開啟](./AI/claude-code/GitHub-爆紅-4-個-AI-Agent-工具_2026-10-21_Instagram__DehA7RfTkaN/) |
+| 2026-10-11 | X | Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ... | 26:36 (1595.6s) | captions (en, manual, unknown) | [開啟](./AI/claude-code/Ryan-Carter---An-Anthropic-Engineer-Just_2026-10-11_X__2109089199014220129/) |
+| 2026-10-11 | Instagram | Claude 額度省用法：CLAUDE.md 模型分工 | 00:42 (42.1s) | whisper (groq) | [開啟](./AI/claude-code/Claude-額度省用法-CLAUDE-md-模型分工_2026-10-11_Instagram__DeUPXT1s44U/) |
 
 ## AI／提示詞（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-10-31 | X | Anthropic Prompting 101：用車禍報告範例逐步打造提示詞 | 24:47 (1487.3s) | captions (en, manual, original) | [開啟](./AI/提示詞/2026-10-31_X_Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞__2116346641838211440/) |
+| 2026-10-31 | X | Anthropic Prompting 101：用車禍報告範例逐步打造提示詞 | 24:47 (1487.3s) | captions (en, manual, original) | [開啟](./AI/提示詞/Anthropic-Prompting-101-用車禍報告範例逐步打造提示詞_2026-10-31_X__2116346641838211440/) |
 
 ## AI／TTS（2）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-19 | TikTok | Github一開源，就登頂？一口氣合成90分鐘音訊～ | 02:33 (153.3s) | whisper (groq) | [開啟](./AI/TTS/2026-11-19_TikTok_Github一開源-就登頂-一口氣合成90分鐘音訊～__7708724085718715669/) |
-| 2026-11-02 | TikTok | 開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！ | 01:46 (105.9s) | whisper (groq) | [開啟](./AI/TTS/2026-11-02_TikTok_開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的__7700148582044781830/) |
+| 2026-11-19 | TikTok | Github一開源，就登頂？一口氣合成90分鐘音訊～ | 02:33 (153.3s) | whisper (groq) | [開啟](./AI/TTS/Github一開源-就登頂-一口氣合成90分鐘音訊～_2026-11-19_TikTok__7708724085718715669/) |
+| 2026-11-02 | TikTok | 開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！ | 01:46 (105.9s) | whisper (groq) | [開啟](./AI/TTS/開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的_2026-11-02_TikTok__7700148582044781830/) |
 
 ## AI／harness-engineering（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-19 | Facebook | 什麼是Harness | 07:57 (476.7s) | whisper (groq) | [開啟](./AI/harness-engineering/2026-11-19_Facebook_什麼是Harness__26612799381718386/) |
+| 2026-11-19 | Facebook | 什麼是Harness | 07:57 (476.7s) | whisper (groq) | [開啟](./AI/harness-engineering/什麼是Harness_2026-11-19_Facebook__26612799381718386/) |
 
 ## AI／GrokBot（4）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-21 | X | Hux - 今晚別刷Netflix了。  去看這個SpaceX AI工程師1小時的課程。  這是我見過最清晰、端到端講透GrokBot到底該怎麼真正用... | 56:09 (3368.9s) | captions (en, manual, original) | [開啟](./AI/GrokBot/2026-11-21_X_Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課__2120782676676542488/) |
-| 2026-11-21 | TikTok | 為什麼你要儘快用上Grok Bot | 02:08 (128.3s) | whisper (groq) | [開啟](./AI/GrokBot/2026-11-21_TikTok_為什麼你要儘快用上Grok-Bot__7707614468418669837/) |
-| 2026-11-21 | TikTok | 普通人怎麼玩grokbot教程 | 10:07 (607.3s) | whisper (groq) | [開啟](./AI/GrokBot/2026-11-21_TikTok_普通人怎麼玩grokbot教程__7708051546864471310/) |
-| 2026-11-20 | X | 永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？ | 03:58 (238.1s) | captions (zh, manual, original) | [開啟](./AI/GrokBot/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296/) |
+| 2026-11-21 | TikTok | 為什麼你要儘快用上Grok Bot | 02:08 (128.3s) | whisper (groq) | [開啟](./AI/GrokBot/為什麼你要儘快用上Grok-Bot_2026-11-21_TikTok__7707614468418669837/) |
+| 2026-11-21 | TikTok | 普通人怎麼玩grokbot教程 | 10:07 (607.3s) | whisper (groq) | [開啟](./AI/GrokBot/普通人怎麼玩grokbot教程_2026-11-21_TikTok__7708051546864471310/) |
+| 2026-11-21 | X | Hux - 今晚別刷Netflix了。  去看這個SpaceX AI工程師1小時的課程。  這是我見過最清晰、端到端講透GrokBot到底該怎麼真正用... | 56:09 (3368.9s) | captions (en, manual, original) | [開啟](./AI/GrokBot/Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課_2026-11-21_X__2120782676676542488/) |
+| 2026-11-20 | X | 永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？ | 03:58 (238.1s) | captions (zh, manual, original) | [開啟](./AI/GrokBot/永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負_2026-11-20_X__2123611684690641296/) |
 
 ## AI／外掛（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-22 | Facebook | AI 外掛：Claude Connector 與 ChatGPT App 怎麼用 | 01:46 (105.5s) | whisper (groq) | [開啟](./AI/外掛/2026-11-22_Facebook_AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用__1E68sTQniE/) |
+| 2026-11-22 | Facebook | AI 外掛：Claude Connector 與 ChatGPT App 怎麼用 | 01:46 (105.5s) | whisper (groq) | [開啟](./AI/外掛/AI-外掛-Claude-Connector-與-ChatGPT-App-怎麼用_2026-11-22_Facebook__1E68sTQniE/) |
 
 ## 佛學（8）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-10-27 | YouTube | 會性法師-大佛頂首楞嚴經-第097集 | 1:13:27 (4407.1s) | subtitle OCR (PP-OCRv5 mobile) | [開啟](./佛學/2026-10-27_YouTube_會性法師-大佛頂首楞嚴經-第097集__-uzt7Pq7_sI/) |
-| 2026-10-24 | YouTube | 淨土安心法門(四) | 49:50 (2990.0s) | whisper (groq) | [開啟](./佛學/2026-10-24_YouTube_淨土安心法門-四__4Lhp2A1kiZw/) |
-| 2026-10-24 | YouTube | 會性法師-大佛頂首楞嚴經-第104集 | 1:12:13 (4333.2s) | whisper (groq) | [開啟](./佛學/2026-10-24_YouTube_會性法師-大佛頂首楞嚴經-第104集__OcQc8e9m-v8/) |
-| 2026-10-23 | YouTube | 淨土安心法門(三) | 50:25 (3025.0s) | whisper (groq) | [開啟](./佛學/2026-10-23_YouTube_淨土安心法門-三__uGeglEasD60/) |
-| 2026-10-17 | TikTok | 為什麼普通人不能隨便念金光咒？你本就自帶光芒，別向外討認可 | 06:48 (407.5s) | whisper (groq) | [開啟](./佛學/2026-10-17_TikTok_為什麼普通人不能隨便念金光咒-你本就自帶光芒-別向外討認可__7690189236619775253/) |
-| 2026-10-13 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./佛學/2026-10-13_YouTube_會性法師-大佛頂首楞嚴經-第103集__kvsrMirvdDQ/) |
-| 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-二__pukUhT6JmFw/) |
-| 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./佛學/2026-10-12_YouTube_淨土安心法門-一__QzMjB2LDdOk/) |
+| 2026-10-27 | YouTube | 會性法師-大佛頂首楞嚴經-第097集 | 1:13:27 (4407.1s) | subtitle OCR (PP-OCRv5 mobile) | [開啟](./佛學/會性法師-大佛頂首楞嚴經-第097集_2026-10-27_YouTube__-uzt7Pq7_sI/) |
+| 2026-10-24 | YouTube | 淨土安心法門(四) | 49:50 (2990.0s) | whisper (groq) | [開啟](./佛學/淨土安心法門-四_2026-10-24_YouTube__4Lhp2A1kiZw/) |
+| 2026-10-24 | YouTube | 會性法師-大佛頂首楞嚴經-第104集 | 1:12:13 (4333.2s) | whisper (groq) | [開啟](./佛學/會性法師-大佛頂首楞嚴經-第104集_2026-10-24_YouTube__OcQc8e9m-v8/) |
+| 2026-10-23 | YouTube | 淨土安心法門(三) | 50:25 (3025.0s) | whisper (groq) | [開啟](./佛學/淨土安心法門-三_2026-10-23_YouTube__uGeglEasD60/) |
+| 2026-10-17 | TikTok | 為什麼普通人不能隨便念金光咒？你本就自帶光芒，別向外討認可 | 06:48 (407.5s) | whisper (groq) | [開啟](./佛學/為什麼普通人不能隨便念金光咒-你本就自帶光芒-別向外討認可_2026-10-17_TikTok__7690189236619775253/) |
+| 2026-10-13 | YouTube | 會性法師-大佛頂首楞嚴經-第103集 | 1:13:51 (4430.7s) | whisper (groq) | [開啟](./佛學/會性法師-大佛頂首楞嚴經-第103集_2026-10-13_YouTube__kvsrMirvdDQ/) |
+| 2026-10-12 | YouTube | 淨土安心法門(二) | 50:15 (3015.0s) | whisper (groq) | [開啟](./佛學/淨土安心法門-二_2026-10-12_YouTube__pukUhT6JmFw/) |
+| 2026-10-12 | YouTube | 淨土安心法門(一) | 49:55 (2995.0s) | whisper (groq) | [開啟](./佛學/淨土安心法門-一_2026-10-12_YouTube__QzMjB2LDdOk/) |
 
 ## 佛學／臨終關懷助念（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-08 | GoogleDrive | 葉福財老師往生見聞記（師母分享）第二版 | 24:59 (1498.7s) | whisper (groq) | [開啟](./佛學/臨終關懷助念/2026-11-08_GoogleDrive_葉福財老師往生見聞記-第二版__1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/) |
+| 2026-11-08 | GoogleDrive | 葉福財老師往生見聞記（師母分享）第二版 | 24:59 (1498.7s) | whisper (groq) | [開啟](./佛學/臨終關懷助念/葉福財老師往生見聞記-第二版_2026-11-08_GoogleDrive__1FCWMcKXHDJ1EYywLsmbhuZqQ5bLRBb1D/) |
 
 ## 商業理財（4）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-18 | X | 大鵬財商 - 一個人財富積累最快的方式，不是拼命尋找成功秘訣，而是直接複製查理·芒格的10個終身習慣。  芒格有一句非常經典的話：  “如果我知道自己會... | 06:22 (382.0s) | whisper (groq) | [開啟](./商業理財/2026-11-18_X_大鵬財商---一個人財富積累最快的方式-不是拼命尋找成功秘訣-而是直接複製查理·__2121985431055311172/) |
-| 2026-10-20 | Instagram | 三個用語言招財的方法（森森｜財富能量） | 01:54 (114.5s) | whisper (groq) | [開啟](./商業理財/2026-10-20_Instagram_三個用語言招財的方法-森森-財富能量__DehfUd5AH2h/) |
-| 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/2026-10-13_YouTube_我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪__CDVKZJdp2Iw/) |
-| 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/2026-10-11_Xiaohongshu_Muse爆火-傳統電商-短影片電商徹底坐不住了__6aba671a000000001a029fd4/) |
+| 2026-11-18 | X | 大鵬財商 - 一個人財富積累最快的方式，不是拼命尋找成功秘訣，而是直接複製查理·芒格的10個終身習慣。  芒格有一句非常經典的話：  “如果我知道自己會... | 06:22 (382.0s) | whisper (groq) | [開啟](./商業理財/大鵬財商---一個人財富積累最快的方式-不是拼命尋找成功秘訣-而是直接複製查理·_2026-11-18_X__2121985431055311172/) |
+| 2026-10-20 | Instagram | 三個用語言招財的方法（森森｜財富能量） | 01:54 (114.5s) | whisper (groq) | [開啟](./商業理財/三個用語言招財的方法-森森-財富能量_2026-10-20_Instagram__DehfUd5AH2h/) |
+| 2026-10-13 | YouTube | 我問了一個負債3000萬的人，怎麼財富自由？ feat. 黃士豪 | 21:34 (1294.0s) | whisper (groq) | [開啟](./商業理財/我問了一個負債3000萬的人-怎麼財富自由-feat-黃士豪_2026-10-13_YouTube__CDVKZJdp2Iw/) |
+| 2026-10-11 | Xiaohongshu | Muse爆火！傳統電商、短影片電商徹底坐不住了 | 01:45 (105.2s) | whisper (groq) | [開啟](./商業理財/Muse爆火-傳統電商-短影片電商徹底坐不住了_2026-10-11_Xiaohongshu__6aba671a000000001a029fd4/) |
 
 ## 投資理財（16）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-22 | TikTok | 賬戶虧了三成後 唯一正確的四步自救 | 06:30 (390.0s) | whisper (groq) | [開啟](./投資理財/2026-11-22_TikTok_賬戶虧了三成後-唯一正確的四步自救__7664422076580695316/) |
-| 2026-11-22 | TikTok | 成交量六種量柱形態：看懂主力真實意圖 | 04:42 (282.0s) | whisper (groq) | [開啟](./投資理財/2026-11-22_TikTok_成交量六種量柱形態-看懂主力真實意圖__7710552241949674770/) |
-| 2026-11-22 | TikTok | 山姐：主力如何利用散戶抄底心理出貨 | 06:19 (379.2s) | whisper (groq) | [開啟](./投資理財/2026-11-22_TikTok_山姐-主力如何利用散戶抄底心理出貨__7710177621031669010/) |
-| 2026-11-22 | TikTok | 封死漲停隔天走還是留：看開盤溢價率就夠了 | 02:13 (133.0s) | whisper (groq) | [開啟](./投資理財/2026-11-22_TikTok_封死漲停隔天走還是留-看開盤溢價率就夠了__7710063373248892168/) |
-| 2026-11-22 | TikTok | 一根線五句話 短線跑贏90%散戶 | 02:31 (151.3s) | whisper (groq) | [開啟](./投資理財/2026-11-22_TikTok_一根線五句話-短線跑贏90%散戶__7710093946218695956/) |
-| 2026-11-21 | TikTok | 股票 | 01:45 (104.7s) | whisper (groq) | [開啟](./投資理財/2026-11-21_TikTok_股票__7705367988588924168/) |
-| 2026-11-21 | TikTok | 5年才學會的交易秘密 | 01:21 (80.6s) | whisper (groq) | [開啟](./投資理財/2026-11-21_TikTok_5年才學會的交易秘密__7707400626757586183/) |
-| 2026-11-18 | X | 投機實驗室 - 被稱為韓國股神的超人氣交易員金亨俊，勝率太高了。  做交易賺了1500萬美元，拿過四次實盤大賽第一，15年交易生涯只有兩個月發生過虧損，股... | 07:25 (444.8s) | captions (zh, manual, original) | [開啟](./投資理財/2026-11-18_X_投機實驗室---被稱為韓國股神的超人氣交易員金亨俊-勝率太高了-做交易賺了150__2121456710187716696/) |
-| 2026-11-18 | X | 投機實驗室 - 100萬美元組交易雙冠王就是他。  香港教師J Law轉行做交易員後天賦就全出來了，把100萬美元兩年做到1600萬，拿下美國投資錦標賽1... | 07:19 (438.6s) | captions (zh, manual, original) | [開啟](./投資理財/2026-11-18_X_投機實驗室---100萬美元組交易雙冠王就是他-香港教師J-Law轉行做交易員後__2120717713702306002/) |
-| 2026-11-18 | X | LEI - 這麼多人看好 $NVDA ，這下麻煩了！ 你需要理解市場情緒週期 Psychology of market cycle | 09:49 (589.4s) | captions (zh, manual, original) | [開啟](./投資理財/2026-11-18_X_LEI---這麼多人看好-$NVDA-這下麻煩了-你需要理解市場情緒週期-Psy__2120720742681825713/) |
-| 2026-11-16 | YouTube | '26.11.16【財經一路發】鍾國忠談「股市劇烈震盪  投資如何『一直盈』？」 | 24:15 (1455.0s) | whisper (groq) | [開啟](./投資理財/2026-11-16_YouTube_'26-11-16-財經一路發-鍾國忠談-股市劇烈震盪-投資如何-一直盈__E1HcLnndFOU/) |
-| 2026-11-16 | TikTok | 四步滾雪球：小資金三年從5萬做到80萬 | 01:14 (74.0s) | whisper (groq) | [開啟](./投資理財/2026-11-16_TikTok_四步滾雪球-小資金三年從5萬做到80萬__7689439378036362509/) |
-| 2026-11-16 | TikTok | 四步學會解套神技，深套再也不用死扛 | 03:06 (185.5s) | whisper (groq) | [開啟](./投資理財/2026-11-16_TikTok_四步學會解套神技-深套再也不用死扛__7686433489381510407/) |
-| 2026-11-16 | TikTok | 中國股市最狠的人留給散戶的8句話 | 05:23 (323.1s) | whisper (groq) | [開啟](./投資理財/2026-11-16_TikTok_中國股市最狠的人留給散戶的8句話__7690583964892843272/) |
-| 2026-11-15 | YouTube | 【兆華艾綸說】ETF逢低撿 金字塔加碼法 市值、正2、高息型 全都解｜李兆華、艾綸、股魚 2026.10.21 part2 | 28:11 (1690.7s) | whisper (groq) | [開啟](./投資理財/2026-11-15_YouTube_兆華艾綸說-ETF逢低撿-金字塔加碼法-市值-正2-高息型-全都解-李兆華-艾綸__LrvC2KNcxYs/) |
-| 2026-11-15 | YouTube | 五十歲退休後段班莫慌！「月存兩萬三」10年逆轉退休金！- 闕又上 劉寶傑《寶傑怎麼說》20261112-2 | 28:58 (1738.0s) | whisper (groq) | [開啟](./投資理財/2026-11-15_YouTube_五十歲退休後段班莫慌-月存兩萬三-10年逆轉退休金---闕又上-劉寶傑《寶傑怎麼__wlq6fpv-EN8/) |
+| 2026-11-22 | TikTok | 賬戶虧了三成後 唯一正確的四步自救 | 06:30 (390.0s) | whisper (groq) | [開啟](./投資理財/賬戶虧了三成後-唯一正確的四步自救_2026-11-22_TikTok__7664422076580695316/) |
+| 2026-11-22 | TikTok | 成交量六種量柱形態：看懂主力真實意圖 | 04:42 (282.0s) | whisper (groq) | [開啟](./投資理財/成交量六種量柱形態-看懂主力真實意圖_2026-11-22_TikTok__7710552241949674770/) |
+| 2026-11-22 | TikTok | 山姐：主力如何利用散戶抄底心理出貨 | 06:19 (379.2s) | whisper (groq) | [開啟](./投資理財/山姐-主力如何利用散戶抄底心理出貨_2026-11-22_TikTok__7710177621031669010/) |
+| 2026-11-22 | TikTok | 封死漲停隔天走還是留：看開盤溢價率就夠了 | 02:13 (133.0s) | whisper (groq) | [開啟](./投資理財/封死漲停隔天走還是留-看開盤溢價率就夠了_2026-11-22_TikTok__7710063373248892168/) |
+| 2026-11-22 | TikTok | 一根線五句話 短線跑贏90%散戶 | 02:31 (151.3s) | whisper (groq) | [開啟](./投資理財/一根線五句話-短線跑贏90%散戶_2026-11-22_TikTok__7710093946218695956/) |
+| 2026-11-21 | TikTok | 股票 | 01:45 (104.7s) | whisper (groq) | [開啟](./投資理財/股票_2026-11-21_TikTok__7705367988588924168/) |
+| 2026-11-21 | TikTok | 5年才學會的交易秘密 | 01:21 (80.6s) | whisper (groq) | [開啟](./投資理財/5年才學會的交易秘密_2026-11-21_TikTok__7707400626757586183/) |
+| 2026-11-18 | X | 投機實驗室 - 被稱為韓國股神的超人氣交易員金亨俊，勝率太高了。  做交易賺了1500萬美元，拿過四次實盤大賽第一，15年交易生涯只有兩個月發生過虧損，股... | 07:25 (444.8s) | captions (zh, manual, original) | [開啟](./投資理財/投機實驗室---被稱為韓國股神的超人氣交易員金亨俊-勝率太高了-做交易賺了150_2026-11-18_X__2121456710187716696/) |
+| 2026-11-18 | X | 投機實驗室 - 100萬美元組交易雙冠王就是他。  香港教師J Law轉行做交易員後天賦就全出來了，把100萬美元兩年做到1600萬，拿下美國投資錦標賽1... | 07:19 (438.6s) | captions (zh, manual, original) | [開啟](./投資理財/投機實驗室---100萬美元組交易雙冠王就是他-香港教師J-Law轉行做交易員後_2026-11-18_X__2120717713702306002/) |
+| 2026-11-18 | X | LEI - 這麼多人看好 $NVDA ，這下麻煩了！ 你需要理解市場情緒週期 Psychology of market cycle | 09:49 (589.4s) | captions (zh, manual, original) | [開啟](./投資理財/LEI---這麼多人看好-$NVDA-這下麻煩了-你需要理解市場情緒週期-Psy_2026-11-18_X__2120720742681825713/) |
+| 2026-11-16 | TikTok | 四步滾雪球：小資金三年從5萬做到80萬 | 01:14 (74.0s) | whisper (groq) | [開啟](./投資理財/四步滾雪球-小資金三年從5萬做到80萬_2026-11-16_TikTok__7689439378036362509/) |
+| 2026-11-16 | TikTok | 四步學會解套神技，深套再也不用死扛 | 03:06 (185.5s) | whisper (groq) | [開啟](./投資理財/四步學會解套神技-深套再也不用死扛_2026-11-16_TikTok__7686433489381510407/) |
+| 2026-11-16 | TikTok | 中國股市最狠的人留給散戶的8句話 | 05:23 (323.1s) | whisper (groq) | [開啟](./投資理財/中國股市最狠的人留給散戶的8句話_2026-11-16_TikTok__7690583964892843272/) |
+| 2026-11-16 | YouTube | '26.11.16【財經一路發】鍾國忠談「股市劇烈震盪  投資如何『一直盈』？」 | 24:15 (1455.0s) | whisper (groq) | [開啟](./投資理財/'26-11-16-財經一路發-鍾國忠談-股市劇烈震盪-投資如何-一直盈_2026-11-16_YouTube__E1HcLnndFOU/) |
+| 2026-11-15 | YouTube | 【兆華艾綸說】ETF逢低撿 金字塔加碼法 市值、正2、高息型 全都解｜李兆華、艾綸、股魚 2026.10.21 part2 | 28:11 (1690.7s) | whisper (groq) | [開啟](./投資理財/兆華艾綸說-ETF逢低撿-金字塔加碼法-市值-正2-高息型-全都解-李兆華-艾綸_2026-11-15_YouTube__LrvC2KNcxYs/) |
+| 2026-11-15 | YouTube | 五十歲退休後段班莫慌！「月存兩萬三」10年逆轉退休金！- 闕又上 劉寶傑《寶傑怎麼說》20261112-2 | 28:58 (1738.0s) | whisper (groq) | [開啟](./投資理財/五十歲退休後段班莫慌-月存兩萬三-10年逆轉退休金---闕又上-劉寶傑《寶傑怎麼_2026-11-15_YouTube__wlq6fpv-EN8/) |
 
 ## 投資理財／期貨（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-22 | Facebook | 臺指期夜盤三個數字判斷隔天台股走勢 | 07:26 (446.5s) | whisper (groq) | [開啟](./投資理財/期貨/2026-11-22_Facebook_臺指期夜盤三個數字判斷隔天台股走勢__1B8wzcSbku/) |
+| 2026-11-22 | Facebook | 臺指期夜盤三個數字判斷隔天台股走勢 | 07:26 (446.5s) | whisper (groq) | [開啟](./投資理財/期貨/臺指期夜盤三個數字判斷隔天台股走勢_2026-11-22_Facebook__1B8wzcSbku/) |
 
 ## 投資理財／0050（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-23 | TikTok | 0050都破底了快跑臺股沒救了？ | 04:09 (248.7s) | whisper (groq) | [開啟](./投資理財/0050/2026-11-23_TikTok_0050都破底了快跑臺股沒救了__7710214436346219796/) |
+| 2026-11-23 | TikTok | 0050都破底了快跑臺股沒救了？ | 04:09 (248.7s) | whisper (groq) | [開啟](./投資理財/0050/0050都破底了快跑臺股沒救了_2026-11-23_TikTok__7710214436346219796/) |
 
 ## 投資理財／五日均線（2）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-23 | TikTok | 五日均線短線法（上下集） | 04:45 (284.9s) | whisper (groq) | [開啟](./投資理財/五日均線/2026-11-23_Web_五日均線短線法-上下集__tiktok_7710093946218695956_7710106529172655380mp4/) |
-| 2026-11-23 | TikTok | 三級K線操盤口訣：月線定生死、周線看結構、日線找爆發 | 14 張截圖（使用者表示 13 頁；見 supplement.md） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./投資理財/五日均線/2026-11-23_TikTok_三級K線操盤口訣-月線定生死-周線看結構-日線找爆發__7709335043344452884/) |
+| 2026-11-23 | TikTok | 五日均線短線法（上下集） | 04:45 (284.9s) | whisper (groq) | [開啟](./投資理財/五日均線/五日均線短線法-上下集_2026-11-23_Web__tiktok_7710093946218695956_7710106529172655380mp4/) |
+| 2026-11-23 | TikTok | 三級K線操盤口訣：月線定生死、周線看結構、日線找爆發 | 14 張截圖（使用者表示 13 頁；見 supplement.md） | 圖片文字（逐頁人工抄錄，非語音轉錄） | [開啟](./投資理財/五日均線/三級K線操盤口訣-月線定生死-周線看結構-日線找爆發_2026-11-23_TikTok__7709335043344452884/) |
 
 ## 投資理財／均線（2）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-24 | TikTok | 短線翻多訊號：缺口與均線 | 03:41 (221.5s) | whisper (groq) | [開啟](./投資理財/均線/2026-11-24_TikTok_短線翻多訊號-缺口與均線__7711696553026653460/) |
-| 2026-11-24 | Facebook | 股市變天三訊號：均線、爆量與背離 | 01:25 (85.3s) | whisper (groq) | [開啟](./投資理財/均線/2026-11-24_Facebook_股市變天三訊號-均線-爆量與背離__1G9rfc5jPb/) |
+| 2026-11-24 | Facebook | 股市變天三訊號：均線、爆量與背離 | 01:25 (85.3s) | whisper (groq) | [開啟](./投資理財/均線/股市變天三訊號-均線-爆量與背離_2026-11-24_Facebook__1G9rfc5jPb/) |
+| 2026-11-24 | TikTok | 短線翻多訊號：缺口與均線 | 03:41 (221.5s) | whisper (groq) | [開啟](./投資理財/均線/短線翻多訊號-缺口與均線_2026-11-24_TikTok__7711696553026653460/) |
 
 ## 投資理財／量價（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-24 | TikTok | 七句量價口訣 | 04:09 (248.7s) | whisper (groq) | [開啟](./投資理財/量價/2026-11-24_TikTok_七句量價口訣__7711179109971299604/) |
+| 2026-11-24 | TikTok | 七句量價口訣 | 04:09 (248.7s) | whisper (groq) | [開啟](./投資理財/量價/七句量價口訣_2026-11-24_TikTok__7711179109971299604/) |
 
 ## 投資理財／解套（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-24 | TikTok | 買入的票跌得越狠，反而賺得越多 | 05:26 (325.9s) | whisper (groq) | [開啟](./投資理財/解套/2026-11-24_TikTok_買入的票跌得越狠-反而賺得越多__7698655526284004616/) |
+| 2026-11-24 | TikTok | 買入的票跌得越狠，反而賺得越多 | 05:26 (325.9s) | whisper (groq) | [開啟](./投資理財/解套/買入的票跌得越狠-反而賺得越多_2026-11-24_TikTok__7698655526284004616/) |
 
 ## 身心生活（11）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-11 | Facebook | 每天十分鐘寫下五件事讓自己進步 | 01:30 (89.8s) | whisper (groq) | [開啟](./身心生活/2026-11-11_Facebook_每天十分鐘寫下五件事讓自己進步__1K5oJdZBoZ/) |
-| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
-| 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/2026-10-25_Facebook_越活越順的人-每天都在用的8個正向暗示__1172561908430922/) |
-| 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/2026-10-21_Web_Threads-讀書上癮的秘訣__Det4Ya3EyqQ/) |
-| 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm/) |
-| 2026-10-20 | Instagram | 拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」 | 01:50 (109.8s) | whisper (groq) | [開啟](./身心生活/2026-10-20_Instagram_拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛__DeUFrNTDHFs/) |
-| 2026-10-19 | Facebook | 養生功法 呼吸五步法 | 07:56 (475.7s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_養生功法-呼吸五步法__1DDHANhGtp/) |
-| 2026-10-19 | Facebook | 斷捨離2.0：重新定義什麼叫必要 | 08:08 (488.1s) | whisper (groq) | [開啟](./身心生活/2026-10-19_Facebook_斷捨離2-0-重新定義什麼叫必要__1KHcSPuXRR/) |
-| 2026-10-18 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/2026-10-18_TikTok_負債兩千萬到心想事成-完成式話術與謝謝__7696050866951867655/) |
-| 2026-10-17 | TikTok | 22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權 | 01:26 (85.5s) | whisper (groq) | [開啟](./身心生活/2026-10-17_TikTok_22歲谷愛凌大腦強大的秘密-頂級強者都在練的-元認知-思維-教你拿回人生掌控權__7697214960836873479/) |
-| 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/2026-10-13_Instagram_Video-by-huanhuantang9__DeEla5bGo_q/) |
+| 2026-11-11 | Facebook | 每天十分鐘寫下五件事讓自己進步 | 01:30 (89.8s) | whisper (groq) | [開啟](./身心生活/每天十分鐘寫下五件事讓自己進步_2026-11-11_Facebook__1K5oJdZBoZ/) |
+| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./身心生活/Padmasana-is-not-painful-if-you-do-this_2026-11-03_Facebook__19wM8h9Hdy/) |
+| 2026-10-25 | Facebook | 越活越順的人，每天都在用的8個正向暗示！ | 00:15 (15.0s) | whisper (groq) | [開啟](./身心生活/越活越順的人-每天都在用的8個正向暗示_2026-10-25_Facebook__1172561908430922/) |
+| 2026-10-21 | Web | Threads 讀書上癮的秘訣 | 03:10 (189.6s) | whisper (groq) | [開啟](./身心生活/Threads-讀書上癮的秘訣_2026-10-21_Web__Det4Ya3EyqQ/) |
+| 2026-10-20 | Instagram | 目標加期限加計畫加紀律（Jacob Yapping） | 00:31 (31.1s) | whisper (groq) | [開啟](./身心生活/目標加期限加計畫加紀律-Jacob-Yapping_2026-10-20_Instagram__DefvELKztAm/) |
+| 2026-10-20 | Instagram | 拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」 | 01:50 (109.8s) | whisper (groq) | [開啟](./身心生活/拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛_2026-10-20_Instagram__DeUFrNTDHFs/) |
+| 2026-10-19 | Facebook | 養生功法 呼吸五步法 | 07:56 (475.7s) | whisper (groq) | [開啟](./身心生活/養生功法-呼吸五步法_2026-10-19_Facebook__1DDHANhGtp/) |
+| 2026-10-19 | Facebook | 斷捨離2.0：重新定義什麼叫必要 | 08:08 (488.1s) | whisper (groq) | [開啟](./身心生活/斷捨離2-0-重新定義什麼叫必要_2026-10-19_Facebook__1KHcSPuXRR/) |
+| 2026-10-18 | TikTok | 負債兩千萬到心想事成：完成式話術與謝謝 | 05:11 (310.5s) | whisper (groq) | [開啟](./身心生活/負債兩千萬到心想事成-完成式話術與謝謝_2026-10-18_TikTok__7696050866951867655/) |
+| 2026-10-17 | TikTok | 22歲谷愛凌大腦強大的秘密！ 頂級強者都在練的「元認知」思維，教你拿回人生掌控權 | 01:26 (85.5s) | whisper (groq) | [開啟](./身心生活/22歲谷愛凌大腦強大的秘密-頂級強者都在練的-元認知-思維-教你拿回人生掌控權_2026-10-17_TikTok__7697214960836873479/) |
+| 2026-10-13 | Instagram | Video by huanhuantang9 | 03:26 (206.1s) | whisper (groq) | [開啟](./身心生活/Video-by-huanhuantang9_2026-10-13_Instagram__DeEla5bGo_q/) |
 
 ## 瑜伽（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./瑜伽/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy/) |
+| 2026-11-03 | Facebook | Padmasana is not painful if you do this way | 02:49 (169.4s) | whisper (groq) | [開啟](./瑜伽/Padmasana-is-not-painful-if-you-do-this_2026-11-03_Facebook__19wM8h9Hdy/) |
 
 ## 游泳／自由式（2）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-11-05 | TikTok | Сохраняйте и пробуйте новое упражнение для развития 2х ударного кроля... | 00:16 (15.9s) | whisper (groq) | [開啟](./游泳/自由式/2026-11-05_TikTok_Сохраняйте-и-пробуйте-новое-упражнение-д__7695091310620871969/) |
-| 2026-11-05 | TikTok | Kĩ thuật bơi sải nhẹ nhàng như đi bộ | 00:13 (12.5s) | whisper (groq) | [開啟](./游泳/自由式/2026-11-05_TikTok_Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ__7702446650920488210/) |
+| 2026-11-05 | TikTok | Сохраняйте и пробуйте новое упражнение для развития 2х ударного кроля... | 00:16 (15.9s) | whisper (groq) | [開啟](./游泳/自由式/Сохраняйте-и-пробуйте-новое-упражнение-д_2026-11-05_TikTok__7695091310620871969/) |
+| 2026-11-05 | TikTok | Kĩ thuật bơi sải nhẹ nhàng như đi bộ | 00:13 (12.5s) | whisper (groq) | [開啟](./游泳/自由式/Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ_2026-11-05_TikTok__7702446650920488210/) |
 
 ## 電子（1）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-10-11 | Facebook | 想要學好電路板一定搞透電流電壓電阻 | 05:29 (329.2s) | whisper (groq) | [開啟](./電子/2026-10-11_Facebook_想要學好電路板一定搞透電流電壓電阻__1DsGxovjKk/) |
+| 2026-10-11 | Facebook | 想要學好電路板一定搞透電流電壓電阻 | 05:29 (329.2s) | whisper (groq) | [開啟](./電子/想要學好電路板一定搞透電流電壓電阻_2026-10-11_Facebook__1DsGxovjKk/) |
 
 ## 雲端（2）
 
 | 日期 | 平台 | 標題 | 長度 | 轉錄來源 | 資料夾 |
 |---|---|---|---|---|---|
-| 2026-10-11 | YouTube | Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters | 07:55 (475.0s) | captions (en, automatic, original) | [開啟](./雲端/2026-10-11_YouTube_Kind-Tutorial-Kubernetes-in-Docker---Com__N4kwKtdcDWA/) |
-| 2026-10-11 | Drive | videoplayback (2).mp4 | 07:55 (475.2s) | whisper (groq) | [開啟](./雲端/2026-10-11_Drive_videoplayback-2-mp4__view/) |
+| 2026-10-11 | Drive | videoplayback (2).mp4 | 07:55 (475.2s) | whisper (groq) | [開啟](./雲端/videoplayback-2-mp4_2026-10-11_Drive__view/) |
+| 2026-10-11 | YouTube | Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters | 07:55 (475.0s) | captions (en, automatic, original) | [開啟](./雲端/Kind-Tutorial-Kubernetes-in-Docker---Com_2026-10-11_YouTube__N4kwKtdcDWA/) |

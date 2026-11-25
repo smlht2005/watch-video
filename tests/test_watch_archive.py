@@ -1098,5 +1098,22 @@ class WatchArchiveSkillDocs(unittest.TestCase):
                         self.assertNotIn("--lang", line, "the archive template must not force --lang (CLAUDE.md hard rule)")
 
 
+class FolderNameOrder(unittest.TestCase):
+    """資料夾／報告檔名順序：<標題>_<日期>_<平台>__<ID>（2026-11-25 起），舊順序仍可解析。"""
+
+    def test_parse_new_and_legacy(self):
+        self.assertEqual(br.parse_folder_name("股市變天_2026-11-24_Facebook__1G9r"), ("股市變天", "2026-11-24", "Facebook", "1G9r"))
+        self.assertEqual(br.parse_folder_name("2026-11-24_Facebook_股市變天__1G9r"), ("股市變天", "2026-11-24", "Facebook", "1G9r"))
+
+    def test_title_with_underscore_parses_from_the_end(self):
+        self.assertEqual(br.parse_folder_name("a_b_c_2026-01-01_Web__z")[:3], ("a_b_c", "2026-01-01", "Web"))
+
+    def test_file_stem_uses_new_order_for_both(self):
+        new = br.file_stem(Path("標題很長" * 10 + "_2026-11-24_TikTok__77"))
+        old = br.file_stem(Path("2026-11-24_TikTok_" + "標題很長" * 10 + "__77"))
+        self.assertEqual(new, old)
+        self.assertTrue(new.endswith("_2026-11-24_TikTok__77"))
+        self.assertEqual(br.make_folder_name("2026-11-24", "X", "t", "i"), "t_2026-11-24_X__i")
+
 if __name__ == "__main__":
     unittest.main()

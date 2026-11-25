@@ -8,7 +8,7 @@ uploader: "CodeLucky"
 category: "雲端"
 date: "2026-10-11"
 status: unreviewed
-origin_folder: "watch-output/雲端/2026-10-11_YouTube_Kind-Tutorial-Kubernetes-in-Docker---Com__N4kwKtdcDWA"
+origin_folder: "watch-output/雲端/Kind-Tutorial-Kubernetes-in-Docker---Com_2026-10-11_YouTube__N4kwKtdcDWA"
 generated_by: watch-archive
 aliases:
   - "Kind Tutorial: Kubernetes in Docker - Complete Beginner's Guide to Local K8s Clusters"
@@ -72,5 +72,5 @@ Welcome to this tutorial on KIND, which stands for Kubernetes in Docker. KIND is
 
 ## 來源
 
-- 原始資料夾：`watch-output/雲端/2026-10-11_YouTube_Kind-Tutorial-Kubernetes-in-Docker---Com__N4kwKtdcDWA`
+- 原始資料夾：`watch-output/雲端/Kind-Tutorial-Kubernetes-in-Docker---Com_2026-10-11_YouTube__N4kwKtdcDWA`
 - 逐字稿來源：captions (en, automatic, original)

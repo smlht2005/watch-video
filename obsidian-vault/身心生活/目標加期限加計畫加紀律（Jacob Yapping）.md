@@ -8,7 +8,7 @@ uploader: "Jacob Yapping"
 category: "身心生活"
 date: "2026-10-20"
 status: unreviewed
-origin_folder: "watch-output/身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm"
+origin_folder: "watch-output/身心生活/目標加期限加計畫加紀律-Jacob-Yapping_2026-10-20_Instagram__DefvELKztAm"
 generated_by: watch-archive
 aliases:
   - "目標加期限加計畫加紀律（Jacob Yapping）"
@@ -51,5 +51,5 @@ If you only have a goal, that means you're living in a dream. If you have a goal
 
 ## 來源
 
-- 原始資料夾：`watch-output/身心生活/2026-10-20_Instagram_目標加期限加計畫加紀律-Jacob-Yapping__DefvELKztAm`
+- 原始資料夾：`watch-output/身心生活/目標加期限加計畫加紀律-Jacob-Yapping_2026-10-20_Instagram__DefvELKztAm`
 - 逐字稿來源：whisper (groq)

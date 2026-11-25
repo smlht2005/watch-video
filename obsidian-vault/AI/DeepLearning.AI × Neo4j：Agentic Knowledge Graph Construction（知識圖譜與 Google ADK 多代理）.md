@@ -8,7 +8,7 @@ uploader: "Ryan Carter"
 category: "AI"
 date: "2026-10-12"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211"
+origin_folder: "watch-output/AI/DeepLearning-AI-×-Neo4j-Agentic-Knowledg_2026-10-12_X__2108904705854411211"
 generated_by: watch-archive
 aliases:
   - "DeepLearning.AI × Neo4j：Agentic Knowledge Graph Construction（知識圖譜與 Google ADK 多代理）"
@@ -468,5 +468,5 @@ Okay you've gotten all the way to the end of lesson three You've created a basic
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-12_X_DeepLearning-AI-×-Neo4j-Agentic-Knowledg__2108904705854411211`
+- 原始資料夾：`watch-output/AI/DeepLearning-AI-×-Neo4j-Agentic-Knowledg_2026-10-12_X__2108904705854411211`
 - 逐字稿來源：captions (en, manual, unknown)

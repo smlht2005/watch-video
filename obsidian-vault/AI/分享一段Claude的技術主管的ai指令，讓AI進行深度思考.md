@@ -8,7 +8,7 @@ uploader: "yangzhujun1"
 category: "AI"
 date: "2026-10-26"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-26_TikTok_分享一段Claude的技術主管的ai指令-讓AI進行深度思考__7700971611037404430"
+origin_folder: "watch-output/AI/分享一段Claude的技術主管的ai指令-讓AI進行深度思考_2026-10-26_TikTok__7700971611037404430"
 generated_by: watch-archive
 aliases:
   - "分享一段Claude的技術主管的ai指令，讓AI進行深度思考"
@@ -158,5 +158,5 @@ How to be more ambitious: A tutorial for humans with models
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-26_TikTok_分享一段Claude的技術主管的ai指令-讓AI進行深度思考__7700971611037404430`
+- 原始資料夾：`watch-output/AI/分享一段Claude的技術主管的ai指令-讓AI進行深度思考_2026-10-26_TikTok__7700971611037404430`
 - 逐字稿來源：whisper (groq)

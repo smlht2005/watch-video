@@ -8,7 +8,7 @@ uploader: "Max Lu"
 category: "身心生活"
 date: "2026-10-20"
 status: unreviewed
-origin_folder: "watch-output/身心生活/2026-10-20_Instagram_拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛__DeUFrNTDHFs"
+origin_folder: "watch-output/身心生活/拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛_2026-10-20_Instagram__DeUFrNTDHFs"
 generated_by: watch-archive
 aliases:
   - "拖延的人搞反了順序：Tal Ben-Shahar 的「5 分鐘起飛」"
@@ -84,5 +84,5 @@ Mel Robbins takes this idea a step further with what she calls the five-second r
 
 ## 來源
 
-- 原始資料夾：`watch-output/身心生活/2026-10-20_Instagram_拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛__DeUFrNTDHFs`
+- 原始資料夾：`watch-output/身心生活/拖延的人搞反了順序-Tal-Ben-Shahar-的-5-分鐘起飛_2026-10-20_Instagram__DeUFrNTDHFs`
 - 逐字稿來源：whisper (groq)

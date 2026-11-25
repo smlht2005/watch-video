@@ -30,11 +30,32 @@ CJK_FONT = "Microsoft JhengHei"
 SEG_RE = re.compile(r"^\[(\d+:\d+(?::\d+)?)\]\s*(.*)$")
 
 
+_OLD_NAME_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})_([^_]+)_(.*)$")  # <date>_<platform>_<title> (legacy order)
+_NEW_NAME_RE = re.compile(r"^(.*)_(\d{4}-\d{2}-\d{2})_([^_]+)$")  # <title>_<date>_<platform>
+
+
+def parse_folder_name(name: str) -> tuple:
+    """(title, date, platform, video-id) from a folder name or file stem; accepts both
+    <title>_<date>_<platform>__<id> (current) and <date>_<platform>_<title>__<id> (legacy)."""
+    head, _, vid = name.rpartition("__")
+    if not head:
+        head, vid = name, ""
+    if (m := _NEW_NAME_RE.match(head)):
+        return m.group(1), m.group(2), m.group(3), vid
+    if (m := _OLD_NAME_RE.match(head)):
+        return m.group(3), m.group(1), m.group(2), vid
+    return head, "", "", vid
+
+
+def make_folder_name(date: str, platform: str, title: str, vid: str) -> str:
+    """<title>_<date>_<platform>__<video-id>"""
+    return f"{title}_{date}_{platform}__{vid}"
+
+
 def file_stem(dest: Path) -> str:
-    """<date>_<platform>_<title (<=20 chars)>__<video-id>, derived from the folder name."""
-    head, _, vid = dest.name.rpartition("__")
-    date, platform, title = (head.split("_", 2) + ["", ""])[:3]
-    return f"{date}_{platform}_{title[:20].rstrip('-')}__{vid}"
+    """<title (<=20 chars)>_<date>_<platform>__<video-id>, derived from the folder name."""
+    title, date, platform, vid = parse_folder_name(dest.name)
+    return make_folder_name(date, platform, title[:20].rstrip('-'), vid)
 
 
 def to_sec(ts: str) -> int:

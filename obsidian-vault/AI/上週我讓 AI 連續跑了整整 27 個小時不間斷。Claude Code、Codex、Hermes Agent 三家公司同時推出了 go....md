@@ -8,7 +8,7 @@ uploader: "one.ai186"
 category: "AI"
 date: "2026-11-07"
 status: reviewed
-origin_folder: "watch-output/AI/2026-11-07_TikTok_上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod__7673187275961912597"
+origin_folder: "watch-output/AI/上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod_2026-11-07_TikTok__7673187275961912597"
 generated_by: watch-archive
 aliases:
   - "上週我讓 AI 連續跑了整整 27 個小時不間斷。Claude Code、Codex、Hermes Agent 三家公司同時推出了 /go..."
@@ -382,5 +382,5 @@ Anthropic用以上的評估架構，去做了一個美術館的網站，跑到�
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-11-07_TikTok_上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod__7673187275961912597`
+- 原始資料夾：`watch-output/AI/上週我讓-AI-連續跑了整整-27-個小時不間斷-Claude-Code-Cod_2026-11-07_TikTok__7673187275961912597`
 - 逐字稿來源：whisper (groq)

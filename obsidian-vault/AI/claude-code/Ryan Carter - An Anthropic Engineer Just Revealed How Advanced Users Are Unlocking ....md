@@ -8,7 +8,7 @@ uploader: "Ryan Carter"
 category: "AI/claude-code"
 date: "2026-10-11"
 status: unreviewed
-origin_folder: "watch-output/AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129"
+origin_folder: "watch-output/AI/claude-code/Ryan-Carter---An-Anthropic-Engineer-Just_2026-10-11_X__2109089199014220129"
 generated_by: watch-archive
 aliases:
   - "Ryan Carter - An Anthropic Engineer Just Revealed How Advanced Users Are Unlocking ..."
@@ -196,5 +196,5 @@ So far, everything here was about your own sessions but if you're the person who
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-10-11_X_Ryan-Carter---An-Anthropic-Engineer-Just__2109089199014220129`
+- 原始資料夾：`watch-output/AI/claude-code/Ryan-Carter---An-Anthropic-Engineer-Just_2026-10-11_X__2109089199014220129`
 - 逐字稿來源：captions (en, manual, unknown)

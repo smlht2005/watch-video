@@ -8,7 +8,7 @@ uploader: "dayboisinhtonbmt"
 category: "游泳/自由式"
 date: "2026-11-05"
 status: unreviewed
-origin_folder: "watch-output/游泳/自由式/2026-11-05_TikTok_Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ__7702446650920488210"
+origin_folder: "watch-output/游泳/自由式/Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ_2026-11-05_TikTok__7702446650920488210"
 generated_by: watch-archive
 aliases:
   - "Kĩ thuật bơi sải nhẹ nhàng như đi bộ"
@@ -91,5 +91,5 @@ Thanks for watching!
 
 ## 來源
 
-- 原始資料夾：`watch-output/游泳/自由式/2026-11-05_TikTok_Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ__7702446650920488210`
+- 原始資料夾：`watch-output/游泳/自由式/Kĩ-thuật-bơi-sải-nhẹ-nhàng-như-đi-bộ_2026-11-05_TikTok__7702446650920488210`
 - 逐字稿來源：whisper (groq)
