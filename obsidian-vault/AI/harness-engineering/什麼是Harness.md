@@ -8,7 +8,7 @@ uploader: "AI/GitHub-實驗室"
 category: "AI/harness-engineering"
 date: "2026-11-19"
 status: reviewed
-origin_folder: "watch-output/AI/harness-engineering/2026-11-19_Facebook_什麼是Harness__26612799381718386"
+origin_folder: "watch-output/AI/harness-engineering/什麼是Harness_2026-11-19_Facebook__26612799381718386"
 generated_by: watch-archive
 aliases:
   - "什麼是Harness"
@@ -218,5 +218,5 @@ related:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/harness-engineering/2026-11-19_Facebook_什麼是Harness__26612799381718386`
+- 原始資料夾：`watch-output/AI/harness-engineering/什麼是Harness_2026-11-19_Facebook__26612799381718386`
 - 逐字稿來源：whisper (groq)

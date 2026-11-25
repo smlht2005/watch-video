@@ -8,7 +8,7 @@ uploader: "Hux"
 category: "AI/GrokBot"
 date: "2026-11-21"
 status: reviewed
-origin_folder: "watch-output/AI/GrokBot/2026-11-21_X_Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課__2120782676676542488"
+origin_folder: "watch-output/AI/GrokBot/Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課_2026-11-21_X__2120782676676542488"
 generated_by: watch-archive
 aliases:
   - "Hux - 今晚別刷Netflix了。  去看這個SpaceX AI工程師1小時的課程。  這是我見過最清晰、端到端講透GrokBot到底該怎麼真正用..."
@@ -261,5 +261,5 @@ one last question before we wrap up Now, this one is for the people in product o
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/GrokBot/2026-11-21_X_Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課__2120782676676542488`
+- 原始資料夾：`watch-output/AI/GrokBot/Hux---今晚別刷Netflix了-去看這個SpaceX-AI工程師1小時的課_2026-11-21_X__2120782676676542488`
 - 逐字稿來源：captions (en, manual, original)

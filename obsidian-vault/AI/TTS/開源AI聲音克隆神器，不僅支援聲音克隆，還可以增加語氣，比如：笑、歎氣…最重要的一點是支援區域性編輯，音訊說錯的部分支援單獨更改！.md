@@ -8,7 +8,7 @@ uploader: "gmivwyhc53177"
 category: "AI/TTS"
 date: "2026-11-02"
 status: unreviewed
-origin_folder: "watch-output/AI/TTS/2026-11-02_TikTok_開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的__7700148582044781830"
+origin_folder: "watch-output/AI/TTS/開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的_2026-11-02_TikTok__7700148582044781830"
 generated_by: watch-archive
 aliases:
   - "開源AI聲音克隆神器，不僅支援聲音克隆，還可以增加語氣，比如：笑、歎氣…最重要的一點是支援區域性編輯，音訊說錯的部分支援單獨更改！"
@@ -104,5 +104,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/TTS/2026-11-02_TikTok_開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的__7700148582044781830`
+- 原始資料夾：`watch-output/AI/TTS/開源AI聲音克隆神器-不僅支援聲音克隆-還可以增加語氣-比如-笑-歎氣…最重要的_2026-11-02_TikTok__7700148582044781830`
 - 逐字稿來源：whisper (groq)

@@ -8,7 +8,7 @@ uploader: "lestaridewi530"
 category: "AI"
 date: "2026-10-28"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575"
+origin_folder: "watch-output/AI/5個神級Skill-裝完Codex直接開掛_2026-10-28_TikTok__7700787825901325575"
 generated_by: watch-archive
 aliases:
   - "5個神級Skill，裝完Codex直接開掛！"
@@ -122,5 +122,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-28_TikTok_5個神級Skill-裝完Codex直接開掛__7700787825901325575`
+- 原始資料夾：`watch-output/AI/5個神級Skill-裝完Codex直接開掛_2026-10-28_TikTok__7700787825901325575`
 - 逐字稿來源：whisper (groq)

@@ -8,7 +8,7 @@ uploader: "AI懶人報"
 category: "AI/claude-code"
 date: "2026-11-09"
 status: unreviewed
-origin_folder: "watch-output/AI/claude-code/2026-11-09_Instagram_CodeGraph-讓-Claude-Code-查程式碼地圖__DfUMThQE3fc"
+origin_folder: "watch-output/AI/claude-code/CodeGraph-讓-Claude-Code-查程式碼地圖_2026-11-09_Instagram__DfUMThQE3fc"
 generated_by: watch-archive
 aliases:
   - "CodeGraph 讓 Claude Code 查程式碼地圖"
@@ -242,5 +242,5 @@ fewer tool calls, 100% local          （畫面以紅圈標 100% local）
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-11-09_Instagram_CodeGraph-讓-Claude-Code-查程式碼地圖__DfUMThQE3fc`
+- 原始資料夾：`watch-output/AI/claude-code/CodeGraph-讓-Claude-Code-查程式碼地圖_2026-11-09_Instagram__DfUMThQE3fc`
 - 逐字稿來源：whisper (groq)

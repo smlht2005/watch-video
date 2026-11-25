@@ -8,7 +8,7 @@ uploader: "永動之初"
 category: "AI/GrokBot"
 date: "2026-11-20"
 status: reviewed
-origin_folder: "watch-output/AI/GrokBot/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296"
+origin_folder: "watch-output/AI/GrokBot/永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負_2026-11-20_X__2123611684690641296"
 generated_by: watch-archive
 aliases:
   - "永動之初 - 這個講的太好了 一個不會寫程式碼的女生，憑什麼當上馬斯克AI團隊負責人？"
@@ -179,5 +179,5 @@ related:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/GrokBot/2026-11-20_X_永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負__2123611684690641296`
+- 原始資料夾：`watch-output/AI/GrokBot/永動之初---這個講的太好了-一個不會寫程式碼的女生-憑什麼當上馬斯克AI團隊負_2026-11-20_X__2123611684690641296`
 - 逐字稿來源：captions (zh, manual, original)

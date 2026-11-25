@@ -8,7 +8,7 @@ uploader: "傅子傑"
 category: "AI/claude-code"
 date: "2026-10-21"
 status: unreviewed
-origin_folder: "watch-output/AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo"
+origin_folder: "watch-output/AI/claude-code/Video-by-jarrenpoh_2026-10-21_Instagram__DddPhkuxDUo"
 generated_by: watch-archive
 aliases:
   - "Video by jarrenpoh"
@@ -82,5 +82,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-10-21_Instagram_Video-by-jarrenpoh__DddPhkuxDUo`
+- 原始資料夾：`watch-output/AI/claude-code/Video-by-jarrenpoh_2026-10-21_Instagram__DddPhkuxDUo`
 - 逐字稿來源：whisper (groq)

@@ -8,7 +8,7 @@ uploader: "putrianggita599"
 category: "AI"
 date: "2026-10-28"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610"
+origin_folder: "watch-output/AI/A-super-simple-Codex-setup-guide-no-sign_2026-10-28_TikTok__7701528602084494610"
 generated_by: watch-archive
 aliases:
   - "A super simple Codex setup guide, no sign-up needed. Get it installed..."
@@ -183,5 +183,5 @@ Codex我們直接從ChatGPT的官網上下載即可，一般我們下載好後�
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-28_TikTok_A-super-simple-Codex-setup-guide-no-sign__7701528602084494610`
+- 原始資料夾：`watch-output/AI/A-super-simple-Codex-setup-guide-no-sign_2026-10-28_TikTok__7701528602084494610`
 - 逐字稿來源：whisper (groq)

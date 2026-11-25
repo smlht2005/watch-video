@@ -8,7 +8,7 @@ uploader: "fox8899"
 category: "AI/claude-code"
 date: "2026-11-11"
 status: unreviewed
-origin_folder: "watch-output/AI/claude-code/2026-11-11_TikTok_Claude-推出試算表與白板-Anthropic-六批工具一次看__7706784812530568468"
+origin_folder: "watch-output/AI/claude-code/Claude-推出試算表與白板-Anthropic-六批工具一次看_2026-11-11_TikTok__7706784812530568468"
 generated_by: watch-archive
 aliases:
   - "Claude 推出試算表與白板：Anthropic 六批工具一次看"
@@ -235,5 +235,5 @@ is about to pay off.
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-11-11_TikTok_Claude-推出試算表與白板-Anthropic-六批工具一次看__7706784812530568468`
+- 原始資料夾：`watch-output/AI/claude-code/Claude-推出試算表與白板-Anthropic-六批工具一次看_2026-11-11_TikTok__7706784812530568468`
 - 逐字稿來源：whisper (groq)

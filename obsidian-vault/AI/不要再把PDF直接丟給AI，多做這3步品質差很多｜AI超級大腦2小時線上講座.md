@@ -8,7 +8,7 @@ uploader: "李佳達"
 category: "AI"
 date: "2026-10-11"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs"
+origin_folder: "watch-output/AI/不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座_2026-10-11_Facebook__1Bggy9HRKs"
 generated_by: watch-archive
 aliases:
   - "不要再把PDF直接丟給AI，多做這3步品質差很多｜AI超級大腦2小時線上講座"
@@ -148,5 +148,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-11_Facebook_不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座__1Bggy9HRKs`
+- 原始資料夾：`watch-output/AI/不要再把PDF直接丟給AI-多做這3步品質差很多-AI超級大腦2小時線上講座_2026-10-11_Facebook__1Bggy9HRKs`
 - 逐字稿來源：whisper (groq)

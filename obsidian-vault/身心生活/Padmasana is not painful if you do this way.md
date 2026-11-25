@@ -8,7 +8,7 @@ uploader: "Prashant Jakhmola"
 category: "身心生活"
 date: "2026-11-03"
 status: unreviewed
-origin_folder: "watch-output/身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy"
+origin_folder: "watch-output/身心生活/Padmasana-is-not-painful-if-you-do-this_2026-11-03_Facebook__19wM8h9Hdy"
 generated_by: watch-archive
 aliases:
   - "Padmasana is not painful if you do this way"
@@ -110,5 +110,5 @@ In step come the other leg because now you need to take this foot on top of the 
 
 ## 來源
 
-- 原始資料夾：`watch-output/身心生活/2026-11-03_Facebook_Padmasana-is-not-painful-if-you-do-this__19wM8h9Hdy`
+- 原始資料夾：`watch-output/身心生活/Padmasana-is-not-painful-if-you-do-this_2026-11-03_Facebook__19wM8h9Hdy`
 - 逐字稿來源：whisper (groq)

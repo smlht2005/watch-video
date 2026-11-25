@@ -8,7 +8,7 @@ uploader: "PAPAYA 電腦教室"
 category: "AI"
 date: "2026-10-13"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc"
+origin_folder: "watch-output/AI/免費製作-AI-影片-ComfyUI-接上-Claude-MCP_2026-10-13_YouTube__fAWliYuOiuc"
 generated_by: watch-archive
 aliases:
   - "免費製作 AI 影片：ComfyUI 接上 Claude（MCP）"
@@ -128,5 +128,5 @@ OK，對於ComfyUI的使用者來說，這一年來最大的變化，就是Comfy
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-13_YouTube_免費製作-AI-影片-ComfyUI-接上-Claude-MCP__fAWliYuOiuc`
+- 原始資料夾：`watch-output/AI/免費製作-AI-影片-ComfyUI-接上-Claude-MCP_2026-10-13_YouTube__fAWliYuOiuc`
 - 逐字稿來源：whisper (groq)

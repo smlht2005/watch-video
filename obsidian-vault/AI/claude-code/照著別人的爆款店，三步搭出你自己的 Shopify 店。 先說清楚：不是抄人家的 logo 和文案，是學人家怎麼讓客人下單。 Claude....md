@@ -8,7 +8,7 @@ uploader: "daojiemarketing"
 category: "AI/claude-code"
 date: "2026-11-22"
 status: reviewed
-origin_folder: "watch-output/AI/claude-code/2026-11-22_TikTok_照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的__7710796109655887122"
+origin_folder: "watch-output/AI/claude-code/照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的_2026-11-22_TikTok__7710796109655887122"
 generated_by: watch-archive
 aliases:
   - "照著別人的爆款店，三步搭出你自己的 Shopify 店。 先說清楚：不是抄人家的 logo 和文案，是學人家怎麼讓客人下單。 Claude..."
@@ -154,5 +154,5 @@ shopify theme check                                    # 檢查主題程式碼
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-11-22_TikTok_照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的__7710796109655887122`
+- 原始資料夾：`watch-output/AI/claude-code/照著別人的爆款店-三步搭出你自己的-Shopify-店-先說清楚-不是抄人家的_2026-11-22_TikTok__7710796109655887122`
 - 逐字稿來源：whisper (groq)

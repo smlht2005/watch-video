@@ -8,7 +8,7 @@ uploader: "zekechen2026"
 category: "AI/GrokBot"
 date: "2026-11-21"
 status: unreviewed
-origin_folder: "watch-output/AI/GrokBot/2026-11-21_TikTok_普通人怎麼玩grokbot教程__7708051546864471310"
+origin_folder: "watch-output/AI/GrokBot/普通人怎麼玩grokbot教程_2026-11-21_TikTok__7708051546864471310"
 generated_by: watch-archive
 aliases:
   - "普通人怎麼玩grokbot教程"
@@ -232,5 +232,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/GrokBot/2026-11-21_TikTok_普通人怎麼玩grokbot教程__7708051546864471310`
+- 原始資料夾：`watch-output/AI/GrokBot/普通人怎麼玩grokbot教程_2026-11-21_TikTok__7708051546864471310`
 - 逐字稿來源：whisper (groq)

@@ -8,7 +8,7 @@ uploader: ""
 category: "雲端"
 date: "2026-10-11"
 status: unreviewed
-origin_folder: "watch-output/雲端/2026-10-11_Drive_videoplayback-2-mp4__view"
+origin_folder: "watch-output/雲端/videoplayback-2-mp4_2026-10-11_Drive__view"
 generated_by: watch-archive
 aliases:
   - "videoplayback (2).mp4"
@@ -175,5 +175,5 @@ Kind is incredibly versatile and serves multiple important use cases in the Kube
 
 ## 來源
 
-- 原始資料夾：`watch-output/雲端/2026-10-11_Drive_videoplayback-2-mp4__view`
+- 原始資料夾：`watch-output/雲端/videoplayback-2-mp4_2026-10-11_Drive__view`
 - 逐字稿來源：whisper (groq)

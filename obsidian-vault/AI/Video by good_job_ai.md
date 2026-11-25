@@ -8,7 +8,7 @@ uploader: "一股GoodJob"
 category: "AI"
 date: "2026-10-13"
 status: unreviewed
-origin_folder: "watch-output/AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR"
+origin_folder: "watch-output/AI/Video-by-good_job_ai_2026-10-13_Instagram__DeJhY7PAMrR"
 generated_by: watch-archive
 aliases:
   - "Video by good_job_ai"
@@ -117,5 +117,5 @@ tags:
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/2026-10-13_Instagram_Video-by-good_job_ai__DeJhY7PAMrR`
+- 原始資料夾：`watch-output/AI/Video-by-good_job_ai_2026-10-13_Instagram__DeJhY7PAMrR`
 - 逐字稿來源：whisper (groq)

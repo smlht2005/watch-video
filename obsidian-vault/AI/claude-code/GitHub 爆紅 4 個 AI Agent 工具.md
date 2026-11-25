@@ -8,7 +8,7 @@ uploader: "ChiaChia,Lin"
 category: "AI/claude-code"
 date: "2026-10-21"
 status: unreviewed
-origin_folder: "watch-output/AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN"
+origin_folder: "watch-output/AI/claude-code/GitHub-爆紅-4-個-AI-Agent-工具_2026-10-21_Instagram__DehA7RfTkaN"
 generated_by: watch-archive
 aliases:
   - "GitHub 爆紅 4 個 AI Agent 工具"
@@ -129,5 +129,5 @@ Graft → Trail-code：一般做法 100%／用 Trail-code 40%／時間 −60%／
 
 ## 來源
 
-- 原始資料夾：`watch-output/AI/claude-code/2026-10-21_Instagram_GitHub-爆紅-4-個-AI-Agent-工具__DehA7RfTkaN`
+- 原始資料夾：`watch-output/AI/claude-code/GitHub-爆紅-4-個-AI-Agent-工具_2026-10-21_Instagram__DehA7RfTkaN`
 - 逐字稿來源：whisper (groq)
