@@ -1,0 +1,122 @@
+[
+  {
+    "file": "frame_0001.jpg",
+    "t": "00:00",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0002.jpg",
+    "t": "00:01",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0005.jpg",
+    "t": "00:04",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0006.jpg",
+    "t": "00:04",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0008.jpg",
+    "t": "00:06",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0009.jpg",
+    "t": "00:07",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0010.jpg",
+    "t": "00:08",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0012.jpg",
+    "t": "00:10",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0014.jpg",
+    "t": "00:11",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0017.jpg",
+    "t": "00:14",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0018.jpg",
+    "t": "00:15",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0019.jpg",
+    "t": "00:16",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0022.jpg",
+    "t": "00:18",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0023.jpg",
+    "t": "00:19",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0027.jpg",
+    "t": "00:23",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0028.jpg",
+    "t": "00:24",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0031.jpg",
+    "t": "00:26",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0035.jpg",
+    "t": "00:30",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0037.jpg",
+    "t": "00:32",
+    "reason": "uniform"
+  },
+  {
+    "file": "frame_0039.jpg",
+    "t": "00:33",
+    "reason": "uniform"
+  },
+  {
+    "file": "slide_01.jpg",
+    "t": "00:03",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_02.jpg",
+    "t": "00:10",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_03.jpg",
+    "t": "00:19",
+    "reason": "clean-slide"
+  },
+  {
+    "file": "slide_04.jpg",
+    "t": "00:32",
+    "reason": "clean-slide"
+  }
+]

@@ -1,0 +1,124 @@
+{
+  "url": "https://vt.tiktok.com/ZSs65snhN/",
+  "platform": "TikTok",
+  "video_id": "7694196688931605768",
+  "title": "放量上漲容易回調",
+  "title_raw": "放量上涨容易回调#股票学习 #股票 #炒股技巧 #炒股 #fyp",
+  "title_override": "放量上漲容易回調",
+  "category": "投資理財/量價",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "股市、本益比、殖利率、ETF、台積電、加權指數、融資、融券、停損、停利、當沖、外資、投信、財報、EPS、技術分析、K線、均線、選擇權、做空、籌碼峰、籌碼真空、錨定效應、抄底、量柱、縮量柱、梯量柱、高量柱、低量柱、倍量柱、平量柱、主升浪、洗盤、吸籌、放量上攻、連板、開盤溢價率、封死漲停"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "stock-investing"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [
+    "股票学习",
+    "股票",
+    "炒股技巧",
+    "炒股",
+    "fyp"
+  ],
+  "uploader": "mce1j6",
+  "duration": "00:35 (35.1s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-25",
+  "last_updated": "2026-11-25",
+  "known_asr_errors": [
+    {
+      "time": "00:18",
+      "heard": "放量上漲容易回撥",
+      "expected": "放量上漲容易回調",
+      "status": "confirmed",
+      "note": "來源：畫面標題與字幕「放量上漲容易回調」"
+    },
+    {
+      "time": "00:31",
+      "heard": "縮量不跌底部已陷",
+      "expected": "縮量不跌底部已現",
+      "status": "confirmed",
+      "note": "來源：畫面疊字 00:32「縮量不跌，底部已現」"
+    }
+  ],
+  "keywords": [
+    "放量",
+    "縮量",
+    "放量上漲",
+    "放量下跌",
+    "縮量上漲",
+    "縮量下跌",
+    "量價關係",
+    "頭部",
+    "底部",
+    "回調",
+    "反彈",
+    "趨勢"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "怎麼分辨放量與縮量：看右邊柱子比左邊高或矮",
+      "note": "影片用成交量柱狀圖說明：右邊的柱子比左邊高就是放量，右邊比左邊矮就是縮量（作者說法，未查證）。",
+      "keywords": [
+        "放量",
+        "縮量",
+        "成交量柱"
+      ]
+    },
+    {
+      "start": "00:06",
+      "frame": "slide_02.jpg",
+      "title": "放量改變趨勢，縮量延續趨勢",
+      "note": "作者主張放量是用來改變趨勢的，縮量是延續趨勢的；例如上升趨勢突然放量，可能就是漲到頂，下跌趨勢突然放量，可能就是要反轉（作者主張，未查證）。",
+      "keywords": [
+        "趨勢",
+        "到頂",
+        "反轉"
+      ]
+    },
+    {
+      "start": "00:18",
+      "frame": "slide_03.jpg",
+      "title": "放量三句：上漲回調、下跌反彈、不漲見頭",
+      "note": "作者的三句口訣：放量上漲容易回調；放量下跌容易反彈；放量不漲，頭部已現。畫面各配一張 K 線與成交量圖例（作者主張，未查證）。",
+      "keywords": [
+        "放量上漲",
+        "放量下跌",
+        "頭部"
+      ]
+    },
+    {
+      "start": "00:24",
+      "frame": "slide_04.jpg",
+      "title": "縮量三句：上漲續漲、下跌續跌、不跌見底",
+      "note": "作者的三句口訣：縮量上漲繼續上漲；縮量下跌還會下跌；縮量不跌，底部已現（作者主張，未查證，不構成投資建議；畫面也標示「僅個人觀點，不構成任何投資建議」）。",
+      "keywords": [
+        "縮量上漲",
+        "縮量下跌",
+        "底部"
+      ]
+    }
+  ],
+  "video_type": "short-talk",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-25",
+    "fixes": 2,
+    "note": "畫面疊字核對"
+  }
+}
