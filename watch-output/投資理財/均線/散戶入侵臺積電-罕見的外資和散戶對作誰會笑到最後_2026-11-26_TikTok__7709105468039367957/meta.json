@@ -1,0 +1,214 @@
+{
+  "url": "https://vm.tiktok.com/ZSsrM9Gkh/",
+  "platform": "TikTok",
+  "video_id": "7709105468039367957",
+  "title": "散戶入侵臺積電，罕見的外資和散戶對作誰會笑到最後？",
+  "title_raw": "散戶入侵台積電，罕見的外資和散戶對作誰會笑到最後？",
+  "title_override": "",
+  "category": "投資理財/均線",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "股市、本益比、殖利率、ETF、台積電、加權指數、融資、融券、停損、停利、當沖、外資、投信、財報、EPS、技術分析、K線、均線、選擇權、做空、籌碼峰、籌碼真空、錨定效應、抄底、量柱、縮量柱、梯量柱、高量柱、低量柱、倍量柱、平量柱、主升浪、洗盤、吸籌、放量上攻、連板、開盤溢價率、封死漲停"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "stock-investing"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "oldwangstock.339d",
+  "duration": "03:13 (192.9s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-26",
+  "last_updated": "2026-11-26",
+  "known_asr_errors": [
+    {
+      "time": "00:00–00:29",
+      "heard": "（整段漏轉）",
+      "expected": "依第二次轉錄補入",
+      "status": "confirmed",
+      "note": "原轉錄 00:00 之後直到 00:30 漏轉約 30 秒；已用 Groq 單獨重送開頭 31 秒補回，字幕核對：舉一反三、都在拼命低接拼命買、其實老王過去分析台積電、哇趕快撿黃金"
+    },
+    {
+      "time": "00:23",
+      "heard": "拼命DJ拼命買",
+      "expected": "拼命低接拼命買",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 00:24「都在拼命低接 拼命買」"
+    },
+    {
+      "time": "00:09",
+      "heard": "老黃",
+      "expected": "老王",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 00:09「其實老王過去分析台積電」"
+    },
+    {
+      "time": "00:48",
+      "heard": "只有一天買潮啊",
+      "expected": "只有一天買超啊",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 00:48"
+    },
+    {
+      "time": "01:27",
+      "heard": "三升無奈",
+      "expected": "三聲無奈",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 01:27「所以又再次變成三聲無奈」"
+    },
+    {
+      "time": "02:20",
+      "heard": "Burr Brown",
+      "expected": "啵棒",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 02:21「超好 超棒 啵棒」"
+    },
+    {
+      "time": "03:04",
+      "heard": "20週正式均線上去",
+      "expected": "20週均線站上去啦",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 03:04"
+    },
+    {
+      "time": "02:25",
+      "heard": "AI相信AI",
+      "expected": "AI 相信AI",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 02:25"
+    },
+    {
+      "time": "01:47",
+      "heard": "我解到爛了",
+      "expected": "我講到爛了",
+      "status": "suspected",
+      "note": "字幕 01:48 為「你們也都聽到我講爛了」，上一句未直接核對；依語意改"
+    },
+    {
+      "time": "01:31",
+      "heard": "如果走一個長角",
+      "expected": "（保留原樣）",
+      "status": "suspected",
+      "note": "字幕未核對；可能是「長腳」等，不確定，未改"
+    },
+    {
+      "time": "02:05",
+      "heard": "操作資本利的",
+      "expected": "（保留原樣）",
+      "status": "suspected",
+      "note": "字幕未核對；可能是「資本利得」，不確定，未改"
+    },
+    {
+      "time": "01:31",
+      "heard": "四海遊龍",
+      "expected": "（保留原樣）",
+      "status": "confirmed",
+      "note": "畫面字幕 01:34 同寫「四海遊龍」，為講者用語，未改"
+    }
+  ],
+  "keywords": [
+    "台積電",
+    "籌碼面",
+    "散戶",
+    "外資",
+    "100張以下散戶持股",
+    "20週均線",
+    "月均線",
+    "短期均線",
+    "三聲無奈",
+    "技術分析",
+    "基本面",
+    "長線翻多"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "散戶持股比例：台積電也是散戶一直買",
+      "note": "講者（畫面標示「老王」）用「100 張以下的散戶持股比例」指標說明，台積電和國巨一樣，100 張以下散戶連續好幾週都在拼命低接、拼命買，大家都覺得買台積電像撿黃金，但台積電是很棒的公司、台灣之光（講者主張，未查證）。",
+      "keywords": [
+        "散戶持股",
+        "100張以下"
+      ]
+    },
+    {
+      "start": "00:30",
+      "frame": "slide_02.jpg",
+      "title": "籌碼面在作怪：外資一路賣、散戶一路接",
+      "note": "講者說股價漲不上去是籌碼太凌亂：外資這張圖上只買一天、其餘都在賣，大戶賣、散戶接，不是正常籌碼；股票要漲得籌碼夠集中，所以台積電反彈上去又跌下來（講者主張，未查證）。",
+      "keywords": [
+        "外資",
+        "籌碼集中"
+      ]
+    },
+    {
+      "start": "01:05",
+      "frame": "slide_03.jpg",
+      "title": "理想的籌碼結構：散戶掉下來、外資接走",
+      "note": "講者希望看到的是散戶受不了、賣出去，然後外資轉買接走，這才是很棒的籌碼結構（講者主張，未查證）。",
+      "keywords": [
+        "籌碼結構"
+      ]
+    },
+    {
+      "start": "01:17",
+      "frame": "slide_04.jpg",
+      "title": "技術面：站上短均又跌破，長短線都是空頭",
+      "note": "講者說上週站上短期均線、一度站上月均線卻只站一天，昨天又跌破三條短期均線，再次變成三聲無奈、長短線都是空頭；要翻多一定要看到站上所有均線，往下則觀察前低能否守住（講者主張，未查證）。",
+      "keywords": [
+        "短期均線",
+        "月均線",
+        "前低"
+      ]
+    },
+    {
+      "start": "01:45",
+      "frame": "slide_05.jpg",
+      "title": "20 週均線：長線角度早就跌破",
+      "note": "講者說他分析台積電時已說過跌破 20 週均線，曾在節目中直接說「不是好像是已經跌破」；從長線角度，要操作價差、甚至長期持有的人都要賣（講者主張，未查證，不構成投資建議）。",
+      "keywords": [
+        "20週均線",
+        "賣出"
+      ]
+    },
+    {
+      "start": "02:15",
+      "frame": "slide_06.jpg",
+      "title": "基本面再好，技術分析才是保障",
+      "note": "講者說台積電基本面、財報、產業都超好，但抱著的人還要看一來一回的價差；他主張技術分析才是保障，並說自己是先講 20 週均線已跌破，不是事後諸葛（講者主張，未查證）。",
+      "keywords": [
+        "基本面",
+        "技術分析"
+      ]
+    },
+    {
+      "start": "02:51",
+      "frame": "slide_07.jpg",
+      "title": "還沒站回 20 週均線，長線就沒翻多",
+      "note": "講者說上週反彈沒有站上 20 週均線，所以長期週期沒翻多、這週又下來；前面賣掉的人要等 20 週均線站回再買回，搞不好還買得更便宜（講者主張，未查證，不構成投資建議）。",
+      "keywords": [
+        "20週均線",
+        "買回"
+      ]
+    }
+  ],
+  "video_type": "short-talk",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-26",
+    "fixes": 12,
+    "note": "補回 00:00–00:29 漏轉；字幕核對；3 項 suspected"
+  }
+}
