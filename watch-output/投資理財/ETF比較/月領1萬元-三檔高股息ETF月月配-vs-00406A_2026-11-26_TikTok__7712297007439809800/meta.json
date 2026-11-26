@@ -1,0 +1,189 @@
+{
+  "url": "https://vm.tiktok.com/ZSsrhwHmm/",
+  "platform": "TikTok",
+  "video_id": "7712297007439809800",
+  "title": "月領1萬元：三檔高股息ETF月月配 vs 00406A",
+  "title_raw": "d3805a9e-2cc9f5fc78257d92a5e921120cf61ea0_1795677955370.mp4",
+  "title_override": "月領1萬元：三檔高股息ETF月月配 vs 00406A",
+  "category": "投資理財/ETF比較",
+  "whisper_hints": {
+    "language": "auto",
+    "prompt": "0050、元大台灣50、台灣50、ETF、台灣50指數、市值型、成分股、台積電、殖利率、配息、除息、定期定額、費用率、追蹤誤差、折溢價、0056、006208、長期投資、存股"
+  },
+  "whisper_choice": "",
+  "detected_language": "zh",
+  "language_source": "whisper",
+  "forced_lang": "",
+  "needs_zh_translation": false,
+  "glossaries": [
+    "etf-0050"
+  ],
+  "glossary_applied": {},
+  "source_hashtags": [],
+  "uploader": "dfb100lqm7（畫面浮水印）",
+  "duration": "05:58 (357.8s)",
+  "detail": "balanced",
+  "cue_timestamps": "",
+  "resolution": null,
+  "transcript_source": "whisper (groq)",
+  "question": "請摘要影片內容並附時間戳",
+  "first_archived": "2026-11-26",
+  "last_updated": "2026-11-26",
+  "known_asr_errors": [
+    {
+      "time": "全片",
+      "heard": "0046A",
+      "expected": "00406A",
+      "status": "confirmed",
+      "note": "來源：畫面疊字與表格「00406A」；Whisper 多處寫成 0046A"
+    },
+    {
+      "time": "00:05",
+      "heard": "三本",
+      "expected": "杉本",
+      "status": "confirmed",
+      "note": "來源：畫面橫幅「與杉本一起佈局績優台股」；全片 Whisper 作「三本」"
+    },
+    {
+      "time": "01:14",
+      "heard": "009193檔",
+      "expected": "00919 三檔",
+      "status": "confirmed",
+      "note": "畫面疊字為 00919；語意"
+    },
+    {
+      "time": "04:46",
+      "heard": "0099",
+      "expected": "00919",
+      "status": "confirmed",
+      "note": "畫面表格 49.9｜30.8｜29.5 對應 0056／00878／00919"
+    },
+    {
+      "time": "01:48",
+      "heard": "三選出",
+      "expected": "篩選出",
+      "status": "confirmed",
+      "note": "來源：畫面字幕「篩選出符合條件的企業」"
+    },
+    {
+      "time": "02:07",
+      "heard": "新興／聯發哥／奇鴻",
+      "expected": "欣興／聯發科／奇鋐",
+      "status": "confirmed",
+      "note": "來源：畫面表格代表性持股「台積電、台光電、欣興、聯發科、奇鋐」"
+    },
+    {
+      "time": "03:16",
+      "heard": "井上天荒",
+      "expected": "錦上添花",
+      "status": "confirmed",
+      "note": "來源：畫面字幕 03:16「錦上添花的人很多」"
+    },
+    {
+      "time": "03:51",
+      "heard": "黃能勳",
+      "expected": "黃仁勳",
+      "status": "confirmed",
+      "note": "語意；前文同一句寫黃仁勳"
+    },
+    {
+      "time": "00:48",
+      "heard": "背後存在我們上半年？",
+      "expected": "（保留原樣）",
+      "status": "suspected",
+      "note": "語意不通，可能是「背後存在我們需要留意的風險？」，字幕未核對，未改"
+    },
+    {
+      "time": "02:52",
+      "heard": "重新攔截了對AI產業的期待",
+      "expected": "（保留原樣）",
+      "status": "suspected",
+      "note": "可能是「重新點燃」，字幕未核對，未改"
+    },
+    {
+      "time": "03:26",
+      "heard": "一支來之一指正的古裝MV／吃一口、玩一抖、無償",
+      "expected": "（保留原樣）",
+      "status": "suspected",
+      "note": "MV 與歌名字幕太小未能核對（畫面字幕疑似「吃一口黃一斗」），未改；歌名請使用者確認"
+    }
+  ],
+  "keywords": [
+    "00406A",
+    "主動式ETF",
+    "高股息ETF",
+    "0056",
+    "00878",
+    "00919",
+    "月月配",
+    "月領1萬元",
+    "備兌買權",
+    "殖利率",
+    "配息率",
+    "黃仁勳"
+  ],
+  "section_keywords": {},
+  "slides": [
+    {
+      "start": "00:00",
+      "frame": "slide_01.jpg",
+      "title": "開場：月月領息，三檔高股息 ETF 對 00406A",
+      "note": "杉本（畫面橫幅「與杉本一起佈局績優台股」）說，過去常用 0056、00878、00919 三檔高股息 ETF 搭配月月領息；主動式 ETF 問世後，00406A（主動中信台灣收益）採用不同策略，股價從發行價 10 元跌到 6 元多，年化配息率接近 25%；他想比較月領 1 萬元時兩種做法誰需要的本金少（均為講者主張，未查證）。",
+      "keywords": [
+        "00406A",
+        "月月配"
+      ]
+    },
+    {
+      "start": "01:14",
+      "frame": "slide_02.jpg",
+      "title": "第一章：三檔組合與單檔 00406A 差在哪",
+      "note": "三檔組合是靠各自的高股息選股機制，從股利與資本利得取得收益，且為三檔季配組成月配；00406A 本身是月配，由經理人主動選股，再加上賣出掩護性買權（備兌買權）收取權利金。持股上，三檔涵蓋金融、科技與傳統產業；00406A 偏重台積電、台光電、欣興、聯發科、奇鋐等科技股。風險也不同：三檔要留意成分股重疊；00406A 科技集中，股市大漲時收益可能受選擇權策略限制（講者主張，未查證）。",
+      "keywords": [
+        "高股息",
+        "備兌買權",
+        "成分股重疊"
+      ]
+    },
+    {
+      "start": "02:30",
+      "frame": "slide_03.jpg",
+      "title": "題外話：黃仁勳與台灣的情誼、古裝 MV",
+      "note": "講者在比較中插入一段與主題無關的題外話：回顧黃仁勳與台灣的情誼，提到一支以古裝形式詮釋此緣分的 MV，並邀請大家分享、播放 MV 片段（歌名與 MV 細節辨識不清，見校正備註）。這段與 ETF 比較無直接關係。",
+      "keywords": [
+        "黃仁勳",
+        "MV"
+      ]
+    },
+    {
+      "start": "04:21",
+      "frame": "slide_04.jpg",
+      "title": "第二章：同樣月領 1 萬元，誰需要的本金少",
+      "note": "以 11/24 股價試算：0056 為 49.9 元、00878 為 30.8 元、00919 為 29.5 元，平均配置、年化配息率約 14.26%，月領 1 萬元約需 84 萬元；00406A 股價 6.67 元、每月配 0.138 元，年化配息率約 25%，約 48.7 萬元、73 張即可，兩者本金相差約 35 萬（講者試算，未查證，配息為假設持續）。",
+      "keywords": [
+        "本金試算",
+        "年化配息率"
+      ]
+    },
+    {
+      "start": "05:30",
+      "frame": "slide_05.jpg",
+      "title": "重點觀念：高殖利率是來自收益力還是股價下跌",
+      "note": "講者提醒，看到 ETF 殖利率特別高時，除了看配出多少，也要了解這個高殖利率是來自收益能力提升，還是因為股價大幅下跌；用較少本金領到相同股息，不代表承擔的風險比較低。影片在此處結束，後續內容未收錄（講者主張，未查證，不構成投資建議）。",
+      "keywords": [
+        "殖利率",
+        "風險"
+      ]
+    }
+  ],
+  "video_type": "short-talk",
+  "clean_fillers": "auto",
+  "sop_mode": "auto",
+  "source_note": "使用者上傳 mp4（TikTok 連結無法下載，狀態碼 10231）；影片本身完整，內容截至 05:58 句子中斷",
+  "second_pass": {
+    "done": true,
+    "date": "2026-11-26",
+    "fixes": 15,
+    "note": "上傳影片檔；畫面核對；3 項 suspected"
+  }
+}
